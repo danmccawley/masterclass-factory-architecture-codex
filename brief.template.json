@@ -1,0 +1,17 @@
+{
+  "meta": { "title": "", "slug": "", "created": "", "engine_contract": "v-texas" },
+  "knowledge_base": {
+    "uploads": [],
+    "research": { "mode": "grounded", "seed_prompts": [], "allow_web": true, "recency_floor": "2024-01-01" },
+    "credibility": { "min_tier": "secondary", "require_two_sources_for": ["statistics", "forward-looking claims", "contested points"] }
+  },
+  "objectives": { "terminal": [], "enabling": [], "out_of_scope": [] },
+  "mastery": { "target_level": 3, "granularity": "working", "deep_dive_density": "med", "field_disagreement": true },
+  "audience": {
+    "average": { "age_band": "", "education": "", "background": "", "technical": "mixed", "role": "mixed" },
+    "floor":   { "age_band": "", "education": "", "background": "", "technical": "non", "role": "" },
+    "gender_mix": "", "tone": "plain", "accessibility": { "reading_grade_cap": 9 }
+  },
+  "length": { "minutes": 60, "slide_budget": 90, "interaction_budget": { "polls": 2, "word_clouds": 4, "quizzes": 1, "final_test": true } },
+  "language": { "primary": "en", "localize_ui_strings": true, "glossary_in_primary": true }
+}
