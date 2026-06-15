@@ -7,13 +7,19 @@ Claude, Claude Code, Codex, or ChatGPT.
 - `MASTERCLASS-FACTORY-AGENT.md` — the authoritative build contract (architecture, schemas, agent roster, Definition of Done). Read first.
 - `build_content.py` — **Factory Agent 8 (codegen), made real.** Topic-agnostic generator that emits the whole content layer (`content.js`, `glossary.js`, `source.js`) and self-verifies. Runs out of the box with a 4-slide demo.
 - `brief.template.json` — the Course Brief intake contract (fill this per deck; everything downstream reads it).
+- `index.html`, `styles.css`, `wizard.js`, `brief-validator.js` — Milestone 1 Class Creator wizard. It emits a downloadable and POSTable `brief.json` that validates against `brief.template.json`.
+- `api/brief.js` — Vercel serverless validator for posted `brief.json` payloads.
 - `CLAUDE.md` — orchestration rules + pipeline (the Producer's instructions).
 - `.claude/agents/*.md` — nine specialist subagents: research, curriculum, author, glossary, assessment, source-verify, codegen, qa, deploy.
 
 ## Quick start
 ```bash
+python3 -m http.server 4173 # opens the Class Creator at http://127.0.0.1:4173/
 python build_content.py     # writes content.js, glossary.js, source.js, then prints QA PASS
 ```
+Milestone 1 stops at the brief. The `Generate` button validates and posts the brief to `/api/brief`
+on Vercel; it does not run codegen yet.
+
 Drop the three emitted files next to a copied engine bundle (`engine.js`, `navscrubber.js`,
 `index.html`, `api/*.js`), de-topic the strings in contract §6e, set the env vars, `vercel --prod`.
 
