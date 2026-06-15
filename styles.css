@@ -5,9 +5,9 @@
   --paper-2: #fffdf7;
   --sandstone: #c4a06b;
   --sandstone-soft: #eadcc5;
-  --water: #2c7774;
-  --water-deep: #185653;
-  --water-soft: #dcebe7;
+  --water: #1d9fc2;
+  --water-deep: #0b6387;
+  --water-soft: #dff4f8;
   --clay: #9a5c45;
   --amber: var(--sandstone);
   --amber-soft: var(--sandstone-soft);
@@ -30,9 +30,9 @@ body {
   min-height: 100vh;
   color: var(--ink);
   background:
-    radial-gradient(circle at 12% 0%, rgba(44, 119, 116, 0.1), transparent 30rem),
+    radial-gradient(circle at 12% 0%, rgba(29, 159, 194, 0.12), transparent 30rem),
     radial-gradient(circle at 90% 6%, rgba(196, 160, 107, 0.14), transparent 28rem),
-    linear-gradient(135deg, #fffdf7 0%, #f7f1e6 54%, #edf4f1 100%);
+    linear-gradient(135deg, #fffdf7 0%, #f7f1e6 54%, #edf7fb 100%);
   font-family: "IBM Plex Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
@@ -68,7 +68,7 @@ pre {
   color: var(--ink);
   background:
     linear-gradient(135deg, rgba(255, 253, 247, 0.96), rgba(248, 242, 230, 0.94)),
-    linear-gradient(120deg, rgba(196, 160, 107, 0.24), rgba(44, 119, 116, 0.16));
+    linear-gradient(120deg, rgba(196, 160, 107, 0.22), rgba(29, 159, 194, 0.18));
   border: 1px solid rgba(34, 48, 47, 0.1);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow);
@@ -115,7 +115,7 @@ pre {
   border-radius: 999px;
   background: rgba(255, 253, 247, 0.72);
   color: var(--water-deep);
-  border: 1px solid rgba(44, 119, 116, 0.18);
+  border: 1px solid rgba(29, 159, 194, 0.22);
   font-family: "IBM Plex Mono", ui-monospace, monospace;
   font-size: 0.78rem;
   font-weight: 700;
@@ -124,9 +124,9 @@ pre {
 
 .contract-pill.ok,
 .badge.ok {
-  background: rgba(44, 119, 116, 0.1);
+  background: rgba(29, 159, 194, 0.12);
   color: var(--water-deep);
-  border-color: rgba(44, 119, 116, 0.28);
+  border-color: rgba(29, 159, 194, 0.32);
 }
 
 .contract-pill.warn,
@@ -333,7 +333,7 @@ pre {
 .field textarea:focus,
 .source-row input:focus,
 .source-row select:focus {
-  outline: 3px solid rgba(44, 119, 116, 0.16);
+  outline: 3px solid rgba(29, 159, 194, 0.18);
   border-color: var(--water);
 }
 
@@ -387,9 +387,9 @@ pre {
   display: grid;
   gap: 10px;
   padding: 16px;
-  border: 1px dashed rgba(44, 119, 116, 0.3);
+  border: 1px dashed rgba(29, 159, 194, 0.34);
   border-radius: var(--radius-md);
-  background: rgba(220, 235, 231, 0.24);
+  background: rgba(223, 244, 248, 0.32);
 }
 
 .summary-card {
@@ -473,7 +473,7 @@ pre {
   padding: 16px;
   overflow: auto;
   color: #f8fbf8;
-  background: #183c3c;
+  background: #0d4058;
   border-radius: var(--radius-md);
   line-height: 1.48;
   font-size: 0.78rem;
