@@ -2,81 +2,67 @@
   "use strict";
 
   var steps = [
-    {
-      id: "create",
-      title: "Create",
-      short: "Name the class",
-      copy: "Start with the title and stable deck slug. The engine contract stays pinned to v-texas."
-    },
-    {
-      id: "knowledge",
-      title: "Knowledge base",
-      short: "Sources and research",
-      copy: "Add source files or URLs, then choose how tightly later stages may research around them."
-    },
-    {
-      id: "objectives",
-      title: "Objectives",
-      short: "Learning target",
-      copy: "Define what the learner should be able to do, the supporting skills, and what is out of scope."
-    },
-    {
-      id: "mastery",
-      title: "Mastery",
-      short: "Depth and checks",
-      copy: "Set the intended assessment level and how much disagreement or deep-dive material the course should include."
-    },
-    {
-      id: "demographics",
-      title: "Demographics",
-      short: "Typical and floor",
-      copy: "Describe the typical learner and the floor learner. The floor learner controls reading level and clarity."
-    },
-    {
-      id: "length",
-      title: "Length",
-      short: "Time and budget",
-      copy: "Choose the class length, slide budget, and interaction budget that the curriculum stage must obey."
-    },
-    {
-      id: "language",
-      title: "Language",
-      short: "Locale and glossary",
-      copy: "Set the primary teaching language and whether UI strings and glossary entries should localize."
-    },
-    {
-      id: "review",
-      title: "Review & Generate",
-      short: "Validate JSON",
-      copy: "Review the exact brief.json. Milestone 1 can download it or post it to /api/brief for contract validation."
-    }
+    ["create", "Create", "Name the class", "Start with the class title and a short link-friendly name. The required engine version stays fixed in the background."],
+    ["knowledge", "Knowledge base", "Sources and research", "Add source files or URLs, then choose how tightly later stages may research around them."],
+    ["objectives", "Objectives", "Learning target", "Choose whether the class creator, AI, or both should define the learning target, supporting skills, and what stays out of scope."],
+    ["mastery", "Mastery", "Depth and checks", "Set the intended assessment level and how much disagreement or deep-dive material the course should include."],
+    ["demographics", "Demographics", "Typical and floor", "Describe the typical learner, the floor learner, and the students' preferred language for the class."],
+    ["length", "Length", "Time and budget", "Choose the class length, slide budget, and interaction budget that the curriculum stage must obey."],
+    ["language", "Language", "Locale and glossary", "Choose whether the class is translated into the students' language or shown split-screen with English."],
+    ["review", "Review & Generate", "Launch package", "Review the class package, QR code, and launch link. Advanced setup data stays available for the generator."]
   ];
 
-  var defaultTags = ["statistics", "forward-looking claims", "contested points"];
-  var currentStep = 0;
-  var slugTouched = false;
+  var sourceRules = ["statistics", "forward-looking claims", "contested points"];
+  var languages = [
+    ["en", "English"],
+    ["es", "Spanish"],
+    ["fr", "French"],
+    ["de", "German"],
+    ["pt", "Portuguese"],
+    ["it", "Italian"],
+    ["ar", "Arabic"],
+    ["zh", "Chinese"],
+    ["ja", "Japanese"],
+    ["ko", "Korean"],
+    ["vi", "Vietnamese"]
+  ];
+
+  var state = {
+    step: 0,
+    slugTouched: false,
+    objectiveMode: "hybrid",
+    studentLanguage: "en",
+    delivery: "english",
+    aiStatus: null
+  };
+
   var template = window.BriefValidator.DEFAULT_TEMPLATE;
   var brief = makeBrief();
-
   var els = {
-    stepList: document.getElementById("stepList"),
-    stepEyebrow: document.getElementById("stepEyebrow"),
-    stepTitle: document.getElementById("stepTitle"),
-    progressFill: document.getElementById("progressFill"),
-    form: document.getElementById("wizardForm"),
-    back: document.getElementById("backButton"),
-    next: document.getElementById("nextButton"),
-    briefView: document.getElementById("briefView"),
-    validationBadge: document.getElementById("validationBadge"),
-    validationBox: document.getElementById("validationBox"),
-    contractStatus: document.getElementById("contractStatus"),
-    copy: document.getElementById("copyButton"),
-    download: document.getElementById("downloadButton")
+    stepList: byId("stepList"),
+    stepEyebrow: byId("stepEyebrow"),
+    stepTitle: byId("stepTitle"),
+    progressFill: byId("progressFill"),
+    form: byId("wizardForm"),
+    back: byId("backButton"),
+    next: byId("nextButton"),
+    briefView: byId("briefView"),
+    launchLink: byId("launchLink"),
+    drawerQr: byId("drawerQr"),
+    validationBadge: byId("validationBadge"),
+    validationBox: byId("validationBox"),
+    contractStatus: byId("contractStatus"),
+    copy: byId("copyButton"),
+    download: byId("downloadButton")
   };
 
   loadTemplate();
-  render();
   bindEvents();
+  render();
+
+  function byId(id) {
+    return document.getElementById(id);
+  }
 
   function makeBrief() {
     return {
@@ -96,7 +82,7 @@
         },
         credibility: {
           min_tier: "secondary",
-          require_two_sources_for: defaultTags.slice()
+          require_two_sources_for: sourceRules.slice()
         }
       },
       objectives: {
@@ -147,52 +133,577 @@
     };
   }
 
-  function bindEvents() {
-    els.stepList.addEventListener("click", function onStepClick(event) {
-      var button = event.target.closest("[data-step-index]");
-      if (!button) return;
-      currentStep = Number(button.dataset.stepIndex);
-      render();
-    });
-
-    els.form.addEventListener("input", onFormInput);
-    els.form.addEventListener("change", onFormChange);
-    els.form.addEventListener("click", onFormClick);
-
-    els.back.addEventListener("click", function goBack() {
-      if (currentStep > 0) {
-        currentStep -= 1;
-        render();
-      }
-    });
-
-    els.next.addEventListener("click", function goNextOrPost() {
-      if (currentStep < steps.length - 1) {
-        currentStep += 1;
-        render();
-        return;
-      }
-      postBrief();
-    });
-
-    els.copy.addEventListener("click", copyBrief);
-    els.download.addEventListener("click", downloadBrief);
-  }
-
   async function loadTemplate() {
     try {
       var response = await fetch("brief.template.json", { cache: "no-store" });
       if (!response.ok) throw new Error("brief.template.json was not found.");
       template = await response.json();
-      var templateResult = window.BriefValidator.validateBrief(template, template);
-      if (!templateResult.ok) {
+      if (!window.BriefValidator.validateBrief(template, template).ok) {
         throw new Error("brief.template.json does not validate itself.");
       }
-      setContractStatus("Contract loaded", "ok");
-      updateBriefView();
+      setContractStatus("Setup ready", "ok");
     } catch (error) {
-      setContractStatus("Using embedded contract", "warn");
+      setContractStatus("Using built-in setup", "warn");
     }
+    syncOutput();
+  }
+
+  function bindEvents() {
+    els.stepList.addEventListener("click", function (event) {
+      var button = event.target.closest("[data-step]");
+      if (!button) return;
+      state.step = Number(button.dataset.step);
+      render();
+    });
+
+    els.form.addEventListener("input", onInput);
+    els.form.addEventListener("change", onChange);
+    els.form.addEventListener("click", onClick);
+    els.back.addEventListener("click", function () {
+      state.step = Math.max(0, state.step - 1);
+      render();
+    });
+    els.next.addEventListener("click", function () {
+      if (state.step < steps.length - 1) {
+        state.step += 1;
+        render();
+        return;
+      }
+      postBrief();
+    });
+    els.copy.addEventListener("click", copyBrief);
+    els.download.addEventListener("click", downloadBrief);
+  }
+
+  function render() {
+    var step = steps[state.step];
+    els.stepList.innerHTML = steps.map(function (item, index) {
+      var classes = ["step-button"];
+      if (index === state.step) classes.push("active");
+      if (index < state.step) classes.push("done");
+      return (
+        "<li><button type=\"button\" class=\"" + classes.join(" ") + "\" data-step=\"" + index + "\">" +
+        "<span class=\"step-num\">" + String(index + 1).padStart(2, "0") + "</span>" +
+        "<span><span class=\"step-label\">" + esc(item[1]) + "</span><span class=\"step-sub\">" +
+        esc(item[2]) + "</span></span></button></li>"
+      );
+    }).join("");
+    els.stepEyebrow.textContent = "Step " + (state.step + 1) + " of " + steps.length;
+    els.stepTitle.textContent = step[1];
+    els.progressFill.style.width = ((state.step + 1) / steps.length) * 100 + "%";
+    els.form.innerHTML = "<p class=\"step-copy\">" + esc(step[3]) + "</p>" + renderStep(step[0]);
+    els.back.disabled = state.step === 0;
+    els.next.textContent = state.step === steps.length - 1 ? "Start generator" : "Next";
+    syncOutput();
+  }
+
+  function renderStep(id) {
+    if (id === "create") return createStep();
+    if (id === "knowledge") return knowledgeStep();
+    if (id === "objectives") return objectivesStep();
+    if (id === "mastery") return masteryStep();
+    if (id === "demographics") return demographicsStep();
+    if (id === "length") return lengthStep();
+    if (id === "language") return languageStep();
+    return reviewStep();
+  }
+
+  function createStep() {
+    return grid(
+      inputField("Class title", "meta.title", "Example: AI Strategy for Healthcare Leaders") +
+      inputField("Short link name", "meta.slug", "ai-strategy-healthcare-leaders") +
+      inputField("Created", "meta.created", "", "datetime-local")
+    );
+  }
+
+  function knowledgeStep() {
+    return (
+      "<div class=\"form-grid single\">" +
+      "<div class=\"field full upload-box\"><label>Upload source files</label><input type=\"file\" multiple data-file-upload>" +
+      "<p class=\"hint\">The browser records file names as source paths. The later research stage ingests the actual files.</p></div>" +
+      "<div class=\"field full\"><label>Add a source path or URL</label><div class=\"source-row\">" +
+      "<input type=\"text\" data-new-source-path placeholder=\"source.pdf or https://example.com/report\">" +
+      sourceTypeSelect("", "data-new-source-type") +
+      sourceTrustSelect("secondary", "data-new-source-trust") +
+      "<button type=\"button\" class=\"primary\" data-add-source>Add</button></div>" +
+      sourceRows() + "</div>" +
+      grid(
+        selectField("Research mode", "knowledge_base.research.mode", [
+          ["none", "Uploads only"],
+          ["grounded", "Grounded in corpus"],
+          ["collaborative", "May propose new sources"]
+        ]) +
+        checkboxField("Allow web research in collaborative mode", "knowledge_base.research.allow_web") +
+        inputField("Recency floor", "knowledge_base.research.recency_floor", "2024-01-01", "date") +
+        selectField("Minimum source tier", "knowledge_base.credibility.min_tier", [
+          ["primary", "Primary"],
+          ["secondary", "Secondary"],
+          ["unknown", "Unknown allowed"]
+        ]) +
+        textareaField("Research seed prompts", "knowledge_base.research.seed_prompts", "One prompt per line") +
+        sourceRuleFields()
+      ) +
+      "</div>"
+    );
+  }
+
+  function objectivesStep() {
+    return (
+      "<div class=\"form-grid single\">" +
+      "<div class=\"summary-card full assist-panel\"><h3>Who should shape the learning objectives?</h3>" +
+      "<p class=\"hint\">Terminal objectives are the main things learners must be able to do. Enabling objectives are the smaller skills that make those outcomes possible. Out of scope keeps the class focused.</p>" +
+      objectiveModes() +
+      "<div class=\"assist-actions\"><button type=\"button\" class=\"ghost\" data-ai=\"suggest\">Suggest gaps only</button>" +
+      "<button type=\"button\" class=\"ghost\" data-ai=\"draft\">Draft with AI</button>" +
+      "<button type=\"button\" class=\"primary\" data-ai=\"fill\">Let AI fill it</button></div>" +
+      aiNotice() + "</div>" +
+      textareaField("Terminal learning objectives", "objectives.terminal", "Example: Change a tire safely using the correct tools") +
+      textareaField("Enabling learning objectives", "objectives.enabling", "Example: Identify the jack points\nLoosen lug nuts safely\nCheck tire pressure after installation") +
+      textareaField("Out of scope", "objectives.out_of_scope", "Example: Engine repair\nTowing procedures") +
+      "</div>"
+    );
+  }
+
+  function masteryStep() {
+    return grid(
+      numberField("Target mastery level", "mastery.target_level", 1, 5) +
+      selectField("Granularity", "mastery.granularity", [["survey", "Survey"], ["working", "Working"], ["deep", "Deep"]]) +
+      selectField("Deep-dive density", "mastery.deep_dive_density", [["low", "Low"], ["med", "Medium"], ["high", "High"]]) +
+      checkboxField("Include where-the-field-disagrees material", "mastery.field_disagreement")
+    );
+  }
+
+  function demographicsStep() {
+    return grid(
+      card("Typical learner", grid(
+        inputField("Age band", "audience.average.age_band", "35-54") +
+        inputField("Education", "audience.average.education", "College or equivalent work experience") +
+        inputField("Background", "audience.average.background", "Department leaders") +
+        selectField("Technical comfort", "audience.average.technical", technicalOptions()) +
+        inputField("Role", "audience.average.role", "Manager, director, operator")
+      ), "full") +
+      card("Floor learner", grid(
+        inputField("Age band", "audience.floor.age_band", "18+") +
+        inputField("Education", "audience.floor.education", "High school") +
+        inputField("Background", "audience.floor.background", "No prior topic knowledge") +
+        selectField("Technical comfort", "audience.floor.technical", technicalOptions()) +
+        inputField("Role", "audience.floor.role", "General audience")
+      ), "full") +
+      inputField("Gender mix", "audience.gender_mix", "Mixed") +
+      selectField("Tone", "audience.tone", [
+        ["plain", "Plain"],
+        ["warm", "Warm"],
+        ["executive", "Executive"],
+        ["academic", "Academic"],
+        ["workshop", "Workshop"]
+      ]) +
+      numberField("Reading grade cap", "audience.accessibility.reading_grade_cap", 3, 16) +
+      card("Student language",
+        "<p class=\"hint\">Choose the students' preferred language and whether the presentation should be fully translated or split-screen with English.</p>" +
+        grid(languageControls()),
+        "full")
+    );
+  }
+
+  function lengthStep() {
+    return grid(
+      numberField("Minutes", "length.minutes", 10, 480) +
+      numberField("Slide budget", "length.slide_budget", 1, 400) +
+      numberField("Polls", "length.interaction_budget.polls", 0, 50) +
+      numberField("Word clouds", "length.interaction_budget.word_clouds", 0, 50) +
+      numberField("Quizzes", "length.interaction_budget.quizzes", 0, 50) +
+      checkboxField("Include final test", "length.interaction_budget.final_test")
+    );
+  }
+
+  function languageStep() {
+    return grid(
+      card("Presentation language",
+        "<p class=\"hint\">For non-English learners, use translated mode for one language or split-screen mode for English plus the students' preferred language.</p>" +
+        grid(languageControls()),
+        "full") +
+      checkboxField("Localize UI strings", "language.localize_ui_strings") +
+      checkboxField("Glossary in primary language", "language.glossary_in_primary")
+    );
+  }
+
+  function reviewStep() {
+    var result = validate();
+    var launchUrl = getLaunchUrl();
+    return (
+      "<div class=\"form-grid single\">" +
+      card("Class package",
+        "<div class=\"launch-summary\"><div><span class=\"mini-label\">Class</span><strong>" + esc(brief.meta.title || "Untitled class") + "</strong></div>" +
+        "<div><span class=\"mini-label\">Language</span><strong>" + esc(languageSummary()) + "</strong></div>" +
+        "<div><span class=\"mini-label\">Launch link</span><a href=\"" + attr(launchUrl) + "\" target=\"_blank\" rel=\"noreferrer\">" + esc(launchUrl) + "</a></div></div>") +
+      "<div class=\"summary-card qr-card\"><h3>QR code</h3><p class=\"hint\">This code opens the Vercel launch link. After the deck generator is connected, this same area will point learners to the generated masterclass.</p>" +
+      "<img class=\"qr-image large\" alt=\"QR code for the Vercel launch link\" src=\"" + attr(qrUrl(launchUrl)) + "\"></div>" +
+      card("Generator readiness",
+        (result.ok ? "<div class=\"notice\">The class setup is ready for the generator.</div>" : "<div class=\"notice warn\">Fix the listed setup errors before starting the generator.</div>") +
+        errorList(result.errors)) +
+      card("Readiness notes", readinessNotes()) +
+      "<div class=\"review-actions\"><button type=\"button\" class=\"ghost\" data-copy-launch>Copy launch link</button>" +
+      "<button type=\"button\" class=\"ghost\" data-copy-review>Copy setup data</button>" +
+      "<button type=\"button\" class=\"ghost\" data-download-review>Download setup file</button>" +
+      "<button type=\"button\" class=\"primary\" data-post-review>Start generator</button></div>" +
+      "<div id=\"postResult\" class=\"validation-box\"></div></div>"
+    );
+  }
+
+  function grid(content) {
+    return "<div class=\"form-grid\">" + content + "</div>";
+  }
+
+  function card(title, content, extraClass) {
+    return "<div class=\"summary-card " + (extraClass || "") + "\"><h3>" + esc(title) + "</h3>" + content + "</div>";
+  }
+
+  function inputField(label, path, placeholder, type) {
+    return field(label,
+      "<input id=\"" + fieldId(path) + "\" type=\"" + (type || "text") + "\" data-path=\"" + path +
+      "\" value=\"" + attr(formatValue(getPath(path), type)) + "\" placeholder=\"" + attr(placeholder || "") + "\">");
+  }
+
+  function numberField(label, path, min, max) {
+    return field(label,
+      "<input id=\"" + fieldId(path) + "\" type=\"number\" data-number-path=\"" + path +
+      "\" min=\"" + min + "\" max=\"" + max + "\" value=\"" + attr(String(getPath(path))) + "\">");
+  }
+
+  function textareaField(label, path, placeholder) {
+    return "<div class=\"field full\"><label for=\"" + fieldId(path) + "\">" + esc(label) + "</label>" +
+      "<textarea id=\"" + fieldId(path) + "\" data-lines-path=\"" + path + "\" placeholder=\"" + attr(placeholder || "") + "\">" +
+      esc(toLines(getPath(path))) + "</textarea></div>";
+  }
+
+  function selectField(label, path, options) {
+    return field(label,
+      "<select id=\"" + fieldId(path) + "\" data-path=\"" + path + "\">" + optionTags(options, getPath(path)) + "</select>");
+  }
+
+  function checkboxField(label, path) {
+    return "<label class=\"choice\"><input type=\"checkbox\" data-boolean-path=\"" + path + "\"" +
+      (getPath(path) ? " checked" : "") + "> <span>" + esc(label) + "</span></label>";
+  }
+
+  function field(label, control) {
+    return "<div class=\"field\"><label>" + esc(label) + "</label>" + control + "</div>";
+  }
+
+  function optionTags(options, selected) {
+    return options.map(function (option) {
+      return "<option value=\"" + attr(option[0]) + "\"" + (String(option[0]) === String(selected) ? " selected" : "") + ">" +
+        esc(option[1]) + "</option>";
+    }).join("");
+  }
+
+  function sourceRows() {
+    if (!brief.knowledge_base.uploads.length) return "<div class=\"hint\">No sources added yet.</div>";
+    return "<div class=\"source-list\">" + brief.knowledge_base.uploads.map(function (source, index) {
+      return "<div class=\"source-row\"><input type=\"text\" data-source-field=\"path\" data-source-index=\"" + index +
+        "\" value=\"" + attr(source.path) + "\" aria-label=\"Source path\">" +
+        sourceTypeSelect(source.type, "data-source-field=\"type\" data-source-index=\"" + index + "\"") +
+        sourceTrustSelect(source.trust, "data-source-field=\"trust\" data-source-index=\"" + index + "\"") +
+        "<button type=\"button\" class=\"remove-source\" data-remove-source=\"" + index + "\" aria-label=\"Remove source\">x</button></div>";
+    }).join("") + "</div>";
+  }
+
+  function sourceRuleFields() {
+    return "<div class=\"field full\"><span class=\"mini-label\">Require two independent sources for</span><div class=\"choice-grid\">" +
+      sourceRules.map(function (rule) {
+        var checked = brief.knowledge_base.credibility.require_two_sources_for.indexOf(rule) !== -1;
+        return "<label class=\"choice\"><input type=\"checkbox\" data-source-rule value=\"" + attr(rule) + "\"" +
+          (checked ? " checked" : "") + "> <span>" + esc(rule) + "</span></label>";
+      }).join("") + "</div></div>";
+  }
+
+  function objectiveModes() {
+    var modes = [
+      ["human", "Human-led", "The class creator writes the objectives and can ask AI for gaps."],
+      ["hybrid", "Human + AI", "AI drafts the first pass, then the class creator edits it."],
+      ["ai", "AI-led", "AI fills the objectives and scope from the brief, sources, and audience."]
+    ];
+    return "<div class=\"mode-grid\">" + modes.map(function (mode) {
+      return "<label class=\"mode-card\"><input type=\"radio\" name=\"objectiveMode\" data-objective-mode value=\"" + mode[0] + "\"" +
+        (state.objectiveMode === mode[0] ? " checked" : "") + "> <span><strong>" + esc(mode[1]) +
+        "</strong><small>" + esc(mode[2]) + "</small></span></label>";
+    }).join("") + "</div>";
+  }
+
+  function languageControls() {
+    return controlSelect("Student preferred language", "data-student-language", state.studentLanguage, languages) +
+      controlSelect("Presentation format", "data-language-delivery", state.delivery, [
+        ["english", "English only"],
+        ["translated", "Translate into student language"],
+        ["split", "Split screen: English + student language"]
+      ]);
+  }
+
+  function controlSelect(label, attrs, value, options) {
+    return "<div class=\"field\"><label>" + esc(label) + "</label><select " + attrs + ">" + optionTags(options, value) + "</select></div>";
+  }
+
+  function aiNotice() {
+    if (!state.aiStatus) return "";
+    return "<div class=\"notice" + (state.aiStatus.warn ? " warn" : "") + "\">" + esc(state.aiStatus.text) + "</div>";
+  }
+
+  function technicalOptions() {
+    return [["non", "Non-technical"], ["mixed", "Mixed"], ["technical", "Technical"]];
+  }
+
+  function sourceTypeSelect(value, attrs) {
+    return "<select " + attrs + " aria-label=\"Source type\">" +
+      optionTags([["document", "Document"], ["pdf", "PDF"], ["url", "URL"], ["notes", "Notes"], ["data", "Data"]], value) +
+      "</select>";
+  }
+
+  function sourceTrustSelect(value, attrs) {
+    return "<select " + attrs + " aria-label=\"Source trust\">" +
+      optionTags([["primary", "Primary"], ["secondary", "Secondary"], ["unknown", "Unknown"]], value) +
+      "</select>";
+  }
+
+  function onInput(event) {
+    var target = event.target;
+    if (target.dataset.path) {
+      var value = target.value;
+      if (target.dataset.path === "meta.created" && value) value = new Date(value).toISOString();
+      if (target.dataset.path === "meta.slug") {
+        state.slugTouched = true;
+        value = slugify(value);
+        target.value = value;
+      }
+      setPath(target.dataset.path, value);
+      if (target.dataset.path === "meta.title" && !state.slugTouched) {
+        brief.meta.slug = slugify(value);
+        var slugInput = els.form.querySelector("[data-path=\"meta.slug\"]");
+        if (slugInput) slugInput.value = brief.meta.slug;
+      }
+      syncOutput();
+      return;
+    }
+    if (target.dataset.numberPath) {
+      setPath(target.dataset.numberPath, parseNumber(target.value));
+      syncOutput();
+      return;
+    }
+    if (target.dataset.linesPath) {
+      setPath(target.dataset.linesPath, toArray(target.value));
+      syncOutput();
+      return;
+    }
+    if (target.dataset.sourceField) {
+      brief.knowledge_base.uploads[Number(target.dataset.sourceIndex)][target.dataset.sourceField] = target.value;
+      syncOutput();
+    }
+  }
+
+  function onChange(event) {
+    var target = event.target;
+    if (target.dataset.objectiveMode !== undefined) {
+      state.objectiveMode = target.value;
+      state.aiStatus = null;
+      render();
+      return;
+    }
+    if (target.dataset.studentLanguage !== undefined) {
+      state.studentLanguage = target.value;
+      applyLanguagePreference();
+      render();
+      return;
+    }
+    if (target.dataset.languageDelivery !== undefined) {
+      state.delivery = target.value;
+      applyLanguagePreference();
+      render();
+      return;
+    }
+    if (target.dataset.booleanPath) {
+      setPath(target.dataset.booleanPath, target.checked);
+      syncOutput();
+      return;
+    }
+    if (target.dataset.sourceRule !== undefined) {
+      brief.knowledge_base.credibility.require_two_sources_for = Array.from(
+        els.form.querySelectorAll("[data-source-rule]:checked")
+      ).map(function (box) { return box.value; });
+      syncOutput();
+      return;
+    }
+    if (target.dataset.fileUpload !== undefined) {
+      Array.from(target.files || []).forEach(function (file) {
+        brief.knowledge_base.uploads.push({ path: file.name, type: inferType(file.name, file.type), trust: "unknown" });
+      });
+      render();
+    }
+  }
+
+  function onClick(event) {
+    var aiButton = event.target.closest("[data-ai]");
+    var addButton = event.target.closest("[data-add-source]");
+    var removeButton = event.target.closest("[data-remove-source]");
+    if (aiButton) return draftObjectives(aiButton.dataset.ai);
+    if (addButton) return addSource();
+    if (removeButton) {
+      brief.knowledge_base.uploads.splice(Number(removeButton.dataset.removeSource), 1);
+      render();
+      return;
+    }
+    if (event.target.closest("[data-copy-launch]")) return copyLaunchLink();
+    if (event.target.closest("[data-copy-review]")) return copyBrief();
+    if (event.target.closest("[data-download-review]")) return downloadBrief();
+    if (event.target.closest("[data-post-review]")) return postBrief();
+  }
+
+  function addSource() {
+    var pathInput = els.form.querySelector("[data-new-source-path]");
+    var typeInput = els.form.querySelector("[data-new-source-type]");
+    var trustInput = els.form.querySelector("[data-new-source-trust]");
+    var path = pathInput.value.trim();
+    if (!path) return;
+    brief.knowledge_base.uploads.push({ path: path, type: typeInput.value, trust: trustInput.value });
+    render();
+  }
+
+  async function draftObjectives(action) {
+    state.aiStatus = { text: "Asking AI to review the class brief..." };
+    render();
+    try {
+      var response = await fetch("/api/objectives", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ action: action, mode: state.objectiveMode, brief: brief })
+      });
+      var payload = await response.json().catch(function () {
+        return { ok: false, errors: ["AI response was not usable."] };
+      });
+      if (!response.ok || !payload.ok) throw new Error((payload.errors || ["AI assistance failed."]).join(" "));
+      applyObjectiveDraft(payload.objectives || {}, action);
+      state.aiStatus = { text: payload.message || "AI updated the objectives. Review and edit them before generating." };
+    } catch (error) {
+      state.aiStatus = {
+        warn: true,
+        text: "AI assistance is not connected yet. Add OPENAI_API_KEY and OPENAI_MODEL in Vercel, or keep writing the objectives manually."
+      };
+    }
+    render();
+  }
+
+  function applyObjectiveDraft(objectives, action) {
+    var replace = action === "fill" || state.objectiveMode === "ai";
+    brief.objectives.terminal = replace ? clean(objectives.terminal) : merge(brief.objectives.terminal, clean(objectives.terminal));
+    brief.objectives.enabling = replace ? clean(objectives.enabling) : merge(brief.objectives.enabling, clean(objectives.enabling));
+    brief.objectives.out_of_scope = replace ? clean(objectives.out_of_scope) : merge(brief.objectives.out_of_scope, clean(objectives.out_of_scope));
+  }
+
+  function applyLanguagePreference() {
+    var language = state.studentLanguage || "en";
+    if (state.delivery === "english" || language === "en") {
+      brief.language.primary = "en";
+      brief.language.localize_ui_strings = false;
+      brief.language.glossary_in_primary = true;
+      return;
+    }
+    brief.language.primary = state.delivery === "split" ? "en+" + language : language;
+    brief.language.localize_ui_strings = true;
+    brief.language.glossary_in_primary = true;
+  }
+
+  function syncOutput() {
+    var result = validate();
+    var launchUrl = getLaunchUrl();
+    els.briefView.textContent = JSON.stringify(brief, null, 2);
+    if (els.launchLink) {
+      els.launchLink.href = launchUrl;
+      els.launchLink.textContent = launchUrl;
+    }
+    if (els.drawerQr) els.drawerQr.src = qrUrl(launchUrl);
+    els.validationBadge.textContent = result.ok ? "Valid" : "Needs fixes";
+    els.validationBadge.classList.toggle("ok", result.ok);
+    els.validationBadge.classList.toggle("warn", !result.ok);
+    els.validationBox.innerHTML = result.ok ? "<strong>Setup check:</strong> Ready for the generator." : "<strong>Setup check:</strong>" + errorList(result.errors);
+  }
+
+  function validate() {
+    return window.BriefValidator.validateBrief(brief, template);
+  }
+
+  function errorList(errors) {
+    if (!errors || !errors.length) return "";
+    return "<ul>" + errors.map(function (error) { return "<li>" + esc(error) + "</li>"; }).join("") + "</ul>";
+  }
+
+  function readinessNotes() {
+    var warnings = [];
+    if (!brief.meta.title.trim()) warnings.push("Add a class title.");
+    if (!brief.knowledge_base.uploads.length && brief.knowledge_base.research.mode === "none") warnings.push("Research mode is uploads-only, but no sources are listed.");
+    if (!brief.objectives.terminal.length) warnings.push("Add at least one terminal objective.");
+    if (!brief.objectives.enabling.length) warnings.push("Add enabling objectives so the lesson plan has structure.");
+    if (!brief.audience.floor.background.trim()) warnings.push("Describe the floor learner's background.");
+    return warnings.length ? "<ul>" + warnings.map(function (text) { return "<li>" + esc(text) + "</li>"; }).join("") + "</ul>" : "<div class=\"notice\">This setup has the basics needed for the next milestone.</div>";
+  }
+
+  async function copyBrief() {
+    try {
+      await navigator.clipboard.writeText(JSON.stringify(brief, null, 2));
+      toast("Copied setup data to clipboard.");
+    } catch (error) {
+      toast("Clipboard was blocked. Open Advanced setup data and copy manually.", true);
+    }
+  }
+
+  async function copyLaunchLink() {
+    try {
+      await navigator.clipboard.writeText(getLaunchUrl());
+      toast("Copied the Vercel launch link.");
+    } catch (error) {
+      toast("Clipboard was blocked. Copy the visible launch link manually.", true);
+    }
+  }
+
+  function downloadBrief() {
+    var blob = new Blob([JSON.stringify(brief, null, 2) + "\n"], { type: "application/json" });
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement("a");
+    link.href = url;
+    link.download = "class-setup.json";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  async function postBrief() {
+    var result = validate();
+    var postResult = byId("postResult");
+    if (!postResult) {
+      state.step = steps.length - 1;
+      render();
+      postResult = byId("postResult");
+    }
+    if (!result.ok) {
+      postResult.innerHTML = "<div class=\"notice warn\">Fix setup errors before starting the generator.</div>";
+      return;
+    }
+    postResult.innerHTML = "<div class=\"notice\">Validating setup...</div>";
+    try {
+      var response = await fetch("/api/brief", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(brief)
+      });
+      var payload = await response.json();
+      if (!response.ok || !payload.ok) throw new Error((payload.errors || ["Post failed."]).join(" "));
+      postResult.innerHTML = "<div class=\"notice\">Class setup accepted. It is ready for the Milestone 2 generator hook.</div>";
+    } catch (error) {
+      postResult.innerHTML = "<div class=\"notice warn\">The setup is valid, but /api/brief is not reachable in this preview. On Vercel, this button posts the same setup data to the serverless validator.</div>";
+    }
+  }
+
+  function toast(message, isWarning) {
+    els.validationBox.innerHTML = "<div class=\"notice" + (isWarning ? " warn" : "") + "\">" + esc(message) + "</div>";
+    window.setTimeout(syncOutput, 1800);
   }
 
   function setContractStatus(text, mode) {
@@ -201,684 +712,15 @@
     els.contractStatus.classList.add(mode);
   }
 
-  function render() {
-    renderStepList();
-    renderCurrentStep();
-    updateBriefView();
-  }
-
-  function renderStepList() {
-    els.stepList.innerHTML = steps
-      .map(function mapStep(step, index) {
-        var classes = ["step-button"];
-        if (index === currentStep) classes.push("active");
-        if (index < currentStep) classes.push("done");
-        return (
-          "<li>" +
-          '<button type="button" class="' +
-          classes.join(" ") +
-          '" data-step-index="' +
-          index +
-          '">' +
-          '<span class="step-num">' +
-          String(index + 1).padStart(2, "0") +
-          "</span>" +
-          "<span>" +
-          '<span class="step-label">' +
-          escapeHtml(step.title) +
-          "</span>" +
-          '<span class="step-sub">' +
-          escapeHtml(step.short) +
-          "</span>" +
-          "</span>" +
-          "</button>" +
-          "</li>"
-        );
-      })
-      .join("");
-  }
-
-  function renderCurrentStep() {
-    var step = steps[currentStep];
-    els.stepEyebrow.textContent = "Step " + (currentStep + 1) + " of " + steps.length;
-    els.stepTitle.textContent = step.title;
-    els.progressFill.style.width = ((currentStep + 1) / steps.length) * 100 + "%";
-    els.form.innerHTML =
-      '<p class="step-copy">' + escapeHtml(step.copy) + "</p>" + renderStepBody(step.id);
-    els.back.disabled = currentStep === 0;
-    els.next.textContent = currentStep === steps.length - 1 ? "Generate" : "Next";
-  }
-
-  function renderStepBody(id) {
-    if (id === "create") return renderCreate();
-    if (id === "knowledge") return renderKnowledge();
-    if (id === "objectives") return renderObjectives();
-    if (id === "mastery") return renderMastery();
-    if (id === "demographics") return renderDemographics();
-    if (id === "length") return renderLength();
-    if (id === "language") return renderLanguage();
-    return renderReview();
-  }
-
-  function renderCreate() {
-    return (
-      '<div class="form-grid">' +
-      textField("Class title", "meta.title", brief.meta.title, "Example: AI Strategy for Healthcare Leaders") +
-      textField("Deck slug", "meta.slug", brief.meta.slug, "ai-strategy-healthcare-leaders") +
-      textField("Created", "meta.created", brief.meta.created, "", "datetime-local") +
-      selectField("Engine contract", "meta.engine_contract", brief.meta.engine_contract, [["v-texas", "v-texas"]]) +
-      "</div>"
-    );
-  }
-
-  function renderKnowledge() {
-    return (
-      '<div class="form-grid single">' +
-      '<div class="field full upload-box">' +
-      "<label>Upload source files</label>" +
-      '<input type="file" multiple data-file-upload>' +
-      '<p class="hint">The browser records file names as source paths in brief.json. The later research stage ingests the actual files.</p>' +
-      "</div>" +
-      '<div class="field full">' +
-      "<label>Add a source path or URL</label>" +
-      '<div class="source-row">' +
-      '<input type="text" data-new-source-path placeholder="source.pdf or https://example.com/report">' +
-      sourceTypeSelect("", "data-new-source-type") +
-      sourceTrustSelect("secondary", "data-new-source-trust") +
-      '<button type="button" class="primary" data-add-source>Add</button>' +
-      "</div>" +
-      renderSources() +
-      "</div>" +
-      '<div class="form-grid">' +
-      selectField("Research mode", "knowledge_base.research.mode", brief.knowledge_base.research.mode, [
-        ["none", "Uploads only"],
-        ["grounded", "Grounded in corpus"],
-        ["collaborative", "May propose new sources"]
-      ]) +
-      checkboxField("Allow web research in collaborative mode", "knowledge_base.research.allow_web", brief.knowledge_base.research.allow_web) +
-      textField("Recency floor", "knowledge_base.research.recency_floor", brief.knowledge_base.research.recency_floor, "2024-01-01", "date") +
-      selectField("Minimum source tier", "knowledge_base.credibility.min_tier", brief.knowledge_base.credibility.min_tier, [
-        ["primary", "Primary"],
-        ["secondary", "Secondary"],
-        ["unknown", "Unknown allowed"]
-      ]) +
-      textAreaField("Research seed prompts", "knowledge_base.research.seed_prompts", toLines(brief.knowledge_base.research.seed_prompts), "One prompt per line") +
-      renderSourceRules() +
-      "</div>" +
-      "</div>"
-    );
-  }
-
-  function renderObjectives() {
-    return (
-      '<div class="form-grid single">' +
-      textAreaField("Terminal objectives", "objectives.terminal", toLines(brief.objectives.terminal), "One must-do outcome per line") +
-      textAreaField("Enabling objectives", "objectives.enabling", toLines(brief.objectives.enabling), "One supporting skill per line") +
-      textAreaField("Out of scope", "objectives.out_of_scope", toLines(brief.objectives.out_of_scope), "One excluded topic per line") +
-      "</div>"
-    );
-  }
-
-  function renderMastery() {
-    return (
-      '<div class="form-grid">' +
-      numberField("Target mastery level", "mastery.target_level", brief.mastery.target_level, 1, 5) +
-      selectField("Granularity", "mastery.granularity", brief.mastery.granularity, [
-        ["survey", "Survey"],
-        ["working", "Working"],
-        ["deep", "Deep"]
-      ]) +
-      selectField("Deep-dive density", "mastery.deep_dive_density", brief.mastery.deep_dive_density, [
-        ["low", "Low"],
-        ["med", "Medium"],
-        ["high", "High"]
-      ]) +
-      checkboxField("Include where-the-field-disagrees material", "mastery.field_disagreement", brief.mastery.field_disagreement) +
-      "</div>"
-    );
-  }
-
-  function renderDemographics() {
-    return (
-      '<div class="form-grid">' +
-      '<div class="summary-card full"><h3>Typical learner</h3><div class="form-grid">' +
-      textField("Age band", "audience.average.age_band", brief.audience.average.age_band, "35-54") +
-      textField("Education", "audience.average.education", brief.audience.average.education, "College or equivalent work experience") +
-      textField("Background", "audience.average.background", brief.audience.average.background, "Department leaders") +
-      selectField("Technical comfort", "audience.average.technical", brief.audience.average.technical, technicalOptions()) +
-      textField("Role", "audience.average.role", brief.audience.average.role, "Manager, director, operator") +
-      "</div></div>" +
-      '<div class="summary-card full"><h3>Floor learner</h3><div class="form-grid">' +
-      textField("Age band", "audience.floor.age_band", brief.audience.floor.age_band, "18+") +
-      textField("Education", "audience.floor.education", brief.audience.floor.education, "High school") +
-      textField("Background", "audience.floor.background", brief.audience.floor.background, "No prior topic knowledge") +
-      selectField("Technical comfort", "audience.floor.technical", brief.audience.floor.technical, technicalOptions()) +
-      textField("Role", "audience.floor.role", brief.audience.floor.role, "General audience") +
-      "</div></div>" +
-      textField("Gender mix", "audience.gender_mix", brief.audience.gender_mix, "Mixed") +
-      selectField("Tone", "audience.tone", brief.audience.tone, [
-        ["plain", "Plain"],
-        ["warm", "Warm"],
-        ["executive", "Executive"],
-        ["academic", "Academic"],
-        ["workshop", "Workshop"]
-      ]) +
-      numberField("Reading grade cap", "audience.accessibility.reading_grade_cap", brief.audience.accessibility.reading_grade_cap, 3, 16) +
-      "</div>"
-    );
-  }
-
-  function renderLength() {
-    return (
-      '<div class="form-grid">' +
-      numberField("Minutes", "length.minutes", brief.length.minutes, 10, 480) +
-      numberField("Slide budget", "length.slide_budget", brief.length.slide_budget, 1, 400) +
-      numberField("Polls", "length.interaction_budget.polls", brief.length.interaction_budget.polls, 0, 50) +
-      numberField("Word clouds", "length.interaction_budget.word_clouds", brief.length.interaction_budget.word_clouds, 0, 50) +
-      numberField("Quizzes", "length.interaction_budget.quizzes", brief.length.interaction_budget.quizzes, 0, 50) +
-      checkboxField("Include final test", "length.interaction_budget.final_test", brief.length.interaction_budget.final_test) +
-      "</div>"
-    );
-  }
-
-  function renderLanguage() {
-    return (
-      '<div class="form-grid">' +
-      selectField("Primary language", "language.primary", brief.language.primary, [
-        ["en", "English"],
-        ["es", "Spanish"],
-        ["fr", "French"],
-        ["de", "German"],
-        ["pt", "Portuguese"],
-        ["it", "Italian"]
-      ]) +
-      checkboxField("Localize UI strings", "language.localize_ui_strings", brief.language.localize_ui_strings) +
-      checkboxField("Glossary in primary language", "language.glossary_in_primary", brief.language.glossary_in_primary) +
-      "</div>"
-    );
-  }
-
-  function renderReview() {
-    var result = window.BriefValidator.validateBrief(brief, template);
-    var readiness = readinessWarnings();
-    return (
-      '<div class="form-grid single">' +
-      '<div class="summary-card">' +
-      "<h3>Contract status</h3>" +
-      (result.ok
-        ? '<div class="notice">brief.json matches the exact Milestone 1 contract.</div>'
-        : '<div class="notice warn">Fix the listed contract errors before posting.</div>') +
-      renderErrorList(result.errors) +
-      "</div>" +
-      '<div class="summary-card">' +
-      "<h3>Readiness notes</h3>" +
-      (readiness.length
-        ? "<ul>" + readiness.map(function item(text) { return "<li>" + escapeHtml(text) + "</li>"; }).join("") + "</ul>"
-        : '<div class="notice">This brief has the basics needed for the next milestone.</div>') +
-      "</div>" +
-      '<div class="review-actions">' +
-      '<button type="button" class="ghost" data-copy-review>Copy JSON</button>' +
-      '<button type="button" class="ghost" data-download-review>Download brief.json</button>' +
-      '<button type="button" class="primary" data-post-review>POST brief.json</button>' +
-      "</div>" +
-      '<div id="postResult" class="validation-box"></div>' +
-      "</div>"
-    );
-  }
-
-  function renderSources() {
-    if (!brief.knowledge_base.uploads.length) {
-      return '<div class="hint">No sources added yet.</div>';
-    }
-    return (
-      '<div class="source-list">' +
-      brief.knowledge_base.uploads
-        .map(function sourceRow(source, index) {
-          return (
-            '<div class="source-row">' +
-            '<input type="text" data-source-field="path" data-source-index="' +
-            index +
-            '" value="' +
-            escapeAttr(source.path) +
-            '" aria-label="Source path">' +
-            sourceTypeSelect(source.type, 'data-source-field="type" data-source-index="' + index + '"') +
-            sourceTrustSelect(source.trust, 'data-source-field="trust" data-source-index="' + index + '"') +
-            '<button type="button" class="remove-source" data-remove-source="' +
-            index +
-            '" aria-label="Remove source">x</button>' +
-            "</div>"
-          );
-        })
-        .join("") +
-      "</div>"
-    );
-  }
-
-  function renderSourceRules() {
-    return (
-      '<div class="field full">' +
-      '<span class="mini-label">Require two independent sources for</span>' +
-      '<div class="choice-grid">' +
-      defaultTags
-        .map(function mapTag(tag) {
-          var checked = brief.knowledge_base.credibility.require_two_sources_for.indexOf(tag) !== -1;
-          return (
-            '<label class="choice">' +
-            '<input type="checkbox" data-source-rule value="' +
-            escapeAttr(tag) +
-            '"' +
-            (checked ? " checked" : "") +
-            "> " +
-            '<span>' +
-            escapeHtml(tag) +
-            "</span>" +
-            "</label>"
-          );
-        })
-        .join("") +
-      "</div>" +
-      "</div>"
-    );
-  }
-
-  function textField(label, path, value, placeholder, type) {
-    return (
-      '<div class="field">' +
-      '<label for="' +
-      fieldId(path) +
-      '">' +
-      escapeHtml(label) +
-      "</label>" +
-      '<input id="' +
-      fieldId(path) +
-      '" type="' +
-      (type || "text") +
-      '" data-path="' +
-      path +
-      '" value="' +
-      escapeAttr(formatInputValue(value, type)) +
-      '" placeholder="' +
-      escapeAttr(placeholder || "") +
-      '">' +
-      "</div>"
-    );
-  }
-
-  function numberField(label, path, value, min, max) {
-    return (
-      '<div class="field">' +
-      '<label for="' +
-      fieldId(path) +
-      '">' +
-      escapeHtml(label) +
-      "</label>" +
-      '<input id="' +
-      fieldId(path) +
-      '" type="number" data-number-path="' +
-      path +
-      '" min="' +
-      min +
-      '" max="' +
-      max +
-      '" value="' +
-      escapeAttr(String(value)) +
-      '">' +
-      "</div>"
-    );
-  }
-
-  function textAreaField(label, path, value, placeholder) {
-    return (
-      '<div class="field full">' +
-      '<label for="' +
-      fieldId(path) +
-      '">' +
-      escapeHtml(label) +
-      "</label>" +
-      '<textarea id="' +
-      fieldId(path) +
-      '" data-lines-path="' +
-      path +
-      '" placeholder="' +
-      escapeAttr(placeholder || "") +
-      '">' +
-      escapeHtml(value) +
-      "</textarea>" +
-      "</div>"
-    );
-  }
-
-  function selectField(label, path, value, options) {
-    return (
-      '<div class="field">' +
-      '<label for="' +
-      fieldId(path) +
-      '">' +
-      escapeHtml(label) +
-      "</label>" +
-      '<select id="' +
-      fieldId(path) +
-      '" data-path="' +
-      path +
-      '">' +
-      options
-        .map(function option(opt) {
-          return (
-            '<option value="' +
-            escapeAttr(opt[0]) +
-            '"' +
-            (opt[0] === value ? " selected" : "") +
-            ">" +
-            escapeHtml(opt[1]) +
-            "</option>"
-          );
-        })
-        .join("") +
-      "</select>" +
-      "</div>"
-    );
-  }
-
-  function checkboxField(label, path, value) {
-    return (
-      '<label class="choice">' +
-      '<input type="checkbox" data-boolean-path="' +
-      path +
-      '"' +
-      (value ? " checked" : "") +
-      "> " +
-      "<span>" +
-      escapeHtml(label) +
-      "</span>" +
-      "</label>"
-    );
-  }
-
-  function sourceTypeSelect(value, attrs) {
-    var options = [
-      ["document", "Document"],
-      ["pdf", "PDF"],
-      ["url", "URL"],
-      ["notes", "Notes"],
-      ["data", "Data"]
-    ];
-    return (
-      "<select " +
-      attrs +
-      ' aria-label="Source type">' +
-      options
-        .map(function opt(option) {
-          return (
-            '<option value="' +
-            option[0] +
-            '"' +
-            (option[0] === value ? " selected" : "") +
-            ">" +
-            option[1] +
-            "</option>"
-          );
-        })
-        .join("") +
-      "</select>"
-    );
-  }
-
-  function sourceTrustSelect(value, attrs) {
-    var options = [
-      ["primary", "Primary"],
-      ["secondary", "Secondary"],
-      ["unknown", "Unknown"]
-    ];
-    return (
-      "<select " +
-      attrs +
-      ' aria-label="Source trust">' +
-      options
-        .map(function opt(option) {
-          return (
-            '<option value="' +
-            option[0] +
-            '"' +
-            (option[0] === value ? " selected" : "") +
-            ">" +
-            option[1] +
-            "</option>"
-          );
-        })
-        .join("") +
-      "</select>"
-    );
-  }
-
-  function technicalOptions() {
-    return [
-      ["non", "Non-technical"],
-      ["mixed", "Mixed"],
-      ["technical", "Technical"]
-    ];
-  }
-
-  function onFormInput(event) {
-    var target = event.target;
-    if (target.dataset.path) {
-      var value = target.value;
-      if (target.dataset.path === "meta.created" && value) {
-        value = new Date(value).toISOString();
-      }
-      setPath(target.dataset.path, value);
-      if (target.dataset.path === "meta.title" && !slugTouched) {
-        brief.meta.slug = slugify(value);
-        var slugInput = els.form.querySelector('[data-path="meta.slug"]');
-        if (slugInput) slugInput.value = brief.meta.slug;
-      }
-      if (target.dataset.path === "meta.slug") {
-        slugTouched = true;
-        brief.meta.slug = slugify(value);
-        target.value = brief.meta.slug;
-      }
-      updateBriefView();
-      return;
-    }
-
-    if (target.dataset.numberPath) {
-      setPath(target.dataset.numberPath, parseNumber(target.value));
-      updateBriefView();
-      return;
-    }
-
-    if (target.dataset.linesPath) {
-      setPath(target.dataset.linesPath, toArray(target.value));
-      updateBriefView();
-      return;
-    }
-
-    if (target.dataset.sourceField) {
-      var index = Number(target.dataset.sourceIndex);
-      var key = target.dataset.sourceField;
-      brief.knowledge_base.uploads[index][key] = target.value;
-      updateBriefView();
-    }
-  }
-
-  function onFormChange(event) {
-    var target = event.target;
-    if (target.dataset.path || target.dataset.numberPath || target.dataset.linesPath || target.dataset.sourceField) {
-      onFormInput(event);
-      return;
-    }
-
-    if (target.dataset.booleanPath) {
-      setPath(target.dataset.booleanPath, target.checked);
-      updateBriefView();
-      return;
-    }
-
-    if (target.dataset.sourceRule !== undefined) {
-      brief.knowledge_base.credibility.require_two_sources_for = Array.from(
-        els.form.querySelectorAll("[data-source-rule]:checked")
-      ).map(function checked(box) {
-        return box.value;
-      });
-      updateBriefView();
-      return;
-    }
-
-    if (target.dataset.fileUpload !== undefined) {
-      Array.from(target.files || []).forEach(function addFile(file) {
-        brief.knowledge_base.uploads.push({
-          path: file.name,
-          type: inferType(file.name, file.type),
-          trust: "unknown"
-        });
-      });
-      renderCurrentStep();
-      updateBriefView();
-    }
-  }
-
-  function onFormClick(event) {
-    var addButton = event.target.closest("[data-add-source]");
-    if (addButton) {
-      var pathInput = els.form.querySelector("[data-new-source-path]");
-      var typeInput = els.form.querySelector("[data-new-source-type]");
-      var trustInput = els.form.querySelector("[data-new-source-trust]");
-      var path = pathInput.value.trim();
-      if (!path) return;
-      brief.knowledge_base.uploads.push({
-        path: path,
-        type: typeInput.value,
-        trust: trustInput.value
-      });
-      renderCurrentStep();
-      updateBriefView();
-      return;
-    }
-
-    var removeButton = event.target.closest("[data-remove-source]");
-    if (removeButton) {
-      brief.knowledge_base.uploads.splice(Number(removeButton.dataset.removeSource), 1);
-      renderCurrentStep();
-      updateBriefView();
-      return;
-    }
-
-    if (event.target.closest("[data-copy-review]")) {
-      copyBrief();
-      return;
-    }
-    if (event.target.closest("[data-download-review]")) {
-      downloadBrief();
-      return;
-    }
-    if (event.target.closest("[data-post-review]")) {
-      postBrief();
-    }
-  }
-
-  function updateBriefView() {
-    var json = JSON.stringify(brief, null, 2);
-    var result = window.BriefValidator.validateBrief(brief, template);
-    els.briefView.textContent = json;
-    els.validationBadge.textContent = result.ok ? "Valid" : "Needs fixes";
-    els.validationBadge.classList.toggle("ok", result.ok);
-    els.validationBadge.classList.toggle("warn", !result.ok);
-    els.validationBox.innerHTML = result.ok
-      ? "<strong>Contract check:</strong> Valid against brief.template.json."
-      : "<strong>Contract check:</strong>" + renderErrorList(result.errors);
-    if (steps[currentStep].id === "review") {
-      var postResult = document.getElementById("postResult");
-      if (postResult) postResult.innerHTML = "";
-    }
-  }
-
-  function renderErrorList(errors) {
-    if (!errors || !errors.length) return "";
-    return "<ul>" + errors.map(function errorItem(error) {
-      return "<li>" + escapeHtml(error) + "</li>";
-    }).join("") + "</ul>";
-  }
-
-  function readinessWarnings() {
-    var warnings = [];
-    if (!brief.meta.title.trim()) warnings.push("Add a class title.");
-    if (!brief.knowledge_base.uploads.length && brief.knowledge_base.research.mode === "none") {
-      warnings.push("Research mode is uploads-only, but no sources are listed.");
-    }
-    if (!brief.objectives.terminal.length) warnings.push("Add at least one terminal objective.");
-    if (!brief.objectives.enabling.length) warnings.push("Add enabling objectives so the lesson plan has structure.");
-    if (!brief.audience.floor.background.trim()) warnings.push("Describe the floor learner's background.");
-    return warnings;
-  }
-
-  async function copyBrief() {
-    var text = JSON.stringify(brief, null, 2);
-    try {
-      await navigator.clipboard.writeText(text);
-      toast("Copied brief.json to clipboard.");
-    } catch (error) {
-      toast("Clipboard was blocked. Select the JSON drawer and copy manually.", true);
-    }
-  }
-
-  function downloadBrief() {
-    var blob = new Blob([JSON.stringify(brief, null, 2) + "\n"], {
-      type: "application/json"
-    });
-    var url = URL.createObjectURL(blob);
-    var link = document.createElement("a");
-    link.href = url;
-    link.download = "brief.json";
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    URL.revokeObjectURL(url);
-  }
-
-  async function postBrief() {
-    var result = window.BriefValidator.validateBrief(brief, template);
-    var postResult = document.getElementById("postResult");
-    if (!postResult) {
-      currentStep = steps.length - 1;
-      render();
-      postResult = document.getElementById("postResult");
-    }
-    if (!result.ok) {
-      postResult.innerHTML = '<div class="notice warn">Fix contract errors before posting.</div>';
-      return;
-    }
-
-    postResult.innerHTML = '<div class="notice">Posting to /api/brief...</div>';
-    try {
-      var response = await fetch("/api/brief", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify(brief)
-      });
-      var payload = await response.json();
-      if (!response.ok || !payload.ok) {
-        throw new Error((payload.errors || ["Post failed."]).join(" "));
-      }
-      postResult.innerHTML =
-        '<div class="notice">POST accepted. brief.json is ready for the Milestone 2 generator hook.</div>';
-    } catch (error) {
-      postResult.innerHTML =
-        '<div class="notice warn">The JSON is valid, but /api/brief is not reachable in this preview. On Vercel, this button posts the same brief.json to the serverless validator.</div>';
-    }
-  }
-
-  function toast(message, isWarning) {
-    els.validationBox.innerHTML =
-      '<div class="notice' + (isWarning ? " warn" : "") + '">' + escapeHtml(message) + "</div>";
-    window.setTimeout(updateBriefView, 1800);
+  function getPath(path) {
+    return path.split(".").reduce(function (value, key) { return value[key]; }, brief);
   }
 
   function setPath(path, value) {
-    var parts = path.split(".");
+    var keys = path.split(".");
     var target = brief;
-    for (var index = 0; index < parts.length - 1; index += 1) {
-      target = target[parts[index]];
-    }
-    target[parts[parts.length - 1]] = value;
+    keys.slice(0, -1).forEach(function (key) { target = target[key]; });
+    target[keys[keys.length - 1]] = value;
   }
 
   function parseNumber(value) {
@@ -887,16 +729,44 @@
   }
 
   function toArray(value) {
-    return value
-      .split(/\r?\n/)
-      .map(function trimLine(line) {
-        return line.trim();
-      })
-      .filter(Boolean);
+    return value.split(/\r?\n/).map(function (line) { return line.trim(); }).filter(Boolean);
   }
 
   function toLines(value) {
-    return value.join("\n");
+    return Array.isArray(value) ? value.join("\n") : "";
+  }
+
+  function clean(value) {
+    return Array.isArray(value) ? value.map(function (item) { return String(item || "").trim(); }).filter(Boolean) : [];
+  }
+
+  function merge(existing, incoming) {
+    var merged = existing.slice();
+    incoming.forEach(function (item) {
+      if (!merged.some(function (oldItem) { return oldItem.toLowerCase() === item.toLowerCase(); })) merged.push(item);
+    });
+    return merged;
+  }
+
+  function languageSummary() {
+    var language = labelFor(languages, state.studentLanguage);
+    if (state.delivery === "split" && state.studentLanguage !== "en") return "English + " + language + " split screen";
+    if (state.delivery === "translated" && state.studentLanguage !== "en") return language + " translation";
+    return "English";
+  }
+
+  function labelFor(options, value) {
+    var match = options.find(function (option) { return option[0] === value; });
+    return match ? match[1] : value;
+  }
+
+  function getLaunchUrl() {
+    if (window.location && window.location.origin && window.location.origin !== "null") return window.location.origin + "/";
+    return "https://your-vercel-project.vercel.app/";
+  }
+
+  function qrUrl(value) {
+    return "/api/qr?url=" + encodeURIComponent(value);
   }
 
   function fieldId(path) {
@@ -904,13 +774,7 @@
   }
 
   function slugify(value) {
-    return value
-      .toLowerCase()
-      .trim()
-      .replace(/['"]/g, "")
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-+|-+$/g, "")
-      .slice(0, 80);
+    return String(value || "").toLowerCase().trim().replace(/['"]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 80);
   }
 
   function inferType(name, mime) {
@@ -922,26 +786,19 @@
     return "document";
   }
 
-  function formatInputValue(value, type) {
+  function formatValue(value, type) {
     if (type === "datetime-local" && value) {
       var date = new Date(value);
-      if (!Number.isNaN(date.getTime())) {
-        return date.toISOString().slice(0, 16);
-      }
+      if (!Number.isNaN(date.getTime())) return date.toISOString().slice(0, 16);
     }
     return value == null ? "" : String(value);
   }
 
-  function escapeHtml(value) {
-    return String(value)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#39;");
+  function esc(value) {
+    return String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
   }
 
-  function escapeAttr(value) {
-    return escapeHtml(value).replace(/`/g, "&#96;");
+  function attr(value) {
+    return esc(value).replace(/`/g, "&#96;");
   }
 })();

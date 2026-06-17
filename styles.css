@@ -401,6 +401,10 @@ pre {
   background: rgba(255, 253, 247, 0.66);
 }
 
+.summary-card.full {
+  grid-column: 1 / -1;
+}
+
 .summary-card h3 {
   margin: 0;
   font-size: 1rem;
@@ -413,9 +417,53 @@ pre {
   line-height: 1.5;
 }
 
+.assist-panel {
+  background:
+    linear-gradient(135deg, rgba(223, 244, 248, 0.42), rgba(255, 253, 247, 0.78)),
+    rgba(255, 253, 247, 0.66);
+}
+
+.mode-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.mode-card {
+  display: flex;
+  gap: 10px;
+  min-height: 112px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 253, 247, 0.74);
+  cursor: pointer;
+}
+
+.mode-card:has(input:checked) {
+  border-color: rgba(29, 159, 194, 0.42);
+  background: rgba(223, 244, 248, 0.58);
+}
+
+.mode-card input {
+  margin-top: 4px;
+}
+
+.mode-card strong,
+.mode-card small {
+  display: block;
+}
+
+.mode-card small {
+  margin-top: 5px;
+  color: var(--ink-soft);
+  line-height: 1.35;
+}
+
 .wizard-nav,
 .drawer-actions,
-.review-actions {
+.review-actions,
+.assist-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
@@ -464,6 +512,59 @@ pre {
   background: rgba(34, 48, 47, 0.06);
   color: var(--ink);
   border-color: var(--line);
+}
+
+.launch-card,
+.launch-summary {
+  display: grid;
+  gap: 12px;
+}
+
+.launch-card {
+  margin-bottom: 14px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: rgba(223, 244, 248, 0.34);
+}
+
+.launch-card a,
+.launch-summary a {
+  overflow-wrap: anywhere;
+  color: var(--water-deep);
+  font-weight: 800;
+}
+
+.qr-card {
+  justify-items: start;
+}
+
+.qr-image {
+  width: 136px;
+  height: 136px;
+  padding: 8px;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+  background: #fff;
+  border: 1px solid var(--line);
+}
+
+.qr-image.large {
+  width: 184px;
+  height: 184px;
+}
+
+.advanced-json {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: rgba(255, 253, 247, 0.58);
+}
+
+.advanced-json summary {
+  padding: 13px 16px;
+  cursor: pointer;
+  color: var(--ink);
+  font-weight: 800;
 }
 
 #briefView {
@@ -532,6 +633,7 @@ pre {
   .workspace,
   .form-grid,
   .choice-grid,
+  .mode-grid,
   .source-row {
     grid-template-columns: 1fr;
   }

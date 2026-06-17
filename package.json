@@ -1,5 +1,8 @@
 {
   "name": "masterclass-factory",
   "private": true,
-  "type": "commonjs"
+  "type": "commonjs",
+  "dependencies": {
+    "qrcode": "1.5.4"
+  }
 }
