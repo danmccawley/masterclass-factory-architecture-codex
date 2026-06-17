@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta
+      name="description"
+      content="Create a validated Masterclass Factory brief.json from a guided eight-step wizard."
+    >
+    <title>Masterclass Factory - Class Creator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,800&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    >
+    <link rel="stylesheet" href="styles.css?v=aqua-blue">
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="hero-band" aria-labelledby="pageTitle">
+        <div>
+          <p class="kicker">Masterclass Factory</p>
+          <h1 id="pageTitle">Class Creator</h1>
+          <p>
+            Build the exact <code>brief.json</code> contract that the downstream generator
+            will use. Milestone 1 stops here: no deck codegen runs yet.
+          </p>
+        </div>
+        <div class="contract-pill" id="contractStatus">Loading contract</div>
+      </section>
+
+      <section class="workspace" aria-label="Class Creator wizard">
+        <aside class="step-rail" aria-label="Wizard steps">
+          <ol id="stepList"></ol>
+        </aside>
+
+        <section class="creator-panel" aria-live="polite">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow" id="stepEyebrow">Step 1 of 8</p>
+              <h2 id="stepTitle">Create</h2>
+            </div>
+            <div class="progress-meter" aria-hidden="true">
+              <span id="progressFill"></span>
+            </div>
+          </div>
+
+          <form id="wizardForm" autocomplete="off"></form>
+
+          <nav class="wizard-nav" aria-label="Wizard navigation">
+            <button class="ghost" type="button" id="backButton">Back</button>
+            <button class="primary" type="button" id="nextButton">Next</button>
+          </nav>
+        </section>
+
+        <aside class="brief-drawer" aria-label="Live brief JSON">
+          <div class="drawer-head">
+            <div>
+              <p class="eyebrow">Live output</p>
+              <h2>brief.json</h2>
+            </div>
+            <span id="validationBadge" class="badge">Checking</span>
+          </div>
+          <pre id="briefView" tabindex="0">{}</pre>
+          <div class="drawer-actions">
+            <button class="ghost" type="button" id="copyButton">Copy JSON</button>
+            <button class="primary" type="button" id="downloadButton">Download</button>
+          </div>
+          <div class="validation-box" id="validationBox"></div>
+        </aside>
+      </section>
+    </main>
+
+    <script src="brief-validator.js"></script>
+    <script src="wizard.js"></script>
+  </body>
+</html>
