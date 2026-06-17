@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta
       name="description"
-      content="Create a validated Masterclass Factory brief.json from a guided eight-step wizard."
+      content="Create a Masterclass Factory class brief from a guided eight-step wizard."
     >
     <title>Masterclass Factory - Class Creator</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,11 +23,11 @@
           <p class="kicker">Masterclass Factory</p>
           <h1 id="pageTitle">Class Creator</h1>
           <p>
-            Build the exact <code>brief.json</code> contract that the downstream generator
-            will use. Milestone 1 stops here: no deck codegen runs yet.
+            Build a class brief the downstream generator can use. Milestone 1 stops
+            before deck generation, but the setup is launch-ready for Vercel.
           </p>
         </div>
-        <div class="contract-pill" id="contractStatus">Loading contract</div>
+        <div class="contract-pill" id="contractStatus">Loading setup</div>
       </section>
 
       <section class="workspace" aria-label="Class Creator wizard">
@@ -54,18 +54,26 @@
           </nav>
         </section>
 
-        <aside class="brief-drawer" aria-label="Live brief JSON">
+        <aside class="brief-drawer" aria-label="Live class package">
           <div class="drawer-head">
             <div>
               <p class="eyebrow">Live output</p>
-              <h2>brief.json</h2>
+              <h2>Class package</h2>
             </div>
             <span id="validationBadge" class="badge">Checking</span>
           </div>
-          <pre id="briefView" tabindex="0">{}</pre>
+          <div class="launch-card">
+            <span class="mini-label">Vercel launch link</span>
+            <a id="launchLink" href="/" target="_blank" rel="noreferrer">Preparing link</a>
+            <img id="drawerQr" class="qr-image" alt="QR code for the Vercel launch link">
+          </div>
+          <details class="advanced-json">
+            <summary>Advanced setup data</summary>
+            <pre id="briefView" tabindex="0">{}</pre>
+          </details>
           <div class="drawer-actions">
-            <button class="ghost" type="button" id="copyButton">Copy JSON</button>
-            <button class="primary" type="button" id="downloadButton">Download</button>
+            <button class="ghost" type="button" id="copyButton">Copy setup data</button>
+            <button class="primary" type="button" id="downloadButton">Download setup file</button>
           </div>
           <div class="validation-box" id="validationBox"></div>
         </aside>
