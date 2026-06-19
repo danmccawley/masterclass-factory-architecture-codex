@@ -1,0 +1,345 @@
+(function enhanceClassCreator() {
+  "use strict";
+
+  var form = document.getElementById("wizardForm");
+  var stepTitle = document.getElementById("stepTitle");
+  var stepList = document.getElementById("stepList");
+  var nextButton = document.getElementById("nextButton");
+  var briefView = document.getElementById("briefView");
+  var validationBox = document.getElementById("validationBox");
+  var genieStep = document.getElementById("genieStep");
+  var genieResponse = document.getElementById("genieResponse");
+  var genieInput = document.getElementById("genieInput");
+  var genieAsk = document.getElementById("genieAskButton");
+  var recommendation = null;
+  var generation = null;
+
+  if (!form || !stepTitle || !briefView) return;
+
+  document.addEventListener("click", onDocumentClick, true);
+  document.addEventListener("input", onBudgetInput, true);
+  document.addEventListener("change", onBudgetInput, true);
+  if (genieAsk) genieAsk.addEventListener("click", function () { askGenie("chat"); });
+
+  var observer = new MutationObserver(enhanceCurrentStep);
+  observer.observe(form, { childList: true, subtree: true });
+  observer.observe(stepTitle, { childList: true, characterData: true, subtree: true });
+  if (stepList) observer.observe(stepList, { childList: true, subtree: true });
+  enhanceCurrentStep();
+
+  function onDocumentClick(event) {
+    var quick = closest(event.target, "[data-genie-quick]");
+    var lengthButton = closest(event.target, "[data-length-ai]");
+    var reviewPost = closest(event.target, "[data-post-review]");
+
+    if (quick) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      askGenie(quick.dataset.genieQuick);
+      return;
+    }
+
+    if (lengthButton) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      recommendLength(lengthButton.dataset.lengthAi === "apply");
+      return;
+    }
+
+    if (reviewPost) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      runGenerator();
+      return;
+    }
+
+    if (event.target === nextButton && currentStep().indexOf("review") !== -1) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      runGenerator();
+    }
+  }
+
+  function closest(target, selector) {
+    if (target && target.closest) return target.closest(selector);
+    if (target && target.parentElement) return target.parentElement.closest(selector);
+    return null;
+  }
+
+  function onBudgetInput(event) {
+    var path = event.target.dataset.enhanceBudget;
+    if (!path) return;
+    updateNumber(path, event.target.value);
+    syncBudgetControls(path, event.target.value);
+  }
+
+  function enhanceCurrentStep() {
+    updateGenieContext();
+    renameObjectiveStep();
+    enhanceKnowledgeStep();
+    enhanceLengthStep();
+    enhanceReviewStep();
+  }
+
+  function currentStep() {
+    return String(stepTitle.textContent || "").trim().toLowerCase();
+  }
+
+  function parseBrief() {
+    try {
+      return JSON.parse(briefView.textContent || "{}");
+    } catch (error) {
+      return {};
+    }
+  }
+
+  function updateGenieContext() {
+    if (!genieStep) return;
+    var title = stepTitle.textContent || "this step";
+    var hints = {
+      "knowledge base": "Build the knowledge base first. Objective candidates should come from source and research analysis.",
+      "learning target": "Treat these as provisional ideas. Final TLOs and ELOs belong after knowledge-base analysis.",
+      "learning objectives": "Review and approve the TLO/ELO candidates after the knowledge base is analyzed.",
+      "length": "Use the sliders, exact boxes, or ask Genie to balance time, slide count, and learner load.",
+      "review & generate": "Start the generator only after the setup check is valid."
+    };
+    var key = Object.keys(hints).find(function (item) { return currentStep().indexOf(item) !== -1; });
+    genieStep.textContent = "Current step: " + title + ". " + (hints[key] || "Ask for a check, a recommendation, or next-step guidance.");
+  }
+
+  function renameObjectiveStep() {
+    if (currentStep().indexOf("learning target") === -1) return;
+    stepTitle.textContent = "Learning Objectives";
+    var copy = form.querySelector(".step-copy");
+    if (copy) {
+      copy.textContent = "Review the terminal and enabling learning objectives after the knowledge base is researched and analyzed. Drafts here are candidates until the source-grounded pipeline confirms them.";
+    }
+    var labels = stepList ? stepList.querySelectorAll(".step-label") : [];
+    Array.from(labels).forEach(function (label) {
+      if (label.textContent === "Learning Target") label.textContent = "Learning Objectives";
+    });
+  }
+
+  function enhanceKnowledgeStep() {
+    if (currentStep().indexOf("knowledge base") === -1 || form.querySelector("[data-enhanced-analysis]")) return;
+    var card = document.createElement("div");
+    card.className = "summary-card full assist-panel";
+    card.setAttribute("data-enhanced-analysis", "true");
+    card.innerHTML =
+      "<h3>Knowledge-base analysis</h3>" +
+      "<p class=\"hint\">Terminal and enabling objectives should be identified after sources are collected, researched, and analyzed. Genie can prepare conservative objective candidates for the next step; the later AI pipeline must still verify them against the corpus.</p>" +
+      "<div class=\"analysis-flow\"><span>Sources</span><span>Research rules</span><span>KB analysis</span><span>TLO/ELO candidates</span></div>" +
+      "<div class=\"assist-actions\"><button type=\"button\" class=\"ghost\" data-genie-quick=\"knowledge-check\">Check knowledge base</button>" +
+      "<button type=\"button\" class=\"primary\" data-ai=\"fill\">Prepare objective candidates</button></div>";
+    var grid = form.querySelector(".form-grid") || form;
+    grid.appendChild(card);
+  }
+
+  function enhanceLengthStep() {
+    if (currentStep().indexOf("length") === -1 || form.querySelector("[data-enhanced-length]") || form.querySelector("[data-budget-path]")) return;
+    var minutes = form.querySelector("[data-number-path=\"length.minutes\"]");
+    var slides = form.querySelector("[data-number-path=\"length.slide_budget\"]");
+    if (!minutes || !slides) return;
+
+    hideField(minutes);
+    hideField(slides);
+
+    var brief = parseBrief();
+    var planner = document.createElement("div");
+    planner.className = "length-planner";
+    planner.setAttribute("data-enhanced-length", "true");
+    planner.innerHTML =
+      budgetControl("Class length", "length.minutes", Number(brief.length && brief.length.minutes) || 60, 10, 480, "minutes") +
+      budgetControl("Slide budget", "length.slide_budget", Number(brief.length && brief.length.slide_budget) || 90, 10, 400, "slides");
+
+    var help = document.createElement("div");
+    help.className = "summary-card full assist-panel";
+    help.setAttribute("data-enhanced-length-help", "true");
+    help.innerHTML =
+      "<h3>Genie budget help</h3>" +
+      "<p class=\"hint\">Choose a preset in increments of 10, drag the slider, type an exact number, ask for a recommendation, or leave the decision to Genie.</p>" +
+      "<div class=\"assist-actions\"><button type=\"button\" class=\"ghost\" data-length-ai=\"recommend\">Ask Genie for recommendation</button>" +
+      "<button type=\"button\" class=\"primary\" data-length-ai=\"apply\">Leave it to Genie</button></div>" +
+      "<div class=\"notice\" data-length-result>No recommendation yet.</div>";
+
+    var grid = form.querySelector(".form-grid") || form;
+    grid.insertBefore(help, grid.firstChild);
+    grid.insertBefore(planner, help);
+  }
+
+  function budgetControl(label, path, value, min, max, unit) {
+    return "<div class=\"budget-control\"><div><h3>" + esc(label) + "</h3><p class=\"hint\">Preset options move by 10; the exact box can hold a specific number.</p></div>" +
+      "<div class=\"budget-row\"><label><span class=\"mini-label\">Preset</span><select data-enhance-budget=\"" + path + "\">" +
+      budgetOptions(value, min, max, unit) + "</select></label>" +
+      "<label><span class=\"mini-label\">Exact number</span><input type=\"number\" min=\"" + min + "\" max=\"" + max + "\" value=\"" + value + "\" data-enhance-budget=\"" + path + "\"></label></div>" +
+      "<label class=\"range-row\"><span class=\"mini-label\">Slide bar</span><input type=\"range\" min=\"" + min + "\" max=\"" + max + "\" step=\"10\" value=\"" + nearestTen(value, min) + "\" data-enhance-budget=\"" + path + "\"></label></div>";
+  }
+
+  function budgetOptions(current, min, max, unit) {
+    var html = current % 10 ? "<option value=\"" + current + "\">" + current + " " + unit + " (custom)</option>" : "";
+    for (var value = min; value <= max; value += 10) {
+      html += "<option value=\"" + value + "\"" + (nearestTen(current, min) === value ? " selected" : "") + ">" + value + " " + unit + "</option>";
+    }
+    return html;
+  }
+
+  function hideField(input) {
+    var field = input.closest(".field");
+    if (field) field.style.display = "none";
+  }
+
+  function syncBudgetControls(path, rawValue) {
+    var value = Number(rawValue) || 0;
+    Array.from(form.querySelectorAll("[data-enhance-budget=\"" + path + "\"]")).forEach(function (control) {
+      control.value = control.type === "range" ? String(nearestTen(value, Number(control.min) || 0)) : String(value);
+    });
+  }
+
+  function updateNumber(path, value) {
+    Array.from(form.querySelectorAll(
+      "[data-number-path=\"" + path + "\"]," +
+      "[data-budget-path=\"" + path + "\"]," +
+      "[data-enhance-budget=\"" + path + "\"]"
+    )).forEach(function (input) {
+      input.value = value;
+      input.dispatchEvent(new Event("input", { bubbles: true }));
+      input.dispatchEvent(new Event("change", { bubbles: true }));
+    });
+  }
+
+  async function askGenie(type) {
+    var question = genieInput ? genieInput.value.trim() : "";
+    setGenie("Thinking...");
+    try {
+      var payload = await callGenie(type, question);
+      setGenie(payload.answer || fallbackAnswer(type));
+      if (payload.recommendation && (type === "recommend-length" || type === "length")) {
+        recommendation = payload.recommendation;
+        showRecommendation(recommendation);
+      }
+    } catch (error) {
+      setGenie(fallbackAnswer(type));
+    }
+  }
+
+  async function recommendLength(apply) {
+    setGenie(apply ? "Choosing the class length and slide budget..." : "Asking for a length recommendation...");
+    try {
+      var payload = await callGenie("recommend-length", "Recommend the class length, slide budget, and interactions.");
+      recommendation = payload.recommendation || fallbackRecommendation();
+    } catch (error) {
+      recommendation = fallbackRecommendation();
+    }
+    showRecommendation(recommendation);
+    setGenie(lengthText(recommendation));
+    if (apply) applyRecommendation(recommendation);
+  }
+
+  function callGenie(type, question) {
+    return fetch("/api/genie", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        step: currentStep(),
+        step_label: stepTitle.textContent,
+        brief: parseBrief(),
+        payload: { type: type, question: question }
+      })
+    }).then(function (response) {
+      return response.json().then(function (body) {
+        if (!response.ok || !body.ok) throw new Error((body.errors || ["Genie is not connected yet."]).join(" "));
+        return body;
+      });
+    });
+  }
+
+  function fallbackAnswer(type) {
+    if (type === "knowledge-check") return "Build the knowledge base first: add sources, set research rules, then use analysis to draft objective candidates. Final objectives should not be treated as finished until the corpus is verified.";
+    if (type === "check-step") return "This step is safe to continue when the required fields are clear, the source assumptions are explicit, and the setup check says it is ready.";
+    if (type === "recommend-length") return lengthText(fallbackRecommendation());
+    return "Genie can guide this step even before the API key is connected. For final AI assistance, make sure OPENAI_API_KEY is set in Vercel and redeployed.";
+  }
+
+  function fallbackRecommendation() {
+    var brief = parseBrief();
+    var minutes = Number(brief.length && brief.length.minutes) || 60;
+    var slides = Math.max(20, Math.min(400, nearestTen(Math.round(minutes * 1.5), 10)));
+    return { minutes: nearestTen(minutes, 10), slide_budget: slides, polls: 2, word_clouds: 4, quizzes: 1, final_test: true, reason: "Balanced for a professional class pace with time for interaction and review." };
+  }
+
+  function showRecommendation(value) {
+    var box = form.querySelector("[data-length-result]");
+    if (box) box.textContent = lengthText(value);
+  }
+
+  function applyRecommendation(value) {
+    updateNumber("length.minutes", value.minutes);
+    updateNumber("length.slide_budget", value.slide_budget);
+    updateNumber("length.interaction_budget.polls", value.polls);
+    updateNumber("length.interaction_budget.word_clouds", value.word_clouds);
+    updateNumber("length.interaction_budget.quizzes", value.quizzes);
+    syncBudgetControls("length.minutes", value.minutes);
+    syncBudgetControls("length.slide_budget", value.slide_budget);
+  }
+
+  function lengthText(value) {
+    return "Genie recommends " + value.minutes + " minutes, " + value.slide_budget + " slides, " + value.polls + " polls, " + value.word_clouds + " word clouds, and " + value.quizzes + " quiz. " + value.reason;
+  }
+
+  function enhanceReviewStep() {
+    if (currentStep().indexOf("review") === -1 || form.querySelector("[data-enhanced-generator]")) return;
+    var card = document.createElement("div");
+    card.className = "summary-card full";
+    card.setAttribute("data-enhanced-generator", "true");
+    card.innerHTML = generatorHtml();
+    var actions = form.querySelector(".review-actions");
+    if (actions && actions.parentNode) actions.parentNode.insertBefore(card, actions);
+    else form.appendChild(card);
+  }
+
+  function generatorHtml() {
+    if (!generation) return "<h3>Generator output</h3><p class=\"hint\">No deck content has been generated in this session yet. Start generator will run the deterministic content-layer path first; later milestones replace placeholders with sourced AI content and independent QA.</p>";
+    var files = generation.files || {};
+    return "<h3>Generator output</h3><div class=\"notice\">QA status: " + esc(generation.qa || "Not run") + "</div><div class=\"generated-files\">" +
+      filePreview("content.js", files["content.js"]) + filePreview("glossary.js", files["glossary.js"]) + filePreview("source.js", files["source.js"]) + "</div>";
+  }
+
+  async function runGenerator() {
+    if (validationBox) validationBox.innerHTML = "<div class=\"notice\">Starting the generator...</div>";
+    try {
+      await fetch("/api/brief", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(parseBrief()) });
+      var response = await fetch("/api/generate", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(parseBrief()) });
+      var payload = await response.json();
+      if (!response.ok || !payload.ok) throw new Error((payload.errors || ["Generator failed."]).join(" "));
+      generation = payload;
+      setGenie("Generator produced the content layer and reported " + (payload.qa || "QA status unknown") + ". Next milestones replace placeholders with sourced AI content, independent verification, and a deployed class link.");
+      enhanceReviewStep();
+      var card = form.querySelector("[data-enhanced-generator]");
+      if (card) card.innerHTML = generatorHtml();
+      if (validationBox) validationBox.innerHTML = "<div class=\"notice\">Generator complete. Content layer files are shown in Review & Generate.</div>";
+    } catch (error) {
+      if (validationBox) validationBox.innerHTML = "<div class=\"notice warn\">Generator could not finish here: " + esc(error.message || "Unknown error") + "</div>";
+    }
+  }
+
+  function filePreview(name, content) {
+    return "<details class=\"generated-file\"><summary>" + esc(name) + "</summary><pre>" + esc(String(content || "Not generated yet.").slice(0, 2400)) + "</pre></details>";
+  }
+
+  function setGenie(text) {
+    if (genieResponse) genieResponse.textContent = text;
+  }
+
+  function nearestTen(value, min) {
+    return min + Math.round((Number(value) - min) / 10) * 10;
+  }
+
+  function esc(value) {
+    return String(value == null ? "" : value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+})();
