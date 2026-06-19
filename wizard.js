@@ -584,7 +584,7 @@
     } catch (error) {
       state.aiStatus = {
         warn: true,
-        text: "AI assistance is not connected yet. Add OPENAI_API_KEY and OPENAI_MODEL in Vercel, or keep writing the objectives manually."
+        text: "AI could not finish: " + (error && error.message ? error.message : "Check the OpenAI setup in Vercel, then redeploy.")
       };
     }
     render();
