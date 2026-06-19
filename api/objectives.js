@@ -1,6 +1,8 @@
 const { validateBrief } = require("../brief-validator.js");
 const template = require("../brief.template.json");
 
+const DEFAULT_OPENAI_MODEL = "gpt-4.1-mini";
+
 function send(res, status, payload) {
   res.statusCode = status;
   res.setHeader("content-type", "application/json; charset=utf-8");
@@ -80,6 +82,72 @@ function buildPrompt(payload) {
   );
 }
 
+function configuredModels() {
+  const configured = String(process.env.OPENAI_MODEL || "").trim();
+  if (!configured || configured === DEFAULT_OPENAI_MODEL) return [DEFAULT_OPENAI_MODEL];
+  return [configured, DEFAULT_OPENAI_MODEL];
+}
+
+function openAIError(openaiPayload) {
+  return openaiPayload && openaiPayload.error && openaiPayload.error.message
+    ? openaiPayload.error.message
+    : "OpenAI API request failed.";
+}
+
+function shouldTryDefaultModel(status, message, model) {
+  if (model === DEFAULT_OPENAI_MODEL) return false;
+  return (
+    status === 404 ||
+    (/model/i.test(message) && /not found|does not exist|unsupported|invalid/i.test(message))
+  );
+}
+
+async function requestObjectiveDraft(payload, model) {
+  const openaiResponse = await fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+      "content-type": "application/json"
+    },
+    body: JSON.stringify({
+      model,
+      temperature: 0.2,
+      response_format: { type: "json_object" },
+      messages: [
+        {
+          role: "system",
+          content:
+            "You are the Masterclass Factory curriculum specialist. Output only valid JSON with terminal, enabling, and out_of_scope arrays. Never invent unverifiable facts."
+        },
+        { role: "user", content: buildPrompt(payload) }
+      ]
+    })
+  });
+
+  const openaiPayload = await openaiResponse.json().catch(() => ({}));
+  if (!openaiResponse.ok) {
+    return {
+      ok: false,
+      status: openaiResponse.status,
+      message: openAIError(openaiPayload),
+      model
+    };
+  }
+
+  const content =
+    openaiPayload &&
+    openaiPayload.choices &&
+    openaiPayload.choices[0] &&
+    openaiPayload.choices[0].message &&
+    openaiPayload.choices[0].message.content;
+
+  return {
+    ok: true,
+    model,
+    objectives: normalizeObjectives(JSON.parse(content || "{}"))
+  };
+}
+
 module.exports = async function objectivesHandler(req, res) {
   res.setHeader("access-control-allow-origin", "*");
   res.setHeader("access-control-allow-methods", "POST,OPTIONS");
@@ -96,10 +164,10 @@ module.exports = async function objectivesHandler(req, res) {
     return;
   }
 
-  if (!process.env.OPENAI_API_KEY || !process.env.OPENAI_MODEL) {
+  if (!process.env.OPENAI_API_KEY) {
     send(res, 503, {
       ok: false,
-      errors: ["AI assistance is not connected. Set OPENAI_API_KEY and OPENAI_MODEL in Vercel."]
+      errors: ["AI assistance is not connected. Set OPENAI_API_KEY in Vercel, then redeploy."]
     });
     return;
   }
@@ -112,50 +180,26 @@ module.exports = async function objectivesHandler(req, res) {
       return;
     }
 
-    const openaiResponse = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-        "content-type": "application/json"
-      },
-      body: JSON.stringify({
-        model: process.env.OPENAI_MODEL,
-        temperature: 0.2,
-        response_format: { type: "json_object" },
-        messages: [
-          {
-            role: "system",
-            content:
-              "You are the Masterclass Factory curriculum specialist. Output only valid JSON with terminal, enabling, and out_of_scope arrays. Never invent unverifiable facts."
-          },
-          { role: "user", content: buildPrompt(payload) }
-        ]
-      })
-    });
+    let failedDraft;
+    for (const model of configuredModels()) {
+      const draft = await requestObjectiveDraft(payload, model);
+      if (draft.ok) {
+        send(res, 200, {
+          ok: true,
+          message: "AI drafted objectives. Please review before generating.",
+          model: draft.model,
+          objectives: draft.objectives
+        });
+        return;
+      }
 
-    const openaiPayload = await openaiResponse.json();
-    if (!openaiResponse.ok) {
-      const message =
-        openaiPayload && openaiPayload.error && openaiPayload.error.message
-          ? openaiPayload.error.message
-          : "OpenAI API request failed.";
-      send(res, openaiResponse.status, { ok: false, errors: [message] });
-      return;
+      failedDraft = draft;
+      if (!shouldTryDefaultModel(draft.status, draft.message, draft.model)) break;
     }
 
-    const content =
-      openaiPayload &&
-      openaiPayload.choices &&
-      openaiPayload.choices[0] &&
-      openaiPayload.choices[0].message &&
-      openaiPayload.choices[0].message.content;
-    const parsed = JSON.parse(content || "{}");
-    const objectives = normalizeObjectives(parsed);
-
-    send(res, 200, {
-      ok: true,
-      message: "AI drafted objectives. Please review before generating.",
-      objectives
+    send(res, failedDraft.status || 502, {
+      ok: false,
+      errors: [`OpenAI API error using ${failedDraft.model}: ${failedDraft.message}`]
     });
   } catch (error) {
     send(res, 400, { ok: false, errors: [error.message] });
