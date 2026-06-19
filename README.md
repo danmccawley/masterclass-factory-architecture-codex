@@ -22,14 +22,16 @@ python build_content.py     # writes content.js, glossary.js, source.js, then pr
 Milestone 1 stops at the class setup. The `Start generator` button validates and posts the setup to
 `/api/brief` on Vercel; it does not run codegen yet.
 
-AI objective drafting requires these Vercel environment variables:
+AI objective drafting requires this Vercel environment variable:
 
 ```bash
 OPENAI_API_KEY=your OpenAI API key
-OPENAI_MODEL=your approved OpenAI API model
 ```
 
-If either value is missing, the wizard keeps working manually and explains that AI assistance is not connected.
+`OPENAI_MODEL` is optional. If it is not set, the wizard uses `gpt-4.1-mini`. If it is set to a model
+that is unavailable to the API key, the endpoint tries `gpt-4.1-mini` before returning the exact
+OpenAI error. If `OPENAI_API_KEY` is missing, the wizard keeps working manually and explains that AI
+assistance is not connected.
 
 Drop the three emitted files next to a copied engine bundle (`engine.js`, `navscrubber.js`,
 `index.html`, `api/*.js`), de-topic the strings in contract §6e, set the env vars, `vercel --prod`.
