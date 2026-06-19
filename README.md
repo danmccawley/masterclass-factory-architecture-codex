@@ -9,7 +9,9 @@ Claude, Claude Code, Codex, or ChatGPT.
 - `brief.template.json` — the Course Brief intake contract (fill this per deck; everything downstream reads it).
 - `index.html`, `styles.css`, `wizard.js`, `brief-validator.js` — Milestone 1 Class Creator wizard. It emits a human-friendly class setup file while keeping the hidden `brief.json` contract valid.
 - `api/brief.js` — Vercel serverless validator for posted setup payloads.
+- `api/genie.js` — OpenAI-only always-on Genie helper for step guidance and length recommendations.
 - `api/objectives.js` — OpenAI-only objective drafting endpoint for terminal, enabling, and out-of-scope learning targets.
+- `api/generate.js` — Milestone 2 deterministic placeholder generator. It emits `content.js`, `glossary.js`, and `source.js` and returns `QA PASS`.
 - `api/qr.js` — Vercel launch-link QR code endpoint.
 - `CLAUDE.md` — orchestration rules + pipeline (the Producer's instructions).
 - `.claude/agents/*.md` — nine specialist subagents: research, curriculum, author, glossary, assessment, source-verify, codegen, qa, deploy.
@@ -19,10 +21,13 @@ Claude, Claude Code, Codex, or ChatGPT.
 python3 -m http.server 4173 # opens the Class Creator at http://127.0.0.1:4173/
 python build_content.py     # writes content.js, glossary.js, source.js, then prints QA PASS
 ```
-Milestone 1 stops at the class setup. The `Start generator` button validates and posts the setup to
-`/api/brief` on Vercel; it does not run codegen yet.
+The Class Creator now includes an always-on Genie panel, a setup QR that reopens the factory tool,
+and a Milestone 2 `Start generator` path. The generator path validates the setup and emits a
+deterministic placeholder content layer (`content.js`, `glossary.js`, `source.js`) with `QA PASS`.
+Later milestones replace the placeholders with sourced AI content, independent source verification,
+independent QA, and deploy.
 
-AI objective drafting requires this Vercel environment variable:
+Genie and AI objective drafting require this Vercel environment variable:
 
 ```bash
 OPENAI_API_KEY=your OpenAI API key
@@ -33,9 +38,9 @@ that is unavailable to the API key, the endpoint tries `gpt-4.1-mini` before ret
 OpenAI error. If `OPENAI_API_KEY` is missing, the wizard keeps working manually and explains that AI
 assistance is not connected.
 
-The Learning Target step captures provisional intent only. Final terminal and enabling learning
-objectives must be produced after the knowledge base has been researched, analyzed, and matched to
-the learner profile.
+Knowledge Base analysis is where terminal and enabling learning objective candidates should be
+prepared. Step 03 reviews and approves them. Final TLOs and ELOs must be produced after the
+knowledge base has been researched, analyzed, and matched to the learner profile.
 
 Drop the three emitted files next to a copied engine bundle (`engine.js`, `navscrubber.js`,
 `index.html`, `api/*.js`), de-topic the strings in contract §6e, set the env vars, `vercel --prod`.

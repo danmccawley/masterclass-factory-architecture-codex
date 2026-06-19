@@ -23,8 +23,9 @@
           <p class="kicker">Masterclass Factory</p>
           <h1 id="pageTitle">Class Creator</h1>
           <p>
-            Build a class brief the downstream generator can use. Milestone 1 stops
-            before deck generation, but the setup is launch-ready for Vercel.
+            Build a class setup package, shape it with Genie, then send it into the
+            generator pipeline in the right order: knowledge base, objectives, deck,
+            QA, and launch.
           </p>
         </div>
         <div class="contract-pill" id="contractStatus">Loading setup</div>
@@ -54,33 +55,63 @@
           </nav>
         </section>
 
-        <aside class="brief-drawer" aria-label="Live class package">
-          <div class="drawer-head">
-            <div>
-              <p class="eyebrow">Live output</p>
-              <h2>Class package</h2>
+        <aside class="side-stack" aria-label="Genie and live setup output">
+          <section class="genie-panel" aria-label="AI Genie">
+            <div class="genie-head">
+              <div>
+                <p class="eyebrow">Always on</p>
+                <h2>AI Genie</h2>
+              </div>
+              <span class="badge ok">Ready</span>
             </div>
-            <span id="validationBadge" class="badge">Checking</span>
-          </div>
-          <div class="launch-card">
-            <span class="mini-label">Vercel launch link</span>
-            <a id="launchLink" href="/" target="_blank" rel="noreferrer">Preparing link</a>
-            <img id="drawerQr" class="qr-image" alt="QR code for the Vercel launch link">
-          </div>
-          <details class="advanced-json">
-            <summary>Advanced setup data</summary>
-            <pre id="briefView" tabindex="0">{}</pre>
-          </details>
-          <div class="drawer-actions">
-            <button class="ghost" type="button" id="copyButton">Copy setup data</button>
-            <button class="primary" type="button" id="downloadButton">Download setup file</button>
-          </div>
-          <div class="validation-box" id="validationBox"></div>
+            <p class="hint" id="genieStep">Genie watches the current step and helps with decisions.</p>
+            <div class="genie-orbit" aria-label="Factory path">
+              <span>Sources</span>
+              <span>Objectives</span>
+              <span>Deck</span>
+              <span>QA</span>
+            </div>
+            <div class="genie-response" id="genieResponse">
+              Ask for help on the step you are using, or ask Genie to recommend length and slide budget.
+            </div>
+            <textarea id="genieInput" rows="3" placeholder="Ask Genie what to do next..."></textarea>
+            <div class="genie-actions">
+              <button class="ghost" type="button" data-genie-quick="check-step">Check this step</button>
+              <button class="ghost" type="button" data-genie-quick="recommend-length">Recommend length</button>
+              <button class="primary" type="button" id="genieAskButton">Ask Genie</button>
+            </div>
+          </section>
+
+          <section class="brief-drawer" aria-label="Live setup package">
+            <div class="drawer-head">
+              <div>
+                <p class="eyebrow">Live output</p>
+                <h2>Setup package</h2>
+              </div>
+              <span id="validationBadge" class="badge">Checking</span>
+            </div>
+            <div class="launch-card">
+              <span class="mini-label">Factory setup link</span>
+              <a id="launchLink" href="/" target="_blank" rel="noreferrer">Preparing link</a>
+              <img id="drawerQr" class="qr-image" alt="QR code for the factory setup link">
+              <p class="hint">This opens the setup tool, not the finished masterclass. The generated class link appears after the deck pipeline runs.</p>
+            </div>
+            <details class="advanced-json">
+              <summary>Advanced setup data</summary>
+              <pre id="briefView" tabindex="0">{}</pre>
+            </details>
+            <div class="drawer-actions">
+              <button class="ghost" type="button" id="copyButton">Copy setup data</button>
+              <button class="primary" type="button" id="downloadButton">Download setup file</button>
+            </div>
+            <div class="validation-box" id="validationBox"></div>
+          </section>
         </aside>
       </section>
     </main>
 
     <script src="brief-validator.js"></script>
     <script src="wizard.js"></script>
+    <script src="wizard-enhance.js"></script>
   </body>
 </html>
