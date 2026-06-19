@@ -137,7 +137,7 @@ pre {
 
 .workspace {
   display: grid;
-  grid-template-columns: 260px minmax(0, 1fr) minmax(360px, 480px);
+  grid-template-columns: 260px minmax(0, 1fr);
   align-items: start;
   gap: 18px;
 }
@@ -504,8 +504,8 @@ pre {
 }
 
 .brief-drawer {
-  position: sticky;
-  top: 20px;
+  grid-column: 1 / -1;
+  position: static;
 }
 
 .brief-drawer .badge {
@@ -601,6 +601,9 @@ pre {
   border-radius: var(--radius-sm);
   background: var(--teal-soft);
   color: var(--water-deep);
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .notice.warn {
@@ -610,6 +613,18 @@ pre {
 
 .hidden {
   display: none !important;
+}
+
+@media (min-width: 1760px) {
+  .workspace {
+    grid-template-columns: 260px minmax(0, 1fr) minmax(360px, 480px);
+  }
+
+  .brief-drawer {
+    grid-column: auto;
+    position: sticky;
+    top: 20px;
+  }
 }
 
 @media (max-width: 1180px) {

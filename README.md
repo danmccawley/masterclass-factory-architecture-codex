@@ -33,6 +33,10 @@ that is unavailable to the API key, the endpoint tries `gpt-4.1-mini` before ret
 OpenAI error. If `OPENAI_API_KEY` is missing, the wizard keeps working manually and explains that AI
 assistance is not connected.
 
+The Learning Target step captures provisional intent only. Final terminal and enabling learning
+objectives must be produced after the knowledge base has been researched, analyzed, and matched to
+the learner profile.
+
 Drop the three emitted files next to a copied engine bundle (`engine.js`, `navscrubber.js`,
 `index.html`, `api/*.js`), de-topic the strings in contract §6e, set the env vars, `vercel --prod`.
 
