@@ -137,7 +137,7 @@ pre {
 
 .workspace {
   display: grid;
-  grid-template-columns: 240px minmax(620px, 1fr) minmax(320px, 390px);
+  grid-template-columns: minmax(210px, 240px) minmax(0, 1fr) minmax(320px, 390px);
   align-items: start;
   gap: 18px;
 }
@@ -245,6 +245,10 @@ pre {
 .brief-drawer {
   min-height: 680px;
   padding: 24px;
+}
+
+.creator-panel {
+  overflow: hidden;
 }
 
 .panel-head,
@@ -434,7 +438,7 @@ pre {
 
 .mode-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
   gap: 10px;
 }
 
@@ -762,6 +766,33 @@ pre {
 .generated-files {
   display: grid;
   gap: 10px;
+}
+
+.generator-status,
+.generated-meta {
+  display: grid;
+  gap: 10px;
+}
+
+.generated-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.class-url-card {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid rgba(29, 159, 194, 0.22);
+  border-radius: var(--radius-md);
+  background: rgba(223, 244, 248, 0.34);
+}
+
+.class-url-card a {
+  color: var(--water-deep);
+  font-weight: 800;
+  overflow-wrap: anywhere;
 }
 
 .generated-file {

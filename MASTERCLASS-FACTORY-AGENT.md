@@ -537,8 +537,8 @@ files — these are exact.
 
 | Endpoint | Method · params | Returns | Service / model | Env | Status codes |
 |---|---|---|---|---|---|
-| `/api/chat` | POST `{message, slide?, slideTitle?, history:[{role,content}]}` (history → last 8; message ≤2000) | `{reply}` | Anthropic · `claude-sonnet-4-6` (max_tokens 400) | `ANTHROPIC_API_KEY` | 405 non-POST · 400 empty · 503 no key · 502 upstream |
-| `/api/grade` | POST `{question, rubric, sample, answer, level 1–5, levelName}` | `{verdict:"correct\|partial\|incorrect", score 0–1, feedback}` | Anthropic · `claude-sonnet-4-6` (temp 0, max_tokens 300, strict-JSON) | `ANTHROPIC_API_KEY` | 405 · 400 (need question+answer) · 503 no key · 502 upstream/parse |
+| `/api/chat` | POST `{message, slide?, slideTitle?, history:[{role,content}]}` (history → last 8; message ≤2000) | `{reply}` | OpenAI · `OPENAI_MODEL` or `gpt-4.1-mini` (max_tokens 400) | `OPENAI_API_KEY`, optional `OPENAI_MODEL` | 405 non-POST · 400 empty · 503 no key · 502 upstream |
+| `/api/grade` | POST `{question, rubric, sample, answer, level 1–5, levelName}` | `{verdict:"correct\|partial\|incorrect", score 0–1, feedback}` | OpenAI · `OPENAI_MODEL` or `gpt-4.1-mini` (temp 0, max_tokens 300, strict-JSON) | `OPENAI_API_KEY`, optional `OPENAI_MODEL` | 405 · 400 (need question+answer) · 503 no key · 502 upstream/parse |
 | `/api/tts` | POST `{text ≤4000, voice?}` | `audio/mpeg` (mp3 bytes) | OpenAI · `gpt-4o-mini-tts`, voice `alloy` | `OPENAI_API_KEY` | 405 · 400 empty · **503 no key → browser voice** · 502 upstream |
 | `/api/poll` | GET `?qid&n` · POST `?qid&opt&n` (vote) · POST `?qid&reset=1&key` | `{counts:[…]}` / `{ok:true}` | Upstash Redis (`HINCRBY`/`HGETALL`, key `poll:<qid>`) | `KV_REST_API_URL`, `KV_REST_API_TOKEN`, `POLL_ADMIN_KEY` | 400 no qid · 403 bad admin key · 503 no store |
 | `/api/words` | GET `?qid` · POST `?qid&w=<word>` | `{words:{word:count}}` | Upstash Redis (key `words:<qid>`) | `KV_REST_API_URL`, `KV_REST_API_TOKEN` | 400 missing qid/w · 503 no store |
@@ -567,7 +567,7 @@ record the exact globals (esp. `SOURCES` vs `SOURCE_PAPER`); standardize on deck
 contract + an empty Brief template.
 
 **Phase 1 — Manual-loop MVP (1–2 days).** No platform. You hand-fill a Brief, then run agents 2–9 as
-*sequential prompts* (Claude/ChatGPT), assemble by hand, run `qa.js`, `vercel --prod`. Prove **one new
+*sequential prompts* in ChatGPT/Codex, assemble by hand, run `qa.js`, `vercel --prod`. Prove **one new
 deck end-to-end** against the engine. This validates the prompts and the QA harness before any
 automation. *Output:* a second live deck built only from this doc.
 
@@ -616,11 +616,11 @@ hybrid credibility gate, lesson-plan editor. *Output:* the full Factory.
 - [ ] No stray duplicate files (e.g. a second `chat.js` at root); one canonical `content.js`.
 
 **Deploy**
-- [ ] 5–6 env vars set on the deck's own Vercel project (`ANTHROPIC_API_KEY`, `OPENAI_API_KEY`,
-      `KV_REST_API_URL`, `KV_REST_API_TOKEN`, `POLL_ADMIN_KEY`).
+- [ ] 4–5 env vars set on the deck's own Vercel project (`OPENAI_API_KEY`, optional
+      `OPENAI_MODEL`, `KV_REST_API_URL`, `KV_REST_API_TOKEN`, `POLL_ADMIN_KEY`).
 - [ ] Deployed via `vercel --prod`; success = a printed **Production URL** (not "Ready in 9s").
 - [ ] Smoke-test `/api/chat`, `/api/grade`, `/api/tts`, `/api/poll`, `/api/words` on the printed URL.
-- [ ] `/api/chat` model is a current valid string (e.g. `claude-sonnet-4-6`); no `-latest` haiku alias.
+- [ ] `/api/chat` model is a current OpenAI model string; default is `gpt-4.1-mini`.
 - [ ] Listen mode: `/api/tts` returns mp3. NO server-side tts-1 fallback exists — robotic voice
       means the key is missing/unfunded (503 → browser voice) or OpenAI errored (502, e.g. `429
       insufficient_quota`). Prime `speechSynthesis` on the user gesture; chunk browser voice into sentences.

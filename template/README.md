@@ -44,7 +44,7 @@ is topic-agnostic — leave it exactly as-is.
 - `window.POLLS` / `window.WORDS` deck-defined; quiz keys `type/level/q/options/answer/why` (+`rubric/sample/accept[]`).
 
 ## Env vars (set on the deck's Vercel project)
-`ANTHROPIC_API_KEY` (chat+grade) · `OPENAI_API_KEY` (tts) · `KV_REST_API_URL` · `KV_REST_API_TOKEN` · `POLL_ADMIN_KEY`
+`OPENAI_API_KEY` (chat+grade+tts) · optional `OPENAI_MODEL` · `KV_REST_API_URL` · `KV_REST_API_TOKEN` · `POLL_ADMIN_KEY`
 
 > Provenance: derived from the shipped Texas Revolution deck, with all topic/audience strings replaced
 > by tokens and the stale "Micro Data Centers" header comment fixed. Engine logic is unchanged.

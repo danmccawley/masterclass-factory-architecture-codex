@@ -1,7 +1,7 @@
-# Masterclass Factory — Starter Kit
+# Masterclass Factory
 
-Runnable codegen + a Claude Code subagent set, wired to the build contract. Use the same files in
-Claude, Claude Code, Codex, or ChatGPT.
+Runnable Class Creator + generator pipeline wired to the build contract. The app is vanilla
+HTML/CSS/JS with Vercel serverless functions under `api/`.
 
 ## Contents
 - `MASTERCLASS-FACTORY-AGENT.md` — the authoritative build contract (architecture, schemas, agent roster, Definition of Done). Read first.
@@ -11,39 +11,61 @@ Claude, Claude Code, Codex, or ChatGPT.
 - `api/brief.js` — Vercel serverless validator for posted setup payloads.
 - `api/genie.js` — OpenAI-only always-on Genie helper for step guidance and length recommendations.
 - `api/objectives.js` — OpenAI-only objective drafting endpoint for terminal, enabling, and out-of-scope learning targets.
-- `api/generate.js` — Milestone 2 deterministic placeholder generator. It emits `content.js`, `glossary.js`, and `source.js` and returns `QA PASS`.
+- `api/generate.js` — full generator endpoint. It validates the setup, builds a source paper,
+  runs OpenAI specialist stages when the API key is present, falls back to a conservative
+  deterministic path when AI is unavailable, runs independent source verification + QA, and returns
+  a preview HTML file, deploy bundle, presenter script, and optional GitHub publish handoff.
 - `api/qr.js` — Vercel launch-link QR code endpoint.
 - `CLAUDE.md` — orchestration rules + pipeline (the Producer's instructions).
 - `.claude/agents/*.md` — nine specialist subagents: research, curriculum, author, glossary, assessment, source-verify, codegen, qa, deploy.
 
 ## Quick start
 ```bash
-python3 -m http.server 4173 # opens the Class Creator at http://127.0.0.1:4173/
-python build_content.py     # writes content.js, glossary.js, source.js, then prints QA PASS
+python3 -m http.server 4173 # static wizard preview only
+python build_content.py     # legacy content emitter demo, prints QA PASS
 ```
-The Class Creator now includes an always-on Genie panel, a setup QR that reopens the factory tool,
-and a Milestone 2 `Start generator` path. The generator path validates the setup and emits a
-deterministic placeholder content layer (`content.js`, `glossary.js`, `source.js`) with `QA PASS`.
-Later milestones replace the placeholders with sourced AI content, independent source verification,
-independent QA, and deploy.
 
-Genie and AI objective drafting require this Vercel environment variable:
+The deployed Vercel app runs the full serverless path. In the Class Creator, use
+`Review & Generate -> Start generator`. The result includes:
+- Open preview
+- Download preview HTML
+- Download deploy bundle
+- Download presenter script
+- GitHub/Vercel class URL after auto-publish is configured
+
+All AI uses OpenAI only. Genie, objective drafting, deck generation, tutor chat, grading, and TTS use
+these Vercel environment variables:
 
 ```bash
 OPENAI_API_KEY=your OpenAI API key
+OPENAI_MODEL=gpt-4.1-mini # optional
 ```
 
-`OPENAI_MODEL` is optional. If it is not set, the wizard uses `gpt-4.1-mini`. If it is set to a model
-that is unavailable to the API key, the endpoint tries `gpt-4.1-mini` before returning the exact
-OpenAI error. If `OPENAI_API_KEY` is missing, the wizard keeps working manually and explains that AI
-assistance is not connected.
+If `OPENAI_MODEL` is not set, the app uses `gpt-4.1-mini`. If the configured model is unavailable to
+the API key, the endpoints try `gpt-4.1-mini` before returning the exact OpenAI error. If
+`OPENAI_API_KEY` is missing or malformed, the wizard still works manually and the generator returns a
+conservative source-honest draft instead of blocking the user.
+
+Auto-publish to GitHub/Vercel is optional but needed for one-click class launch:
+
+```bash
+GITHUB_TOKEN=fine-grained token with Contents read/write on this repo
+GITHUB_OWNER=danmccawley
+GITHUB_REPO=masterclass-factory-architecture-codex
+GITHUB_BRANCH=main # optional, defaults to main
+PUBLIC_BASE_URL=https://your-production-vercel-domain.vercel.app # optional but recommended
+```
+
+When those are set, `/api/generate` commits the generated class to `classes/<class-slug>/`.
+The existing GitHub -> Vercel connection should then deploy that path automatically.
 
 Knowledge Base analysis is where terminal and enabling learning objective candidates should be
 prepared. Step 03 reviews and approves them. Final TLOs and ELOs must be produced after the
 knowledge base has been researched, analyzed, and matched to the learner profile.
 
-Drop the three emitted files next to a copied engine bundle (`engine.js`, `navscrubber.js`,
-`index.html`, `api/*.js`), de-topic the strings in contract §6e, set the env vars, `vercel --prod`.
+The returned deploy bundle contains the topic-specific `index.html`, `engine.js`,
+`navscrubber.js`, `content.js`, `glossary.js`, `source.js`, serverless backends, and presenter
+script. The generated content layer stays data-only; the engine and shell remain topic-agnostic.
 
 ## To author a real deck
 Replace the `GENERATED PER DECK` region of `build_content.py` (the `slide(...)`/`quiz_slide(...)`

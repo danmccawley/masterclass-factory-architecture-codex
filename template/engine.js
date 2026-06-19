@@ -1010,7 +1010,7 @@
     api("/api/chat", "POST", { message:q, slide: SLIDES[idx].id, slideTitle: (SLIDES[idx].eyebrow||""), history: history.slice(-8) })
       .then(function(j){
         if(j && j.reply){ thinking.textContent = j.reply; history.push({role:"assistant", content:j.reply}); }
-        else { thinking.textContent = "The AI tutor backend returned an error. It needs ANTHROPIC_API_KEY set on the server."; }
+        else { thinking.textContent = "The AI tutor backend returned an error. It needs OPENAI_API_KEY set on the server."; }
       })
       .catch(function(){ thinking.textContent = "Can't reach the AI tutor — it only works once the site is deployed with an API key. The rest of the class runs offline."; });
   };
