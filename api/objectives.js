@@ -2,6 +2,7 @@ const { validateBrief } = require("../brief-validator.js");
 const template = require("../brief.template.json");
 
 const DEFAULT_OPENAI_MODEL = "gpt-4.1-mini";
+const KEY_PATTERN = /^sk-[A-Za-z0-9_-]+$/;
 
 function send(res, status, payload) {
   res.statusCode = status;
@@ -64,9 +65,11 @@ function buildPrompt(payload) {
       mastery: brief.mastery,
       current_objectives: brief.objectives,
       instructions: [
-        "Create observable learning objectives for a masterclass.",
-        "Terminal objectives are final learner capabilities.",
-        "Enabling objectives are prerequisite or supporting skills.",
+        "Draft provisional learning-target ideas for a masterclass.",
+        "Do not present these as final terminal or enabling learning objectives.",
+        "Final TLOs and ELOs must be confirmed after source research, knowledge-base analysis, and learner-profile review.",
+        "Terminal objective ideas should describe likely final learner capabilities.",
+        "Enabling objective ideas should describe likely prerequisite or supporting skills.",
         "Out of scope lists topics that should be excluded.",
         "Use only the provided brief details. Do not invent sources, dates, URLs, statistics, or factual claims.",
         "Return compact plain-language bullets suitable for nontechnical class creators."
@@ -89,9 +92,10 @@ function configuredModels() {
 }
 
 function openAIError(openaiPayload) {
-  return openaiPayload && openaiPayload.error && openaiPayload.error.message
+  const message = openaiPayload && openaiPayload.error && openaiPayload.error.message
     ? openaiPayload.error.message
     : "OpenAI API request failed.";
+  return safeErrorMessage(message);
 }
 
 function shouldTryDefaultModel(status, message, model) {
@@ -102,11 +106,37 @@ function shouldTryDefaultModel(status, message, model) {
   );
 }
 
+function openAIKey() {
+  return String(process.env.OPENAI_API_KEY || "").trim();
+}
+
+function validateOpenAIKey(key) {
+  if (!key) {
+    return "AI assistance is not connected. Set OPENAI_API_KEY in Vercel, then redeploy.";
+  }
+  if (!KEY_PATTERN.test(key)) {
+    return "OPENAI_API_KEY in Vercel has extra text or is malformed. Replace it with only the OpenAI key, then redeploy.";
+  }
+  return "";
+}
+
+function safeErrorMessage(message) {
+  const text = String(message || "OpenAI API request failed.");
+  if (/headers\.append|invalid header value/i.test(text)) {
+    return "OPENAI_API_KEY in Vercel has extra text or invalid characters. Replace it with only the OpenAI key, then redeploy.";
+  }
+  return text
+    .replace(/sk-proj-[A-Za-z0-9_-]+/g, "[redacted OpenAI key]")
+    .replace(/sk-[A-Za-z0-9_-]+/g, "[redacted API key]")
+    .replace(/Bearer\s+[^"'`]+/g, "Bearer [redacted]");
+}
+
 async function requestObjectiveDraft(payload, model) {
+  const key = openAIKey();
   const openaiResponse = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
     headers: {
-      authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+      authorization: `Bearer ${key}`,
       "content-type": "application/json"
     },
     body: JSON.stringify({
@@ -117,7 +147,7 @@ async function requestObjectiveDraft(payload, model) {
         {
           role: "system",
           content:
-            "You are the Masterclass Factory curriculum specialist. Output only valid JSON with terminal, enabling, and out_of_scope arrays. Never invent unverifiable facts."
+            "You are the Masterclass Factory curriculum specialist. Output only valid JSON with terminal, enabling, and out_of_scope arrays. Treat them as provisional learning-target ideas until source research and knowledge-base analysis are complete. Never invent unverifiable facts."
         },
         { role: "user", content: buildPrompt(payload) }
       ]
@@ -164,10 +194,11 @@ module.exports = async function objectivesHandler(req, res) {
     return;
   }
 
-  if (!process.env.OPENAI_API_KEY) {
+  const keyError = validateOpenAIKey(openAIKey());
+  if (keyError) {
     send(res, 503, {
       ok: false,
-      errors: ["AI assistance is not connected. Set OPENAI_API_KEY in Vercel, then redeploy."]
+      errors: [keyError]
     });
     return;
   }
@@ -186,7 +217,7 @@ module.exports = async function objectivesHandler(req, res) {
       if (draft.ok) {
         send(res, 200, {
           ok: true,
-          message: "AI drafted objectives. Please review before generating.",
+          message: "AI drafted provisional learning-target ideas. Final TLOs and ELOs should be confirmed after research.",
           model: draft.model,
           objectives: draft.objectives
         });
@@ -199,9 +230,9 @@ module.exports = async function objectivesHandler(req, res) {
 
     send(res, failedDraft.status || 502, {
       ok: false,
-      errors: [`OpenAI API error using ${failedDraft.model}: ${failedDraft.message}`]
+      errors: [`OpenAI API error using ${failedDraft.model}: ${safeErrorMessage(failedDraft.message)}`]
     });
   } catch (error) {
-    send(res, 400, { ok: false, errors: [error.message] });
+    send(res, 400, { ok: false, errors: [safeErrorMessage(error.message)] });
   }
 };

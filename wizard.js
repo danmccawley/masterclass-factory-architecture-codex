@@ -4,7 +4,7 @@
   var steps = [
     ["create", "Create", "Name the class", "Start with the class title and a short link-friendly name. The required engine version stays fixed in the background."],
     ["knowledge", "Knowledge base", "Sources and research", "Add source files or URLs, then choose how tightly later stages may research around them."],
-    ["objectives", "Objectives", "Learning target", "Choose whether the class creator, AI, or both should define the learning target, supporting skills, and what stays out of scope."],
+    ["objectives", "Learning Target", "Draft target", "Capture the class creator's early intent. Final TLOs and ELOs are confirmed only after the knowledge base is researched and analyzed."],
     ["mastery", "Mastery", "Depth and checks", "Set the intended assessment level and how much disagreement or deep-dive material the course should include."],
     ["demographics", "Demographics", "Typical and floor", "Describe the typical learner, the floor learner, and the students' preferred language for the class."],
     ["length", "Length", "Time and budget", "Choose the class length, slide budget, and interaction budget that the curriculum stage must obey."],
@@ -250,16 +250,16 @@
   function objectivesStep() {
     return (
       "<div class=\"form-grid single\">" +
-      "<div class=\"summary-card full assist-panel\"><h3>Who should shape the learning objectives?</h3>" +
-      "<p class=\"hint\">Terminal objectives are the main things learners must be able to do. Enabling objectives are the smaller skills that make those outcomes possible. Out of scope keeps the class focused.</p>" +
+      "<div class=\"summary-card full assist-panel\"><h3>Draft the learning target</h3>" +
+      "<p class=\"hint\">Use this as an early direction of travel. The final terminal and enabling learning objectives should be produced after the knowledge base is researched, analyzed, and matched to the learner profile.</p>" +
       objectiveModes() +
-      "<div class=\"assist-actions\"><button type=\"button\" class=\"ghost\" data-ai=\"suggest\">Suggest gaps only</button>" +
-      "<button type=\"button\" class=\"ghost\" data-ai=\"draft\">Draft with AI</button>" +
-      "<button type=\"button\" class=\"primary\" data-ai=\"fill\">Let AI fill it</button></div>" +
+      "<div class=\"assist-actions\"><button type=\"button\" class=\"ghost\" data-ai=\"suggest\">Suggest draft gaps</button>" +
+      "<button type=\"button\" class=\"ghost\" data-ai=\"draft\">Brainstorm with AI</button>" +
+      "<button type=\"button\" class=\"primary\" data-ai=\"fill\">Draft early target</button></div>" +
       aiNotice() + "</div>" +
-      textareaField("Terminal learning objectives", "objectives.terminal", "Example: Change a tire safely using the correct tools") +
-      textareaField("Enabling learning objectives", "objectives.enabling", "Example: Identify the jack points\nLoosen lug nuts safely\nCheck tire pressure after installation") +
-      textareaField("Out of scope", "objectives.out_of_scope", "Example: Engine repair\nTowing procedures") +
+      textareaField("Initial terminal outcome ideas", "objectives.terminal", "Example: Change a tire safely using the correct tools") +
+      textareaField("Initial enabling skill ideas", "objectives.enabling", "Example: Identify the jack points\nLoosen lug nuts safely\nCheck tire pressure after installation") +
+      textareaField("Likely out of scope", "objectives.out_of_scope", "Example: Engine repair\nTowing procedures") +
       "</div>"
     );
   }
@@ -419,9 +419,9 @@
 
   function objectiveModes() {
     var modes = [
-      ["human", "Human-led", "The class creator writes the objectives and can ask AI for gaps."],
-      ["hybrid", "Human + AI", "AI drafts the first pass, then the class creator edits it."],
-      ["ai", "AI-led", "AI fills the objectives and scope from the brief, sources, and audience."]
+      ["human", "Human-led", "The class creator writes the early target and can ask AI for draft gaps."],
+      ["hybrid", "Human + AI", "AI suggests a provisional first pass, then the class creator edits it."],
+      ["ai", "AI brainstorm", "AI drafts provisional target ideas from the brief. Final TLO/ELOs wait for research."]
     ];
     return "<div class=\"mode-grid\">" + modes.map(function (mode) {
       return "<label class=\"mode-card\"><input type=\"radio\" name=\"objectiveMode\" data-objective-mode value=\"" + mode[0] + "\"" +
@@ -580,11 +580,11 @@
       });
       if (!response.ok || !payload.ok) throw new Error((payload.errors || ["AI assistance failed."]).join(" "));
       applyObjectiveDraft(payload.objectives || {}, action);
-      state.aiStatus = { text: payload.message || "AI updated the objectives. Review and edit them before generating." };
+      state.aiStatus = { text: payload.message || "AI drafted provisional learning-target ideas. Review and edit them before generating." };
     } catch (error) {
       state.aiStatus = {
         warn: true,
-        text: "AI could not finish: " + (error && error.message ? error.message : "Check the OpenAI setup in Vercel, then redeploy.")
+        text: "AI could not finish: " + safeMessage(error && error.message ? error.message : "Check the OpenAI setup in Vercel, then redeploy.")
       };
     }
     render();
@@ -638,9 +638,10 @@
     var warnings = [];
     if (!brief.meta.title.trim()) warnings.push("Add a class title.");
     if (!brief.knowledge_base.uploads.length && brief.knowledge_base.research.mode === "none") warnings.push("Research mode is uploads-only, but no sources are listed.");
-    if (!brief.objectives.terminal.length) warnings.push("Add at least one terminal objective.");
-    if (!brief.objectives.enabling.length) warnings.push("Add enabling objectives so the lesson plan has structure.");
+    if (!brief.objectives.terminal.length) warnings.push("Add an initial learning target if the creator already knows one.");
+    if (!brief.objectives.enabling.length) warnings.push("Initial enabling skills are optional now; final ELOs should be produced after knowledge-base analysis.");
     if (!brief.audience.floor.background.trim()) warnings.push("Describe the floor learner's background.");
+    warnings.push("Final TLOs and ELOs must be confirmed after research, knowledge-base analysis, and learner-profile review.");
     return warnings.length ? "<ul>" + warnings.map(function (text) { return "<li>" + esc(text) + "</li>"; }).join("") + "</ul>" : "<div class=\"notice\">This setup has the basics needed for the next milestone.</div>";
   }
 
@@ -796,6 +797,13 @@
 
   function esc(value) {
     return String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  }
+
+  function safeMessage(value) {
+    return String(value || "")
+      .replace(/sk-proj-[A-Za-z0-9_-]+/g, "[redacted OpenAI key]")
+      .replace(/sk-[A-Za-z0-9_-]+/g, "[redacted API key]")
+      .replace(/Bearer\s+[^"'`]+/g, "Bearer [redacted]");
   }
 
   function attr(value) {
