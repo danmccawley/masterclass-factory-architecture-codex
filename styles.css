@@ -1331,10 +1331,25 @@ pre {
   border-radius: 0;
   background: rgba(255, 253, 247, 0.68);
   color: var(--ink-soft);
+  text-decoration: none;
+  cursor: pointer;
+  scroll-margin-top: 24px;
+  transition: background 180ms ease, color 180ms ease, box-shadow 180ms ease;
 }
 
 .tracker-step:last-child {
   border-right: 0;
+}
+
+.tracker-step:hover,
+.tracker-step:focus-visible {
+  color: var(--water-deep);
+  background: rgba(223, 244, 248, 0.52);
+  outline: none;
+}
+
+.tracker-step:focus-visible {
+  box-shadow: inset 0 0 0 3px rgba(29, 159, 194, 0.34);
 }
 
 .tracker-step span {
@@ -1356,6 +1371,19 @@ pre {
   font-size: 0.98rem;
 }
 
+.tracker-odometer {
+  display: inline-grid;
+  min-width: 58px;
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: rgba(34, 48, 47, 0.08);
+  color: var(--ink);
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.76rem;
+  font-style: normal;
+  font-weight: 800;
+}
+
 .tracker-step small {
   color: var(--muted);
   font-family: "IBM Plex Mono", ui-monospace, monospace;
@@ -1375,6 +1403,11 @@ pre {
   color: var(--paper-2);
 }
 
+.tracker-step.done .tracker-odometer {
+  background: rgba(29, 159, 194, 0.16);
+  color: var(--water-deep);
+}
+
 .tracker-step.active {
   transform: none;
   background:
@@ -1386,6 +1419,11 @@ pre {
 
 .tracker-step.active span {
   position: relative;
+  background: var(--water-deep);
+  color: var(--paper-2);
+}
+
+.tracker-step.active .tracker-odometer {
   background: var(--water-deep);
   color: var(--paper-2);
 }

@@ -16,6 +16,7 @@
   var generation = null;
   var generatorTrackerTimer = null;
   var generatorTrackerIndex = 0;
+  var generatorProgress = [];
   var generatorStages = [
     { label: "Order received", detail: "Validating the class setup and generator contract." },
     { label: "Knowledge base", detail: "Building the source list and source-quality report." },
@@ -550,7 +551,9 @@
 
   function trackerHtml() {
     var steps = generatorStages.map(function (stage, index) {
-      return "<div class=\"tracker-step\" data-tracker-step=\"" + index + "\"><span>" + String(index + 1).padStart(2, "0") + "</span><strong>" + esc(stage.label) + "</strong><small>Waiting</small></div>";
+      return "<a class=\"tracker-step\" href=\"#tracker-stage-" + index + "\" id=\"tracker-stage-" + index + "\" data-tracker-step=\"" + index + "\" aria-label=\"Watch progress for " + attr(stage.label) + "\">" +
+        "<span>" + String(index + 1).padStart(2, "0") + "</span><strong>" + esc(stage.label) + "</strong>" +
+        "<em class=\"tracker-odometer\" data-tracker-percent>0%</em><small>Waiting</small></a>";
     }).join("");
     return "<section class=\"tracker-card\" aria-live=\"polite\">" +
       "<p class=\"kicker\">Masterclass Factory</p>" +
@@ -567,6 +570,7 @@
   function startGeneratorTracker() {
     closeGeneratorTracker();
     generatorTrackerIndex = 0;
+    generatorProgress = generatorStages.map(function () { return 0; });
     var tracker = document.createElement("div");
     tracker.className = "generator-tracker-screen";
     tracker.setAttribute("data-generator-tracker", "true");
@@ -574,11 +578,34 @@
     document.body.appendChild(tracker);
     setGeneratorTrackerStage(0);
     generatorTrackerTimer = window.setInterval(function () {
+      tickGeneratorOdometer();
       if (generatorTrackerIndex < 2) {
         setGeneratorTrackerStage(generatorTrackerIndex + 1);
       }
-    }, 1700);
+    }, 950);
     return tracker;
+  }
+
+  function tickGeneratorOdometer() {
+    if (!generatorProgress.length) return;
+    var current = generatorProgress[generatorTrackerIndex] || 0;
+    if (generatorTrackerIndex < generatorStages.length - 1) {
+      generatorProgress[generatorTrackerIndex] = Math.min(96, current + (current < 60 ? 7 : current < 85 ? 4 : 1));
+    }
+    updateTrackerOdometers();
+  }
+
+  function updateTrackerOdometers() {
+    var tracker = document.querySelector("[data-generator-tracker]");
+    if (!tracker) return;
+    Array.from(tracker.querySelectorAll("[data-tracker-step]")).forEach(function (step) {
+      var stepIndex = Number(step.getAttribute("data-tracker-step"));
+      var percent = step.querySelector("[data-tracker-percent]");
+      if (percent) percent.textContent = Math.round(generatorProgress[stepIndex] || 0) + "%";
+      step.setAttribute("aria-valuenow", String(Math.round(generatorProgress[stepIndex] || 0)));
+    });
+    var progress = tracker.querySelector("[data-tracker-progress]");
+    if (progress) progress.style.width = Math.round(generatorProgress.reduce(function (sum, value) { return sum + value; }, 0) / generatorStages.length) + "%";
   }
 
   function setGeneratorTrackerStage(index, detail) {
@@ -586,6 +613,12 @@
     var tracker = document.querySelector("[data-generator-tracker]");
     if (!tracker) return;
     var active = generatorStages[generatorTrackerIndex];
+    if (!generatorProgress.length) generatorProgress = generatorStages.map(function () { return 0; });
+    generatorProgress = generatorProgress.map(function (value, stepIndex) {
+      if (stepIndex < generatorTrackerIndex) return 100;
+      if (stepIndex === generatorTrackerIndex) return Math.max(value || 0, 8);
+      return value || 0;
+    });
     Array.from(tracker.querySelectorAll("[data-tracker-step]")).forEach(function (step) {
       var stepIndex = Number(step.getAttribute("data-tracker-step"));
       step.classList.toggle("done", stepIndex < generatorTrackerIndex);
@@ -597,13 +630,13 @@
     if (nowStage) nowStage.textContent = active.label;
     var detailBox = tracker.querySelector("[data-tracker-detail]");
     if (detailBox) detailBox.textContent = detail || active.detail;
-    var progress = tracker.querySelector("[data-tracker-progress]");
-    if (progress) progress.style.width = Math.round(((generatorTrackerIndex + 1) / generatorStages.length) * 100) + "%";
+    updateTrackerOdometers();
   }
 
   function completeGeneratorTracker(payload) {
     if (generatorTrackerTimer) window.clearInterval(generatorTrackerTimer);
     generatorTrackerTimer = null;
+    generatorProgress = generatorStages.map(function () { return 100; });
     setGeneratorTrackerStage(generatorStages.length - 1, "Masterclass generated. QA passed. Launch package is ready.");
     var tracker = document.querySelector("[data-generator-tracker]");
     if (!tracker) return;
@@ -637,6 +670,8 @@
     var tracker = document.querySelector("[data-generator-tracker]");
     if (!tracker) return;
     setGeneratorTrackerStage(trackerIndexForFailure(error), "The generator stopped here because this gate did not pass.");
+    generatorProgress[generatorTrackerIndex] = Math.max(generatorProgress[generatorTrackerIndex] || 0, 99);
+    updateTrackerOdometers();
     tracker.classList.add("failed");
     var detail = tracker.querySelector("[data-tracker-detail]");
     if (detail) detail.textContent = "The generator needs attention: " + (error && error.message ? error.message : "unknown error");
