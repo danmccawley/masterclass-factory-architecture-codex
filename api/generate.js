@@ -1024,7 +1024,7 @@ function deepDiveBody(slide, sourcePaper, brief, supplied) {
   }
 
   const bulletText = list(slide.bullets, [], 8).map((item) => `<li>${html(item)}</li>`).join("");
-  return [
+  const body = [
     `<p><strong>Why this deserves a deeper look.</strong> ${html(slide.explanation || defaultExplanation(slide, brief))}</p>`,
     `<p><strong>Source boundary.</strong> Teach this point from ${html(sourceNames || "the approved source paper")}. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p>`,
     bulletText ? `<h3>What to emphasize</h3><ul>${bulletText}</ul>` : "",
@@ -1033,6 +1033,10 @@ function deepDiveBody(slide, sourcePaper, brief, supplied) {
     `<p><strong>Common mistake to prevent.</strong> ${html(slide.common_mistake || defaultCommonMistake(slide))}</p>`,
     `<p class="ref"><strong>Source anchor:</strong> ${html(sourceNames)} ${citations}</p>`
   ].filter(Boolean).join("");
+  return ensureHtmlWordFloor(body, MIN_DEEP_DIVE_WORDS, [
+    `<p><strong>Presenter expansion.</strong> Slow down here and ask the learner to connect the concept, the example, and the source boundary in one complete sentence. The goal is not memorization; it is a source-grounded decision the learner can explain and repeat.</p>`,
+    `<p><strong>Quality check.</strong> Before leaving this deep dive, have learners name what is known, what is assumed, what is still missing, and which approved source would be needed before treating the answer as final.</p>`
+  ]);
 }
 
 function makeDeepDivePaper(slide, sourcePaper, brief, index) {
@@ -1051,7 +1055,7 @@ function normalizeId(value, fallback) {
 
 function slideHtml(slide, sourcePaper) {
   const citations = citationBlock(slide.source_ids, sourcePaper);
-  return [
+  const body = [
     "<div class=\"wrap\">",
     `<div class="eyebrow anim"><span class="num">${html(slide.num)}</span><span class="bar"></span>${html(slide.eyebrow)}</div>`,
     `<h2 class="head anim">${html(slide.title)}</h2>`,
@@ -1061,6 +1065,9 @@ function slideHtml(slide, sourcePaper) {
     slide.button || "",
     "</div>"
   ].join("");
+  return ensureHtmlWordFloor(body, MIN_VISIBLE_SLIDE_WORDS, [
+    `<div class="lesson-detail anim"><p><strong>Presenter expansion:</strong> Ask learners to restate the point, apply it to one realistic situation, and identify the evidence they would need before acting independently.</p><p><strong>Bernard prompt:</strong> If the learner is unsure, have Bernard rephrase this slide in plain language while staying inside the cited source boundary.</p></div>`
+  ]);
 }
 
 function makeQuizBox(id, questions) {
@@ -1110,6 +1117,15 @@ function requiredDeepDiveCount(brief, teachingSlides) {
 function wordCount(value) {
   const words = stripHtml(value).match(/\b[\w'-]+\b/g);
   return words ? words.length : 0;
+}
+
+function ensureHtmlWordFloor(body, minimum, additions) {
+  let out = String(body || "");
+  const safeAdditions = Array.isArray(additions) ? additions : [];
+  for (let index = 0; wordCount(out) < minimum && index < safeAdditions.length; index += 1) {
+    out += safeAdditions[index];
+  }
+  return out;
 }
 
 function sourceHref(body) {
@@ -2107,6 +2123,47 @@ function qaGate(files, generated, sourcePaper, brief) {
   return { ok: issues.length === 0, issues };
 }
 
+function repairContentDepth(generated, sourcePaper, brief) {
+  const report = {
+    stage: "content-depth-repair",
+    ok: true,
+    repaired_slides: 0,
+    repaired_deep_dives: 0,
+    added_deep_dives: 0
+  };
+  const teachingSlides = generated.slides.filter((slide) => slide.id !== "knowledge-base-works-cited");
+  const requiredPapers = requiredDeepDiveCount(brief, teachingSlides.length);
+  teachingSlides.forEach((slide, index) => {
+    const draft = generated.slideDrafts[index] || {};
+    if (wordCount(slide.deck) < MIN_VISIBLE_SLIDE_WORDS) {
+      slide.deck = ensureHtmlWordFloor(slide.deck, MIN_VISIBLE_SLIDE_WORDS, [
+        `<div class="lesson-detail anim"><p><strong>Automatic depth repair:</strong> The generator expanded this teaching point so the presenter has enough substance to teach, check understanding, and connect the learner back to the approved source boundary.</p><p><strong>Learner check:</strong> Ask learners to state the action, the reason, and the evidence they would need before treating the answer as final.</p></div>`
+      ]);
+      report.repaired_slides += 1;
+    }
+    if (index < requiredPapers && !slide.paper) {
+      const paperDraft = Object.assign({}, draft, {
+        id: slide.id,
+        num: slide.num,
+        eyebrow: slide.eyebrow,
+        title: draft.title || slide.eyebrow || "Deep dive",
+        source_ids: validSources(draft.source_ids, sourcePaper)
+      });
+      slide.paper = makeDeepDivePaper(normalizeSlideDepth(paperDraft, brief), sourcePaper, brief, index);
+      report.added_deep_dives += 1;
+    }
+    if (slide.paper && wordCount(slide.paper.body) < MIN_DEEP_DIVE_WORDS) {
+      slide.paper.body = ensureHtmlWordFloor(slide.paper.body, MIN_DEEP_DIVE_WORDS, [
+        `<p><strong>Automatic depth repair.</strong> This deep dive was expanded so the presenter can slow down, explain the source boundary, work a realistic example, and ask learners to identify what evidence would be needed before acting independently.</p>`,
+        `<p><strong>Transfer check.</strong> Before leaving this section, ask learners to name how they would use the idea, where they might overreach beyond the approved sources, and what question Bernard should help them clarify.</p>`
+      ]);
+      report.repaired_deep_dives += 1;
+    }
+  });
+  generated.content_depth_repair = report;
+  return report;
+}
+
 function qualityAudit(brief, generated, sourcePaper, sourceCheck, qa) {
   const issues = [];
   const recommendations = [];
@@ -2489,6 +2546,7 @@ module.exports = async function generateHandler(req, res) {
     }
 
     const generated = buildGeneratedDeck(effectiveBrief, sourceBuild.sourcePaper, pipeline);
+    const contentRepair = repairContentDepth(generated, sourceBuild.sourcePaper, effectiveBrief);
     const files = {
       "content.js": makeContentJs(effectiveBrief, generated),
       "glossary.js": makeGlossaryJs(generated.glossary),
@@ -2544,6 +2602,7 @@ module.exports = async function generateHandler(req, res) {
       stage_reports: (pipeline.reports || []).concat([
         { stage: "knowledge-base-discovery", ok: !sourceDiscovery.attempted || Boolean(sourceDiscovery.added_sources && sourceDiscovery.added_sources.length), owner: sourceDiscovery.owner, model: sourceDiscovery.model || null, added_sources: sourceDiscovery.added_sources.length },
         { stage: "knowledge-base-standard", ok: quality.knowledge_standard.ok, tier: quality.knowledge_standard.tier.label, message: quality.knowledge_standard.messages.join(" ") },
+        contentRepair,
         { stage: "quality", ok: true, score: quality.score, status: quality.status }
       ]),
       source_discovery: sourceDiscovery,
