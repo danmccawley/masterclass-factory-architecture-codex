@@ -341,6 +341,79 @@ group("All endpoints load without throwing");
 });
 
 // ---------------------------------------------------------------------------
+group("AI research trigger (regression: === null vs === '' bug)");
+
+test("openAIKeyUsable() is TRUE when a valid key is set", () => {
+  const had = process.env.OPENAI_API_KEY;
+  process.env.OPENAI_API_KEY = "sk-proj-" + "a".repeat(80);
+  try {
+    assert.strictEqual(I.openAIKeyUsable(), true);
+  } finally {
+    if (had === undefined) delete process.env.OPENAI_API_KEY; else process.env.OPENAI_API_KEY = had;
+  }
+});
+test("openAIKeyUsable() is FALSE when no key is set", () => {
+  const had = process.env.OPENAI_API_KEY;
+  delete process.env.OPENAI_API_KEY;
+  try {
+    assert.strictEqual(I.openAIKeyUsable(), false);
+  } finally {
+    if (had !== undefined) process.env.OPENAI_API_KEY = had;
+  }
+});
+test("validateOpenAIKey returns '' (not null) on success — the root cause", () => {
+  // This is the exact assertion whose absence let the bug ship: code compared
+  // the result to null, but success is an empty string.
+  const r = I.validateOpenAIKey("sk-proj-" + "a".repeat(80));
+  assert.strictEqual(r, "");
+  assert.notStrictEqual(r, null);
+});
+test("the research-gate condition is truthy for a valid key (guards === null regression)", () => {
+  // Root cause: production gated research on `validateOpenAIKey(key) === null`,
+  // but success is "" so that was always false -> research always skipped.
+  // These assertions fail if anyone reintroduces a null comparison.
+  const validKey = "sk-proj-" + "a".repeat(80);
+  const result = I.validateOpenAIKey(validKey);
+  assert.strictEqual(result === null, false, "success is '' not null; '=== null' gate would always be false");
+  assert.strictEqual(result === "", true, "success must be an empty string");
+  // And the helper the gate now uses must be true for a valid key:
+  const had = process.env.OPENAI_API_KEY;
+  process.env.OPENAI_API_KEY = validKey;
+  try {
+    assert.strictEqual(I.openAIKeyUsable(), true, "openAIKeyUsable() must be true for a valid key");
+  } finally {
+    if (had === undefined) delete process.env.OPENAI_API_KEY; else process.env.OPENAI_API_KEY = had;
+  }
+});
+test("recovery ladder does NOT skip discovery when a valid key is present", async () => {
+  const had = process.env.OPENAI_API_KEY;
+  const fakeKey = "sk-proj-" + "a".repeat(80);
+  process.env.OPENAI_API_KEY = fakeKey;
+  try {
+    // Hard precondition: the env var MUST be our fake key and MUST read usable.
+    // If suite ordering polluted it, fail loudly rather than pass vacuously.
+    assert.strictEqual(process.env.OPENAI_API_KEY, fakeKey, "env precondition not set");
+    assert.strictEqual(I.openAIKeyUsable(), true, "key must read as usable");
+    assert.strictEqual(I.openAIKey(), fakeKey, "openAIKey() must return the fake key");
+    const brief = baseBrief();
+    let ladder = null;
+    try {
+      const result = await I.resolveKnowledgeBase(brief);
+      ladder = result && result.ladder;
+    } catch (e) {
+      ladder = (e && e.ladder) || null;
+    }
+    assert.ok(Array.isArray(ladder) && ladder.length > 0, "ladder should be recorded; got: " + JSON.stringify(ladder));
+    const skipped = ladder.some((s) => String(s).indexOf("discovery-skipped-no-openai-key") !== -1);
+    assert.strictEqual(skipped, false, "must not skip discovery with a valid key; ladder=" + JSON.stringify(ladder));
+    const attempted = ladder.some((s) => String(s).indexOf("forced-ai-research-for-recovery") !== -1 || String(s).indexOf("discovery-rounds") !== -1);
+    assert.ok(attempted, "ladder must record a discovery attempt; ladder=" + JSON.stringify(ladder));
+  } finally {
+    if (had === undefined) delete process.env.OPENAI_API_KEY; else process.env.OPENAI_API_KEY = had;
+  }
+});
+
+// ---------------------------------------------------------------------------
 console.log("\n" + "=".repeat(60));
 console.log("RESULTS: " + passed + " passed, " + failed + " failed");
 if (failed) {

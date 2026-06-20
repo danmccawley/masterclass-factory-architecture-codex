@@ -763,7 +763,7 @@ function highestMetTier(brief) {
 // The distinction drives whether we recommend a change order or just ask for input.
 function assessSourceScarcity(discovery, brief) {
   const webAllowed = brief.knowledge_base && brief.knowledge_base.research && brief.knowledge_base.research.allow_web !== false;
-  const keyOk = validateOpenAIKey(openAIKey()) === null;
+  const keyOk = openAIKeyUsable();
 
   if (!discovery || !discovery.attempted) {
     return {
@@ -890,7 +890,7 @@ async function resolveKnowledgeBase(brief) {
   // class did not already own it to the AI, so a creator-mode class still gets
   // a real attempt before anything escalates. The saved brief is untouched.
   let discovery = null;
-  if (webAllowed && validateOpenAIKey(openAIKey()) === null) {
+  if (webAllowed && openAIKeyUsable()) {
     if (owner !== "ai") {
       working.knowledge_base.research = working.knowledge_base.research || {};
       working.knowledge_base.research.owner = "ai";
@@ -1083,6 +1083,15 @@ function validateOpenAIKey(key) {
   if (/\s/.test(key)) return "OPENAI_API_KEY has spaces or line breaks in it. Paste only the key with no surrounding quotes or spaces, then redeploy.";
   if (key.length < 20) return "OPENAI_API_KEY looks too short to be valid. Re-copy the full key, then redeploy.";
   return "";
+}
+
+// True when a usable OpenAI key is configured. validateOpenAIKey returns an
+// empty string ("") on success and a non-empty message on failure, so the
+// correct success test is `=== ""`, NOT `=== null`. (An earlier `=== null`
+// comparison was always false, which silently skipped AI research even when a
+// perfectly valid key was present.)
+function openAIKeyUsable() {
+  return validateOpenAIKey(openAIKey()) === "";
 }
 
 function configuredModels() {
@@ -2883,37 +2892,6 @@ module.exports = async function generateHandler(req, res) {
     return;
   }
 
-  // Safe diagnostic: GET /api/generate?diag=1 reports the SHAPE of the runtime
-  // OpenAI key (length, prefix, whitespace) without ever revealing the key, so
-  // we can confirm whether the function actually receives a valid key in this
-  // environment. Remove after debugging.
-  if (req.method === "GET") {
-    const url = new URL(req.url || "/", "http://localhost");
-    if (url.searchParams.get("diag") === "1") {
-      const raw = process.env.OPENAI_API_KEY;
-      const key = String(raw == null ? "" : raw);
-      const validationError = validateOpenAIKey(key.trim());
-      send(res, 200, {
-        ok: true,
-        diagnostic: "openai-key-shape",
-        present: raw !== undefined && raw !== null,
-        length: key.length,
-        starts_with_sk: key.startsWith("sk-"),
-        prefix: key.slice(0, 7),
-        has_leading_space: /^\s/.test(key),
-        has_trailing_whitespace: /\s$/.test(key),
-        has_internal_whitespace: /\s/.test(key.trim()),
-        has_quotes: /^["']|["']$/.test(key),
-        passes_validation_raw: validateOpenAIKey(key) === "",
-        passes_validation_trimmed: validationError === "",
-        validation_message_raw: validateOpenAIKey(key) || "(passes)"
-      });
-      return;
-    }
-    send(res, 405, { ok: false, errors: ["Use POST with a class setup body."] });
-    return;
-  }
-
   if (req.method !== "POST") {
     send(res, 405, { ok: false, errors: ["Use POST with a class setup body."] });
     return;
@@ -3119,6 +3097,9 @@ module.exports._internal = {
   // exported for the test harness so tests run the REAL implementations,
   // never hand-copied mirrors:
   validateOpenAIKey,
+  openAIKeyUsable,
+  openAIKey,
+  resolveKnowledgeBase,
   classTierKey,
   classTierSpec,
   slugify,
