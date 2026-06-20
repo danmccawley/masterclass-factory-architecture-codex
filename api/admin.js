@@ -1,5 +1,13 @@
 const fs = require("fs");
 const path = require("path");
+const crypto = require("crypto");
+
+function timingSafeEqual(a, b) {
+  const ba = Buffer.from(String(a));
+  const bb = Buffer.from(String(b));
+  if (ba.length !== bb.length) return false;
+  return crypto.timingSafeEqual(ba, bb);
+}
 
 function send(res, status, payload) {
   res.statusCode = status;
@@ -25,7 +33,7 @@ function requireAdmin(req, res) {
     });
     return false;
   }
-  if (adminKey(req) !== configured) {
+  if (!timingSafeEqual(adminKey(req), configured)) {
     send(res, 403, { ok: false, errors: ["Bad admin key."] });
     return false;
   }

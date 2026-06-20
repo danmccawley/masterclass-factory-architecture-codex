@@ -116,10 +116,51 @@ function readSavedClasses() {
     .filter(Boolean);
 }
 
+function isPrivateAddress(ip) {
+  const v = String(ip || "");
+  if (v === "::1" || v === "::" || v === "0.0.0.0") return true;
+  if (/^f[cd][0-9a-f]{2}:/i.test(v)) return true;
+  if (/^fe[89ab][0-9a-f]:/i.test(v)) return true;
+  const mapped = v.match(/^::ffff:(\d+\.\d+\.\d+\.\d+)$/i);
+  const ipv4 = mapped ? mapped[1] : v;
+  const m = ipv4.match(/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/);
+  if (!m) return false;
+  const a = Number(m[1]), b = Number(m[2]);
+  if (a === 10 || a === 127 || a === 0) return true;
+  if (a === 169 && b === 254) return true;
+  if (a === 172 && b >= 16 && b <= 31) return true;
+  if (a === 192 && b === 168) return true;
+  if (a === 100 && b >= 64 && b <= 127) return true;
+  return false;
+}
+
+async function assertFetchableUrl(url) {
+  let parsed;
+  try {
+    parsed = new URL(String(url));
+  } catch (error) {
+    throw new Error("invalid url");
+  }
+  if (parsed.protocol !== "http:" && parsed.protocol !== "https:") throw new Error("non-http url");
+  const host = parsed.hostname.toLowerCase();
+  if (host === "localhost" || host.endsWith(".localhost") || host.endsWith(".local") || host === "metadata.google.internal") {
+    throw new Error("non-public host");
+  }
+  if (isPrivateAddress(host)) throw new Error("private address");
+  try {
+    const dns = require("dns").promises;
+    const records = await dns.lookup(host, { all: true });
+    if (records.some((record) => isPrivateAddress(record.address))) throw new Error("private address");
+  } catch (error) {
+    if (/private address/.test(error.message)) throw error;
+  }
+}
+
 async function checkUrl(url) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 5000);
   try {
+    await assertFetchableUrl(url);
     const response = await fetch(url, {
       method: "HEAD",
       signal: controller.signal,

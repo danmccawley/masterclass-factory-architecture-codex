@@ -20,7 +20,7 @@ contracts expect). Read that one first; this one assumes it.
 
 2. **The Factory only ever produces the *content layer*.** Engine, shell, and backends are
    *fixed templates copied unchanged*. The Factory generates `content.js`
-   (`SLIDES`/`POLLS`/`WORDS`), `glossary.js` (`GLOSSARY`), `source.js` (`SOURCES`), and de-topics
+   (`SLIDES`/`POLLS`/`WORDS`), `glossary.js` (`GLOSSARY`), `source.js` (`SOURCE_PAPER`), and de-topics
    a handful of strings. Content is data, not code.
 
 3. **The intake form compiles to one artifact: the *Course Brief* JSON (§4).** Every agent reads
@@ -41,7 +41,7 @@ in §11.
 | **Engine** | `engine.js`, `navscrubber.js` | — |
 | **Shell** | `index.html` (CSS tokens, modal markup, load order) | the ~5 topic strings inside it (chat-modal desc, etc.) |
 | **Backends** | `api/chat.js`, `api/grade.js`, `api/tts.js`, `api/poll.js`, `api/words.js`, `api/feedback.js`, `api/quality.js` | the 2 system-prompt topic strings in `chat.js` + `grade.js` |
-| **Content** | — | `content.js` (`SLIDES`,`POLLS`,`WORDS`), `glossary.js` (`GLOSSARY`), `source.js` (`SOURCES`) |
+| **Content** | — | `content.js` (`SLIDES`,`POLLS`,`WORDS`), `glossary.js` (`GLOSSARY`), `source.js` (`SOURCE_PAPER`) |
 | **Presenter** | `build_script.js` (docx generator) | re-run after content to emit the Facilitator script |
 
 > **Contract — VERIFIED against both shipped engines (MDC + Texas).** Both engines read
@@ -101,7 +101,7 @@ in §11.
         ├──[5] Glossary ──► GLOSSARY (terms actually used)
         └──[6] Assessment ──► quizzes (mc/tf/sa, leveled) + final test
         │
-[7] Source Verification (INDEPENDENT) ──► SOURCES + every citation resolves  ── GATE: zero unverified
+[7] Source Verification (INDEPENDENT) ──► SOURCE_PAPER + every citation resolves  ── GATE: zero unverified
         │
 [8] Codegen / Build ──► content.js, glossary.js, source.js (exact engine contract) + de-topic strings
         │
@@ -129,11 +129,20 @@ The 8 UX steps compile to this. It is the only thing every downstream agent read
     "engine_contract": "v-texas"       // which engine globals/contract this targets (§1 caveat)
   },
 
+  "class_tier": {                      // quality tier — drives source floors, slide floors, and the
+    "level": "professional"            // generation gate. One of: briefing | standard | professional | expert.
+  },                                   // floors: briefing 4/1, standard 8/2, professional 12/3, expert 18/5
+                                       // (usable-sources / primary-sources). professional is the default bar.
+
   "knowledge_base": {                  // step 3
     "uploads": [ {"path":"", "type":"pdf|docx|url|paste", "trust":"primary|secondary|unknown"} ],
     "research": {
-      "mode": "none | grounded | collaborative",  // grounded = NotebookLM-style on corpus only;
-                                                   // collaborative = AI may web-research + propose
+      "owner": "creator",              // WHO sources the knowledge base — the primary control:
+                                       //   creator  = the class maker supplies sources (default)
+                                       //   assisted = AI helps research; creator still approves
+                                       //   ai       = Bernard runs web-search discovery + verification
+      "mode": "grounded",              // descriptive sub-setting: none | grounded | collaborative
+                                       // (grounded = corpus-only; collaborative = AI may web-research)
       "seed_prompts": [],              // what to research / questions to answer
       "allow_web": true,
       "recency_floor": "2024-01-01"    // reject stale facts older than this unless historical
@@ -163,7 +172,7 @@ The 8 UX steps compile to this. It is the only thing every downstream agent read
     "floor":   { "age_band":"", "education":"", "background":"", "technical":"non|mixed|technical",
                  "role":"" },          // lowest-common-denominator: reading level + assumed-knowledge floor
     "gender_mix": "",                  // informs examples/tone only; never gates content
-    "tone": "plain | professional | academic | energetic",
+    "tone": "plain | warm | executive | academic | workshop",  // must match brief-validator ENUMS
     "accessibility": { "reading_grade_cap": 9 }   // hard ceiling derived from `floor`
   },
 
@@ -255,7 +264,7 @@ rules:* schema keys exactly `options/answer/why/type` (not `opts/a`); each quest
 `data-quiz` JSON parses; every terminal objective is assessed.
 
 **7 · Source Verification** *(INDEPENDENT)* — Independently re-check every citation against the real
-source; build `SOURCES = [{id,num,title,body}]`. *Hard rules:* a citation that doesn't resolve to a
+source; build `SOURCE_PAPER = {title, cite, sections:[{id,num,title,body}]}`. *Hard rules:* a citation that doesn't resolve to a
 real, locatable source is **removed and its claim softened or cut** — never papered over; the in-deck
 "Student Reader" is a study aid and must be labeled as not original scholarship; the Works-Cited
 slide lists only verified sources. *Done when:* zero unresolved `data-src` references; zero
@@ -290,7 +299,7 @@ the whole engine.
 | Slides & navigation | `render` `update` `go` `next` `prev` `updateScrollCue` + scrubber | Yes — `SLIDES` | Content Author (4) |
 | Deep dives (papers) | `bindDeepButtons` `openPaper` `closePaper` | Yes — `paper{}` | Content Author (4) |
 | Glossary tooltips | `bindGlossary` `wrapInNode` `matchKey` `askAboutTerm` | Yes — `GLOSSARY` `{term:{d,r}}`; engine auto-scans prose + open deep dive | Glossary (5) |
-| Sources / Student Reader | `bindCitations` `renderSource` `openSource` | Yes — `SOURCES` | Source Verification (7); Author places cites |
+| Sources / Student Reader | `bindCitations` `renderSource` `openSource` | Yes — `SOURCE_PAPER` | Source Verification (7); Author places cites |
 | Tiles (expandable cards) | `bindTiles` `openTile` | Yes — card markup | Content Author (4) |
 | Diagrams (zoomable) | `bindDiagrams` | Yes — diagram markup | Content Author (4) |
 | Heatmaps | `bindHeatmap` (`tone-*`) | Yes — tone tables | Content Author (4) |
@@ -324,7 +333,7 @@ newer engine. This is why Phase 0 (freeze the contract) comes first.
 You are the Producer of a Masterclass Factory. You turn a Course Brief (brief.json) into a
 deployable interactive masterclass that plugs into a FIXED engine. You never edit the engine,
 shell, or backends except a short list of topic strings. You only generate the CONTENT layer:
-content.js (SLIDES/POLLS/WORDS), glossary.js (GLOSSARY), source.js (SOURCES).
+content.js (SLIDES/POLLS/WORDS), glossary.js (GLOSSARY), source.js (SOURCE_PAPER).
 
 Run this pipeline in order, blocking on gates:
 1 Brief → 2 Research(GATE: credibility) → 3 Curriculum → 4 Author ‖ 5 Glossary ‖ 6 Assessment →
@@ -363,7 +372,7 @@ do not invent it.
 ROLE: Independent Source Verifier. You did NOT write this content; assume it is wrong until proven.
 READ: every <sup class="cite" data-src="sN"> in the deck and the corpus provenance for each.
 TASK: for each citation, independently confirm the source exists and actually supports the claim.
-OUTPUT: source.js (window.SOURCES = [{id,num,title,body}]) containing ONLY verified sources, plus a
+OUTPUT: source.js (window.SOURCE_PAPER = {title, cite, sections:[{id,num,title,body}]}) containing ONLY verified sources, plus a
 report listing: (a) verified, (b) claim-not-supported (soften/cut the claim), (c) source-not-found
 (remove the citation and the claim it props up).
 HARD RULES: never fabricate a source, a title, a date, or a URL. If you cannot locate it, it does
@@ -379,7 +388,7 @@ EXACT engine contract.
 EMIT:
   content.js  → window.CLASS_TITLE, window.SLIDES[], window.POLLS{}, window.WORDS{}
   glossary.js → window.GLOSSARY{}
-  source.js   → window.SOURCES[]   (or window.SOURCE_PAPER if that is what THIS engine reads — verify)
+  source.js   → window.SOURCE_PAPER = {title, cite, sections:[...]}   (VERIFIED: both shipped engines read this, NOT a flat array)
 SCHEMAS:
   slide  = {id, eyebrow, num, deck:`<div class='wrap'>…</div>`, paper?:{secnum,h,body}, poll?, words?}
   POLLS  = { "<poll-id>": {q, desc, opts:[…]} }
@@ -429,7 +438,7 @@ global.window = {};
 require("./content.js"); require("./glossary.js"); require("./source.js");
 const S = window.SLIDES || [], POLLS = window.POLLS || {}, WORDS = window.WORDS || {};
 const PAPER = window.SOURCE_PAPER || null;
-const SECTIONS = PAPER && Array.isArray(PAPER.sections) ? PAPER.sections : (window.SOURCES || []);
+const SECTIONS = PAPER && Array.isArray(PAPER.sections) ? PAPER.sections : [];
 const G = window.GLOSSARY || {};
 const fail = [], warn = [];
 const A = (cond, msg) => { if (!cond) fail.push(msg); };
@@ -564,8 +573,8 @@ files — these are exact.
 ## 9. Build plan (phased)
 
 **Phase 0 — Freeze the contract (½ day).** Pick the engine version; run the `grep` from §1 and
-record the exact globals (esp. `SOURCES` vs `SOURCE_PAPER`); standardize on deck-defined
-`POLLS`/`WORDS` and `SOURCES[]`. Write the `brief.json` schema (§4) into the repo. *Output:* a frozen
+record the exact globals (the engines read `SOURCE_PAPER`, NOT `SOURCES`); standardize on deck-defined
+`POLLS`/`WORDS` and `SOURCE_PAPER`. Write the `brief.json` schema (§4) into the repo. *Output:* a frozen
 contract + an empty Brief template.
 
 **Phase 1 — Manual-loop MVP (1–2 days).** No platform. You hand-fill a Brief, then run agents 2–9 as
@@ -599,7 +608,7 @@ hybrid credibility gate, lesson-plan editor. *Output:* the full Factory.
 - [ ] `window.POLLS`/`window.WORDS` defined and keyed to every `poll`/`words` id slides reference.
 - [ ] Quiz JSON parses; keys are `options/answer/why/type`; `sa` items have `rubric`+`accept[]`;
       every question has a `level` ≤ `mastery.target_level`.
-- [ ] Every `data-src` citation resolves to a verified source in `SOURCES`.
+- [ ] Every `data-src` citation resolves to a verified source section in `SOURCE_PAPER.sections`.
 - [ ] Glossary scans deep dives too (`#paperInner`, selector `p, .mini`) — verify in the engine.
 - [ ] Reading grade ≤ audience floor cap; everything in `language.primary`.
 

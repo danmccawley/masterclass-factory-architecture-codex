@@ -751,6 +751,106 @@
     if (small) small.textContent = "Nothing was published from this failed run. Fix the message shown on the page, then start the generator again.";
     var action = tracker.querySelector("[data-close-tracker]");
     if (action) action.textContent = "Return to setup";
+
+    // When the failure is the knowledge-base source floor, offer a one-click
+    // "have Bernard find the missing sources" path instead of a dead end.
+    var isKbGate = generatorFailedIndex === 1 ||
+      /knowledge-base-standard|source-floor|primary-source/.test(String(error && (error.failed_stage || error.stage) || "").toLowerCase()) ||
+      /usable sources|primary sources|source floor/.test(String(error && error.message || "").toLowerCase());
+    if (isKbGate) {
+      var actions = tracker.querySelector(".tracker-actions");
+      if (actions && !actions.querySelector("[data-remediate]")) {
+        var fix = document.createElement("button");
+        fix.type = "button";
+        fix.className = "primary";
+        fix.setAttribute("data-remediate", "true");
+        fix.textContent = "Have Bernard find the missing sources";
+        fix.addEventListener("click", function () { remediateKnowledgeBase(fix); });
+        actions.insertBefore(fix, actions.firstChild);
+      }
+    }
+  }
+
+  async function remediateKnowledgeBase(button) {
+    var tracker = document.querySelector("[data-generator-tracker]");
+    var detail = tracker && tracker.querySelector("[data-tracker-detail]");
+    var small = tracker && tracker.querySelector("[data-tracker-small]");
+    if (button) { button.disabled = true; button.textContent = "Bernard is searching for sources..."; }
+    if (small) small.textContent = "Bernard is running source discovery and checking each URL. This can take a little time.";
+    try {
+      var response = await fetch("/api/remediate", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ brief: parseBrief() })
+      });
+      var payload = await response.json();
+      if (!response.ok || !payload.ok) {
+        throw new Error((payload.errors || ["Remediation failed."]).join(" "));
+      }
+      var added = payload.added_sources || [];
+      if (!added.length) {
+        if (detail) detail.textContent = "Bernard could not verify any new sources. " + (payload.remaining_message || "");
+        if (small) small.textContent = (payload.notes || []).join(" ") || "Try adding sources manually, then start the generator again.";
+        if (button) { button.disabled = false; button.textContent = "Try Bernard again"; }
+        return;
+      }
+
+      // Show the proposed sources for human approval before they go into the brief.
+      var list = added.map(function (source) {
+        return "<li><strong>" + esc(source.trust || "unknown") + "</strong> &middot; " +
+          "<a href=\"" + attr(source.path) + "\" target=\"_blank\" rel=\"noopener\">" + esc(source.path) + "</a></li>";
+      }).join("");
+      var box = document.createElement("div");
+      box.className = "notice";
+      box.setAttribute("data-remediation-result", "true");
+      box.innerHTML = "<strong>Bernard verified " + added.length + " source" + (added.length === 1 ? "" : "s") + ".</strong>" +
+        (payload.would_meet_standard
+          ? " Accepting these would meet the " + esc(payload.tier) + " source floor."
+          : " This still leaves a gap: " + esc(payload.remaining_message || "")) +
+        "<ul>" + list + "</ul>" +
+        "<div class=\"assist-actions\">" +
+        "<button type=\"button\" class=\"primary\" data-accept-sources>Add these sources to the setup</button>" +
+        "<button type=\"button\" class=\"ghost\" data-dismiss-sources>Not now</button></div>";
+      if (validationBox) {
+        validationBox.innerHTML = "";
+        validationBox.appendChild(box);
+      }
+      box.querySelector("[data-accept-sources]").addEventListener("click", function () {
+        applyRemediatedSources(added);
+        box.innerHTML = "<strong>Added " + added.length + " source" + (added.length === 1 ? "" : "s") + " to the setup.</strong> Review them on the Knowledge Base step, then start the generator again.";
+        closeGeneratorTracker();
+      });
+      box.querySelector("[data-dismiss-sources]").addEventListener("click", function () {
+        if (box.parentNode) box.parentNode.removeChild(box);
+      });
+      if (detail) detail.textContent = "Bernard proposed sources. Review and accept them below the tracker.";
+      try { box.scrollIntoView({ behavior: "smooth", block: "center" }); } catch (scrollError) {}
+    } catch (remediationError) {
+      if (detail) detail.textContent = "Source discovery failed: " + (remediationError && remediationError.message ? remediationError.message : "unknown error");
+      if (button) { button.disabled = false; button.textContent = "Try Bernard again"; }
+    }
+  }
+
+  // Write accepted sources into the live form's knowledge-base source list so
+  // parseBrief() will include them on the next run. The exact DOM hook depends
+  // on how the Knowledge Base step stores uploads; this dispatches a custom
+  // event the wizard listens for, falling back to a hidden JSON field.
+  function applyRemediatedSources(sources) {
+    var event;
+    try {
+      event = new CustomEvent("masterclass:add-sources", { detail: { sources: sources } });
+    } catch (eventError) {
+      event = document.createEvent("CustomEvent");
+      event.initCustomEvent("masterclass:add-sources", true, true, { sources: sources });
+    }
+    document.dispatchEvent(event);
+
+    var hidden = form.querySelector("[data-extra-sources]");
+    if (hidden) {
+      var existing = [];
+      try { existing = JSON.parse(hidden.value || "[]"); } catch (parseError) { existing = []; }
+      hidden.value = JSON.stringify(existing.concat(sources));
+    }
   }
 
   function closeGeneratorTracker() {
@@ -780,6 +880,17 @@
       var response = await fetch("/api/generate", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ brief: parseBrief(), publish: true }) });
       var payload = await response.json();
       if (!response.ok || !payload.ok) {
+        // The knowledge-base gate never dead-ends. A change order (scarce topic
+        // or a met lower tier) or a precise human request is presented for a
+        // decision instead of a bare failure.
+        if (payload.status === "needs_decision" && payload.change_order) {
+          presentChangeOrder(payload);
+          return;
+        }
+        if (payload.status === "needs_human") {
+          presentHumanRequest(payload);
+          return;
+        }
         var failure = new Error((payload.errors || ["Generator failed."]).join(" "));
         failure.failed_stage = payload.failed_stage || "";
         failure.stage_reports = payload.stage_reports || [];
@@ -818,6 +929,95 @@
   function filePreview(name, content) {
     return "<details class=\"generated-file\"><summary>" + esc(name) + "</summary><pre>" + esc(String(content || "Not generated yet.").slice(0, 2400)) + "</pre></details>";
   }
+
+  // Re-run the generator with an approval token (accept_tier or accept_change_order).
+  async function runGeneratorWithApproval(extra) {
+    if (validationBox) validationBox.innerHTML = "<div class=\"notice\">Applying your decision and building the class...</div>";
+    startGeneratorTracker();
+    try {
+      setGeneratorTrackerStage(0, "Re-checking the setup with your approved change order.");
+      markTrackerStagePassed(0);
+      setGeneratorTrackerStage(1, "Building the knowledge base on the approved scope.");
+      var body = Object.assign({ brief: parseBrief(), publish: true }, extra || {});
+      var response = await fetch("/api/generate", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
+      var payload = await response.json();
+      if (!response.ok || !payload.ok) {
+        if (payload.status === "needs_decision" && payload.change_order) { presentChangeOrder(payload); return; }
+        if (payload.status === "needs_human") { presentHumanRequest(payload); return; }
+        throw new Error((payload.errors || ["Generator failed."]).join(" "));
+      }
+      for (var i = 1; i <= 6; i += 1) markTrackerStagePassed(i);
+      completeGeneratorTracker(payload);
+      enhanceReviewStep();
+      var card = form.querySelector("[data-enhanced-generator]");
+      if (card) card.innerHTML = generatorHtml();
+      if (validationBox) validationBox.innerHTML = "<div class=\"notice\">Class built on the approved scope. Preview and bundle are in Review & Generate.</div>";
+    } catch (error) {
+      failGeneratorTracker(error);
+      if (validationBox) validationBox.innerHTML = "<div class=\"notice warn\">Could not finish: " + esc(error.message || "Unknown error") + "</div>";
+    }
+  }
+
+  // Present a CHANGE ORDER: situation, challenges, recommendation, approve/decline.
+  function presentChangeOrder(payload) {
+    closeGeneratorTracker();
+    var co = payload.change_order || {};
+    var rec = co.recommendation || {};
+    var challenges = (co.challenges || []).map(function (c) { return "<li>" + esc(c) + "</li>"; }).join("");
+    var tradeoffs = (rec.tradeoffs || []).map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("");
+    var tried = (co.what_bernard_tried || []).map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("");
+
+    var approveBtn = "";
+    if (rec.action === "lower_tier" && co.approval_tokens && co.approval_tokens.accept_tier) {
+      approveBtn = "<button type=\"button\" class=\"primary\" data-approve-tier=\"" + attr(co.approval_tokens.accept_tier) + "\">Approve: build " + esc((payload.offered_tier && payload.offered_tier.label) || co.approval_tokens.accept_tier) + "</button>";
+    } else if (co.approval_tokens && co.approval_tokens.accept_change_order) {
+      approveBtn = "<button type=\"button\" class=\"primary\" data-approve-change-order=\"true\">Approve: build evidence-limited class</button>";
+    }
+    var retryBtn = "<button type=\"button\" class=\"ghost\" data-remediate-again=\"true\">Have Bernard search again</button>";
+
+    var box = document.createElement("div");
+    box.className = "notice change-order";
+    box.innerHTML =
+      "<h3>Change order needs your approval</h3>" +
+      "<p><strong>Situation.</strong> " + esc(co.situation || "") + "</p>" +
+      "<p><strong>Challenges.</strong></p><ul>" + challenges + "</ul>" +
+      "<p><strong>Recommendation.</strong> " + esc(rec.summary || "") + "</p>" +
+      (tradeoffs ? "<p><strong>What this means.</strong></p><ul>" + tradeoffs + "</ul>" : "") +
+      (tried ? "<details><summary>What Bernard tried</summary><ul>" + tried + "</ul></details>" : "") +
+      "<div class=\"assist-actions\">" + approveBtn + retryBtn + "</div>";
+    if (validationBox) { validationBox.innerHTML = ""; validationBox.appendChild(box); }
+
+    var t = box.querySelector("[data-approve-tier]");
+    if (t) t.addEventListener("click", function () { runGeneratorWithApproval({ accept_tier: t.getAttribute("data-approve-tier") }); });
+    var c = box.querySelector("[data-approve-change-order]");
+    if (c) c.addEventListener("click", function () { runGeneratorWithApproval({ accept_change_order: true }); });
+    var r = box.querySelector("[data-remediate-again]");
+    if (r) r.addEventListener("click", function () { remediateKnowledgeBase(r); });
+    try { box.scrollIntoView({ behavior: "smooth", block: "center" }); } catch (error) {}
+  }
+
+  // Present the last-resort precise request when nothing can be auto-resolved.
+  function presentHumanRequest(payload) {
+    closeGeneratorTracker();
+    var hr = payload.human_request || {};
+    var co = payload.change_order || {};
+    var options = (hr.your_options || []).map(function (o) { return "<li>" + esc(o) + "</li>"; }).join("");
+    var box = document.createElement("div");
+    box.className = "notice warn";
+    box.innerHTML =
+      "<h3>" + esc(hr.headline || "More source material is needed") + "</h3>" +
+      "<p>Here is exactly what would unblock this:</p><ul>" + options + "</ul>" +
+      ((co.approval_tokens && co.approval_tokens.accept_change_order)
+        ? "<div class=\"assist-actions\"><button type=\"button\" class=\"primary\" data-approve-change-order=\"true\">Proceed evidence-limited on what was found</button><button type=\"button\" class=\"ghost\" data-remediate-again=\"true\">Have Bernard search again</button></div>"
+        : "<div class=\"assist-actions\"><button type=\"button\" class=\"ghost\" data-remediate-again=\"true\">Have Bernard search again</button></div>");
+    if (validationBox) { validationBox.innerHTML = ""; validationBox.appendChild(box); }
+    var c = box.querySelector("[data-approve-change-order]");
+    if (c) c.addEventListener("click", function () { runGeneratorWithApproval({ accept_change_order: true }); });
+    var r = box.querySelector("[data-remediate-again]");
+    if (r) r.addEventListener("click", function () { remediateKnowledgeBase(r); });
+    try { box.scrollIntoView({ behavior: "smooth", block: "center" }); } catch (error) {}
+  }
+
 
   function openGeneratedPreview() {
     if (!generation || !generation.preview_html) return setGenie("Generate a masterclass first, then the preview opens here.");

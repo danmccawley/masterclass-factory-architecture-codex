@@ -14,6 +14,9 @@ const MAX_SOURCE_CHARS = 9000;
 const SOURCE_FETCH_TIMEOUT_MS = 4500;
 const OPENAI_SEARCH_TIMEOUT_MS = 28000;
 const MAX_DISCOVERY_URL_CHECKS = 16;
+// Cap discovery rounds so the serverless function stays under its execution
+// timeout. Each round is one OpenAI web-search call plus up to MAX_DISCOVERY_URL_CHECKS fetches.
+const MAX_DISCOVERY_ROUNDS = 3;
 const MAX_GENERATED_SLIDES = 400;
 const MAX_OPENAI_AUTHORED_SLIDES = 60;
 const MIN_MASTERCLASS_SLIDES = 30;
@@ -151,13 +154,28 @@ function knowledgeBaseStandard(brief) {
   const counts = sourceCounts(brief);
   const sourceGap = Math.max(0, tier.source_floor - counts.total);
   const primaryGap = Math.max(0, tier.primary_source_floor - counts.primary);
-  const ok = sourceGap === 0 && primaryGap === 0;
+  const floorMet = sourceGap === 0 && primaryGap === 0;
+
+  // A human can approve an "evidence-limited" change order for genuinely scarce
+  // topics. When that acknowledgment is present, the floor is treated as waived
+  // by explicit human decision — the gate passes but the result is flagged so the
+  // class and every downstream report disclose the scarcity. This is the ONLY way
+  // the floor is ever bypassed, and it always leaves a visible trail.
+  const evidenceLimited = Boolean(brief && brief.class_tier && brief.class_tier.evidence_limited_ack) && !floorMet;
+  const ok = floorMet || evidenceLimited;
+
   const messages = [];
-  if (sourceGap) messages.push(`Add ${sourceGap} more usable source${sourceGap === 1 ? "" : "s"} to meet the ${tier.label} source floor.`);
-  if (primaryGap) messages.push(`Add ${primaryGap} more primary source${primaryGap === 1 ? "" : "s"} to meet the ${tier.label} primary-source floor.`);
-  if (!messages.length) messages.push(`Knowledge base meets the selected ${tier.label} floor.`);
+  if (evidenceLimited) {
+    messages.push(`Evidence-limited class approved by change order: built on ${counts.total} verified source${counts.total === 1 ? "" : "s"} (${counts.primary} primary), below the ${tier.label} floor of ${tier.source_floor}/${tier.primary_source_floor}. Scope and confidence are disclosed in the class.`);
+  } else {
+    if (sourceGap) messages.push(`Add ${sourceGap} more usable source${sourceGap === 1 ? "" : "s"} to meet the ${tier.label} source floor.`);
+    if (primaryGap) messages.push(`Add ${primaryGap} more primary source${primaryGap === 1 ? "" : "s"} to meet the ${tier.label} primary-source floor.`);
+    if (!messages.length) messages.push(`Knowledge base meets the selected ${tier.label} floor.`);
+  }
   return {
     ok,
+    floor_met: floorMet,
+    evidence_limited: evidenceLimited,
     tier,
     counts,
     required_sources: tier.source_floor,
@@ -314,12 +332,71 @@ function sourceQualityHtml(quality) {
   ].join("");
 }
 
+// SSRF guard. Source URLs can be supplied by the caller (knowledge_base.uploads)
+// or by Bernard's web search, so before the server fetches one we confirm it is a
+// public http(s) host. We resolve the hostname and reject loopback, private,
+// link-local, and cloud-metadata addresses to prevent the generator from being
+// used to read internal services.
+function isPrivateAddress(ip) {
+  const v = String(ip || "");
+  if (v === "::1" || v === "::" || v === "0.0.0.0") return true;
+  // IPv6 unique-local (fc00::/7) and link-local (fe80::/10)
+  if (/^f[cd][0-9a-f]{2}:/i.test(v)) return true;
+  if (/^fe[89ab][0-9a-f]:/i.test(v)) return true;
+  // IPv4-mapped IPv6 — strip prefix and re-test
+  const mapped = v.match(/^::ffff:(\d+\.\d+\.\d+\.\d+)$/i);
+  const ipv4 = mapped ? mapped[1] : v;
+  const m = ipv4.match(/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/);
+  if (!m) return false;
+  const a = Number(m[1]), b = Number(m[2]);
+  if (a === 10) return true;                         // 10.0.0.0/8
+  if (a === 127) return true;                        // loopback
+  if (a === 0) return true;                          // this-network
+  if (a === 169 && b === 254) return true;           // link-local incl. cloud metadata
+  if (a === 172 && b >= 16 && b <= 31) return true;  // 172.16.0.0/12
+  if (a === 192 && b === 168) return true;           // 192.168.0.0/16
+  if (a === 100 && b >= 64 && b <= 127) return true; // carrier-grade NAT 100.64.0.0/10
+  return false;
+}
+
+async function assertFetchableUrl(url) {
+  let parsed;
+  try {
+    parsed = new URL(String(url));
+  } catch (error) {
+    throw new Error("Source URL is not a valid URL.");
+  }
+  if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+    throw new Error("Only http(s) source URLs are allowed.");
+  }
+  const host = parsed.hostname.toLowerCase();
+  if (host === "localhost" || host.endsWith(".localhost") || host.endsWith(".local") || host === "metadata.google.internal") {
+    throw new Error("Source URL points to a non-public host.");
+  }
+  // If the host is a literal IP, check it directly; otherwise resolve it.
+  if (isPrivateAddress(host)) {
+    throw new Error("Source URL points to a private address.");
+  }
+  try {
+    const dns = require("dns").promises;
+    const records = await dns.lookup(host, { all: true });
+    if (records.some((record) => isPrivateAddress(record.address))) {
+      throw new Error("Source URL resolves to a private address.");
+    }
+  } catch (error) {
+    if (/private address/.test(error.message)) throw error;
+    // DNS failure: let the fetch attempt surface the network error normally.
+  }
+}
+
 async function fetchUrlText(url) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), SOURCE_FETCH_TIMEOUT_MS);
   try {
+    await assertFetchableUrl(url);
     const response = await fetch(url, {
       signal: controller.signal,
+      redirect: "follow",
       headers: { "user-agent": "Masterclass Factory source fetcher" }
     });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -531,67 +608,119 @@ async function discoverKnowledgeBaseSources(brief, standard) {
   }
 
   discovery.attempted = true;
-  const needed = {
-    total_sources_needed: Math.max(0, standard.required_sources - current.total),
-    primary_sources_needed: Math.max(0, standard.required_primary_sources - current.primary)
-  };
-  const prompt = JSON.stringify({
-    task: "Find source candidates for this masterclass knowledge base. Return more candidates than needed so verification can reject weak or unreachable pages.",
-    class_title: brief.meta.title,
-    selected_tier: standard.tier,
-    needed,
-    current_sources: brief.knowledge_base.uploads,
-    seed_prompts: brief.knowledge_base.research.seed_prompts,
-    recency_floor: brief.knowledge_base.research.recency_floor,
-    credibility_rules: brief.knowledge_base.credibility,
-    required_mix: [
-      "official standards, code, or governing-body guidance where relevant",
-      "manufacturer or technical installation guidance",
-      "safety, compliance, or risk procedure evidence",
-      "training or certification body guidance",
-      "current practice, quality, troubleshooting, or lessons-learned evidence"
-    ],
-    rules: [
-      "Use web search.",
-      "Return only source candidates with URLs you actually found.",
-      "Do not include fake URLs or generic homepages unless the page itself is useful evidence.",
-      "Prefer source pages that can support teaching claims, procedures, hazards, standards, vocabulary, or assessment.",
-      "Mark primary sources as primary only when the organization is the standard-setter, regulator, manufacturer, certification body, or direct publisher of the evidence."
-    ],
-    required_json_shape: {
-      summary: "string",
-      source_candidates: [{
-        title: "string",
-        url: "https://...",
-        type: "standard|manufacturer guide|safety procedure|certification training|url|data",
-        trust: "primary|secondary|unknown",
-        why: "string"
-      }],
-      gaps: ["string"]
-    }
-  }, null, 2);
+  discovery.rounds = 0;
 
-  const researched = await requestOpenAISearchJson("knowledge-base discovery", prompt, 3200);
-  discovery.model = researched.model;
-  discovery.gaps = list(researched.data && researched.data.gaps, [], 10);
-  const candidates = normalizeDiscoveredSources(researched.data, (brief.knowledge_base.uploads || []).map((source) => source.path));
-  const verificationTarget = Math.max(needed.total_sources_needed + 4, needed.primary_sources_needed + 2, 8);
-  const candidatesToCheck = candidates.slice(0, Math.min(MAX_DISCOVERY_URL_CHECKS, verificationTarget + 4));
-  discovery.notes.push(`Bernard found ${candidates.length} source candidate${candidates.length === 1 ? "" : "s"} and checked ${candidatesToCheck.length} URL${candidatesToCheck.length === 1 ? "" : "s"} for readability.`);
-  const checked = await Promise.all(candidatesToCheck.map(async (candidate) => ({
-    candidate,
-    fetched: await fetchUrlText(candidate.path)
-  })));
-  const verified = [];
-  checked.forEach(({ candidate, fetched }) => {
-    if (fetched.ok) {
-      verified.push(candidate);
-    } else {
-      discovery.rejected_sources.push({ path: candidate.path, reason: fetched.error });
+  // Sources accepted during this run, plus a memory of dead URLs so later
+  // rounds don't re-propose pages that already failed the readability check.
+  const accepted = [];
+  const acceptedPaths = new Set((brief.knowledge_base.uploads || []).map((source) => source.path));
+  const deadPaths = new Set();
+
+  // Recompute the remaining gap against the original uploads + everything
+  // verified so far this run.
+  const remaining = () => {
+    const haveTotal = current.total + accepted.length;
+    const havePrimary = current.primary + accepted.filter((source) => source.trust === "primary").length;
+    return {
+      total_sources_needed: Math.max(0, standard.required_sources - haveTotal),
+      primary_sources_needed: Math.max(0, standard.required_primary_sources - havePrimary)
+    };
+  };
+
+  for (let round = 0; round < MAX_DISCOVERY_ROUNDS; round += 1) {
+    const needed = remaining();
+    if (needed.total_sources_needed === 0 && needed.primary_sources_needed === 0) break;
+    discovery.rounds = round + 1;
+
+    const prompt = JSON.stringify({
+      task: "Find source candidates for this masterclass knowledge base. Return more candidates than needed so verification can reject weak or unreachable pages.",
+      class_title: brief.meta.title,
+      selected_tier: standard.tier,
+      needed,
+      round: round + 1,
+      current_sources: brief.knowledge_base.uploads,
+      already_accepted_urls: Array.from(acceptedPaths),
+      already_rejected_urls: Array.from(deadPaths),
+      seed_prompts: brief.knowledge_base.research.seed_prompts,
+      recency_floor: brief.knowledge_base.research.recency_floor,
+      credibility_rules: brief.knowledge_base.credibility,
+      required_mix: [
+        "official standards, code, or governing-body guidance where relevant",
+        "manufacturer or technical installation guidance",
+        "safety, compliance, or risk procedure evidence",
+        "training or certification body guidance",
+        "current practice, quality, troubleshooting, or lessons-learned evidence"
+      ],
+      rules: [
+        "Use web search.",
+        "Return only source candidates with URLs you actually found.",
+        "Do NOT return any URL listed in already_accepted_urls or already_rejected_urls.",
+        "Do not include fake URLs or generic homepages unless the page itself is useful evidence.",
+        round > 0
+          ? "Earlier rounds came up short. Broaden the search: try adjacent terms, the governing body's own site, regional regulators, manufacturer documentation portals, and certification curricula."
+          : "Prefer source pages that can support teaching claims, procedures, hazards, standards, vocabulary, or assessment.",
+        needed.primary_sources_needed > 0
+          ? `Prioritize PRIMARY sources this round; ${needed.primary_sources_needed} more primary source(s) are required.`
+          : "Mark primary sources as primary only when the organization is the standard-setter, regulator, manufacturer, certification body, or direct publisher of the evidence."
+      ],
+      required_json_shape: {
+        summary: "string",
+        source_candidates: [{
+          title: "string",
+          url: "https://...",
+          type: "standard|manufacturer guide|safety procedure|certification training|url|data",
+          trust: "primary|secondary|unknown",
+          why: "string"
+        }],
+        gaps: ["string"]
+      }
+    }, null, 2);
+
+    let researched;
+    try {
+      researched = await requestOpenAISearchJson("knowledge-base discovery", prompt, 3200);
+    } catch (error) {
+      discovery.notes.push(`Round ${round + 1} search failed: ${safeErrorMessage(error.message || error)}`);
+      break;
     }
-  });
-  discovery.added_sources = verified.slice(0, Math.max(needed.total_sources_needed + 4, needed.primary_sources_needed + 2, 8));
-  if (!verified.length) discovery.notes.push("Bernard searched, but no candidate URLs passed the readability check.");
+    discovery.model = researched.model;
+    discovery.gaps = list(researched.data && researched.data.gaps, [], 10);
+
+    const seenPaths = Array.from(acceptedPaths).concat(Array.from(deadPaths));
+    const candidates = normalizeDiscoveredSources(researched.data, seenPaths)
+      .filter((candidate) => !acceptedPaths.has(candidate.path) && !deadPaths.has(candidate.path));
+
+    const verificationTarget = Math.max(needed.total_sources_needed + 4, needed.primary_sources_needed + 2, 8);
+    const candidatesToCheck = candidates.slice(0, Math.min(MAX_DISCOVERY_URL_CHECKS, verificationTarget + 4));
+    discovery.notes.push(`Round ${round + 1}: Bernard found ${candidates.length} new candidate${candidates.length === 1 ? "" : "s"} and checked ${candidatesToCheck.length} URL${candidatesToCheck.length === 1 ? "" : "s"} for readability.`);
+
+    if (!candidatesToCheck.length) {
+      discovery.notes.push(`Round ${round + 1}: no new candidates to verify; stopping early.`);
+      break;
+    }
+
+    const checked = await Promise.all(candidatesToCheck.map(async (candidate) => ({
+      candidate,
+      fetched: await fetchUrlText(candidate.path)
+    })));
+    checked.forEach(({ candidate, fetched }) => {
+      if (fetched.ok) {
+        accepted.push(candidate);
+        acceptedPaths.add(candidate.path);
+      } else {
+        deadPaths.add(candidate.path);
+        discovery.rejected_sources.push({ path: candidate.path, reason: fetched.error });
+      }
+    });
+  }
+
+  discovery.added_sources = accepted;
+  const finalGap = remaining();
+  if (!accepted.length) {
+    discovery.notes.push("Bernard searched across multiple rounds, but no candidate URLs passed the readability check.");
+  } else if (finalGap.total_sources_needed || finalGap.primary_sources_needed) {
+    discovery.notes.push(`Bernard added ${accepted.length} verified source${accepted.length === 1 ? "" : "s"} over ${discovery.rounds} round${discovery.rounds === 1 ? "" : "s"}, but the floor is still short by ${finalGap.total_sources_needed} usable and ${finalGap.primary_sources_needed} primary.`);
+  }
   return discovery;
 }
 
@@ -611,6 +740,233 @@ async function prepareKnowledgeBase(brief) {
     prepared.knowledge_base.uploads = (prepared.knowledge_base.uploads || []).concat(discovery.added_sources);
   }
   return { brief: prepared, discovery };
+}
+
+// Highest tier whose source floor is already met by the current brief.
+function highestMetTier(brief) {
+  const order = ["expert", "professional", "standard", "briefing"];
+  const counts = sourceCounts(brief);
+  for (const key of order) {
+    const tier = CLASS_TIERS[key];
+    if (counts.total >= tier.source_floor && counts.primary >= tier.primary_source_floor) {
+      return Object.assign({ level: key }, tier);
+    }
+  }
+  return null;
+}
+
+// Diagnose WHY the floor is unmet, so the system can tell "obscure topic, the
+// evidence barely exists" apart from "nobody added sources / research was off."
+// The distinction drives whether we recommend a change order or just ask for input.
+function assessSourceScarcity(discovery, brief) {
+  const webAllowed = brief.knowledge_base && brief.knowledge_base.research && brief.knowledge_base.research.allow_web !== false;
+  const keyOk = validateOpenAIKey(openAIKey()) === null;
+
+  if (!discovery || !discovery.attempted) {
+    return {
+      kind: !keyOk ? "no_research_capability" : (!webAllowed ? "research_disabled" : "not_attempted"),
+      genuinely_scarce: false,
+      verified_found: 0,
+      candidate_pool: 0,
+      rounds: 0
+    };
+  }
+
+  const verified = (discovery.added_sources || []).length;
+  const rejected = (discovery.rejected_sources || []).length;
+  const pool = verified + rejected; // everything Bernard surfaced across all rounds
+  const rounds = discovery.rounds || 0;
+
+  // Genuine scarcity: real multi-round web search surfaced very few candidates at
+  // all. If the pool was large but verification rejected most, the bottleneck is
+  // reachability (often transient), not the topic.
+  if (rounds >= 2 && pool <= Math.max(3, verified + 2)) {
+    return { kind: "topic_scarce", genuinely_scarce: true, verified_found: verified, candidate_pool: pool, rounds };
+  }
+  if (pool > verified && verified < 3) {
+    return { kind: "verification_bottleneck", genuinely_scarce: false, verified_found: verified, candidate_pool: pool, rounds };
+  }
+  return { kind: "partial_progress", genuinely_scarce: rounds >= 2, verified_found: verified, candidate_pool: pool, rounds };
+}
+
+// Build a human-readable CHANGE ORDER: situation, challenges, a concrete
+// recommendation, and the approval token needed to proceed. This is what the
+// system presents when an obscure topic can't meet the requested bar.
+function buildChangeOrder(brief, standard, discovery, scarcity, metTier) {
+  const counts = standard.counts;
+  const briefingFloor = CLASS_TIERS.briefing;
+  const canMeetBriefing = counts.total >= briefingFloor.source_floor && counts.primary >= briefingFloor.primary_source_floor;
+
+  // Decide the recommended action.
+  let action, recommended_tier, summary;
+  if (metTier) {
+    action = "lower_tier";
+    recommended_tier = metTier.level;
+    summary = `Build a ${metTier.label} now (its ${metTier.source_floor}/${metTier.primary_source_floor} floor is met) instead of holding out for ${standard.tier.label}.`;
+  } else if (scarcity.genuinely_scarce && counts.total > 0) {
+    action = "evidence_limited_proceed";
+    recommended_tier = canMeetBriefing ? "briefing" : (brief.class_tier && brief.class_tier.level) || "briefing";
+    summary = `This topic is genuinely source-scarce. Recommend building an evidence-limited ${CLASS_TIERS[recommended_tier].label} on the ${counts.total} verified source(s) found, with scope, confidence, and "where evidence is thin" disclosed throughout — rather than waiting for sources that do not appear to exist publicly.`;
+  } else if (scarcity.kind === "verification_bottleneck") {
+    action = "retry_or_supply";
+    recommended_tier = (brief.class_tier && brief.class_tier.level) || "professional";
+    summary = `Bernard found candidate sources but most could not be fetched this run (often a temporary network/paywall issue). Recommend a retry, or supply one or two reachable sources directly.`;
+  } else {
+    action = "supply_sources";
+    recommended_tier = (brief.class_tier && brief.class_tier.level) || "professional";
+    summary = scarcity.kind === "no_research_capability"
+      ? "AI research is not connected, so no automated sourcing was possible. Recommend adding sources, or connecting OpenAI so Bernard can search."
+      : scarcity.kind === "research_disabled"
+        ? "Web research is turned off for this class. Recommend enabling it so Bernard can search, or adding sources directly."
+        : "Recommend adding one or more sources, or enabling AI-owned web research.";
+  }
+
+  const challenges = [];
+  challenges.push(`Requested bar: ${standard.tier.label} (${standard.required_sources} usable / ${standard.required_primary_sources} primary).`);
+  challenges.push(`Verified evidence on hand: ${counts.total} usable / ${counts.primary} primary.`);
+  if (scarcity.kind === "topic_scarce") challenges.push(`Across ${scarcity.rounds} rounds of web search, only ${scarcity.candidate_pool} candidate source(s) surfaced at all — the public evidence base for this topic is thin.`);
+  if (scarcity.kind === "verification_bottleneck") challenges.push(`${scarcity.candidate_pool} candidates were found but ${(discovery.rejected_sources || []).length} could not be fetched/verified this run.`);
+  (discovery && discovery.gaps || []).slice(0, 6).forEach((g) => challenges.push(`Gap: ${g}`));
+
+  const tradeoffs = [];
+  if (action === "evidence_limited_proceed") {
+    tradeoffs.push("The class will be narrower than a full masterclass and will say so plainly.");
+    tradeoffs.push("Every claim stays tied to the verified sources; thin areas are flagged as open questions, not asserted.");
+    tradeoffs.push("It carries an explicit evidence-limited label so learners and auditors see the scope.");
+  } else if (action === "lower_tier") {
+    tradeoffs.push(`Depth and source breadth match ${metTier.label}, not ${standard.tier.label}.`);
+  }
+
+  return {
+    situation: `A ${standard.tier.label} was requested for "${brief.meta.title || "this class"}", but the available verified evidence does not meet that floor.`,
+    diagnosis: scarcity.kind,
+    genuinely_scarce: scarcity.genuinely_scarce,
+    challenges,
+    recommendation: { action, recommended_tier, summary, tradeoffs },
+    what_bernard_tried: (discovery && discovery.notes) || ["Automated discovery was not available for this run."],
+    rejected_sources: (discovery && discovery.rejected_sources) || [],
+    how_to_approve: action === "evidence_limited_proceed"
+      ? "Re-POST with accept_change_order:true to build the evidence-limited class, or accept_tier:'<level>' for a specific tier."
+      : action === "lower_tier"
+        ? `Re-POST with accept_tier:'${recommended_tier}' to build at the recommended tier.`
+        : "Add sources or enable research, then start the generator again. Or re-POST with accept_change_order:true to proceed evidence-limited on what was found.",
+    approval_tokens: {
+      accept_change_order: action === "evidence_limited_proceed" || (scarcity.genuinely_scarce && counts.total > 0),
+      accept_tier: metTier ? metTier.level : (canMeetBriefing ? "briefing" : null)
+    }
+  };
+}
+
+// The recovery ladder. The knowledge-base gate must never produce a dead end.
+// It resolves to exactly one of:
+//   { resolution: "ready" }                 → floor met, generate normally
+//   { resolution: "tier_offer", ... }       → a lower tier IS met; offer it (needs consent)
+//   { resolution: "needs_human", ... }      → genuinely stuck; a specific, actionable ask
+//
+// Rungs, in order:
+//   0. Gate check on the brief as-is.
+//   1. Auto-attempt discovery EVEN IF the class is creator/assisted-owned
+//      (forced for this run only) — failing without trying is not allowed.
+//   2. Multi-round broadening discovery (handled inside discoverKnowledgeBaseSources).
+//   3. Tier negotiation: if a lower tier is fully met, offer it instead of failing.
+//   4. Escalate to the human with a precise request — last resort only.
+async function resolveKnowledgeBase(brief) {
+  const working = JSON.parse(JSON.stringify(brief));
+
+  // Rung 0: already meets the selected floor.
+  let standard = knowledgeBaseStandard(working);
+  if (standard.ok) {
+    return { resolution: "ready", brief: working, standard, discovery: null, ladder: ["floor-met-as-submitted"] };
+  }
+
+  const ladder = [];
+  const owner = researchOwner(working);
+  const webAllowed = working.knowledge_base && working.knowledge_base.research && working.knowledge_base.research.allow_web !== false;
+
+  // Rung 1+2: auto-attempt discovery. Force AI research for this run if the
+  // class did not already own it to the AI, so a creator-mode class still gets
+  // a real attempt before anything escalates. The saved brief is untouched.
+  let discovery = null;
+  if (webAllowed && validateOpenAIKey(openAIKey()) === null) {
+    if (owner !== "ai") {
+      working.knowledge_base.research = working.knowledge_base.research || {};
+      working.knowledge_base.research.owner = "ai";
+      ladder.push("forced-ai-research-for-recovery");
+    }
+    const prepared = await prepareKnowledgeBase(working);
+    discovery = prepared.discovery;
+    working.knowledge_base = prepared.brief.knowledge_base;
+    ladder.push(`discovery-rounds:${(discovery && discovery.rounds) || 0}`);
+    standard = knowledgeBaseStandard(working);
+    if (standard.ok) {
+      return { resolution: "ready", brief: working, standard, discovery, ladder };
+    }
+  } else {
+    ladder.push(webAllowed ? "discovery-skipped-no-openai-key" : "discovery-skipped-web-disabled");
+  }
+
+  // Rung 3: tier negotiation. If the evidence we DO have fully satisfies a
+  // lower tier, that is a legitimate class, not a failure — present it as a
+  // change order the human can accept.
+  const metTier = highestMetTier(working);
+  const scarcity = assessSourceScarcity(discovery, working);
+  const changeOrder = buildChangeOrder(working, standard, discovery || {}, scarcity, (metTier && metTier.level !== standard.tier.level) ? metTier : null);
+
+  if (metTier && metTier.level !== standard.tier.level) {
+    return {
+      resolution: "change_order",
+      sub_kind: "tier_offer",
+      brief: working,
+      standard,
+      discovery,
+      offered_tier: metTier,
+      requested_tier: standard.tier,
+      change_order: changeOrder,
+      ladder: ladder.concat([`change-order:lower-tier:${metTier.level}`]),
+      message: changeOrder.recommendation.summary
+    };
+  }
+
+  // Rung 4: no tier is met. For a genuinely scarce topic this is a change order
+  // recommending an evidence-limited build; otherwise it's a precise ask for input.
+  if (scarcity.genuinely_scarce && standard.counts.total > 0) {
+    return {
+      resolution: "change_order",
+      sub_kind: "evidence_limited",
+      brief: working,
+      standard,
+      discovery,
+      change_order: changeOrder,
+      ladder: ladder.concat(["change-order:evidence-limited"]),
+      message: changeOrder.recommendation.summary
+    };
+  }
+
+  return {
+    resolution: "needs_human",
+    brief: working,
+    standard,
+    discovery,
+    change_order: changeOrder,
+    ladder: ladder.concat(["escalate-to-human"]),
+    human_request: {
+      headline: `I need ${standard.source_gap} more usable source(s)` +
+        (standard.primary_source_gap ? ` including ${standard.primary_source_gap} primary` : "") +
+        ` to build this at the ${standard.tier.label} bar.`,
+      what_i_tried: (discovery && discovery.notes) || ["Automated source discovery was not available for this run."],
+      gaps: (discovery && discovery.gaps) || [],
+      rejected_sources: (discovery && discovery.rejected_sources) || [],
+      your_options: changeOrder.recommendation.summary
+        ? [changeOrder.recommendation.summary].concat([
+            "Upload or paste a source document for the missing area.",
+            "Point me at a specific URL (a standard, manufacturer guide, regulator page, or certification material)."
+          ])
+        : [
+            "Upload or paste a source document for the missing area.",
+            "Turn on AI-owned web research if it is currently off."
+          ]
+    }
+  };
 }
 
 async function buildSourcePaper(brief) {
@@ -633,6 +989,9 @@ async function buildSourcePaper(brief) {
       `<p><strong>Audience floor:</strong> ${html(brief.audience.floor.background || "Not specified")} / ${html(brief.audience.floor.education || "education not specified")}.</p>`,
       `<p><strong>Language:</strong> ${html(brief.language.primary || "en")}.</p>`,
       `<p>This section is generated from the class setup package. It is allowed to guide curriculum shape, but it is not a substitute for outside evidence.</p>`,
+      (standard.evidence_limited
+        ? `<p><strong>⚠ Evidence-limited class.</strong> This masterclass was built by approved change order on ${html(standard.counts.total)} verified source${standard.counts.total === 1 ? "" : "s"} (${html(standard.counts.primary)} primary), which is below the ${html(standard.tier.label)} floor of ${html(standard.required_sources)}/${html(standard.required_primary_sources)}. The public evidence base for this topic is scarce. Claims are held to what the available sources support; areas where evidence is thin are flagged as open questions rather than asserted. Treat this as a source-honest orientation, not a comprehensive treatment.${brief.class_tier && brief.class_tier.evidence_limited_note ? " " + html(brief.class_tier.evidence_limited_note) : ""}</p>`
+        : ""),
       sourceQualityHtml(sourceQuality({}, { setup: true }))
     ].join("")
   });
@@ -2529,24 +2888,81 @@ module.exports = async function generateHandler(req, res) {
       return;
     }
 
-    const prepared = await prepareKnowledgeBase(brief);
-    const effectiveBrief = prepared.brief;
-    const sourceDiscovery = prepared.discovery;
-    const preparedStandard = knowledgeBaseStandard(effectiveBrief);
-    if (!preparedStandard.ok) {
-      send(res, 422, {
+    // Recovery ladder: the knowledge-base gate never dead-ends. It resolves to
+    // ready, a change order the human can accept, or a precise human request.
+    const acceptTier = body && body.accept_tier ? String(body.accept_tier).toLowerCase() : null;
+    const acceptChangeOrder = Boolean(body && body.accept_change_order);
+    const recovery = await resolveKnowledgeBase(brief);
+    const sourceDiscovery = recovery.discovery || {
+      owner: researchOwner(brief), attempted: false, model: "", added_sources: [], rejected_sources: [], gaps: [], notes: []
+    };
+
+    if (recovery.resolution === "change_order") {
+      // The caller can approve the change order two ways:
+      //  - accept_tier: build at a specific (lower) tier whose floor is met
+      //  - accept_change_order: build evidence-limited on what was found
+      if (acceptTier && CLASS_TIERS[acceptTier]) {
+        recovery.brief.class_tier = { level: acceptTier };
+        const reStandard = knowledgeBaseStandard(recovery.brief);
+        if (reStandard.ok) {
+          recovery.resolution = "ready";
+          recovery.standard = reStandard;
+          recovery.ladder.push(`accepted-tier:${acceptTier}`);
+        }
+      } else if (acceptChangeOrder && recovery.change_order && recovery.change_order.approval_tokens.accept_change_order) {
+        // Approve an evidence-limited build: optionally drop to the recommended
+        // tier, then stamp the human acknowledgment so the floor is waived with
+        // a disclosed trail.
+        const recTier = recovery.change_order.recommendation.recommended_tier;
+        if (recTier && CLASS_TIERS[recTier]) recovery.brief.class_tier = { level: recTier };
+        recovery.brief.class_tier = recovery.brief.class_tier || { level: "briefing" };
+        recovery.brief.class_tier.evidence_limited_ack = true;
+        recovery.brief.class_tier.evidence_limited_note = recovery.change_order.recommendation.summary;
+        const reStandard = knowledgeBaseStandard(recovery.brief);
+        if (reStandard.ok) {
+          recovery.resolution = "ready";
+          recovery.standard = reStandard;
+          recovery.ladder.push("accepted-change-order:evidence-limited");
+        }
+      }
+
+      if (recovery.resolution === "change_order") {
+        send(res, 200, {
+          ok: false,
+          status: "needs_decision",
+          failed_stage: "knowledge-base-standard",
+          resolution: "change_order",
+          change_order: recovery.change_order,
+          offered_tier: recovery.offered_tier || null,
+          requested_tier: recovery.requested_tier || recovery.standard.tier,
+          knowledge_standard: recovery.standard,
+          source_discovery: sourceDiscovery,
+          recovery_ladder: recovery.ladder,
+          how_to_proceed: recovery.change_order.how_to_approve,
+          errors: [recovery.message]
+        });
+        return;
+      }
+    }
+
+    if (recovery.resolution === "needs_human") {
+      send(res, 200, {
         ok: false,
+        status: "needs_human",
         failed_stage: "knowledge-base-standard",
-        errors: [`Knowledge base does not meet the selected ${preparedStandard.tier.label} standard: ${preparedStandard.messages.join(" ")}`],
-        knowledge_standard: preparedStandard,
+        resolution: "needs_human",
+        human_request: recovery.human_request,
+        change_order: recovery.change_order || null,
+        knowledge_standard: recovery.standard,
         source_discovery: sourceDiscovery,
-        stage_reports: [
-          { stage: "knowledge-base-discovery", ok: !sourceDiscovery.attempted || Boolean(sourceDiscovery.added_sources && sourceDiscovery.added_sources.length), owner: sourceDiscovery.owner, model: sourceDiscovery.model || null, added_sources: sourceDiscovery.added_sources.length },
-          { stage: "knowledge-base-standard", ok: false, tier: preparedStandard.tier.label, message: preparedStandard.messages.join(" ") }
-        ]
+        recovery_ladder: recovery.ladder,
+        errors: [recovery.human_request.headline]
       });
       return;
     }
+
+    const effectiveBrief = recovery.brief;
+    const preparedStandard = recovery.standard;
     const sourceBuild = await buildSourcePaper(effectiveBrief);
     let pipeline;
     const keyError = validateOpenAIKey(openAIKey());
@@ -2645,4 +3061,18 @@ module.exports = async function generateHandler(req, res) {
   } catch (error) {
     send(res, 400, { ok: false, errors: [safeErrorMessage(error.message || error)] });
   }
+};
+
+// Internal helpers reused by sibling endpoints (e.g. api/remediate.js).
+// Exported here so remediation reuses the exact discovery + standard logic
+// instead of duplicating it and drifting from the verified contract.
+module.exports._internal = {
+  knowledgeBaseStandard,
+  discoverKnowledgeBaseSources,
+  prepareKnowledgeBase,
+  sourceCounts,
+  researchOwner,
+  readBody,
+  send,
+  safeErrorMessage
 };
