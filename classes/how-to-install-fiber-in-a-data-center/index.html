@@ -537,6 +537,16 @@
     font-size:15px;color:var(--ink);font-family:var(--sans);line-height:1.5;resize:vertical;min-height:96px;}
   .fb-text:focus{outline:none;border-color:rgba(230,160,66,.6);}
   .fb-actions{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;}
+  .quality-score{display:flex;align-items:center;gap:14px;margin:8px 0 14px;padding:14px;border:1px solid rgba(70,200,192,.35);border-radius:12px;background:rgba(70,200,192,.1);}
+  .quality-score strong{font-family:var(--serif);font-size:46px;line-height:1;color:var(--teal);}
+  .quality-score span{font-family:var(--mono);font-size:12px;color:var(--dim);text-transform:uppercase;letter-spacing:.05em;}
+  .quality-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0;}
+  .quality-metric{display:grid;gap:4px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.025);}
+  .quality-metric span{font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--dim);}
+  .quality-metric strong{font-size:19px;color:var(--ink);}
+  .quality-note{margin:12px 0;padding:11px 12px;border-radius:10px;background:rgba(230,160,66,.09);border:1px solid rgba(230,160,66,.25);color:var(--dim);line-height:1.45;}
+  .quality-list{margin:8px 0 0 18px;color:var(--dim);line-height:1.45;}
+  .quality-list li{margin-bottom:7px;}
   .chat-inrow{display:flex;gap:8px;align-items:center;margin-top:14px;}
   .chat-inrow .chatin{flex:1;margin-top:0;}
   .chat-mic{flex:0 0 auto;padding:10px 13px;font-size:16px;line-height:1;}
@@ -650,7 +660,7 @@
   #scrollcue .sc-label{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);opacity:.8;}
   @keyframes scuebob{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(5px);}}
   @media (max-width:600px){ #scrollcue{bottom:54px;} }
-  /* ---- select-any-text -> Ask AI menu ---- */
+  /* ---- select-any-text -> Ask Bernard menu ---- */
   #selAsk{position:fixed;z-index:62;background:linear-gradient(160deg,#0d1117,#0a0d12);border:1px solid rgba(70,200,192,.5);
     border-radius:12px;padding:10px 11px;box-shadow:0 18px 54px -14px rgba(0,0,0,.85),0 0 28px -12px rgba(70,200,192,.5);
     opacity:0;visibility:hidden;transform:translateY(5px);transition:opacity .15s,transform .15s,visibility .15s;max-width:300px;}
@@ -676,7 +686,8 @@
     <button class="toolbtn" onclick="openListen()" id="listenToolBtn">▶ Listen</button>
     <button class="toolbtn" onclick="openLevel()" id="levelBtn">◎ Level</button>
     <button class="toolbtn" onclick="openFeedback()" id="fbToolBtn">✎ Feedback</button>
-    <button class="toolbtn" data-modal="chat">✦ Ask AI</button>
+    <button class="toolbtn" data-modal="quality">▣ Quality</button>
+    <button class="toolbtn" data-modal="chat">✦ Ask Bernard</button>
   </div>
 </div>
 
@@ -684,15 +695,15 @@
   <span id="listenStatus">Starting…</span>
   <div class="lb-btns">
     <button id="lbPlay" class="lb-btn" onclick="listenPlayPause()" title="Play / pause">⏸</button>
-    <button id="lbAsk" class="lb-btn lb-ask" onclick="listenAsk()" title="Ask a question out loud">🎤 Ask</button>
+    <button id="lbAsk" class="lb-btn lb-ask" onclick="listenAsk()" title="Ask Bernard out loud">🎤 Ask Bernard</button>
     <button id="lbStop" class="lb-btn" onclick="listenStop()" title="Stop listening">⏹</button>
   </div>
 </div>
 
 <div id="scrollcue" aria-hidden="true"><span class="sc-arrow">⌄</span><span class="sc-label">more below</span></div>
 
-<div id="selAsk" role="menu" aria-label="Ask AI about the selected text">
-  <div class="sel-head">Ask AI about “<span id="selAskText"></span>”</div>
+<div id="selAsk" role="menu" aria-label="Ask Bernard about the selected text">
+  <div class="sel-head">Ask Bernard about “<span id="selAskText"></span>”</div>
   <div class="sel-opts">
     <button class="sel-opt" data-kind="definition">📖 Definition</button>
     <button class="sel-opt" data-kind="context">🧭 Context</button>
@@ -767,14 +778,24 @@
   </div>
 </div>
 
+<!-- QUALITY MODAL -->
+<div class="modal" id="qualityModal">
+  <div class="panel">
+    <h3>Quality & participation</h3>
+    <div class="desc">This report checks class quality signals and gauges student participation from slide views, polls, word clouds, quizzes, feedback, and Bernard questions.</div>
+    <div id="qualityReport"></div>
+    <button class="btn ghost" onclick="closeModal('quality')">Close</button>
+  </div>
+</div>
+
 <!-- CHAT MODAL -->
 <div class="modal" id="chatModal">
   <div class="panel">
-    <h3>Ask the AI tutor</h3>
-    <div class="desc">Scoped to this class — how to install fiber in a data center for Construction Manager</div>
+    <h3>Ask Bernard</h3>
+    <div class="desc">Bernard is the conversational AI layer for this class. Click Ask Bernard, or say “Bernard” while Listen mode is active, and he will help in clear English with an English-accent voice when your browser supports it. Scoped to this class — how to install fiber in a data center for Construction Manager</div>
     <div class="chatlog" id="chatlog"></div>
     <div class="chat-inrow">
-      <input class="chatin" id="chatIn" placeholder="Ask a question, or use the mic…" />
+      <input class="chatin" id="chatIn" placeholder="Ask Bernard a question, or use the mic…" />
       <button class="btn chat-mic" id="chatMic" onclick="toggleChatDictation()" title="Speak your question">🎤</button>
     </div>
     <span class="muted" id="chatMicState"></span>

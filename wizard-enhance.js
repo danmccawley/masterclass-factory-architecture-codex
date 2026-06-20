@@ -23,6 +23,7 @@
     { label: "Slide writing", detail: "Writing the teaching slides to match the requested slide budget." },
     { label: "Source verify", detail: "Checking citations against the approved knowledge base." },
     { label: "QA gate", detail: "Testing the generated content layer and class shell." },
+    { label: "Quality audit", detail: "Scoring class quality, assessment coverage, and participation design." },
     { label: "Publish", detail: "Preparing the launch link, QR code, preview, and GitHub/Vercel handoff." }
   ];
 
@@ -471,10 +472,12 @@
     if (!generation) return "<h3>Generated masterclass</h3><p class=\"hint\">No masterclass has been generated in this session yet. Start generator will build the content layer, run source verification and QA, assemble the deck template, and prepare a preview plus deployable bundle.</p>";
     var files = generation.files || {};
     var publish = generation.publish || {};
+    var quality = generation.quality || {};
     var classUrl = publish.status === "published" ? (generation.class_url || publish.expected_url || "") : "";
     var slideCount = Number(generation.slide_count || 0);
     var requestedSlides = Number(generation.requested_slide_budget || 0);
     var slideText = slideCount ? slideCount + (requestedSlides ? " / " + requestedSlides + " requested" : "") : "unknown";
+    var qualityText = quality.score ? quality.score + " / 100 (" + (quality.status || "checked") + ")" : "Not run";
     var stages = (generation.stage_reports || []).map(function (stage) {
       return "<li><strong>" + esc(stage.stage || "stage") + ":</strong> " + (stage.ok ? "passed" : esc(stage.message || "used fallback")) + "</li>";
     }).join("");
@@ -490,14 +493,28 @@
       publishNotice = "<div class=\"notice warn\"><strong>Generated, publish failed:</strong> " + esc(publish.message || "GitHub publish failed.") + "</div>";
     }
     return "<h3>Generated masterclass</h3>" +
-      "<div class=\"generator-status\"><div class=\"notice\"><strong>QA:</strong> " + esc(generation.qa || "Not run") + " · <strong>Source check:</strong> " + (generation.source_verify && generation.source_verify.ok ? "PASS" : "Not run") + " · <strong>Slides:</strong> " + esc(slideText) + " · <strong>Mode:</strong> " + esc(generation.mode || "unknown") + "</div>" +
+      "<div class=\"generator-status\"><div class=\"notice\"><strong>QA:</strong> " + esc(generation.qa || "Not run") + " · <strong>Source check:</strong> " + (generation.source_verify && generation.source_verify.ok ? "PASS" : "Not run") + " · <strong>Quality:</strong> " + esc(qualityText) + " · <strong>Slides:</strong> " + esc(slideText) + " · <strong>Mode:</strong> " + esc(generation.mode || "unknown") + "</div>" +
       publishNotice +
       (classUrl ? "<div class=\"class-url-card\"><span class=\"mini-label\">Generated class URL</span><a href=\"" + attr(classUrl) + "\" target=\"_blank\" rel=\"noreferrer\">" + esc(classUrl) + "</a><img class=\"qr-image\" alt=\"QR code for generated class\" src=\"/api/qr?url=" + encodeURIComponent(classUrl) + "\"><button type=\"button\" class=\"ghost\" data-copy-class-url>Copy class link</button></div>" : "") +
       "<div class=\"generated-actions\"><button type=\"button\" class=\"primary\" data-open-preview>Open preview</button><button type=\"button\" class=\"ghost\" data-download-preview>Download preview HTML</button><button type=\"button\" class=\"ghost\" data-download-bundle>Download deploy bundle</button><button type=\"button\" class=\"ghost\" data-download-script>Download presenter script</button></div>" +
       (stages ? "<details class=\"generated-meta\"><summary>Pipeline stages</summary><ul>" + stages + "</ul></details>" : "") +
+      (quality.score ? "<details class=\"generated-meta\"><summary>Quality audit</summary>" + qualityHtml(quality) + "</details>" : "") +
       (warnings ? "<details class=\"generated-meta\"><summary>Warnings and source notes</summary><ul>" + warnings + "</ul></details>" : "") +
       "</div><div class=\"generated-files\">" +
       filePreview("content.js", files["content.js"]) + filePreview("glossary.js", files["glossary.js"]) + filePreview("source.js", files["source.js"]) + "</div>";
+  }
+
+  function qualityHtml(quality) {
+    var scores = quality.scores || {};
+    var scoreRows = Object.keys(scores).map(function (key) {
+      return "<li><strong>" + esc(key.replace(/_/g, " ")) + ":</strong> " + esc(scores[key]) + " / 100</li>";
+    }).join("");
+    var recs = (quality.recommendations || []).map(function (item) {
+      return "<li>" + esc(item) + "</li>";
+    }).join("");
+    return "<div class=\"notice\"><strong>Release quality:</strong> " + esc(quality.score || "0") + " / 100 · " + esc(quality.status || "checked") + "</div>" +
+      (scoreRows ? "<ul>" + scoreRows + "</ul>" : "") +
+      (recs ? "<p><strong>Recommendations</strong></p><ul>" + recs + "</ul>" : "");
   }
 
   function trackerHtml() {

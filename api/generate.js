@@ -1350,6 +1350,71 @@ function qaGate(files, generated, sourcePaper) {
   return { ok: issues.length === 0, issues };
 }
 
+function qualityAudit(brief, generated, sourcePaper, sourceCheck, qa) {
+  const issues = [];
+  const recommendations = [];
+  const slideCount = generated.slides.length;
+  const requested = generated.slide_target || slideCount;
+  const teachingSlides = Math.max(0, slideCount - 1);
+  const citedTeaching = generated.slideDrafts.filter((slide) => (
+    Array.isArray(slide.source_ids) && slide.source_ids.length
+  )).length;
+  const interactiveSlides = generated.slides.filter((slide) => (
+    slide.poll || slide.words || /data-quiz=/.test(slide.deck || "")
+  )).length;
+  const sourceSections = sourcePaper && Array.isArray(sourcePaper.sections) ? sourcePaper.sections.length : 0;
+  const objectives = generated.objectives || {};
+  const terminalCount = Array.isArray(objectives.terminal) ? objectives.terminal.length : 0;
+  const enablingCount = Array.isArray(objectives.enabling) ? objectives.enabling.length : 0;
+  const quizCount = Array.isArray(generated.quizzes) ? generated.quizzes.length : 0;
+  const pollCount = Object.keys(generated.polls || {}).length;
+  const wordCount = Object.keys(generated.words || {}).length;
+  const hasWorksCited = generated.slides.some((slide) => slide.id === "knowledge-base-works-cited");
+  const scores = {
+    slide_budget: slideCount === requested ? 100 : Math.max(0, 100 - Math.abs(slideCount - requested) * 10),
+    source_grounding: sourceCheck.ok ? Math.round(Math.min(1, citedTeaching / Math.max(1, teachingSlides)) * 100) : 0,
+    objective_alignment: Math.min(100, (terminalCount ? 45 : 0) + Math.min(35, enablingCount * 6) + (generated.lesson_plan && generated.lesson_plan.length ? 20 : 0)),
+    participation_design: Math.min(100, Math.round((interactiveSlides / Math.max(1, teachingSlides)) * 220)),
+    assessment: Math.min(100, (quizCount ? 50 : 0) + Math.min(30, pollCount * 10) + Math.min(20, wordCount * 10)),
+    transparency: hasWorksCited ? 100 : 35,
+    schema_qa: qa.ok ? 100 : 0
+  };
+  if (scores.slide_budget < 100) issues.push("Generated slide count does not match the requested slide budget.");
+  if (scores.source_grounding < 70) recommendations.push("Increase explicit source anchors on teaching slides.");
+  if (scores.objective_alignment < 70) recommendations.push("Strengthen terminal/enabling objective coverage in the lesson plan.");
+  if (scores.participation_design < 45) recommendations.push("Add more participation moments: polls, word clouds, quizzes, or Bernard prompts.");
+  if (scores.assessment < 60) recommendations.push("Add more assessment checks so mastery is visible.");
+  if (sourceSections < 2) recommendations.push("Add more source material to improve evidence depth.");
+  if (!hasWorksCited) issues.push("The final Knowledge Base / Works Cited slide is missing.");
+  const overall = Math.round(
+    scores.slide_budget * 0.18 +
+    scores.source_grounding * 0.2 +
+    scores.objective_alignment * 0.18 +
+    scores.participation_design * 0.14 +
+    scores.assessment * 0.14 +
+    scores.transparency * 0.08 +
+    scores.schema_qa * 0.08
+  );
+  if (overall < 70) issues.push(`Class quality score ${overall} is below the 70-point release threshold.`);
+  return {
+    ok: issues.length === 0 && overall >= 70,
+    score: overall,
+    status: overall >= 90 ? "excellent" : overall >= 80 ? "strong" : overall >= 70 ? "usable" : "needs revision",
+    scores,
+    issues,
+    recommendations: recommendations.length ? recommendations : ["Quality gate passed. Review live participation data after delivery for the next revision."],
+    rubric: [
+      "slide budget fidelity",
+      "source grounding",
+      "objective alignment",
+      "participation design",
+      "assessment coverage",
+      "works-cited transparency",
+      "schema QA"
+    ]
+  };
+}
+
 function replacementMap(brief) {
   const title = brief.meta.title || "Untitled Masterclass";
   const audience = brief.audience.floor.role || brief.audience.average.role || "learner";
@@ -1393,6 +1458,7 @@ function makeBundle(brief, files, presenterScript) {
     "api/poll.js": readTemplateFile("api/poll.js"),
     "api/words.js": readTemplateFile("api/words.js"),
     "api/feedback.js": readTemplateFile("api/feedback.js"),
+    "api/quality.js": readTemplateFile("api/quality.js"),
     "api/tts.js": readTemplateFile("api/tts.js")
   };
   return {
@@ -1573,12 +1639,14 @@ module.exports = async function generateHandler(req, res) {
     };
     const sourceCheck = sourceVerify(generated, sourceBuild.sourcePaper);
     const qa = qaGate(files, generated, sourceBuild.sourcePaper);
-    if (!sourceCheck.ok || !qa.ok) {
+    const quality = qualityAudit(brief, generated, sourceBuild.sourcePaper, sourceCheck, qa);
+    if (!sourceCheck.ok || !qa.ok || !quality.ok) {
       send(res, 500, {
         ok: false,
-        errors: sourceCheck.issues.concat(qa.issues),
+        errors: sourceCheck.issues.concat(qa.issues).concat(quality.issues),
         source_verify: sourceCheck,
-        qa
+        qa,
+        quality
       });
       return;
     }
@@ -1603,11 +1671,12 @@ module.exports = async function generateHandler(req, res) {
       requested_slide_budget: generated.slide_target,
       teaching_slide_count: generated.slideDrafts.length - 1,
       source_verify: { ok: true, issues: [] },
+      quality,
       message: pipeline.mode === "openai"
         ? "Masterclass generated with OpenAI stages, independent source verification, QA, preview, bundle, and publish handoff."
         : "Masterclass generated with the conservative deterministic path because OpenAI was unavailable. Preview, bundle, source verification, QA, and publish handoff are ready.",
       warnings: [pipeline.warning].concat(sourceBuild.notes || []).filter(Boolean),
-      stage_reports: pipeline.reports || [],
+      stage_reports: (pipeline.reports || []).concat([{ stage: "quality", ok: true, score: quality.score, status: quality.status }]),
       lesson_plan: generated.lesson_plan,
       objectives: generated.objectives,
       files,

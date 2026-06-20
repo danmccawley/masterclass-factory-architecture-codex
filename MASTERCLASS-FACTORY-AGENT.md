@@ -40,7 +40,7 @@ in §11.
 |---|---|---|
 | **Engine** | `engine.js`, `navscrubber.js` | — |
 | **Shell** | `index.html` (CSS tokens, modal markup, load order) | the ~5 topic strings inside it (chat-modal desc, etc.) |
-| **Backends** | `api/chat.js`, `api/grade.js`, `api/tts.js`, `api/poll.js`, `api/words.js`, `api/feedback.js` | the 2 system-prompt topic strings in `chat.js` + `grade.js` |
+| **Backends** | `api/chat.js`, `api/grade.js`, `api/tts.js`, `api/poll.js`, `api/words.js`, `api/feedback.js`, `api/quality.js` | the 2 system-prompt topic strings in `chat.js` + `grade.js` |
 | **Content** | — | `content.js` (`SLIDES`,`POLLS`,`WORDS`), `glossary.js` (`GLOSSARY`), `source.js` (`SOURCES`) |
 | **Presenter** | `build_script.js` (docx generator) | re-run after content to emit the Facilitator script |
 
@@ -303,6 +303,7 @@ the whole engine.
 | Listen mode (audio) † | `narrateCurrent` `speak` `speakBrowser` `primeVoice` `listenAsk` `openListen` | No — reads slide prose at runtime | pure engine (+ `/api/tts`) |
 | Voice dictation | `startDictation` `toggleDictation` | No | pure engine |
 | Feedback | `openFeedback` `submitFeedback` | No — context auto-captured | pure engine |
+| Quality / participation | `openQuality` `trackParticipation` `renderQualityReport` | No — reads live participation signals at runtime | pure engine (+ `/api/quality`) |
 | Collapsible tools (☰) † | `toggleTools` `closeTools` | No | pure engine |
 | QR follow-along | `buildQR` | No — from live URL | pure engine |
 | Modals / utilities | `anyModalOpen` `closeAllModals` `api` `getLS/setLS` `toggle` `esc` `norm` | No | pure engine |
@@ -531,18 +532,19 @@ Heatmap tones: `tone-good` (green) · `tone-mid` (amber) · `tone-bad` (oxblood)
 
 ## 8a. Backend contracts (VERIFIED against the shipped deck)
 
-All six are **topic-agnostic and reused unchanged** except the two AI system prompts (`chat.js`,
+All seven are **topic-agnostic and reused unchanged** except the two AI system prompts (`chat.js`,
 `grade.js`), which the Factory regenerates per deck (see §6e). Verified from the actual deployed
 files — these are exact.
 
 | Endpoint | Method · params | Returns | Service / model | Env | Status codes |
 |---|---|---|---|---|---|
-| `/api/chat` | POST `{message, slide?, slideTitle?, history:[{role,content}]}` (history → last 8; message ≤2000) | `{reply}` | OpenAI · `OPENAI_MODEL` or `gpt-4.1-mini` (max_tokens 400) | `OPENAI_API_KEY`, optional `OPENAI_MODEL` | 405 non-POST · 400 empty · 503 no key · 502 upstream |
-| `/api/grade` | POST `{question, rubric, sample, answer, level 1–5, levelName}` | `{verdict:"correct\|partial\|incorrect", score 0–1, feedback}` | OpenAI · `OPENAI_MODEL` or `gpt-4.1-mini` (temp 0, max_tokens 300, strict-JSON) | `OPENAI_API_KEY`, optional `OPENAI_MODEL` | 405 · 400 (need question+answer) · 503 no key · 502 upstream/parse |
+| `/api/chat` | POST `{message, slide?, slideTitle?, history:[{role,content}]}` (history → last 8; message ≤2000) | `{reply}` | OpenAI · `OPENAI_MODEL` or `gpt-5.5` with fallbacks (max_tokens 400) | `OPENAI_API_KEY`, optional `OPENAI_MODEL` | 405 non-POST · 400 empty · 503 no key · 502 upstream |
+| `/api/grade` | POST `{question, rubric, sample, answer, level 1–5, levelName}` | `{verdict:"correct\|partial\|incorrect", score 0–1, feedback}` | OpenAI · `OPENAI_MODEL` or `gpt-5.5` with fallbacks (temp 0, max_tokens 300, strict-JSON) | `OPENAI_API_KEY`, optional `OPENAI_MODEL` | 405 · 400 (need question+answer) · 503 no key · 502 upstream/parse |
 | `/api/tts` | POST `{text ≤4000, voice?}` | `audio/mpeg` (mp3 bytes) | OpenAI · `gpt-4o-mini-tts`, voice `alloy` | `OPENAI_API_KEY` | 405 · 400 empty · **503 no key → browser voice** · 502 upstream |
 | `/api/poll` | GET `?qid&n` · POST `?qid&opt&n` (vote) · POST `?qid&reset=1&key` | `{counts:[…]}` / `{ok:true}` | Upstash Redis (`HINCRBY`/`HGETALL`, key `poll:<qid>`) | `KV_REST_API_URL`, `KV_REST_API_TOKEN`, `POLL_ADMIN_KEY` | 400 no qid · 403 bad admin key · 503 no store |
 | `/api/words` | GET `?qid` · POST `?qid&w=<word>` | `{words:{word:count}}` | Upstash Redis (key `words:<qid>`) | `KV_REST_API_URL`, `KV_REST_API_TOKEN` | 400 missing qid/w · 503 no store |
 | `/api/feedback` | POST `{slide, slideNum, context, text ≤4000}` | `{ok:true}` | Upstash Redis (`RPUSH feedback:all`) | `KV_REST_API_URL`, `KV_REST_API_TOKEN` | 405 · 400 empty · 503 no store |
+| `/api/quality` | POST `{class_title, class_slug, slide_count, quiz_count, poll_defs, word_defs, local}` | `{quality, participation, recommendations, ai}` | Deterministic participation scoring + optional OpenAI summary | `OPENAI_API_KEY`, optional `OPENAI_MODEL`, optional `KV_REST_API_URL`, `KV_REST_API_TOKEN` | 405 · 200 with local fallback · 500 unexpected |
 
 **Behaviors that bit earlier builds — now confirmed in code:**
 - **TTS has NO server-side `tts-1` fallback.** Despite comments to the contrary (in the file *and*
@@ -619,8 +621,8 @@ hybrid credibility gate, lesson-plan editor. *Output:* the full Factory.
 - [ ] 4–5 env vars set on the deck's own Vercel project (`OPENAI_API_KEY`, optional
       `OPENAI_MODEL`, `KV_REST_API_URL`, `KV_REST_API_TOKEN`, `POLL_ADMIN_KEY`).
 - [ ] Deployed via `vercel --prod`; success = a printed **Production URL** (not "Ready in 9s").
-- [ ] Smoke-test `/api/chat`, `/api/grade`, `/api/tts`, `/api/poll`, `/api/words` on the printed URL.
-- [ ] `/api/chat` model is a current OpenAI model string; default is `gpt-4.1-mini`.
+- [ ] Smoke-test `/api/chat`, `/api/grade`, `/api/tts`, `/api/poll`, `/api/words`, `/api/quality` on the printed URL.
+- [ ] `/api/chat` model is a current OpenAI model string; default is `gpt-5.5`.
 - [ ] Listen mode: `/api/tts` returns mp3. NO server-side tts-1 fallback exists — robotic voice
       means the key is missing/unfunded (503 → browser voice) or OpenAI errored (502, e.g. `429
       insufficient_quota`). Prime `speechSynthesis` on the user gesture; chunk browser voice into sentences.

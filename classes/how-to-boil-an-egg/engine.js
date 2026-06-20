@@ -31,6 +31,9 @@
   /* ---------- POLL / WORD definitions (deck-defined in content.js) ---------- */
   var POLLS = window.POLLS || {};
   var WORDS = window.WORDS || {};
+  var CLASS_SLUG = (window.DECK_META && window.DECK_META.slug) ||
+    String(window.CLASS_TITLE || "how to boil an egg").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"") ||
+    "masterclass";
 
   /* ---------- COMPREHENSION LEVEL (1–5): scales quiz difficulty + AI grading ---------- */
   var COMP_LEVELS = [
@@ -312,8 +315,10 @@
       });
       if(ok){
         setScore(i,1);
+        trackParticipation("quiz_attempt", { score: 1, type: q.type });
         feedback("ok", esc(q.why||"")); showNext();
       } else {
+        trackParticipation("quiz_attempt", { score: 0, type: q.type });
         btn.classList.add("wrong");
         feedback("no", esc(q.why||"")); showRetry();
       }
@@ -333,6 +338,7 @@
       gradeWithAI(q, raw, function(res){
         var sc = Math.max(0, Math.min(1, (res && typeof res.score==="number") ? res.score : 0));
         setScore(i, sc);
+        trackParticipation("quiz_attempt", { score: sc, type: q.type });
         var verdict = res && res.verdict;
         var fbText = esc((res && res.feedback) || "");
         var model = q.sample ? "<div class='quiz-model'><b>A strong answer:</b> "+esc(q.sample)+"</div>" : "";
@@ -526,6 +532,7 @@
     });
     counter.textContent = (idx+1) + " / " + SLIDES.length;
     bar.style.width = ((idx)/(SLIDES.length-1)*100) + "%";
+    trackParticipation("slide_view", { slide: idx });
     var s = SLIDES[idx];
     // toggle poll / words tool buttons by slide
     toggle("pollBtn", !!s.poll);
@@ -826,9 +833,10 @@
     fetch("/api/feedback", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ slide: s.id || "", slideNum: String(idx+1), context: _fbContext, text: text })
+      body: JSON.stringify({ class_title: window.CLASS_TITLE || "how to boil an egg", class_slug: CLASS_SLUG, slide: s.id || "", slideNum: String(idx+1), context: _fbContext, text: text })
     }).then(function(r){ return r.json(); }).then(function(j){
       if(j && j.ok){
+        trackParticipation("feedback");
         if(muted) muted.textContent = "Thank you — your feedback was recorded.";
         ta.value = "";
         setTimeout(window.closeFeedback, 900);
@@ -848,6 +856,7 @@
       if(which==="poll") openPoll();
       else if(which==="words") openWords();
       else if(which==="chat") openChat();
+      else if(which==="quality") openQuality();
     });
   });
 
@@ -873,6 +882,7 @@
   }
   function castVote(qid, opt, n){
     setLS(votedKey(qid), String(opt));
+    trackParticipation("poll_vote", { qid: qid });
     // optimistic local bump
     var local = getLocalCounts(qid, n); local[opt]++; setLocalCounts(qid, local); paintPoll(local);
     api("/api/poll?qid="+encodeURIComponent(qid)+"&opt="+opt+"&n="+n, "POST")
@@ -910,6 +920,7 @@
     var v = (document.getElementById("wordIn").value||"").trim().toLowerCase().replace(/[^a-z0-9\- ]/g,"").slice(0,24);
     if(!v) return;
     document.getElementById("wordIn").value="";
+    trackParticipation("word_entry", { qid: s.words });
     var local = getLocalWords(s.words); local[v]=(local[v]||0)+1; setLocalWords(s.words, local); paintCloud(local);
     api("/api/words?qid="+encodeURIComponent(s.words)+"&w="+encodeURIComponent(v), "POST")
       .then(function(j){ if(j && j.words) paintCloud(j.words); })
@@ -1031,6 +1042,7 @@
     stopDictation();
     inp.value="";
     addMsg("u", q);
+    trackParticipation("chat_question");
     history.push({role:"user", content:q});
     var thinking = addMsg("a", "…");
     api("/api/chat", "POST", { message:q, slide: SLIDES[idx].id, slideTitle: (SLIDES[idx].eyebrow||""), history: history.slice(-8) })
@@ -1063,6 +1075,112 @@
   function setLocalCounts(qid,a){ setLS("pc:"+qid, JSON.stringify(a)); }
   function getLocalWords(qid){ var raw=getLS("wc:"+qid); var o; try{o=JSON.parse(raw);}catch(e){} return o||{}; }
   function setLocalWords(qid,o){ setLS("wc:"+qid, JSON.stringify(o)); }
+
+  /* ---------- QUALITY + PARTICIPATION REPORT ---------- */
+  var QUALITY_KEY = "quality:" + CLASS_SLUG;
+  function defaultParticipation(){
+    return {
+      slide_views: {},
+      poll_votes: 0,
+      word_entries: 0,
+      quiz_attempts: 0,
+      quiz_score_total: 0,
+      chat_questions: 0,
+      feedback_sent: 0,
+      started_at: Date.now(),
+      updated_at: Date.now()
+    };
+  }
+  function loadParticipation(){
+    var raw = getLS(QUALITY_KEY);
+    try { return Object.assign(defaultParticipation(), JSON.parse(raw || "{}")); }
+    catch(e){ return defaultParticipation(); }
+  }
+  var PARTICIPATION = loadParticipation();
+  function saveParticipation(){
+    PARTICIPATION.updated_at = Date.now();
+    setLS(QUALITY_KEY, JSON.stringify(PARTICIPATION));
+  }
+  function trackParticipation(kind, data){
+    data = data || {};
+    if(kind === "slide_view") PARTICIPATION.slide_views[String(data.slide)] = (PARTICIPATION.slide_views[String(data.slide)] || 0) + 1;
+    if(kind === "poll_vote") PARTICIPATION.poll_votes += 1;
+    if(kind === "word_entry") PARTICIPATION.word_entries += 1;
+    if(kind === "quiz_attempt"){ PARTICIPATION.quiz_attempts += 1; PARTICIPATION.quiz_score_total += Number(data.score) || 0; }
+    if(kind === "chat_question") PARTICIPATION.chat_questions += 1;
+    if(kind === "feedback") PARTICIPATION.feedback_sent += 1;
+    saveParticipation();
+  }
+  function qualityPayload(){
+    return {
+      class_title: window.CLASS_TITLE || "how to boil an egg",
+      class_slug: CLASS_SLUG,
+      slide_count: SLIDES.length,
+      quiz_count: document.querySelectorAll("[data-quiz]").length,
+      poll_defs: POLLS,
+      word_defs: WORDS,
+      local: PARTICIPATION
+    };
+  }
+  function localQualityReport(){
+    var viewed = Object.keys(PARTICIPATION.slide_views || {}).length;
+    var interactions = PARTICIPATION.poll_votes + PARTICIPATION.word_entries + PARTICIPATION.quiz_attempts + PARTICIPATION.chat_questions + PARTICIPATION.feedback_sent;
+    var score = Math.min(100, Math.round((viewed / Math.max(1, SLIDES.length)) * 45 + Math.min(1, interactions / 8) * 55));
+    return {
+      ok: true,
+      quality: { score: score, status: score >= 75 ? "strong" : score >= 45 ? "developing" : "low" },
+      participation: {
+        slide_count: SLIDES.length,
+        slides_viewed_on_this_device: viewed,
+        poll_votes: PARTICIPATION.poll_votes,
+        word_entries: PARTICIPATION.word_entries,
+        quiz_attempts: PARTICIPATION.quiz_attempts,
+        chat_questions: PARTICIPATION.chat_questions,
+        feedback_items: PARTICIPATION.feedback_sent,
+        total_interaction_signals: interactions,
+        storage: "local"
+      },
+      recommendations: ["This is a local report. Deploy with KV storage for cross-device class participation totals."],
+      ai: { available: false, message: "Quality AI runs after /api/quality is reachable on Vercel." }
+    };
+  }
+  function renderQualityReport(report){
+    var box = document.getElementById("qualityReport");
+    if(!box) return;
+    var p = report.participation || {};
+    var q = report.quality || {};
+    var recs = (report.recommendations || []).map(function(item){ return "<li>"+escText(item)+"</li>"; }).join("");
+    var ai = report.ai && report.ai.available && report.ai.report
+      ? "<div class='quality-note'><b>Quality AI:</b> " + escText(report.ai.report.summary || "Reviewed.") + "</div>"
+      : "<div class='quality-note muted'>" + escText((report.ai && report.ai.message) || "Quality AI summary unavailable; deterministic report shown.") + "</div>";
+    box.innerHTML =
+      "<div class='quality-score'><strong>" + escText(q.score || 0) + "</strong><span>/100<br>" + escText(q.status || "checked") + "</span></div>" +
+      "<div class='quality-grid'>" +
+        qualityMetric("Slides viewed", (p.slides_viewed_on_this_device || 0) + " / " + (p.slide_count || SLIDES.length)) +
+        qualityMetric("Poll votes", p.poll_votes || 0) +
+        qualityMetric("Word entries", p.word_entries || 0) +
+        qualityMetric("Quiz attempts", p.quiz_attempts || 0) +
+        qualityMetric("Bernard questions", p.chat_questions || 0) +
+        qualityMetric("Feedback items", p.feedback_items || 0) +
+      "</div>" +
+      ai +
+      (recs ? "<h4>Recommended next moves</h4><ul class='quality-list'>" + recs + "</ul>" : "");
+  }
+  function qualityMetric(label, value){
+    return "<div class='quality-metric'><span>"+escText(label)+"</span><strong>"+escText(value)+"</strong></div>";
+  }
+  function escText(value){
+    return String(value == null ? "" : value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\"/g,"&quot;");
+  }
+  function openQuality(){
+    document.getElementById("qualityModal").classList.add("open");
+    var box = document.getElementById("qualityReport");
+    if(box) box.innerHTML = "<div class='muted'>Building the quality and participation report...</div>";
+    api("/api/quality", "POST", qualityPayload())
+      .then(renderQualityReport)
+      .catch(function(){ renderQualityReport(localQualityReport()); });
+  }
+  window.openQuality = openQuality;
 
   /* ---------- LISTEN MODE: spoken narration + Bernard Q&A ----------
      Narrates each slide aloud and auto-advances like a podcast. A "raise hand"

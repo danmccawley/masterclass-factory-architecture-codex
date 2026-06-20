@@ -18,6 +18,9 @@ HTML/CSS/JS with Vercel serverless functions under `api/`.
 - `api/librarian.js` — reserve-library source freshness check. It scans saved classes under
   `classes/`, checks source URLs, flags stale or unavailable sources, and stores history in KV when
   configured. `vercel.json` schedules it weekly.
+- `api/quality.js` — generated-class quality and participation report. It scores slide progress,
+  poll votes, word-cloud entries, quiz attempts, Bernard questions, and feedback; with OpenAI
+  available it adds a concise QA summary.
 - `api/qr.js` — Vercel launch-link QR code endpoint.
 - `CLAUDE.md` — orchestration rules + pipeline (the Producer's instructions).
 - `.claude/agents/*.md` — nine specialist subagents: research, curriculum, author, glossary, assessment, source-verify, codegen, qa, deploy.
@@ -36,8 +39,8 @@ The deployed Vercel app runs the full serverless path. In the Class Creator, use
 - Download presenter script
 - GitHub/Vercel class URL after auto-publish is configured
 
-All AI uses OpenAI only. Bernard, objective drafting, deck generation, tutor chat, grading, and TTS use
-these Vercel environment variables:
+All AI uses OpenAI only. Bernard, objective drafting, deck generation, tutor chat, grading, class
+quality summaries, and TTS use these Vercel environment variables:
 
 ```bash
 OPENAI_API_KEY=your OpenAI API key
@@ -91,6 +94,14 @@ The weekly Vercel cron runs every Monday at 09:00 UTC:
 Set `KV_REST_API_URL` and `KV_REST_API_TOKEN` in Vercel if you want the Librarian to save history
 between checks. Without KV, it still returns the current report.
 
+## Quality & Participation
+Every generated class includes a `Quality` tool in the class menu. It checks whether students are
+moving through the deck and participating in polls, word clouds, quizzes, feedback, and Bernard
+questions. If KV is configured, poll/word/feedback signals aggregate across devices; otherwise the
+report still works from the current learner's browser. `/api/generate` also runs a build-time
+quality gate before handing back a class, so source verification, schema QA, slide budget fidelity,
+assessment coverage, and participation design are checked before publish.
+
 ## To author a real deck
 Replace the `GENERATED PER DECK` region of `build_content.py` (the `slide(...)`/`quiz_slide(...)`
 calls, `POLLS_DEF`, `WORDS_DEF`, `GLOSSARY`, `SOURCE_PAPER`). Do NOT touch the helpers or the
@@ -108,4 +119,4 @@ emit/verify machinery. Set `CLASS_TITLE` and `DISAGREE_LABEL`.
   Citations `data-src="sN"` resolve to a section `id`.
 - `paper` ships as a single object (Python `paper=[P(...)]`; emitter unwraps).
 - Quiz keys: `type/level/q/options/answer/why` (+ `rubric/sample/accept[]` for `sa`).
-- `POLLS`/`WORDS` are deck-defined. Six backends: chat, grade, tts, poll, words, feedback.
+- `POLLS`/`WORDS` are deck-defined. Seven backends: chat, grade, tts, poll, words, feedback, quality.

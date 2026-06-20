@@ -64,7 +64,8 @@ A **Masterclass Factory web application** with two halves:
 
 ## Missing input you must obtain before milestone 5
 This repo does NOT yet contain the engine template (`engine.js`, `navscrubber.js`, `index.html`,
-`api/chat.js`, `api/grade.js`, `api/tts.js`, `api/poll.js`, `api/words.js`, `api/feedback.js`). They
+`api/chat.js`, `api/grade.js`, `api/tts.js`, `api/poll.js`, `api/words.js`, `api/feedback.js`,
+`api/quality.js`). They
 are topic-agnostic and reused unchanged. Add them under `template/` before assembling a deployable
 deck. Until then, milestones 1–4 are fully buildable (the generator + wizard + content layer stand alone).
 
