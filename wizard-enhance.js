@@ -109,8 +109,9 @@
   function onBudgetInput(event) {
     var path = event.target.dataset.enhanceBudget;
     if (!path) return;
-    updateNumber(path, event.target.value);
-    syncBudgetControls(path, event.target.value);
+    var value = clampNumber(event.target.value, attrNumber(event.target, "min", 0), attrNumber(event.target, "max", 999));
+    updateSourceNumber(path, value);
+    syncBudgetControls(path, value);
   }
 
   function enhanceCurrentStep() {
@@ -186,7 +187,7 @@
 
     var brief = parseBrief();
     var planner = document.createElement("div");
-    planner.className = "length-planner";
+    planner.className = "length-planner full";
     planner.setAttribute("data-enhanced-length", "true");
     planner.innerHTML =
       budgetControl("Class length", "length.minutes", Number(brief.length && brief.length.minutes) || 60, 10, 480, "minutes") +
@@ -208,11 +209,12 @@
   }
 
   function budgetControl(label, path, value, min, max, unit) {
-    return "<div class=\"budget-control\"><div><h3>" + esc(label) + "</h3><p class=\"hint\">Preset options move by 10; the exact box can hold a specific number.</p></div>" +
-      "<div class=\"budget-row\"><label><span class=\"mini-label\">Preset</span><select data-enhance-budget=\"" + path + "\">" +
+    return "<div class=\"budget-control\"><div class=\"budget-control-head\"><h3>" + esc(label) + "</h3><p class=\"hint\">Choose a preset in steps of 10, type an exact value, or use the slider.</p></div>" +
+      "<div class=\"budget-row\"><label class=\"budget-field\"><span class=\"mini-label\">Preset drop-down</span><select min=\"" + min + "\" max=\"" + max + "\" data-budget-unit=\"" + unit + "\" data-enhance-budget=\"" + path + "\">" +
       budgetOptions(value, min, max, unit) + "</select></label>" +
-      "<label><span class=\"mini-label\">Exact number</span><input type=\"number\" min=\"" + min + "\" max=\"" + max + "\" value=\"" + value + "\" data-enhance-budget=\"" + path + "\"></label></div>" +
-      "<label class=\"range-row\"><span class=\"mini-label\">Slide bar</span><input type=\"range\" min=\"" + min + "\" max=\"" + max + "\" step=\"10\" value=\"" + nearestTen(value, min) + "\" data-enhance-budget=\"" + path + "\"></label></div>";
+      "<label class=\"budget-field\"><span class=\"mini-label\">Exact number</span><input type=\"number\" min=\"" + min + "\" max=\"" + max + "\" value=\"" + value + "\" data-enhance-budget=\"" + path + "\"></label></div>" +
+      "<label class=\"range-row\"><span class=\"mini-label\">Slider</span><input type=\"range\" min=\"" + min + "\" max=\"" + max + "\" step=\"10\" value=\"" + nearestTen(value, min) + "\" data-enhance-budget=\"" + path + "\"></label>" +
+      "<div class=\"budget-scale\"><span>" + min + " " + unit + "</span><span>" + max + " " + unit + "</span></div></div>";
   }
 
   function budgetOptions(current, min, max, unit) {
@@ -231,20 +233,55 @@
   function syncBudgetControls(path, rawValue) {
     var value = Number(rawValue) || 0;
     Array.from(form.querySelectorAll("[data-enhance-budget=\"" + path + "\"]")).forEach(function (control) {
-      control.value = control.type === "range" ? String(nearestTen(value, Number(control.min) || 0)) : String(value);
+      if (control.tagName === "SELECT") ensureCustomOption(control, value);
+      control.value = control.type === "range" ? String(nearestTen(value, attrNumber(control, "min", 0))) : String(value);
     });
   }
 
+  function ensureCustomOption(select, value) {
+    var exact = String(value);
+    var existing = Array.from(select.options).some(function (option) { return option.value === exact; });
+    var custom = select.querySelector("[data-custom-option]");
+    if (existing) {
+      if (custom && custom.value !== exact) custom.remove();
+      return;
+    }
+    if (!custom) {
+      custom = document.createElement("option");
+      custom.setAttribute("data-custom-option", "true");
+      select.insertBefore(custom, select.firstChild);
+    }
+    var unit = select.getAttribute("data-budget-unit") || "";
+    custom.value = exact;
+    custom.textContent = exact + (unit ? " " + unit : "") + " (custom)";
+  }
+
   function updateNumber(path, value) {
+    updateSourceNumber(path, value);
+    syncBudgetControls(path, value);
+  }
+
+  function updateSourceNumber(path, value) {
     Array.from(form.querySelectorAll(
       "[data-number-path=\"" + path + "\"]," +
-      "[data-budget-path=\"" + path + "\"]," +
-      "[data-enhance-budget=\"" + path + "\"]"
+      "[data-budget-path=\"" + path + "\"]"
     )).forEach(function (input) {
       input.value = value;
       input.dispatchEvent(new Event("input", { bubbles: true }));
       input.dispatchEvent(new Event("change", { bubbles: true }));
     });
+  }
+
+  function clampNumber(rawValue, min, max) {
+    var value = Number(rawValue);
+    if (!Number.isFinite(value)) value = min;
+    value = Math.trunc(value);
+    return Math.max(min, Math.min(max, value));
+  }
+
+  function attrNumber(element, name, fallback) {
+    var value = Number(element.getAttribute(name));
+    return Number.isFinite(value) ? value : fallback;
   }
 
   async function askGenie(type) {
