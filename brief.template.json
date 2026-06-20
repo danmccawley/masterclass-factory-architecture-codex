@@ -6,7 +6,7 @@
     "credibility": { "min_tier": "secondary", "require_two_sources_for": ["statistics", "forward-looking claims", "contested points"] }
   },
   "objectives": { "terminal": [], "enabling": [], "out_of_scope": [] },
-  "mastery": { "target_level": 3, "granularity": "working", "deep_dive_density": "med", "field_disagreement": true },
+  "mastery": { "target_level": 3, "granularity": "working", "deep_dive_density": "high", "field_disagreement": true },
   "audience": {
     "average": { "age_band": "", "education": "", "background": "", "technical": "mixed", "role": "mixed" },
     "floor":   { "age_band": "", "education": "", "background": "", "technical": "non", "role": "" },

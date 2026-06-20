@@ -32,7 +32,7 @@
     mastery: {
       target_level: 3,
       granularity: "working",
-      deep_dive_density: "med",
+      deep_dive_density: "high",
       field_disagreement: true
     },
     audience: {

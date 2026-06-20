@@ -127,7 +127,7 @@ function normalizeRecommendation(value, brief) {
   const currentMinutes = current.minutes || 60;
   const currentSlides = current.slide_budget || 90;
   const recommendedMinutes = clampNumber(value && value.minutes, currentMinutes, 10, 480, true);
-  const recommendedSlides = clampNumber(value && value.slide_budget, currentSlides, 10, 400, true);
+  const recommendedSlides = clampNumber(value && value.slide_budget, currentSlides, 30, 400, true);
   return {
     minutes: Math.max(currentMinutes, recommendedMinutes),
     slide_budget: Math.max(currentSlides, recommendedSlides),

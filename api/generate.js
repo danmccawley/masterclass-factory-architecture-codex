@@ -15,6 +15,8 @@ const MAX_OPENAI_AUTHORED_SLIDES = 60;
 const MIN_MASTERCLASS_SLIDES = 30;
 const MIN_COMPLEX_MASTERCLASS_SLIDES = 50;
 const DEFAULT_MASTERCLASS_SLIDES = 90;
+const MIN_VISIBLE_SLIDE_WORDS = 70;
+const MIN_DEEP_DIVE_WORDS = 120;
 
 function send(res, status, payload) {
   res.statusCode = status;
@@ -469,7 +471,8 @@ async function runOpenAIStages(brief, sourcePaper) {
     `When asked to author slides directly, return ${authoredSlides} teaching slides. Do not stop at five slides unless the budget itself is five.`,
     "Never treat technical background, prior experience, or learner familiarity as permission to shorten the class. Use it to add more depth, worked examples, edge cases, source analysis, misconceptions, and transfer practice.",
     "Always look for safe opportunities to add more value while staying inside the requested slide budget and source evidence.",
-    "Respect the deep-dive setting: low means no deep dives, med means include them only when useful, high means include substantive deep dives.",
+    "Deep dives are first-class course content, not optional decoration. Low means none, med requires substantial deep dives where useful, high requires a deep dive for every teaching slide.",
+    "Every teaching slide needs enough content to teach from: concise bullets plus explanation, worked example or application, practice prompt, common mistake or caution, and presenter guidance.",
     "The embedded conversational tutor is named Bernard.",
     "Return strict JSON only."
   ].join("\n");
@@ -508,7 +511,7 @@ async function runOpenAIStages(brief, sourcePaper) {
         terminal: ["string"],
         enabling: ["string"],
         out_of_scope: ["string"],
-        lesson_sections: [{ id: "string", title: "string", teaching_goal: "string", source_ids: ["s1"], activity: "string" }]
+        lesson_sections: [{ id: "string", title: "string", teaching_goal: "string", source_ids: ["s1"], activity: "string", deep_dive_reason: "string" }]
       }
     }, null, 2),
     2100
@@ -519,7 +522,7 @@ async function runOpenAIStages(brief, sourcePaper) {
     "author",
     `You are the Masterclass Factory lesson author. ${rules}`,
     JSON.stringify({
-      task: `Draft exactly ${authoredSlides} source-grounded teaching slides. Keep bullets concise. Include presenter guidance. Cite only source ids that exist. Use a complete arc: orientation, source findings, concepts, examples, practice, checks, application, and transfer. If evidence is thin, create source-safe practice/checkpoint slides instead of inventing facts.`,
+      task: `Draft exactly ${authoredSlides} source-grounded teaching slides. Keep bullets concise but make the slide complete enough to teach. Cite only source ids that exist. Use a complete arc: orientation, source findings, concepts, examples, practice, checks, application, and transfer. If evidence is thin, create source-safe practice/checkpoint slides instead of inventing facts. Deep-dive setting is ${deepDiveMode(brief)}; when high, every slide needs a substantive deep_dive body.`,
       source_ids: sourcePaper.sections.map((section) => section.id),
       brief: compactBrief(brief),
       curriculum: curriculum.data,
@@ -530,10 +533,23 @@ async function runOpenAIStages(brief, sourcePaper) {
         note: "The generator will add the final Knowledge Base / Works Cited slide and will safely expand any shortfall to meet the requested slide budget."
       },
       required_shape: {
-        slides: [{ id: "string", eyebrow: "string", title: "string", bullets: ["string"], speaker_notes: "string", source_ids: ["s1"], interaction: "none|poll|word|quiz" }]
+        slides: [{
+          id: "string",
+          eyebrow: "string",
+          title: "string",
+          bullets: ["string"],
+          explanation: "2-3 sentence source-grounded teaching explanation",
+          worked_example: "brief concrete example or application",
+          practice_prompt: "what learners should do or decide",
+          common_mistake: "mistake or caution to avoid",
+          speaker_notes: "presenter talk track with enough detail to teach the point",
+          deep_dive: { title: "string", body: "120-220 words of deeper explanation, source analysis, edge cases, and practice guidance", learner_prompts: ["string"] },
+          source_ids: ["s1"],
+          interaction: "none|poll|word|quiz"
+        }]
       }
     }, null, 2),
-    Math.min(14000, Math.max(3600, authoredSlides * 250))
+    Math.min(24000, Math.max(6000, authoredSlides * 420))
   );
   reports.push({ stage: "author", ok: true, model: author.model });
 
@@ -601,7 +617,83 @@ function citationBlock(ids, sourcePaper) {
 }
 
 function bulletList(items) {
-  return "<ul>" + list(items, ["Review the source-grounded class material."], 6).map((item) => `<li>${html(item)}</li>`).join("") + "</ul>";
+  return "<ul>" + list(items, ["Review the source-grounded class material."], 8).map((item) => `<li>${html(item)}</li>`).join("") + "</ul>";
+}
+
+function paragraphize(value) {
+  const parts = String(value || "")
+    .replace(/\r/g, "")
+    .split(/\n{2,}|\n(?=[A-Z0-9])/)
+    .map((part) => part.trim())
+    .filter(Boolean)
+    .slice(0, 8);
+  return parts.map((part) => `<p>${html(part)}</p>`).join("");
+}
+
+function sectionTitles(ids, sourcePaper) {
+  const sections = new Map(sourcePaper.sections.map((section) => [section.id, section]));
+  return validSources(ids, sourcePaper)
+    .map((id) => sections.get(id) ? sections.get(id).title : id)
+    .join("; ");
+}
+
+function defaultExplanation(slide, brief) {
+  const title = brief.meta.title || "this class";
+  return `${slide.title} connects directly to the class goal for ${title}. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.`;
+}
+
+function defaultWorkedExample(slide, brief) {
+  const audience = brief.audience.floor.role || brief.audience.average.role || "learner";
+  return `Example: ask a ${audience} to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.`;
+}
+
+function defaultPracticePrompt(slide) {
+  return `Practice: have learners restate "${slide.title}" in their own words, choose a next action, and name the evidence they would need before acting.`;
+}
+
+function defaultCommonMistake(slide) {
+  return `Caution: do not let learners turn "${slide.title}" into a rule of thumb unless the knowledge base supports that claim.`;
+}
+
+function normalizeSlideDepth(slide, brief) {
+  const out = Object.assign({}, slide);
+  out.bullets = list(out.bullets, ["Explain the core point.", "Connect it to the source boundary.", "Practice the decision before moving on."], 8);
+  out.explanation = text(out.explanation, defaultExplanation(out, brief));
+  out.worked_example = text(out.worked_example || out.example, defaultWorkedExample(out, brief));
+  out.practice_prompt = text(out.practice_prompt || out.practice, defaultPracticePrompt(out));
+  out.common_mistake = text(out.common_mistake || out.caution, defaultCommonMistake(out));
+  return out;
+}
+
+function deepDiveBody(slide, sourcePaper, brief, supplied) {
+  const suppliedBody = supplied && text(supplied.body);
+  const sourceNames = sectionTitles(slide.source_ids, sourcePaper);
+  const citations = citationBlock(slide.source_ids, sourcePaper);
+  if (suppliedBody && wordCount(suppliedBody) >= MIN_DEEP_DIVE_WORDS) {
+    return paragraphize(suppliedBody) +
+      `<p class="ref"><strong>Source anchor:</strong> ${html(sourceNames)} ${citations}</p>`;
+  }
+
+  const bulletText = list(slide.bullets, [], 8).map((item) => `<li>${html(item)}</li>`).join("");
+  return [
+    `<p><strong>Why this deserves a deeper look.</strong> ${html(slide.explanation || defaultExplanation(slide, brief))}</p>`,
+    `<p><strong>Source boundary.</strong> Teach this point from ${html(sourceNames || "the approved source paper")}. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p>`,
+    bulletText ? `<h3>What to emphasize</h3><ul>${bulletText}</ul>` : "",
+    `<h3>Worked example</h3><p>${html(slide.worked_example || defaultWorkedExample(slide, brief))}</p>`,
+    `<h3>Practice and transfer</h3><p>${html(slide.practice_prompt || defaultPracticePrompt(slide))}</p>`,
+    `<p><strong>Common mistake to prevent.</strong> ${html(slide.common_mistake || defaultCommonMistake(slide))}</p>`,
+    `<p class="ref"><strong>Source anchor:</strong> ${html(sourceNames)} ${citations}</p>`
+  ].filter(Boolean).join("");
+}
+
+function makeDeepDivePaper(slide, sourcePaper, brief, index) {
+  const supplied = slide.deep_dive && typeof slide.deep_dive === "object" ? slide.deep_dive : {};
+  const title = text(supplied.title, `Deep dive: ${slide.title}`);
+  return {
+    secnum: `Deep Dive ${String(index + 1).padStart(2, "0")}`,
+    h: title,
+    body: deepDiveBody(slide, sourcePaper, brief, supplied)
+  };
 }
 
 function normalizeId(value, fallback) {
@@ -615,7 +707,8 @@ function slideHtml(slide, sourcePaper) {
     `<div class="eyebrow anim"><span class="num">${html(slide.num)}</span><span class="bar"></span>${html(slide.eyebrow)}</div>`,
     `<h2 class="head anim">${html(slide.title)}</h2>`,
     bulletList(slide.bullets),
-    `<p class="lede anim">${html(slide.takeaway || "Use the evidence and learner profile to make the next decision.")} ${citations}</p>`,
+    `<p class="lede anim">${html(slide.explanation || slide.takeaway || "Use the evidence and learner profile to make the next decision.")} ${citations}</p>`,
+    `<div class="lesson-detail anim"><p><strong>Example:</strong> ${html(slide.worked_example || "Apply the idea to a realistic learner scenario.")}</p><p><strong>Practice:</strong> ${html(slide.practice_prompt || "Ask learners to explain their next action and what evidence supports it.")}</p><p><strong>Watch for:</strong> ${html(slide.common_mistake || "Do not move past this point until learners can separate supported points from assumptions.")}</p></div>`,
     slide.button || "",
     "</div>"
   ].join("");
@@ -655,6 +748,19 @@ function wantsDeepDives(brief) {
   return Number(brief.length && brief.length.minutes) >= 45 ||
     Number(brief.length && brief.length.slide_budget) >= 40 ||
     text(brief.mastery && brief.mastery.granularity) === "deep";
+}
+
+function requiredDeepDiveCount(brief, teachingSlides) {
+  const count = Math.max(0, Number(teachingSlides) || 0);
+  const mode = deepDiveMode(brief);
+  if (!wantsDeepDives(brief) || !count) return 0;
+  if (mode === "high") return count;
+  return Math.max(4, Math.ceil(count * 0.45));
+}
+
+function wordCount(value) {
+  const words = stripHtml(value).match(/\b[\w'-]+\b/g);
+  return words ? words.length : 0;
 }
 
 function sourceHref(body) {
@@ -923,6 +1029,10 @@ function expansionSlide(brief, sourcePaper, assessment, index, used) {
         "Flag any statistic, date, or disputed point for corroboration."
       ],
       takeaway: "Bernard should teach only the claims this knowledge-base section can support.",
+      explanation: `This checkpoint teaches learners how ${section.title} fits into the class without turning weak evidence into a fact claim.`,
+      worked_example: "Use one claim from the source section and ask whether it is supported, missing context, or outside scope.",
+      practice_prompt: "Have learners mark one statement as supported, one as uncertain, and one as needing another source.",
+      common_mistake: "Do not treat a source title or uploaded file name as evidence unless readable text or a transcript is available.",
       notes: "Use this checkpoint to slow down and show learners how the source constrains the class."
     },
     {
@@ -934,6 +1044,10 @@ function expansionSlide(brief, sourcePaper, assessment, index, used) {
         "Ask learners to restate the idea before moving on."
       ],
       takeaway: "A complex topic becomes teachable when the learner can say the idea back accurately.",
+      explanation: `This slide turns the class topic into usable language for the floor learner, then checks whether the idea can be applied to ${enabling}.`,
+      worked_example: "Translate the technical phrase into a plain-language sentence, then ask a learner to repeat it with one job-specific example.",
+      practice_prompt: "Ask learners to explain the idea once without jargon and once using the correct technical vocabulary.",
+      common_mistake: "Do not mistake vocabulary recognition for usable understanding.",
       notes: "Keep the explanation plain. Define unfamiliar language before using it in a task."
     },
     {
@@ -945,6 +1059,10 @@ function expansionSlide(brief, sourcePaper, assessment, index, used) {
         "Show where the source supports the decision."
       ],
       takeaway: "The first practice round should be guided, visible, and tied back to the knowledge base.",
+      explanation: "A worked example makes expert thinking visible. The presenter should name the decision, show the evidence boundary, and explain why the chosen move is safer than plausible alternatives.",
+      worked_example: "Walk through the first decision step with the class watching, then pause before the next decision and ask learners what they would check.",
+      practice_prompt: "Have learners identify the first decision, the evidence used, and the risk if that decision is skipped.",
+      common_mistake: "Do not rush into independent practice before learners have seen the thinking process.",
       notes: "Narrate the thinking process. Do not add facts outside the cited source section."
     },
     {
@@ -956,6 +1074,10 @@ function expansionSlide(brief, sourcePaper, assessment, index, used) {
         "Use the answer to correct misunderstandings before the next section."
       ],
       takeaway: "Decision points reveal whether learners can apply the concept, not just recognize it.",
+      explanation: "Decision slides turn passive reading into performance. Learners should compare choices, justify one, and explain what evidence would change their answer.",
+      worked_example: "Offer three possible next moves: one safe, one incomplete, and one out of scope. Ask learners to defend the safe choice.",
+      practice_prompt: "Ask learners to choose a next move and state the source-supported reason for it.",
+      common_mistake: "Do not accept answers that sound confident but do not cite the class source boundary.",
       notes: "Invite short answers first, then explain the stronger choice."
     },
     {
@@ -967,6 +1089,10 @@ function expansionSlide(brief, sourcePaper, assessment, index, used) {
         "Give a safer replacement action or question."
       ],
       takeaway: "Pitfall slides make the class more useful without inventing new factual claims.",
+      explanation: "A pitfall slide prevents the predictable wrong move before it becomes a habit. The presenter should make the mistake visible, then replace it with a safer question or action.",
+      worked_example: "Show the tempting shortcut, explain why it feels efficient, and contrast it with the slower source-grounded move.",
+      practice_prompt: "Ask learners to rewrite the pitfall as a checklist question they can use later.",
+      common_mistake: "Do not shame the mistake; use it as a realistic design target for instruction.",
       notes: "Frame the pitfall as a learning aid, not as a blame point."
     },
     {
@@ -978,6 +1104,10 @@ function expansionSlide(brief, sourcePaper, assessment, index, used) {
         "Ask what extra source would make the answer stronger."
       ],
       takeaway: "Application work should combine the objective, the source, and the learner's role.",
+      explanation: `Application is where the class proves its value. Learners should use the terminal outcome, the relevant source section, and their own role context to make a bounded decision.`,
+      worked_example: "Give a short scenario and ask learners to identify what they know, what they do not know, and what source would close the gap.",
+      practice_prompt: "Have learners produce a short answer that includes an action, a reason, and a source need.",
+      common_mistake: "Do not let application drift into unsupported local policy, vendor preference, or personal habit.",
       notes: "Let learners practice with bounded information. Keep the source discipline visible."
     },
     {
@@ -989,6 +1119,10 @@ function expansionSlide(brief, sourcePaper, assessment, index, used) {
         "Ask what additional evidence would change the answer."
       ],
       takeaway: "Experienced learners should get more depth, not a shorter class.",
+      explanation: "Advanced learners still need a complete class. Their background should unlock edge cases, tradeoffs, and transfer practice instead of reducing the number of teaching moments.",
+      worked_example: "Compare the normal case with a harder edge case and ask what extra source would be needed to teach the edge case confidently.",
+      practice_prompt: "Ask experienced learners to name the exception, the risk, and the source they would want before acting.",
+      common_mistake: "Do not assume familiarity equals mastery; test it with harder application.",
       notes: "Use technical familiarity as a reason to add richer practice and source analysis while staying inside the evidence boundary."
     },
     {
@@ -1000,6 +1134,10 @@ function expansionSlide(brief, sourcePaper, assessment, index, used) {
         "Return to the slide when the class is ready to continue."
       ],
       takeaway: "Bernard is a support layer; the approved lesson path still controls the class.",
+      explanation: "Bernard can explain, translate, rephrase, and coach, but the course still has an approved source boundary and lesson path. This pause turns AI support into a controlled learning aid.",
+      worked_example: "Ask Bernard for a plain-language version of the previous slide, then compare the answer against the slide source and objective.",
+      practice_prompt: "Have learners ask one clarification question and summarize the answer in their own words.",
+      common_mistake: "Do not let Bernard introduce unsupported claims as if they were part of the verified lesson.",
       notes: "Remind learners that Bernard can clarify, but should not teach unsupported claims."
     },
     {
@@ -1011,6 +1149,10 @@ function expansionSlide(brief, sourcePaper, assessment, index, used) {
         "Tie the answer back to the source and objective."
       ],
       takeaway: "Transfer slides help learners carry the class into a real setting.",
+      explanation: "Transfer turns the class from a presentation into future behavior. Learners should know where they will use the skill, what they should check first, and when they need a stronger source.",
+      worked_example: "Name the next real-world situation where this skill matters and have learners build a short readiness checklist.",
+      practice_prompt: "Ask learners to write one thing they will do, one thing they will verify, and one thing they will ask Bernard or a supervisor.",
+      common_mistake: "Do not close with inspiration alone; close with a concrete transfer action.",
       notes: "Close the loop between the lesson and the learner's next practical use."
     }
   ];
@@ -1035,16 +1177,22 @@ function expansionSlide(brief, sourcePaper, assessment, index, used) {
 function expandSlideDrafts(slides, brief, sourcePaper, assessment, target) {
   const used = new Set();
   const expanded = slides.slice(0, target).map((slide, index) => {
-    const out = Object.assign({}, slide);
+    const out = normalizeSlideDepth(slide, brief);
     out.id = uniqueSlideId(out.id, used, index);
     out.num = String(index + 1).padStart(2, "0");
     out.source_ids = validSources(out.source_ids, sourcePaper);
     return out;
   });
   while (expanded.length < target) {
-    expanded.push(expansionSlide(brief, sourcePaper, assessment, expanded.length, used));
+    expanded.push(normalizeSlideDepth(expansionSlide(brief, sourcePaper, assessment, expanded.length, used), brief));
   }
-  return expanded;
+  const requiredDeepDives = requiredDeepDiveCount(brief, target);
+  return expanded.map((slide, index) => {
+    const out = normalizeSlideDepth(slide, brief);
+    out.source_ids = validSources(out.source_ids, sourcePaper);
+    if (index < requiredDeepDives) out.paper = makeDeepDivePaper(out, sourcePaper, brief, index);
+    return attachExpansionInteraction(out, index, assessment);
+  });
 }
 
 function fallbackSlideBase(brief, sourcePaper, assessment) {
@@ -1192,20 +1340,21 @@ function buildFallbackSlides(brief, sourcePaper, assessment) {
 function normalizeAISlide(slide, index, brief, sourcePaper, assessment) {
   const id = normalizeId(slide.id, `slide-${index + 1}`);
   const interaction = text(slide.interaction, "none").toLowerCase();
-  const out = {
+  const out = normalizeSlideDepth({
     id,
     eyebrow: text(slide.eyebrow, index === 0 ? "Masterclass" : "Lesson"),
     num: String(index + 1).padStart(2, "0"),
     title: text(slide.title, brief.meta.title || "Masterclass"),
     bullets: list(slide.bullets, ["Review this source-grounded section."], 6),
     takeaway: text(slide.takeaway, "Connect this point to the source paper and learner profile."),
+    explanation: text(slide.explanation, ""),
+    worked_example: text(slide.worked_example || slide.example, ""),
+    practice_prompt: text(slide.practice_prompt || slide.practice, ""),
+    common_mistake: text(slide.common_mistake || slide.caution, ""),
+    deep_dive: slide.deep_dive,
     source_ids: validSources(slide.source_ids, sourcePaper),
-    paper: {
-      secnum: `Slide ${index + 1}`,
-      h: text(slide.title, "Presenter notes"),
-      body: `<p>${html(text(slide.speaker_notes, "Use this slide to teach the core point clearly and check learner understanding."))}</p>`
-    }
-  };
+    speaker_notes: text(slide.speaker_notes, "Use this slide to teach the core point clearly and check learner understanding.")
+  }, brief);
   if (interaction === "poll") out.poll = Object.keys(assessment.polls)[0];
   if (interaction === "word") out.words = Object.keys(assessment.words)[0];
   if (interaction === "quiz") out.button = makeQuizBox(`quiz-${id}`, assessment.quizzes.slice(0, 3));
@@ -1362,7 +1511,7 @@ function validateQuiz(quiz, index, issues) {
   }
 }
 
-function qaGate(files, generated, sourcePaper) {
+function qaGate(files, generated, sourcePaper, brief) {
   const issues = [];
   if (!/window\.SLIDES\s*=/.test(files["content.js"])) issues.push("content.js missing window.SLIDES.");
   if (!/window\.POLLS\s*=/.test(files["content.js"])) issues.push("content.js missing window.POLLS.");
@@ -1370,6 +1519,12 @@ function qaGate(files, generated, sourcePaper) {
   if (!/window\.GLOSSARY\s*=/.test(files["glossary.js"])) issues.push("glossary.js missing window.GLOSSARY.");
   if (!/window\.SOURCE_PAPER\s*=/.test(files["source.js"])) issues.push("source.js missing window.SOURCE_PAPER.");
   if (!sourcePaper || !Array.isArray(sourcePaper.sections) || !sourcePaper.sections.length) issues.push("source paper has no sections.");
+  const teachingSlides = generated.slides.filter((slide) => slide.id !== "knowledge-base-works-cited");
+  const requiredPapers = requiredDeepDiveCount(brief, teachingSlides.length);
+  const deepDiveSlides = teachingSlides.filter((slide) => slide.paper);
+  if (deepDiveSlides.length < requiredPapers) {
+    issues.push(`deep-dive count ${deepDiveSlides.length} is below required ${requiredPapers}.`);
+  }
   generated.slides.forEach((slide) => {
     ["id", "eyebrow", "num", "deck"].forEach((key) => {
       if (!slide[key]) issues.push(`slide missing ${key}.`);
@@ -1377,6 +1532,12 @@ function qaGate(files, generated, sourcePaper) {
     if (slide.poll && !generated.polls[slide.poll]) issues.push(`slide ${slide.id} references missing poll ${slide.poll}.`);
     if (slide.words && !generated.words[slide.words]) issues.push(`slide ${slide.id} references missing word cloud ${slide.words}.`);
     if (slide.paper && (!slide.paper.secnum || !slide.paper.h || !slide.paper.body)) issues.push(`slide ${slide.id} paper shape is invalid.`);
+    if (slide.id !== "knowledge-base-works-cited" && wordCount(slide.deck) < MIN_VISIBLE_SLIDE_WORDS) {
+      issues.push(`slide ${slide.id} is too thin for a masterclass slide.`);
+    }
+    if (slide.paper && wordCount(slide.paper.body) < MIN_DEEP_DIVE_WORDS) {
+      issues.push(`slide ${slide.id} deep dive is too thin.`);
+    }
   });
   Object.keys(generated.glossary).forEach((term) => {
     const entry = generated.glossary[term];
@@ -1398,38 +1559,58 @@ function qualityAudit(brief, generated, sourcePaper, sourceCheck, qa) {
   const interactiveSlides = generated.slides.filter((slide) => (
     slide.poll || slide.words || /data-quiz=/.test(slide.deck || "")
   )).length;
+  const requiredDeepDives = requiredDeepDiveCount(brief, teachingSlides);
+  const deepDiveSlides = generated.slides.filter((slide) => slide.id !== "knowledge-base-works-cited" && slide.paper).length;
+  const visibleWordCounts = generated.slides
+    .filter((slide) => slide.id !== "knowledge-base-works-cited")
+    .map((slide) => wordCount(slide.deck));
+  const deepDiveWordCounts = generated.slides
+    .filter((slide) => slide.id !== "knowledge-base-works-cited" && slide.paper)
+    .map((slide) => wordCount(slide.paper.body));
+  const averageVisibleWords = visibleWordCounts.length
+    ? Math.round(visibleWordCounts.reduce((sum, count) => sum + count, 0) / visibleWordCounts.length)
+    : 0;
+  const averageDeepDiveWords = deepDiveWordCounts.length
+    ? Math.round(deepDiveWordCounts.reduce((sum, count) => sum + count, 0) / deepDiveWordCounts.length)
+    : 0;
   const sourceSections = sourcePaper && Array.isArray(sourcePaper.sections) ? sourcePaper.sections.length : 0;
   const objectives = generated.objectives || {};
   const terminalCount = Array.isArray(objectives.terminal) ? objectives.terminal.length : 0;
   const enablingCount = Array.isArray(objectives.enabling) ? objectives.enabling.length : 0;
   const quizCount = Array.isArray(generated.quizzes) ? generated.quizzes.length : 0;
   const pollCount = Object.keys(generated.polls || {}).length;
-  const wordCount = Object.keys(generated.words || {}).length;
+  const wordCloudCount = Object.keys(generated.words || {}).length;
   const hasWorksCited = generated.slides.some((slide) => slide.id === "knowledge-base-works-cited");
   const scores = {
     slide_budget: slideCount === requested ? 100 : Math.max(0, 100 - Math.abs(slideCount - requested) * 10),
     source_grounding: sourceCheck.ok ? Math.round(Math.min(1, citedTeaching / Math.max(1, teachingSlides)) * 100) : 0,
     objective_alignment: Math.min(100, (terminalCount ? 45 : 0) + Math.min(35, enablingCount * 6) + (generated.lesson_plan && generated.lesson_plan.length ? 20 : 0)),
+    content_density: Math.min(100, Math.round((averageVisibleWords / MIN_VISIBLE_SLIDE_WORDS) * 100)),
+    deep_dive_depth: requiredDeepDives ? Math.min(100, Math.round((deepDiveSlides / requiredDeepDives) * 70 + Math.min(1, averageDeepDiveWords / MIN_DEEP_DIVE_WORDS) * 30)) : 100,
     participation_design: Math.min(100, Math.round((interactiveSlides / Math.max(1, teachingSlides)) * 220)),
-    assessment: Math.min(100, (quizCount ? 50 : 0) + Math.min(30, pollCount * 10) + Math.min(20, wordCount * 10)),
+    assessment: Math.min(100, (quizCount ? 50 : 0) + Math.min(30, pollCount * 10) + Math.min(20, wordCloudCount * 10)),
     transparency: hasWorksCited ? 100 : 35,
     schema_qa: qa.ok ? 100 : 0
   };
   if (scores.slide_budget < 100) issues.push("Generated slide count does not match the requested slide budget.");
   if (scores.source_grounding < 70) recommendations.push("Increase explicit source anchors on teaching slides.");
   if (scores.objective_alignment < 70) recommendations.push("Strengthen terminal/enabling objective coverage in the lesson plan.");
+  if (scores.content_density < 85) issues.push("Generated slide content is too thin for a masterclass.");
+  if (scores.deep_dive_depth < 90) issues.push("Generated deep-dive coverage is below the selected depth setting.");
   if (scores.participation_design < 45) recommendations.push("Add more participation moments: polls, word clouds, quizzes, or Bernard prompts.");
   if (scores.assessment < 60) recommendations.push("Add more assessment checks so mastery is visible.");
   if (sourceSections < 2) recommendations.push("Add more source material to improve evidence depth.");
   if (!hasWorksCited) issues.push("The final Knowledge Base / Works Cited slide is missing.");
   const overall = Math.round(
-    scores.slide_budget * 0.18 +
-    scores.source_grounding * 0.2 +
-    scores.objective_alignment * 0.18 +
-    scores.participation_design * 0.14 +
-    scores.assessment * 0.14 +
-    scores.transparency * 0.08 +
-    scores.schema_qa * 0.08
+    scores.slide_budget * 0.14 +
+    scores.source_grounding * 0.16 +
+    scores.objective_alignment * 0.14 +
+    scores.content_density * 0.16 +
+    scores.deep_dive_depth * 0.16 +
+    scores.participation_design * 0.1 +
+    scores.assessment * 0.08 +
+    scores.transparency * 0.03 +
+    scores.schema_qa * 0.03
   );
   if (overall < 70) issues.push(`Class quality score ${overall} is below the 70-point release threshold.`);
   return {
@@ -1443,11 +1624,17 @@ function qualityAudit(brief, generated, sourcePaper, sourceCheck, qa) {
       "slide budget fidelity",
       "source grounding",
       "objective alignment",
+      "content density",
+      "deep-dive coverage",
       "participation design",
       "assessment coverage",
       "works-cited transparency",
       "schema QA"
-    ]
+    ],
+    deep_dive_count: deepDiveSlides,
+    required_deep_dive_count: requiredDeepDives,
+    average_visible_slide_words: averageVisibleWords,
+    average_deep_dive_words: averageDeepDiveWords
   };
 }
 
@@ -1682,7 +1869,7 @@ module.exports = async function generateHandler(req, res) {
       "source.js": makeSourceJs(sourceBuild.sourcePaper)
     };
     const sourceCheck = sourceVerify(generated, sourceBuild.sourcePaper);
-    const qa = qaGate(files, generated, sourceBuild.sourcePaper);
+    const qa = qaGate(files, generated, sourceBuild.sourcePaper, brief);
     const quality = qualityAudit(brief, generated, sourceBuild.sourcePaper, sourceCheck, qa);
     if (!sourceCheck.ok || !qa.ok || !quality.ok) {
       send(res, 500, {
@@ -1714,6 +1901,10 @@ module.exports = async function generateHandler(req, res) {
       slide_count: generated.slides.length,
       requested_slide_budget: generated.slide_target,
       teaching_slide_count: generated.slideDrafts.length - 1,
+      deep_dive_count: quality.deep_dive_count,
+      required_deep_dive_count: quality.required_deep_dive_count,
+      average_visible_slide_words: quality.average_visible_slide_words,
+      average_deep_dive_words: quality.average_deep_dive_words,
       source_verify: { ok: true, issues: [] },
       quality,
       message: pipeline.mode === "openai"
