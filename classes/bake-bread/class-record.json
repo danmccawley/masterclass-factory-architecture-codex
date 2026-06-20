@@ -1,0 +1,390 @@
+{
+  "title": "bake bread",
+  "slug": "bake-bread",
+  "generated_at": "2026-06-20T23:13:05.392Z",
+  "class_tier": {
+    "level": "briefing",
+    "label": "Quick briefing",
+    "source_floor": 4,
+    "primary_source_floor": 1,
+    "slide_floor": 30,
+    "standard": "Short, source-aware orientation. Useful for overviews, not full mastery."
+  },
+  "research_owner": "ai",
+  "source_discovery": {
+    "owner": "ai",
+    "attempted": true,
+    "model": "",
+    "added_sources": [],
+    "rejected_sources": [],
+    "gaps": [],
+    "notes": [
+      "Round 1 search failed: knowledge-base discovery failed: This operation was aborted",
+      "Bernard searched across multiple rounds, but no candidate URLs passed the readability check."
+    ],
+    "rounds": 1
+  },
+  "knowledge_standard": {
+    "ok": true,
+    "floor_met": false,
+    "evidence_limited": true,
+    "tier": {
+      "level": "briefing",
+      "label": "Quick briefing",
+      "source_floor": 4,
+      "primary_source_floor": 1,
+      "slide_floor": 30,
+      "standard": "Short, source-aware orientation. Useful for overviews, not full mastery."
+    },
+    "counts": {
+      "total": 0,
+      "primary": 0,
+      "secondary": 0,
+      "unknown": 0
+    },
+    "score": {
+      "score": 15,
+      "band": "thin",
+      "components": {
+        "coverage": 0,
+        "authority": 0,
+        "recency": 75
+      },
+      "weights": {
+        "coverage": 0.5,
+        "authority": 0.3,
+        "recency": 0.2
+      },
+      "detail": {
+        "total": 0,
+        "primary": 0,
+        "secondary": 0,
+        "required_total": 4,
+        "required_primary": 1,
+        "dated_sources": 0,
+        "recency_floor_year": 2024
+      },
+      "summary": "Knowledge-base score 15/100 (thin): coverage 0, authority 0, recency 75. 0/4 sources, 0/1 primary."
+    },
+    "required_sources": 4,
+    "required_primary_sources": 1,
+    "source_gap": 4,
+    "primary_source_gap": 1,
+    "messages": [
+      "Evidence-limited class approved by change order: built on 0 verified sources (0 primary), below the Quick briefing floor of 4/1. Scope and confidence are disclosed in the class."
+    ]
+  },
+  "slide_count": 30,
+  "teaching_slide_count": 29,
+  "deep_dive_count": 0,
+  "required_deep_dive_count": 0,
+  "quality": {
+    "score": 85,
+    "status": "strong",
+    "scores": {
+      "slide_budget": 100,
+      "research_rigor": 10,
+      "source_grounding": 100,
+      "evidence_map": 100,
+      "blueprint": 100,
+      "objective_alignment": 89,
+      "content_density": 100,
+      "deep_dive_depth": 100,
+      "participation_design": 100,
+      "assessment": 80,
+      "transparency": 100,
+      "schema_qa": 100
+    },
+    "rubric": [
+      "slide budget fidelity",
+      "research rigor",
+      "source grounding",
+      "evidence-map coverage",
+      "course blueprint completeness",
+      "objective alignment",
+      "content density",
+      "deep-dive coverage",
+      "participation design",
+      "assessment coverage",
+      "works-cited transparency",
+      "schema QA"
+    ]
+  },
+  "pipeline_mode": "openai",
+  "bernard": {
+    "embedded": true,
+    "wake_word": "Bernard",
+    "voice_note": "English accent when supported by the browser and configured TTS."
+  },
+  "exports": [
+    "student-handout.md",
+    "facilitator-guide.md",
+    "quiz-answer-key.md",
+    "evidence-map.json",
+    "class-blueprint.json",
+    "class-record.json"
+  ],
+  "source_paper": {
+    "title": "Student Reader - bake bread",
+    "section_count": 2,
+    "sections": [
+      {
+        "id": "s1",
+        "num": "1",
+        "title": "Class setup, learner profile, and research rules"
+      },
+      {
+        "id": "s2",
+        "num": "2",
+        "title": "Research prompts and knowledge-base questions"
+      }
+    ]
+  },
+  "course_blueprint": {
+    "tier": "Quick briefing",
+    "slide_target": 30,
+    "teaching_slide_target": 29,
+    "knowledge_standard": {
+      "ok": true,
+      "floor_met": false,
+      "evidence_limited": true,
+      "tier": {
+        "level": "briefing",
+        "label": "Quick briefing",
+        "source_floor": 4,
+        "primary_source_floor": 1,
+        "slide_floor": 30,
+        "standard": "Short, source-aware orientation. Useful for overviews, not full mastery."
+      },
+      "counts": {
+        "total": 0,
+        "primary": 0,
+        "secondary": 0,
+        "unknown": 0
+      },
+      "score": {
+        "score": 15,
+        "band": "thin",
+        "components": {
+          "coverage": 0,
+          "authority": 0,
+          "recency": 75
+        },
+        "weights": {
+          "coverage": 0.5,
+          "authority": 0.3,
+          "recency": 0.2
+        },
+        "detail": {
+          "total": 0,
+          "primary": 0,
+          "secondary": 0,
+          "required_total": 4,
+          "required_primary": 1,
+          "dated_sources": 0,
+          "recency_floor_year": 2024
+        },
+        "summary": "Knowledge-base score 15/100 (thin): coverage 0, authority 0, recency 75. 0/4 sources, 0/1 primary."
+      },
+      "required_sources": 4,
+      "required_primary_sources": 1,
+      "source_gap": 4,
+      "primary_source_gap": 1,
+      "messages": [
+        "Evidence-limited class approved by change order: built on 0 verified sources (0 primary), below the Quick briefing floor of 4/1. Scope and confidence are disclosed in the class."
+      ]
+    },
+    "approved_before_generation": true,
+    "modules": [
+      {
+        "order": 1,
+        "title": "Orientation and learner baseline",
+        "slide_budget": 2,
+        "goal": "Set the purpose, audience floor, assumptions, and mastery target.",
+        "deep_dive_expectation": "no deep dives selected"
+      },
+      {
+        "order": 2,
+        "title": "Knowledge base and source boundary",
+        "slide_budget": 3,
+        "goal": "Show what the approved sources support, what is missing, and what must not be invented.",
+        "deep_dive_expectation": "no deep dives selected"
+      },
+      {
+        "order": 3,
+        "title": "Core concepts and vocabulary",
+        "slide_budget": 5,
+        "goal": "Teach the essential terms, mental models, and decision points.",
+        "deep_dive_expectation": "no deep dives selected"
+      },
+      {
+        "order": 4,
+        "title": "Guided practice and examples",
+        "slide_budget": 6,
+        "goal": "Work through realistic cases, common mistakes, checks, and facilitator prompts.",
+        "deep_dive_expectation": "no deep dives selected"
+      },
+      {
+        "order": 5,
+        "title": "Deep dives, edge cases, and quality risks",
+        "slide_budget": 6,
+        "goal": "Add expert detail, safety cautions, disagreements, and advanced transfer examples.",
+        "deep_dive_expectation": "no deep dives selected"
+      },
+      {
+        "order": 6,
+        "title": "Assessment, transfer, and works cited",
+        "slide_budget": 7,
+        "goal": "Prove mastery, capture participation, and close with source transparency.",
+        "deep_dive_expectation": "no deep dives selected"
+      }
+    ],
+    "lesson_sections": 4
+  },
+  "evidence_map": [
+    {
+      "kind": "terminal objective",
+      "claim": "By the end of this masterclass, learners will be able to describe the basic steps and essential ingredients involved in baking a simple loaf of bread, recognizing the limitations of current evidence and identifying key areas requiring further research.",
+      "source_ids": [
+        "s1",
+        "s2"
+      ],
+      "source_titles": [
+        "Class setup, learner profile, and research rules",
+        "Research prompts and knowledge-base questions"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "enabling objective",
+      "claim": "Identify and list common ingredients used in bread baking and their roles.",
+      "source_ids": [
+        "s2"
+      ],
+      "source_titles": [
+        "Research prompts and knowledge-base questions"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "enabling objective",
+      "claim": "Explain the general process of mixing, kneading, fermenting, and baking dough.",
+      "source_ids": [
+        "s1",
+        "s2"
+      ],
+      "source_titles": [
+        "Class setup, learner profile, and research rules",
+        "Research prompts and knowledge-base questions"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "enabling objective",
+      "claim": "Recognize common challenges and troubleshooting tips in bread baking based on provisional knowledge.",
+      "source_ids": [
+        "s1",
+        "s2"
+      ],
+      "source_titles": [
+        "Class setup, learner profile, and research rules",
+        "Research prompts and knowledge-base questions"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "enabling objective",
+      "claim": "Understand the importance of evidence-based practices and the current gaps in bread baking knowledge.",
+      "source_ids": [
+        "s1",
+        "s2"
+      ],
+      "source_titles": [
+        "Class setup, learner profile, and research rules",
+        "Research prompts and knowledge-base questions"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Introduction to Bread Baking Basics",
+      "source_ids": [
+        "s1"
+      ],
+      "source_titles": [
+        "Class setup, learner profile, and research rules"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Step-by-Step Bread Making Process",
+      "source_ids": [
+        "s1"
+      ],
+      "source_titles": [
+        "Class setup, learner profile, and research rules"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Common Challenges and Troubleshooting",
+      "source_ids": [
+        "s1"
+      ],
+      "source_titles": [
+        "Class setup, learner profile, and research rules"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Understanding Evidence Gaps and Best Practices",
+      "source_ids": [
+        "s1"
+      ],
+      "source_titles": [
+        "Class setup, learner profile, and research rules"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "safety / quality claims",
+      "claim": "Statistics, standards, safety procedures, contested points, and forward-looking claims require corroboration.",
+      "source_ids": [
+        "s1",
+        "s2"
+      ],
+      "source_titles": [
+        "Class setup, learner profile, and research rules",
+        "Research prompts and knowledge-base questions"
+      ],
+      "status": "corroboration-required",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "out of scope",
+      "claim": "Advanced bread baking techniques such as sourdough starter cultivation or artisan bread shaping.; Detailed scientific explanations of fermentation biochemistry without verified sources.; Historical or cultural variations of bread baking beyond basic process overview.; Statistical data or contested claims about bread baking outcomes due to lack of evidence.",
+      "source_ids": [
+        "s1",
+        "s2"
+      ],
+      "source_titles": [
+        "Class setup, learner profile, and research rules",
+        "Research prompts and knowledge-base questions"
+      ],
+      "status": "scope-boundary",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    }
+  ]
+}

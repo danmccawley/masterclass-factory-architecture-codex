@@ -1,0 +1,101 @@
+{
+  "tier": "Quick briefing",
+  "slide_target": 30,
+  "teaching_slide_target": 29,
+  "knowledge_standard": {
+    "ok": true,
+    "floor_met": false,
+    "evidence_limited": true,
+    "tier": {
+      "level": "briefing",
+      "label": "Quick briefing",
+      "source_floor": 4,
+      "primary_source_floor": 1,
+      "slide_floor": 30,
+      "standard": "Short, source-aware orientation. Useful for overviews, not full mastery."
+    },
+    "counts": {
+      "total": 0,
+      "primary": 0,
+      "secondary": 0,
+      "unknown": 0
+    },
+    "score": {
+      "score": 15,
+      "band": "thin",
+      "components": {
+        "coverage": 0,
+        "authority": 0,
+        "recency": 75
+      },
+      "weights": {
+        "coverage": 0.5,
+        "authority": 0.3,
+        "recency": 0.2
+      },
+      "detail": {
+        "total": 0,
+        "primary": 0,
+        "secondary": 0,
+        "required_total": 4,
+        "required_primary": 1,
+        "dated_sources": 0,
+        "recency_floor_year": 2024
+      },
+      "summary": "Knowledge-base score 15/100 (thin): coverage 0, authority 0, recency 75. 0/4 sources, 0/1 primary."
+    },
+    "required_sources": 4,
+    "required_primary_sources": 1,
+    "source_gap": 4,
+    "primary_source_gap": 1,
+    "messages": [
+      "Evidence-limited class approved by change order: built on 0 verified sources (0 primary), below the Quick briefing floor of 4/1. Scope and confidence are disclosed in the class."
+    ]
+  },
+  "approved_before_generation": true,
+  "modules": [
+    {
+      "order": 1,
+      "title": "Orientation and learner baseline",
+      "slide_budget": 2,
+      "goal": "Set the purpose, audience floor, assumptions, and mastery target.",
+      "deep_dive_expectation": "no deep dives selected"
+    },
+    {
+      "order": 2,
+      "title": "Knowledge base and source boundary",
+      "slide_budget": 3,
+      "goal": "Show what the approved sources support, what is missing, and what must not be invented.",
+      "deep_dive_expectation": "no deep dives selected"
+    },
+    {
+      "order": 3,
+      "title": "Core concepts and vocabulary",
+      "slide_budget": 5,
+      "goal": "Teach the essential terms, mental models, and decision points.",
+      "deep_dive_expectation": "no deep dives selected"
+    },
+    {
+      "order": 4,
+      "title": "Guided practice and examples",
+      "slide_budget": 6,
+      "goal": "Work through realistic cases, common mistakes, checks, and facilitator prompts.",
+      "deep_dive_expectation": "no deep dives selected"
+    },
+    {
+      "order": 5,
+      "title": "Deep dives, edge cases, and quality risks",
+      "slide_budget": 6,
+      "goal": "Add expert detail, safety cautions, disagreements, and advanced transfer examples.",
+      "deep_dive_expectation": "no deep dives selected"
+    },
+    {
+      "order": 6,
+      "title": "Assessment, transfer, and works cited",
+      "slide_budget": 7,
+      "goal": "Prove mastery, capture participation, and close with source transparency.",
+      "deep_dive_expectation": "no deep dives selected"
+    }
+  ],
+  "lesson_sections": 4
+}
