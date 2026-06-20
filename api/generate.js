@@ -11,6 +11,9 @@ const KEY_PATTERN = new RegExp("^" + KEY_PREFIX + "[A-Za-z0-9_-]+$");
 const PROJECT_KEY_PATTERN = new RegExp(KEY_PREFIX + "proj-[A-Za-z0-9_-]+", "g");
 const ANY_KEY_PATTERN = new RegExp(KEY_PREFIX + "[A-Za-z0-9_-]+", "g");
 const MAX_SOURCE_CHARS = 9000;
+const SOURCE_FETCH_TIMEOUT_MS = 4500;
+const OPENAI_SEARCH_TIMEOUT_MS = 28000;
+const MAX_DISCOVERY_URL_CHECKS = 16;
 const MAX_GENERATED_SLIDES = 400;
 const MAX_OPENAI_AUTHORED_SLIDES = 60;
 const MIN_MASTERCLASS_SLIDES = 30;
@@ -313,7 +316,7 @@ function sourceQualityHtml(quality) {
 
 async function fetchUrlText(url) {
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 8000);
+  const timeout = setTimeout(() => controller.abort(), SOURCE_FETCH_TIMEOUT_MS);
   try {
     const response = await fetch(url, {
       signal: controller.signal,
@@ -359,9 +362,12 @@ async function requestOpenAIResponsesSearchJson(stage, user, maxTokens) {
 
   let failed;
   for (const model of configuredModels()) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), OPENAI_SEARCH_TIMEOUT_MS);
     try {
       const response = await fetch("https://api.openai.com/v1/responses", {
         method: "POST",
+        signal: controller.signal,
         headers: {
           authorization: `Bearer ${key}`,
           "content-type": "application/json"
@@ -385,6 +391,8 @@ async function requestOpenAIResponsesSearchJson(stage, user, maxTokens) {
     } catch (error) {
       failed = { status: 0, message: safeErrorMessage(error.message || error), model };
       if (!shouldTryNextModel(0, failed.message)) break;
+    } finally {
+      clearTimeout(timeout);
     }
   }
 
@@ -400,6 +408,7 @@ async function requestOpenAISearchJson(stage, user, maxTokens) {
     return await requestOpenAIResponsesSearchJson(stage, user, maxTokens);
   } catch (error) {
     responsesError = error;
+    if (isTimeoutMessage(error.message)) throw error;
   }
 
   const key = openAIKey();
@@ -412,9 +421,12 @@ async function requestOpenAISearchJson(stage, user, maxTokens) {
 
   let failed;
   for (const model of configuredSearchModels()) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), OPENAI_SEARCH_TIMEOUT_MS);
     try {
       const response = await fetch("https://api.openai.com/v1/chat/completions", {
         method: "POST",
+        signal: controller.signal,
         headers: {
           authorization: `Bearer ${key}`,
           "content-type": "application/json"
@@ -445,6 +457,8 @@ async function requestOpenAISearchJson(stage, user, maxTokens) {
     } catch (error) {
       failed = { status: 0, message: safeErrorMessage(error.message || error), model };
       if (!shouldTryNextModel(0, failed.message)) break;
+    } finally {
+      clearTimeout(timeout);
     }
   }
 
@@ -561,17 +575,22 @@ async function discoverKnowledgeBaseSources(brief, standard) {
   discovery.model = researched.model;
   discovery.gaps = list(researched.data && researched.data.gaps, [], 10);
   const candidates = normalizeDiscoveredSources(researched.data, (brief.knowledge_base.uploads || []).map((source) => source.path));
+  const verificationTarget = Math.max(needed.total_sources_needed + 4, needed.primary_sources_needed + 2, 8);
+  const candidatesToCheck = candidates.slice(0, Math.min(MAX_DISCOVERY_URL_CHECKS, verificationTarget + 4));
+  discovery.notes.push(`Bernard found ${candidates.length} source candidate${candidates.length === 1 ? "" : "s"} and checked ${candidatesToCheck.length} URL${candidatesToCheck.length === 1 ? "" : "s"} for readability.`);
+  const checked = await Promise.all(candidatesToCheck.map(async (candidate) => ({
+    candidate,
+    fetched: await fetchUrlText(candidate.path)
+  })));
   const verified = [];
-  for (const candidate of candidates) {
-    if (verified.length >= Math.max(needed.total_sources_needed + 4, needed.primary_sources_needed + 2, 8)) break;
-    const fetched = await fetchUrlText(candidate.path);
+  checked.forEach(({ candidate, fetched }) => {
     if (fetched.ok) {
       verified.push(candidate);
     } else {
       discovery.rejected_sources.push({ path: candidate.path, reason: fetched.error });
     }
-  }
-  discovery.added_sources = verified;
+  });
+  discovery.added_sources = verified.slice(0, Math.max(needed.total_sources_needed + 4, needed.primary_sources_needed + 2, 8));
   if (!verified.length) discovery.notes.push("Bernard searched, but no candidate URLs passed the readability check.");
   return discovery;
 }
@@ -712,6 +731,10 @@ function safeErrorMessage(message) {
     .replace(PROJECT_KEY_PATTERN, "[redacted OpenAI key]")
     .replace(ANY_KEY_PATTERN, "[redacted API key]")
     .replace(/Bearer\s+[^"'`]+/g, "Bearer [redacted]");
+}
+
+function isTimeoutMessage(message) {
+  return /abort|aborted|timeout|timed out/i.test(String(message || ""));
 }
 
 function openAIError(payload) {

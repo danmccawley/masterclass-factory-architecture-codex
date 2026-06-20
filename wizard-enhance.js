@@ -19,7 +19,7 @@
   var generatorStages = [
     { label: "Order received", detail: "Validating the class setup and generator contract." },
     { label: "Knowledge base", detail: "Building the source list and source-quality report." },
-    { label: "Research kitchen", detail: "Analyzing sources and shaping source-grounded objectives." },
+    { label: "Research kitchen", detail: "Bernard is searching, checking source URLs, and rejecting anything unverifiable. This can take a little time on AI-owned research." },
     { label: "Blueprint check", detail: "Confirming the approved course architecture and slide allocation." },
     { label: "Lesson recipe", detail: "Sequencing the lesson map, checks, and deep dives." },
     { label: "Slide oven", detail: "Writing every teaching slide required by the slide budget." },
