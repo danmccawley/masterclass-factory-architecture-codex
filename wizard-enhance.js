@@ -17,14 +17,14 @@
   var generatorTrackerTimer = null;
   var generatorTrackerIndex = 0;
   var generatorStages = [
-    { label: "Setup check", detail: "Validating the class setup and generator contract." },
+    { label: "Order received", detail: "Validating the class setup and generator contract." },
     { label: "Knowledge base", detail: "Building the source list and source-quality report." },
-    { label: "Research", detail: "Analyzing sources and shaping source-grounded objectives." },
-    { label: "Slide writing", detail: "Writing the teaching slides to match the requested slide budget." },
-    { label: "Source verify", detail: "Checking citations against the approved knowledge base." },
-    { label: "QA gate", detail: "Testing the generated content layer and class shell." },
-    { label: "Quality audit", detail: "Scoring class quality, assessment coverage, and participation design." },
-    { label: "Publish", detail: "Preparing the launch link, QR code, preview, and GitHub/Vercel handoff." }
+    { label: "Research kitchen", detail: "Analyzing sources and shaping source-grounded objectives." },
+    { label: "Lesson recipe", detail: "Sequencing the lesson map, checks, and deep dives." },
+    { label: "Slide oven", detail: "Writing every teaching slide required by the slide budget." },
+    { label: "Source check", detail: "Checking citations against the approved knowledge base." },
+    { label: "QA counter", detail: "Testing schema, quality, participation design, and class shell behavior." },
+    { label: "Out for launch", detail: "Preparing the preview, QR code, presenter script, and GitHub/Vercel handoff." }
   ];
 
   if (!form || !stepTitle || !briefView) return;
@@ -264,7 +264,7 @@
     planner.setAttribute("data-enhanced-length", "true");
     planner.innerHTML =
       budgetControl("Class length", "length.minutes", Number(brief.length && brief.length.minutes) || 60, 10, 480, "minutes") +
-      budgetControl("Slide budget", "length.slide_budget", Number(brief.length && brief.length.slide_budget) || 90, 10, 400, "slides");
+      budgetControl("Slide budget", "length.slide_budget", Math.max(30, Number(brief.length && brief.length.slide_budget) || 90), 30, 400, "slides");
 
     var help = document.createElement("div");
     help.className = "summary-card full assist-panel";
@@ -519,15 +519,16 @@
 
   function trackerHtml() {
     var steps = generatorStages.map(function (stage, index) {
-      return "<div class=\"tracker-step\" data-tracker-step=\"" + index + "\"><span>" + String(index + 1).padStart(2, "0") + "</span><strong>" + esc(stage.label) + "</strong></div>";
+      return "<div class=\"tracker-step\" data-tracker-step=\"" + index + "\"><span>" + String(index + 1).padStart(2, "0") + "</span><strong>" + esc(stage.label) + "</strong><small>Waiting</small></div>";
     }).join("");
     return "<section class=\"tracker-card\" aria-live=\"polite\">" +
       "<p class=\"kicker\">Masterclass Factory</p>" +
-      "<h2>Building your masterclass</h2>" +
+      "<h2>Generator tracker</h2>" +
+      "<div class=\"tracker-now\"><span>Current stage</span><strong data-tracker-now-stage>Starting</strong></div>" +
       "<p class=\"tracker-detail\" data-tracker-detail>Starting the generator.</p>" +
       "<div class=\"tracker-road\">" + steps + "</div>" +
       "<div class=\"tracker-progress\"><span data-tracker-progress></span></div>" +
-      "<p class=\"tracker-small\" data-tracker-small>Bernard is coordinating the pipeline: source analysis, lesson writing, source verification, QA, and launch packaging.</p>" +
+      "<p class=\"tracker-small\" data-tracker-small>This stays on screen until the masterclass package is ready. Bernard is coordinating source analysis, lesson writing, source verification, QA, quality scoring, and launch packaging.</p>" +
       "<div class=\"tracker-actions\"><button type=\"button\" class=\"ghost\" data-close-tracker>Hide tracker</button></div>" +
       "</section>";
   }
@@ -558,7 +559,11 @@
       var stepIndex = Number(step.getAttribute("data-tracker-step"));
       step.classList.toggle("done", stepIndex < generatorTrackerIndex);
       step.classList.toggle("active", stepIndex === generatorTrackerIndex);
+      var status = step.querySelector("small");
+      if (status) status.textContent = stepIndex < generatorTrackerIndex ? "Done" : stepIndex === generatorTrackerIndex ? "In progress" : "Waiting";
     });
+    var nowStage = tracker.querySelector("[data-tracker-now-stage]");
+    if (nowStage) nowStage.textContent = active.label;
     var detailBox = tracker.querySelector("[data-tracker-detail]");
     if (detailBox) detailBox.textContent = detail || active.detail;
     var progress = tracker.querySelector("[data-tracker-progress]");
@@ -577,10 +582,6 @@
     if (small) small.textContent = "Built " + slideCount + " slides, assembled the deck shell, and prepared the preview, QR code, presenter script, and deploy bundle.";
     var action = tracker.querySelector("[data-close-tracker]");
     if (action) action.textContent = "See generated class package";
-    window.setTimeout(function () {
-      var stillThere = document.querySelector("[data-generator-tracker]");
-      if (stillThere && stillThere.classList.contains("complete")) closeGeneratorTracker();
-    }, 1800);
   }
 
   function failGeneratorTracker(error) {

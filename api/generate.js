@@ -12,6 +12,9 @@ const ANY_KEY_PATTERN = new RegExp(KEY_PREFIX + "[A-Za-z0-9_-]+", "g");
 const MAX_SOURCE_CHARS = 9000;
 const MAX_GENERATED_SLIDES = 400;
 const MAX_OPENAI_AUTHORED_SLIDES = 60;
+const MIN_MASTERCLASS_SLIDES = 30;
+const MIN_COMPLEX_MASTERCLASS_SLIDES = 50;
+const DEFAULT_MASTERCLASS_SLIDES = 90;
 
 function send(res, status, payload) {
   res.statusCode = status;
@@ -78,12 +81,45 @@ function clampInteger(value, min, max, fallback) {
   return Math.max(min, Math.min(max, safe));
 }
 
+function arrayLength(value) {
+  return Array.isArray(value) ? value.length : 0;
+}
+
+function slideBudgetFloor(brief) {
+  const minutes = Number(brief && brief.length && brief.length.minutes) || 0;
+  const mastery = Number(brief && brief.mastery && brief.mastery.target_level) || 0;
+  const deepDive = text(brief && brief.mastery && brief.mastery.deep_dive_density, "").toLowerCase();
+  const titleWords = text(brief && brief.meta && brief.meta.title, "").split(/\s+/).filter(Boolean).length;
+  const sourceCount = arrayLength(brief && brief.knowledge_base && brief.knowledge_base.uploads) +
+    arrayLength(brief && brief.knowledge_base && brief.knowledge_base.research && brief.knowledge_base.research.seed_prompts);
+  const objectiveCount = arrayLength(brief && brief.objectives && brief.objectives.terminal) +
+    arrayLength(brief && brief.objectives && brief.objectives.enabling);
+  const profile = [
+    brief && brief.audience && brief.audience.average && brief.audience.average.technical,
+    brief && brief.audience && brief.audience.floor && brief.audience.floor.technical,
+    brief && brief.audience && brief.audience.average && brief.audience.average.background,
+    brief && brief.audience && brief.audience.floor && brief.audience.floor.background,
+    brief && brief.audience && brief.audience.average && brief.audience.average.role,
+    brief && brief.audience && brief.audience.floor && brief.audience.floor.role,
+    brief && brief.meta && brief.meta.title
+  ].map((item) => text(item, "").toLowerCase()).join(" ");
+  const complex = minutes >= 45 ||
+    mastery >= 3 ||
+    deepDive === "med" || deepDive === "high" ||
+    titleWords >= 5 ||
+    sourceCount >= 2 ||
+    objectiveCount >= 3 ||
+    /technical|fiber|data center|construction|engineer|safety|install|installation|network|electrical|mechanical|medical|legal|finance|compliance|operations/.test(profile);
+  return complex ? MIN_COMPLEX_MASTERCLASS_SLIDES : MIN_MASTERCLASS_SLIDES;
+}
+
 function totalSlideTarget(brief) {
-  return clampInteger(brief && brief.length && brief.length.slide_budget, 6, MAX_GENERATED_SLIDES, 20);
+  const floor = slideBudgetFloor(brief);
+  return clampInteger(brief && brief.length && brief.length.slide_budget, floor, MAX_GENERATED_SLIDES, Math.max(DEFAULT_MASTERCLASS_SLIDES, floor));
 }
 
 function teachingSlideTarget(brief) {
-  return Math.max(5, totalSlideTarget(brief) - 1);
+  return Math.max(MIN_MASTERCLASS_SLIDES - 1, totalSlideTarget(brief) - 1);
 }
 
 function authorSlideTarget(brief) {
@@ -1415,6 +1451,14 @@ function qualityAudit(brief, generated, sourcePaper, sourceCheck, qa) {
   };
 }
 
+function slideBudgetWarning(brief, generated) {
+  const raw = Number(brief && brief.length && brief.length.slide_budget);
+  if (Number.isFinite(raw) && raw < generated.slide_target) {
+    return `Slide budget was raised from ${Math.trunc(raw)} to ${generated.slide_target} so the output remains a real masterclass.`;
+  }
+  return "";
+}
+
 function replacementMap(brief) {
   const title = brief.meta.title || "Untitled Masterclass";
   const audience = brief.audience.floor.role || brief.audience.average.role || "learner";
@@ -1675,7 +1719,7 @@ module.exports = async function generateHandler(req, res) {
       message: pipeline.mode === "openai"
         ? "Masterclass generated with OpenAI stages, independent source verification, QA, preview, bundle, and publish handoff."
         : "Masterclass generated with the conservative deterministic path because OpenAI was unavailable. Preview, bundle, source verification, QA, and publish handoff are ready.",
-      warnings: [pipeline.warning].concat(sourceBuild.notes || []).filter(Boolean),
+      warnings: [pipeline.warning, slideBudgetWarning(brief, generated)].concat(sourceBuild.notes || []).filter(Boolean),
       stage_reports: (pipeline.reports || []).concat([{ stage: "quality", ok: true, score: quality.score, status: quality.status }]),
       lesson_plan: generated.lesson_plan,
       objectives: generated.objectives,

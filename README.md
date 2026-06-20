@@ -74,6 +74,10 @@ technical, experienced, or familiar with the subject, Bernard and the generator 
 depth, edge cases, source analysis, practice, transfer, and advanced examples while still respecting
 the requested slide budget.
 
+The generator enforces masterclass depth server-side. The UI steers slide budgets to 30+ slides, and
+technical, safety, installation, data-center, compliance, or otherwise complex classes are raised to
+at least 50 slides if a stale setup or bad input sends a smaller number.
+
 The returned deploy bundle contains the topic-specific `index.html`, `engine.js`,
 `navscrubber.js`, `content.js`, `glossary.js`, `source.js`, serverless backends, and presenter
 script. The generated content layer stays data-only; the engine and shell remain topic-agnostic.

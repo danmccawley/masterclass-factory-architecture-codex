@@ -313,7 +313,7 @@
   function lengthStep() {
     return grid(
       numberField("Minutes", "length.minutes", 10, 480) +
-      numberField("Slide budget", "length.slide_budget", 1, 400) +
+      numberField("Slide budget", "length.slide_budget", 30, 400) +
       numberField("Polls", "length.interaction_budget.polls", 0, 50) +
       numberField("Word clouds", "length.interaction_budget.word_clouds", 0, 50) +
       numberField("Quizzes", "length.interaction_budget.quizzes", 0, 50) +
