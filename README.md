@@ -15,6 +15,9 @@ HTML/CSS/JS with Vercel serverless functions under `api/`.
   runs OpenAI specialist stages when the API key is present, falls back to a conservative
   deterministic path when AI is unavailable, runs independent source verification + QA, and returns
   a preview HTML file, deploy bundle, presenter script, and optional GitHub publish handoff.
+- `api/librarian.js` — reserve-library source freshness check. It scans saved classes under
+  `classes/`, checks source URLs, flags stale or unavailable sources, and stores history in KV when
+  configured. `vercel.json` schedules it weekly.
 - `api/qr.js` — Vercel launch-link QR code endpoint.
 - `CLAUDE.md` — orchestration rules + pipeline (the Producer's instructions).
 - `.claude/agents/*.md` — nine specialist subagents: research, curriculum, author, glossary, assessment, source-verify, codegen, qa, deploy.
@@ -63,9 +66,30 @@ Knowledge Base analysis is where terminal and enabling learning objective candid
 prepared. Step 03 reviews and approves them. Final TLOs and ELOs must be produced after the
 knowledge base has been researched, analyzed, and matched to the learner profile.
 
+Technical learner background must never be used as a reason to shorten a class. If learners are
+technical, experienced, or familiar with the subject, Bernard and the generator should add more
+depth, edge cases, source analysis, practice, transfer, and advanced examples while still respecting
+the requested slide budget.
+
 The returned deploy bundle contains the topic-specific `index.html`, `engine.js`,
 `navscrubber.js`, `content.js`, `glossary.js`, `source.js`, serverless backends, and presenter
 script. The generated content layer stays data-only; the engine and shell remain topic-agnostic.
+
+## Knowledge Librarian
+Saved masterclasses can be treated as reserve items. The Librarian endpoint:
+- reads each saved class source paper from `classes/<slug>/source.js`
+- reports credibility and reliability fields from the Works Cited / Knowledge Base slide data
+- checks source URLs for availability, `ETag`, and `Last-Modified` changes
+- flags classes that need review or regeneration
+
+The weekly Vercel cron runs every Monday at 09:00 UTC:
+
+```json
+{ "path": "/api/librarian", "schedule": "0 9 * * 1" }
+```
+
+Set `KV_REST_API_URL` and `KV_REST_API_TOKEN` in Vercel if you want the Librarian to save history
+between checks. Without KV, it still returns the current report.
 
 ## To author a real deck
 Replace the `GENERATED PER DECK` region of `build_content.py` (the `slide(...)`/`quiz_slide(...)`

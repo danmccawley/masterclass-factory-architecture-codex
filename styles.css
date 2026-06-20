@@ -139,6 +139,32 @@ pre {
   white-space: nowrap;
 }
 
+.hero-actions {
+  display: grid;
+  justify-items: end;
+  gap: 10px;
+}
+
+.mobile-menu-toggle {
+  display: none;
+  min-height: 40px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  color: var(--water-deep);
+  background: rgba(223, 244, 248, 0.42);
+  border: 1px solid rgba(29, 159, 194, 0.28);
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.78rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.mobile-menu-toggle:hover,
+.mobile-menu-toggle:focus-visible {
+  outline: none;
+  background: rgba(29, 159, 194, 0.16);
+}
+
 .contract-pill.ok,
 .badge.ok {
   background: rgba(29, 159, 194, 0.12);
@@ -1214,6 +1240,15 @@ pre {
     justify-self: start;
   }
 
+  .hero-actions {
+    justify-items: start;
+  }
+
+  .mobile-menu-toggle {
+    display: inline-flex;
+    align-items: center;
+  }
+
   .tracker-road {
     grid-template-columns: 1fr;
   }
@@ -1225,7 +1260,17 @@ pre {
   }
 
   .step-rail {
+    display: none;
     position: static;
+  }
+
+  body.mobile-menu-open .step-rail {
+    display: block;
+  }
+
+  body.mobile-menu-open .mobile-menu-toggle {
+    color: var(--paper-2);
+    background: var(--water-deep);
   }
 
   .creator-panel,

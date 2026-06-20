@@ -431,6 +431,8 @@ async function runOpenAIStages(brief, sourcePaper) {
     "Terminal and enabling objectives must come from the researched knowledge base and learner profile.",
     `The slide budget is a contract: produce ${requestedSlides} total slides, made of ${teachingSlides} teaching slides plus one final Knowledge Base / Works Cited slide.`,
     `When asked to author slides directly, return ${authoredSlides} teaching slides. Do not stop at five slides unless the budget itself is five.`,
+    "Never treat technical background, prior experience, or learner familiarity as permission to shorten the class. Use it to add more depth, worked examples, edge cases, source analysis, misconceptions, and transfer practice.",
+    "Always look for safe opportunities to add more value while staying inside the requested slide budget and source evidence.",
     "Respect the deep-dive setting: low means no deep dives, med means include them only when useful, high means include substantive deep dives.",
     "The embedded conversational tutor is named Bernard.",
     "Return strict JSON only."
@@ -941,6 +943,17 @@ function expansionSlide(brief, sourcePaper, assessment, index, used) {
       ],
       takeaway: "Application work should combine the objective, the source, and the learner's role.",
       notes: "Let learners practice with bounded information. Keep the source discipline visible."
+    },
+    {
+      eyebrow: "Advanced Extension",
+      title: "Add depth for experienced learners",
+      bullets: [
+        "Name a more nuanced version of the same decision.",
+        "Compare the ordinary case with a harder edge case.",
+        "Ask what additional evidence would change the answer."
+      ],
+      takeaway: "Experienced learners should get more depth, not a shorter class.",
+      notes: "Use technical familiarity as a reason to add richer practice and source analysis while staying inside the evidence boundary."
     },
     {
       eyebrow: "Bernard Check",

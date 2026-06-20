@@ -11,6 +11,7 @@
   var genieResponse = document.getElementById("genieResponse");
   var genieInput = document.getElementById("genieInput");
   var genieAsk = document.getElementById("genieAskButton");
+  var mobileMenuButton = document.getElementById("mobileMenuButton");
   var recommendation = null;
   var generation = null;
   var generatorTrackerTimer = null;
@@ -48,6 +49,23 @@
     var downloadScript = closest(event.target, "[data-download-script]");
     var copyClassUrl = closest(event.target, "[data-copy-class-url]");
     var closeTracker = closest(event.target, "[data-close-tracker]");
+    var mobileMenu = closest(event.target, "#mobileMenuButton");
+    var stepButton = closest(event.target, ".step-button");
+    var librarianCheck = closest(event.target, "[data-librarian-check]");
+
+    if (mobileMenu) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      toggleMobileMenu();
+      return;
+    }
+
+    if (librarianCheck) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      checkLibrarian();
+      return;
+    }
 
     if (closeTracker) {
       event.preventDefault();
@@ -59,7 +77,13 @@
     if (quick) {
       event.preventDefault();
       event.stopImmediatePropagation();
+      closeMobileMenu();
       askGenie(quick.dataset.genieQuick);
+      return;
+    }
+
+    if (stepButton) {
+      closeMobileMenu();
       return;
     }
 
@@ -115,7 +139,25 @@
     if (event.target === nextButton && currentStep().indexOf("review") !== -1) {
       event.preventDefault();
       event.stopImmediatePropagation();
+      closeMobileMenu();
       runGenerator();
+    }
+  }
+
+  function toggleMobileMenu() {
+    var open = !document.body.classList.contains("mobile-menu-open");
+    document.body.classList.toggle("mobile-menu-open", open);
+    if (mobileMenuButton) {
+      mobileMenuButton.setAttribute("aria-expanded", String(open));
+      mobileMenuButton.textContent = open ? "× Close" : "☰ Menu";
+    }
+  }
+
+  function closeMobileMenu() {
+    document.body.classList.remove("mobile-menu-open");
+    if (mobileMenuButton) {
+      mobileMenuButton.setAttribute("aria-expanded", "false");
+      mobileMenuButton.textContent = "☰ Menu";
     }
   }
 
@@ -193,6 +235,17 @@
       "<button type=\"button\" class=\"primary\" data-ai=\"fill\">Prepare objective candidates</button></div>";
     var grid = form.querySelector(".form-grid") || form;
     grid.appendChild(card);
+
+    var librarian = document.createElement("div");
+    librarian.className = "summary-card full librarian-panel";
+    librarian.setAttribute("data-librarian-panel", "true");
+    librarian.innerHTML =
+      "<h3>Knowledge Librarian</h3>" +
+      "<p class=\"hint\">Reserved masterclasses need upkeep after they are generated. The Librarian checks saved class source lists, watches for freshness signals, and flags classes that should be refreshed instead of silently going stale.</p>" +
+      "<div class=\"analysis-flow\"><span>Reserve</span><span>Source check</span><span>Freshness report</span><span>Regenerate queue</span></div>" +
+      "<div class=\"assist-actions\"><button type=\"button\" class=\"ghost\" data-librarian-check>Check reserve library</button></div>" +
+      "<div class=\"notice\" data-librarian-result>Weekly checks can run on Vercel. Reports are saved when KV storage is configured.</div>";
+    grid.appendChild(librarian);
   }
 
   function enhanceLengthStep() {
@@ -359,8 +412,9 @@
   function fallbackRecommendation() {
     var brief = parseBrief();
     var minutes = Number(brief.length && brief.length.minutes) || 60;
-    var slides = Math.max(20, Math.min(400, nearestTen(Math.round(minutes * 1.5), 10)));
-    return { minutes: nearestTen(minutes, 10), slide_budget: slides, polls: 2, word_clouds: 4, quizzes: 1, final_test: true, reason: "Balanced for a professional class pace with time for interaction and review." };
+    var currentSlides = Number(brief.length && brief.length.slide_budget) || 90;
+    var slides = Math.max(currentSlides, 20, Math.min(400, nearestTen(Math.round(minutes * 1.5), 10)));
+    return { minutes: nearestTen(minutes, 10), slide_budget: slides, polls: 2, word_clouds: 4, quizzes: 1, final_test: true, reason: "Never shortened for experienced learners; technical familiarity is used to add deeper examples, edge cases, and practice." };
   }
 
   function showRecommendation(value) {
@@ -380,6 +434,26 @@
 
   function lengthText(value) {
     return "Bernard recommends " + value.minutes + " minutes, " + value.slide_budget + " slides, " + value.polls + " polls, " + value.word_clouds + " word clouds, and " + value.quizzes + " quiz. " + value.reason;
+  }
+
+  async function checkLibrarian() {
+    var box = form.querySelector("[data-librarian-result]");
+    if (box) box.textContent = "The Librarian is checking saved classes and source freshness...";
+    try {
+      var response = await fetch("/api/librarian");
+      var payload = await response.json();
+      if (!response.ok || !payload.ok) throw new Error((payload.errors || [payload.error || "Librarian check failed."]).join(" "));
+      var count = payload.summary && payload.summary.classes_checked ? payload.summary.classes_checked : 0;
+      var review = payload.summary && payload.summary.classes_needing_review ? payload.summary.classes_needing_review : 0;
+      var saved = payload.saved ? " Report saved." : " Add KV storage to save periodic history.";
+      var message = "Librarian checked " + count + " saved class" + (count === 1 ? "" : "es") + ". " + review + " need review." + saved;
+      if (box) box.textContent = message;
+      setGenie(message);
+    } catch (error) {
+      var fallback = "The Librarian endpoint runs on Vercel. Local static preview cannot run /api/librarian.";
+      if (box) box.textContent = fallback;
+      setGenie(fallback);
+    }
   }
 
   function enhanceReviewStep() {

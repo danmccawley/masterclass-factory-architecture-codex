@@ -103,6 +103,7 @@ function buildPrompt(body) {
       "Terminal and enabling learning objectives should come after knowledge-base research and analysis.",
       "If asked for final objectives before the knowledge base is ready, frame them as candidates that need verification.",
       "If recommending length, choose minutes and slide_budget in increments of 10.",
+      "Never shorten a class because the learners are technical or familiar with the subject. Use that background to add more depth, examples, edge cases, practice, source analysis, and transfer.",
       "Keep answers concise and practical."
     ],
     required_json_shape: {
@@ -123,14 +124,18 @@ function buildPrompt(body) {
 function normalizeRecommendation(value, brief) {
   const current = brief && brief.length ? brief.length : {};
   const budget = current.interaction_budget || {};
+  const currentMinutes = current.minutes || 60;
+  const currentSlides = current.slide_budget || 90;
+  const recommendedMinutes = clampNumber(value && value.minutes, currentMinutes, 10, 480, true);
+  const recommendedSlides = clampNumber(value && value.slide_budget, currentSlides, 10, 400, true);
   return {
-    minutes: clampNumber(value && value.minutes, current.minutes || 60, 10, 480, true),
-    slide_budget: clampNumber(value && value.slide_budget, current.slide_budget || 90, 10, 400, true),
+    minutes: Math.max(currentMinutes, recommendedMinutes),
+    slide_budget: Math.max(currentSlides, recommendedSlides),
     polls: clampNumber(value && value.polls, budget.polls || 2, 0, 50, false),
     word_clouds: clampNumber(value && value.word_clouds, budget.word_clouds || 4, 0, 50, false),
     quizzes: clampNumber(value && value.quizzes, budget.quizzes || 1, 0, 50, false),
     final_test: value && typeof value.final_test === "boolean" ? value.final_test : true,
-    reason: String(value && value.reason ? value.reason : "Balanced for pace, depth, and learner attention.").trim()
+    reason: String(value && value.reason ? value.reason : "Never shortened for experienced learners; technical familiarity adds depth, edge cases, and practice.").trim()
   };
 }
 
@@ -155,7 +160,7 @@ async function requestGenie(body, model) {
       messages: [
         {
           role: "system",
-          content: "You are Bernard for the Masterclass Factory. Output only valid JSON with answer and recommendation keys. Use OpenAI only. Keep advice practical for nontechnical users."
+          content: "You are Bernard for the Masterclass Factory. Output only valid JSON with answer and recommendation keys. Use OpenAI only. Keep advice practical for nontechnical users. Never recommend shortening a class because learners are technical or familiar; add depth instead."
         },
         { role: "user", content: buildPrompt(body) }
       ]
