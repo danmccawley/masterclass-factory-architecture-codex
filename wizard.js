@@ -93,7 +93,7 @@
       mastery: {
         target_level: 3,
         granularity: "working",
-        deep_dive_density: "med",
+        deep_dive_density: "high",
         field_disagreement: true
       },
       audience: {
@@ -266,16 +266,34 @@
   }
 
   function masteryStep() {
-    return grid(
-      numberField("Target mastery level", "mastery.target_level", 1, 5) +
-      selectField("Granularity", "mastery.granularity", [["survey", "Survey"], ["working", "Working"], ["deep", "Deep"]]) +
-      selectField("Deep dives", "mastery.deep_dive_density", [
-        ["low", "No deep dives"],
-        ["med", "Let Bernard decide"],
-        ["high", "Include deep dives"]
-      ]) +
-      checkboxField("Include where-the-field-disagrees material", "mastery.field_disagreement")
+    return (
+      "<div class=\"form-grid single\">" +
+      card("Depth of instruction",
+        grid(
+          numberField("Target mastery level", "mastery.target_level", 1, 5) +
+          selectField("Granularity", "mastery.granularity", [["survey", "Survey"], ["working", "Working"], ["deep", "Deep"]]) +
+          checkboxField("Include where-the-field-disagrees material", "mastery.field_disagreement")
+        ),
+        "full") +
+      deepDivePlanner() +
+      "</div>"
     );
+  }
+
+  function deepDivePlanner() {
+    var modes = [
+      ["high", "Deep-dive heavy", "Recommended. Add deep dives throughout the class so complex topics get examples, edge cases, source notes, and presenter detail."],
+      ["med", "Let Bernard decide", "Bernard adds deep dives where the source base, learner profile, and mastery level call for them."],
+      ["low", "No deep dives", "Use only when the class must stay brief. The generator will still keep the core lesson complete."]
+    ];
+    return card("Deep dives",
+      "<p class=\"hint\">Choose whether the finished class should include expandable deep-dive material. Deep dives are the richer explanation layer behind the slides.</p>" +
+      "<div class=\"mode-grid deep-dive-mode-grid\">" + modes.map(function (mode) {
+        return "<label class=\"mode-card\"><input type=\"radio\" name=\"deepDiveMode\" data-deep-dive-mode value=\"" + mode[0] + "\"" +
+          (brief.mastery.deep_dive_density === mode[0] ? " checked" : "") + "> <span><strong>" + esc(mode[1]) +
+          "</strong><small>" + esc(mode[2]) + "</small></span></label>";
+      }).join("") + "</div>",
+      "full deep-dive-planner");
   }
 
   function demographicsStep() {
@@ -561,6 +579,12 @@
     if (target.dataset.objectiveMode !== undefined) {
       state.objectiveMode = target.value;
       state.aiStatus = null;
+      render();
+      return;
+    }
+    if (target.dataset.deepDiveMode !== undefined) {
+      brief.mastery.deep_dive_density = target.value;
+      syncOutput();
       render();
       return;
     }

@@ -78,6 +78,11 @@ The generator enforces masterclass depth server-side. The UI steers slide budget
 technical, safety, installation, data-center, compliance, or otherwise complex classes are raised to
 at least 50 slides if a stale setup or bad input sends a smaller number.
 
+Deep dives are also enforced server-side. The builder asks for the deep-dive setting on the Mastery
+step, defaults to deep-dive heavy, and `/api/generate` blocks shallow output. In deep-dive-heavy
+mode every teaching slide must ship with an expandable deep-dive paper; QA also checks visible slide
+word count and deep-dive word count before returning `QA PASS`.
+
 The returned deploy bundle contains the topic-specific `index.html`, `engine.js`,
 `navscrubber.js`, `content.js`, `glossary.js`, `source.js`, serverless backends, and presenter
 script. The generated content layer stays data-only; the engine and shell remain topic-agnostic.
@@ -104,7 +109,8 @@ moving through the deck and participating in polls, word clouds, quizzes, feedba
 questions. If KV is configured, poll/word/feedback signals aggregate across devices; otherwise the
 report still works from the current learner's browser. `/api/generate` also runs a build-time
 quality gate before handing back a class, so source verification, schema QA, slide budget fidelity,
-assessment coverage, and participation design are checked before publish.
+content density, deep-dive coverage, assessment coverage, and participation design are checked before
+publish.
 
 ## To author a real deck
 Replace the `GENERATED PER DECK` region of `build_content.py` (the `slide(...)`/`quiz_slide(...)`
