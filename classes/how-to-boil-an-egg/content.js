@@ -2,83 +2,83 @@
 window.CLASS_TITLE = "how to boil an egg";
 window.DECK_META = {
   "slug": "how-to-boil-an-egg",
-  "generated": "2026-06-20T00:53:48.398Z",
+  "generated": "2026-06-20T00:54:59.479Z",
   "language": "en"
 };
 window.SLIDES = [
   {
     "id": "slide1",
-    "eyebrow": "Introduction",
+    "eyebrow": "Egg Basics",
     "num": "01",
-    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">01</span><span class=\"bar\"></span>Introduction</div><h2 class=\"head anim\">Egg Anatomy and Freshness</h2><ul><li>Eggs have shell, membrane, white (albumen), and yolk</li><li>Types: chicken eggs most common for boiling</li><li>Freshness affects peeling and taste</li><li>Check freshness by water float test or shell appearance</li></ul><p class=\"lede anim\">Connect this point to the source paper and learner profile. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p></div>",
+    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">01</span><span class=\"bar\"></span>Egg Basics</div><h2 class=\"head anim\">Introduction to Eggs and Boiling Basics</h2><ul><li>Egg anatomy: shell, membrane, white, yolk</li><li>Types of eggs commonly boiled (chicken eggs focus)</li><li>Boiling basics: water, heat, timing</li><li>Set foundation for proper egg preparation and cooking</li></ul><p class=\"lede anim\">Connect this point to the source paper and learner profile. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p></div>",
     "paper": {
       "secnum": "Slide 1",
-      "h": "Egg Anatomy and Freshness",
-      "body": "<p>Introduce learners to the basic parts of an egg and why freshness matters for boiling. Explain simple freshness tests like the float test where fresh eggs sink and old eggs float. Emphasize that fresher eggs peel easier after boiling.</p>"
+      "h": "Introduction to Eggs and Boiling Basics",
+      "body": "<p>Introduce learners to the basic parts of an egg and why understanding these helps in boiling. Explain the common types of eggs used and the simple concept of boiling eggs in water with heat and timing. Emphasize this foundational knowledge supports later steps.</p>"
     },
-    "poll": "poll-freshness"
+    "poll": "poll1"
   },
   {
     "id": "slide2",
-    "eyebrow": "Preparation",
+    "eyebrow": "Egg Selection",
     "num": "02",
-    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">02</span><span class=\"bar\"></span>Preparation</div><h2 class=\"head anim\">Tools and Egg Preparation</h2><ul><li>Use pot large enough to hold eggs in a single layer</li><li>Have a slotted spoon or tongs for handling eggs</li><li>Cold water for starting boil helps even cooking</li><li>Gently place eggs to avoid cracking</li></ul><p class=\"lede anim\">Connect this point to the source paper and learner profile. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p></div>",
+    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">02</span><span class=\"bar\"></span>Egg Selection</div><h2 class=\"head anim\">Selecting and Preparing Eggs for Boiling</h2><ul><li>Check egg freshness: water test, shell appearance</li><li>Use eggs at room temperature to reduce cracking</li><li>Avoid eggs with visible cracks or dirt</li><li>Prepare eggs gently before boiling</li></ul><p class=\"lede anim\">Connect this point to the source paper and learner profile. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p></div>",
     "paper": {
       "secnum": "Slide 2",
-      "h": "Tools and Egg Preparation",
-      "body": "<p>Explain the kitchen tools needed: pot, slotted spoon, timer. Stress the importance of placing eggs gently to prevent cracks. Starting with cold water helps eggs cook evenly and reduces cracking risk.</p>"
+      "h": "Selecting and Preparing Eggs for Boiling",
+      "body": "<p>Explain how to recognize fresh eggs using simple tests like the water float test and inspecting the shell. Discuss why room temperature eggs reduce cracking risk and the importance of avoiding damaged eggs. Preparation includes gentle handling to maintain shell integrity.</p>"
     },
-    "words": "wordcloud-tools"
+    "words": "wordcloud1"
   },
   {
     "id": "slide3",
-    "eyebrow": "Boiling Basics",
+    "eyebrow": "Boiling Techniques",
     "num": "03",
-    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">03</span><span class=\"bar\"></span>Boiling Basics</div><h2 class=\"head anim\">Timing and Temperature for Doneness</h2><ul><li>Soft boiled: 4-6 minutes, runny yolk</li><li>Medium boiled: 7-9 minutes, slightly firm yolk</li><li>Hard boiled: 10-12 minutes, fully firm yolk</li><li>Start timing when water reaches rolling boil</li></ul><p class=\"lede anim\">Connect this point to the source paper and learner profile. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p><div id=\"quiz-slide3\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Match the boiling time to the correct egg doneness level.&quot;,&quot;options&quot;:[&quot;4 minutes - Soft boiled&quot;,&quot;8 minutes - Medium boiled&quot;,&quot;12 minutes - Hard boiled&quot;,&quot;15 minutes - Overcooked&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;Boiling eggs for about 4 minutes yields soft boiled eggs, 8 minutes for medium, and 12 minutes for hard boiled. 15 minutes is generally too long and can cause overcooking.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Describe the steps you would take to safely cool and store boiled eggs after cooking.&quot;,&quot;rubric&quot;:&quot;Answer should include immediate cooling in cold water or ice bath, drying eggs, storing them in a clean container in the refrigerator, and handling to avoid contamination.&quot;,&quot;sample&quot;:&quot;After boiling, place eggs in an ice bath to cool quickly, dry them, then store in a clean container in the fridge to keep safe.&quot;,&quot;accept&quot;:[&quot;cool eggs in ice water immediately after boiling&quot;,&quot;use cold water bath to stop cooking&quot;,&quot;dry eggs and refrigerate&quot;,&quot;store boiled eggs in a clean container in the fridge&quot;]}]\" data-pop=\"1\"></div></div>",
+    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">03</span><span class=\"bar\"></span>Boiling Techniques</div><h2 class=\"head anim\">Timing and Techniques for Desired Doneness</h2><ul><li>Soft boiled: ~4-6 minutes, runny yolk</li><li>Medium boiled: ~7-9 minutes, semi-firm yolk</li><li>Hard boiled: ~10-12 minutes, fully firm yolk</li><li>Control water temperature: gentle boil preferred</li></ul><p class=\"lede anim\">Connect this point to the source paper and learner profile. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p><div id=\"quiz-slide3\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which boiling time range is best for achieving a medium boiled egg?&quot;,&quot;options&quot;:[&quot;4 to 6 minutes&quot;,&quot;7 to 9 minutes&quot;,&quot;10 to 12 minutes&quot;,&quot;More than 12 minutes&quot;],&quot;answer&quot;:1,&quot;why&quot;:&quot;Medium boiled eggs typically require 7 to 9 minutes of boiling to reach the desired texture.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Describe two common issues that can occur when boiling eggs and how you would troubleshoot them.&quot;,&quot;rubric&quot;:&quot;The answer should identify at least two common problems such as cracking or undercooking and provide practical solutions like adjusting water temperature, timing, or preparation methods.&quot;,&quot;sample&quot;:&quot;One common issue is eggs cracking during boiling, which can be prevented by starting with room temperature eggs and gently lowering them into simmering water. Another issue is undercooking, which can be fixed by increasing boiling time or ensuring the water is at a consistent boil.&quot;,&quot;accept&quot;:[&quot;cracking and how to prevent it by careful handling or water temperature control&quot;,&quot;undercooking and how to fix it by increasing boiling time&quot;,&quot;solutions involving proper preparation and timing adjustments&quot;]}]\" data-pop=\"1\"></div></div>",
     "paper": {
       "secnum": "Slide 3",
-      "h": "Timing and Temperature for Doneness",
-      "body": "<p>Teach learners the timing ranges for different doneness levels. Emphasize starting the timer when water boils to ensure accuracy. Mention that water temperature control is key to consistent results.</p>"
+      "h": "Timing and Techniques for Desired Doneness",
+      "body": "<p>Detail the timing ranges for soft, medium, and hard boiled eggs and how these affect yolk texture. Stress the importance of maintaining a gentle boil rather than a rolling boil to avoid cracking and uneven cooking. Accurate timing is key to desired doneness.</p>"
     }
   },
   {
     "id": "slide4",
     "eyebrow": "Troubleshooting",
     "num": "04",
-    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">04</span><span class=\"bar\"></span>Troubleshooting</div><h2 class=\"head anim\">Common Boiling Issues</h2><ul><li>Cracking: avoid rapid temperature changes, handle gently</li><li>Undercooked: increase boiling time slightly</li><li>Overcooked: yolk turns greenish, rubbery texture</li><li>Peeling difficulty: use older eggs or ice bath after boiling</li></ul><p class=\"lede anim\">Connect this point to the source paper and learner profile. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p></div>",
+    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">04</span><span class=\"bar\"></span>Troubleshooting</div><h2 class=\"head anim\">Troubleshooting Common Boiling Issues</h2><ul><li>Cracking: caused by cold eggs or rapid temperature change</li><li>Undercooking: insufficient boiling time or low heat</li><li>Overcooking: too long boiling leads to green yolk ring</li><li>Solutions: use room temp eggs, control boil, time carefully</li></ul><p class=\"lede anim\">Connect this point to the source paper and learner profile. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p></div>",
     "paper": {
       "secnum": "Slide 4",
-      "h": "Common Boiling Issues",
-      "body": "<p>Discuss common problems learners may face. Explain causes and fixes for cracking, undercooking, and overcooking. Highlight that peeling is easier with slightly older eggs or after cooling in ice water.</p>"
+      "h": "Troubleshooting Common Boiling Issues",
+      "body": "<p>Discuss common problems like cracking due to temperature shock or rough handling. Explain undercooking and overcooking signs and causes. Provide practical solutions such as warming eggs before boiling, controlling heat, and timing precisely to avoid these issues.</p>"
     }
   },
   {
     "id": "slide5",
-    "eyebrow": "Safety",
+    "eyebrow": "Food Safety",
     "num": "05",
-    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">05</span><span class=\"bar\"></span>Safety</div><h2 class=\"head anim\">Safe Handling and Cooling</h2><ul><li>Cool eggs quickly in ice water to stop cooking</li><li>Store boiled eggs in refrigerator within 2 hours</li><li>Consume within one week for safety</li><li>Wash hands and utensils after handling raw eggs</li></ul><p class=\"lede anim\">Connect this point to the source paper and learner profile. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p><div id=\"quiz-slide5\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Match the boiling time to the correct egg doneness level.&quot;,&quot;options&quot;:[&quot;4 minutes - Soft boiled&quot;,&quot;8 minutes - Medium boiled&quot;,&quot;12 minutes - Hard boiled&quot;,&quot;15 minutes - Overcooked&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;Boiling eggs for about 4 minutes yields soft boiled eggs, 8 minutes for medium, and 12 minutes for hard boiled. 15 minutes is generally too long and can cause overcooking.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Describe the steps you would take to safely cool and store boiled eggs after cooking.&quot;,&quot;rubric&quot;:&quot;Answer should include immediate cooling in cold water or ice bath, drying eggs, storing them in a clean container in the refrigerator, and handling to avoid contamination.&quot;,&quot;sample&quot;:&quot;After boiling, place eggs in an ice bath to cool quickly, dry them, then store in a clean container in the fridge to keep safe.&quot;,&quot;accept&quot;:[&quot;cool eggs in ice water immediately after boiling&quot;,&quot;use cold water bath to stop cooking&quot;,&quot;dry eggs and refrigerate&quot;,&quot;store boiled eggs in a clean container in the fridge&quot;]}]\" data-pop=\"1\"></div></div>",
+    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">05</span><span class=\"bar\"></span>Food Safety</div><h2 class=\"head anim\">Safe Handling and Cooling of Boiled Eggs</h2><ul><li>Cool eggs quickly in ice water to stop cooking</li><li>Store boiled eggs refrigerated within 2 hours</li><li>Handle eggs with clean hands to avoid contamination</li><li>Consume boiled eggs within recommended time frame</li></ul><p class=\"lede anim\">Connect this point to the source paper and learner profile. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p></div>",
     "paper": {
       "secnum": "Slide 5",
-      "h": "Safe Handling and Cooling",
-      "body": "<p>Explain the importance of rapid cooling to prevent overcooking and bacterial growth. Stress food safety by refrigerating boiled eggs promptly and consuming within a week. Remind learners to maintain hygiene when handling raw eggs.</p>"
+      "h": "Safe Handling and Cooling of Boiled Eggs",
+      "body": "<p>Explain the importance of rapidly cooling boiled eggs in ice water to prevent overcooking and bacterial growth. Emphasize refrigeration within 2 hours and hygienic handling to maintain food safety. Mention typical safe consumption windows for boiled eggs.</p>"
     }
   }
 ];
 window.POLLS = {
-  "poll-freshness": {
-    "q": "Which of these eggs looks the freshest based on common freshness indicators?",
-    "desc": "Select the egg that shows signs of being freshest, such as clean, uncracked shell and no discoloration.",
+  "poll1": {
+    "q": "What level of egg doneness do you usually prefer when boiling eggs?",
+    "desc": "Select the doneness level you most often aim for when boiling eggs.",
     "opts": [
-      "Egg with clean, smooth shell and no cracks",
-      "Egg with small cracks on the shell",
-      "Egg with discoloration or spots",
-      "Egg with dull and rough shell"
+      "Soft boiled",
+      "Medium boiled",
+      "Hard boiled",
+      "I don’t usually boil eggs"
     ]
   }
 };
 window.WORDS = {
-  "wordcloud-tools": {
-    "q": "List the kitchen tools you think are needed to boil eggs effectively.",
-    "desc": "Think about tools that help with boiling, timing, and handling eggs safely."
+  "wordcloud1": {
+    "q": "What signs do you know or have observed that indicate an egg is fresh?",
+    "desc": "Share words or short phrases that describe how to recognize fresh eggs before boiling."
   }
 };

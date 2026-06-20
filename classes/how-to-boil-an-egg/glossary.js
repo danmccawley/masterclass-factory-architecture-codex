@@ -1,44 +1,44 @@
 /* Generated glossary. term -> {d, r}. */
 window.GLOSSARY = {
-  "soft boiled egg": {
-    "d": "An egg cooked in boiling water until the white is set but the yolk remains runny or slightly creamy.",
-    "r": "Knowing this helps achieve the desired texture and timing for a soft boiled egg."
+  "boiling": {
+    "d": "Cooking eggs by immersing them in water heated to 100°C (212°F) until the desired doneness is reached.",
+    "r": "Understanding boiling is essential to control cooking time and temperature for soft, medium, or hard boiled eggs."
   },
-  "medium boiled egg": {
-    "d": "An egg boiled so that both the white and yolk are mostly set but the yolk remains slightly creamy in the center.",
-    "r": "Understanding this doneness level allows for precise cooking to preferred texture."
-  },
-  "hard boiled egg": {
-    "d": "An egg boiled until both the white and yolk are fully cooked and firm throughout.",
-    "r": "This is important for recipes or uses requiring fully cooked eggs and safe consumption."
-  },
-  "egg freshness": {
-    "d": "Indicators such as shell appearance and weight that suggest how recently an egg was laid and its quality.",
-    "r": "Selecting fresh eggs improves boiling results and reduces risk of spoilage."
+  "doneness": {
+    "d": "The level of cooking of an egg, typically categorized as soft, medium, or hard boiled based on the firmness of the yolk and white.",
+    "r": "Knowing doneness helps achieve the preferred texture and taste of boiled eggs."
   },
   "egg anatomy": {
-    "d": "The basic parts of an egg including the shell, white (albumen), and yolk.",
-    "r": "Understanding anatomy helps explain how heat affects texture during boiling."
+    "d": "The structure of an egg including the shell, membrane, white (albumen), and yolk.",
+    "r": "Understanding egg anatomy aids in selecting eggs and predicting how they cook during boiling."
   },
-  "boiling time": {
-    "d": "The duration eggs are cooked in boiling water to reach desired doneness.",
-    "r": "Controlling boiling time is key to achieving soft, medium, or hard boiled eggs."
+  "egg freshness": {
+    "d": "A measure of how recently an egg was laid, often assessed by appearance, smell, or simple tests like the float test.",
+    "r": "Fresh eggs boil better and peel more easily, improving cooking results."
+  },
+  "cracking": {
+    "d": "When the eggshell breaks during boiling, potentially causing egg white to leak into the water.",
+    "r": "Preventing cracking ensures the egg cooks properly and maintains its shape."
+  },
+  "cooling": {
+    "d": "The process of lowering the temperature of boiled eggs, often by placing them in cold water after boiling.",
+    "r": "Cooling stops the cooking process and makes peeling easier while maintaining food safety."
+  },
+  "timing": {
+    "d": "The duration eggs are boiled, which determines their doneness.",
+    "r": "Accurate timing is critical to achieve the desired soft, medium, or hard boiled texture."
   },
   "water temperature control": {
-    "d": "Managing the heat level of water during boiling to ensure consistent cooking.",
-    "r": "Proper temperature control prevents undercooking or cracking of eggs."
+    "d": "Monitoring and maintaining the temperature of the boiling water during cooking.",
+    "r": "Proper temperature control ensures consistent cooking and prevents undercooking or overcooking."
   },
-  "common boiling issues": {
-    "d": "Problems like cracking shells or undercooked yolks that can occur during boiling.",
-    "r": "Recognizing and troubleshooting these issues improves cooking success."
+  "troubleshooting": {
+    "d": "Identifying and solving common problems encountered when boiling eggs, such as cracking or undercooking.",
+    "r": "Troubleshooting skills help learners improve their boiling technique and avoid common mistakes."
   },
-  "safe handling and cooling": {
-    "d": "Practices such as cooling boiled eggs promptly and storing them properly to maintain food safety.",
-    "r": "These methods reduce risk of bacterial growth and ensure eggs remain safe to eat."
-  },
-  "kitchen tools for boiling eggs": {
-    "d": "Common equipment like pots, timers, and slotted spoons used in the boiling process.",
-    "r": "Using the right tools makes boiling eggs easier and more effective."
+  "safe handling": {
+    "d": "Practices to prevent contamination and ensure boiled eggs are safe to eat, including proper cooling and storage.",
+    "r": "Safe handling protects health by reducing the risk of foodborne illness."
   },
   "terminal learning objective": {
     "d": "The main capability learners should demonstrate by the end of the class.",
