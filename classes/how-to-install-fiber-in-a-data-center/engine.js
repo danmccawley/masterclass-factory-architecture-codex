@@ -65,7 +65,10 @@
   /* ---------- COLLAPSIBLE TOOLS MENU (single ☰ button) ---------- */
   function setToolsToggleLabel(open){
     var tg=document.getElementById("toolsToggle");
-    if(tg) tg.innerHTML = open ? "\u2715 Close" : "\u2630 Tools";
+    if(tg){
+      tg.innerHTML = open ? "\u2715 Close" : "\u2630 Menu";
+      tg.setAttribute("aria-label", open ? "Close class menu" : "Open class menu");
+    }
   }
   window.toggleTools = function(){
     var t=document.getElementById("tools"); if(!t) return;
