@@ -962,11 +962,25 @@
         throw new Error((payload.errors || ["Generator failed."]).join(" "));
       }
       for (var i = 1; i <= 6; i += 1) markTrackerStagePassed(i);
+      generation = payload; // <-- store it; without this the built class is discarded
       completeGeneratorTracker(payload);
       enhanceReviewStep();
       var card = form.querySelector("[data-enhanced-generator]");
       if (card) card.innerHTML = generatorHtml();
-      if (validationBox) validationBox.innerHTML = "<div class=\"notice\">Class built on the approved scope. Preview and bundle are in Review & Generate.</div>";
+      var built = (payload.slide_count || "the requested") + " slide" + (payload.slide_count === 1 ? "" : "s");
+      var noteBits = ["Class built — " + built + "."];
+      if (payload.knowledge_standard && payload.knowledge_standard.evidence_limited) {
+        noteBits.push("Flagged evidence-limited (below the source floor) by your decision.");
+      }
+      if (payload.quality && payload.quality.published_below_bar) {
+        noteBits.push("Published below the quality bar by your decision.");
+      }
+      if (validationBox) {
+        validationBox.innerHTML = "<div class=\"notice\">" + esc(noteBits.join(" ")) +
+          " <button type=\"button\" class=\"link-btn\" data-open-built-preview>Open the preview</button> or see the full package in Review &amp; Generate.</div>";
+        var openBtn = validationBox.querySelector("[data-open-built-preview]");
+        if (openBtn) openBtn.addEventListener("click", openGeneratedPreview);
+      }
     } catch (error) {
       failGeneratorTracker(error);
       if (validationBox) validationBox.innerHTML = "<div class=\"notice warn\">Could not finish: " + esc(error.message || "Unknown error") + "</div>";

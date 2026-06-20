@@ -713,7 +713,7 @@ pre {
   align-items: center;
 }
 
-.kb-score {
+.kb-score-row .kb-score {
   display: grid;
   place-items: center;
   width: 92px;
@@ -723,13 +723,13 @@ pre {
   border: 1px solid rgba(29, 159, 194, 0.28);
 }
 
-.kb-score strong {
+.kb-score-row .kb-score strong {
   font-family: "Fraunces", Georgia, serif;
   font-size: 2.2rem;
   line-height: 1;
 }
 
-.kb-score span {
+.kb-score-row .kb-score span {
   color: var(--ink-soft);
   font-family: "IBM Plex Mono", ui-monospace, monospace;
   font-size: 0.72rem;
@@ -1727,7 +1727,7 @@ pre {
 }
 
 /* ── Knowledge-base score + resolution options + Bernard chat ── */
-.kb-score { border: 1px solid var(--line, #d8d2c4); border-radius: 12px; padding: 14px 16px; margin: 12px 0; background: #fbfaf7; }
+.kb-score { display: block; width: auto; height: auto; place-items: initial; border: 1px solid var(--line, #d8d2c4); border-radius: 12px; padding: 14px 16px; margin: 12px 0; background: #fbfaf7; }
 .kb-score-head { display: flex; align-items: baseline; gap: 12px; }
 .kb-score-num { font-size: 2rem; font-weight: 700; line-height: 1; }
 .kb-score-den { font-size: 1rem; font-weight: 400; opacity: 0.6; }
