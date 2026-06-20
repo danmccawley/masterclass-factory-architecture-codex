@@ -887,6 +887,14 @@
           presentChangeOrder(payload);
           return;
         }
+        if (payload.status === "needs_decision" && payload.resolution === "quality_decision") {
+          presentQualityDecision(payload);
+          return;
+        }
+        if (payload.status === "qa_structural") {
+          presentStructuralBlock(payload);
+          return;
+        }
         if (payload.status === "needs_human") {
           presentHumanRequest(payload);
           return;
@@ -943,6 +951,8 @@
       var payload = await response.json();
       if (!response.ok || !payload.ok) {
         if (payload.status === "needs_decision" && payload.change_order) { presentChangeOrder(payload); return; }
+        if (payload.status === "needs_decision" && payload.resolution === "quality_decision") { presentQualityDecision(payload); return; }
+        if (payload.status === "qa_structural") { presentStructuralBlock(payload); return; }
         if (payload.status === "needs_human") { presentHumanRequest(payload); return; }
         throw new Error((payload.errors || ["Generator failed."]).join(" "));
       }
@@ -958,66 +968,240 @@
     }
   }
 
-  // Present a CHANGE ORDER: situation, challenges, recommendation, approve/decline.
+  // Render the knowledge-base score as a compact badge + component bars.
+  function scoreHtml(score) {
+    if (!score) return "";
+    var bandClass = score.band === "excellent" ? "score-excellent"
+      : score.band === "strong" ? "score-strong"
+      : score.band === "usable" ? "score-usable" : "score-thin";
+    var c = score.components || {};
+    function bar(label, val) {
+      return "<div class=\"score-bar-row\"><span class=\"score-bar-label\">" + esc(label) + "</span>" +
+        "<span class=\"score-bar-track\"><span class=\"score-bar-fill\" style=\"width:" + Math.max(0, Math.min(100, val || 0)) + "%\"></span></span>" +
+        "<span class=\"score-bar-val\">" + (val || 0) + "</span></div>";
+    }
+    return "<div class=\"kb-score " + bandClass + "\">" +
+      "<div class=\"kb-score-head\"><span class=\"kb-score-num\">" + (score.score || 0) + "<span class=\"kb-score-den\">/100</span></span>" +
+      "<span class=\"kb-score-band\">" + esc(score.band || "") + "</span></div>" +
+      "<div class=\"kb-score-bars\">" + bar("Coverage", c.coverage) + bar("Authority", c.authority) + bar("Recency", c.recency) + "</div>" +
+      (score.summary ? "<p class=\"kb-score-summary\">" + esc(score.summary) + "</p>" : "") +
+      "</div>";
+  }
+
+  // Render the structured options as clickable choices. Build options carry a
+  // token and run the generator with it; research/input/conversational options
+  // wire to their handlers.
+  function optionsHtml(options) {
+    if (!options || !options.length) return "";
+    return "<div class=\"resolution-options\">" + options.map(function (o) {
+      return "<button type=\"button\" class=\"resolution-option option-" + esc(o.kind || "") + "\" " +
+        "data-option-id=\"" + attr(o.id) + "\"" +
+        (o.token ? " data-option-token=\"" + attr(JSON.stringify(o.token)) + "\"" : "") + ">" +
+        "<span class=\"option-label\">" + esc(o.label) + "</span>" +
+        (o.detail ? "<span class=\"option-detail\">" + esc(o.detail) + "</span>" : "") +
+        "</button>";
+    }).join("") + "</div>";
+  }
+
+  // The conversational box: human describes what they want; Bernard replies and,
+  // if a re-search is implied, proposes it and asks for confirmation first.
+  function conversationalBoxHtml() {
+    return "<div class=\"bernard-chat\" data-bernard-chat>" +
+      "<label class=\"bernard-chat-label\">Talk it through with Bernard</label>" +
+      "<textarea class=\"bernard-chat-input\" data-bernard-input rows=\"2\" " +
+      "placeholder=\"e.g. 'Focus on OSHA standards', 'I have a PDF to add — how?', or 'why isn't this enough?'\"></textarea>" +
+      "<div class=\"assist-actions\"><button type=\"button\" class=\"primary\" data-bernard-send>Ask Bernard</button></div>" +
+      "<div class=\"bernard-chat-thread\" data-bernard-thread></div>" +
+      "</div>";
+  }
+
+  function wireResolutionUI(box) {
+    // Build options (carry a token) re-run the generator with that approval.
+    box.querySelectorAll("[data-option-token]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var token = {};
+        try { token = JSON.parse(btn.getAttribute("data-option-token")); } catch (e) { token = {}; }
+        runGeneratorWithApproval(token);
+      });
+    });
+    // Non-token options by id.
+    box.querySelectorAll("[data-option-id]").forEach(function (btn) {
+      if (btn.getAttribute("data-option-token")) return;
+      var id = btn.getAttribute("data-option-id");
+      btn.addEventListener("click", function () {
+        if (id === "search_again") { remediateKnowledgeBase(btn); }
+        else if (id === "add_source") { goToKnowledgeBaseStep(); }
+        else if (id === "ask_bernard") {
+          var input = box.querySelector("[data-bernard-input]");
+          if (input) { input.focus(); try { input.scrollIntoView({ behavior: "smooth", block: "center" }); } catch (e) {} }
+        }
+      });
+    });
+    wireConversationalBox(box);
+  }
+
+  function goToKnowledgeBaseStep() {
+    var step = form.querySelector("[data-step=\"knowledge-base\"], #step-knowledge-base, [data-step-name=\"Knowledge base\"]");
+    if (step && step.scrollIntoView) { try { step.scrollIntoView({ behavior: "smooth", block: "center" }); } catch (e) {} }
+    setGenie("Add a source on the Knowledge Base step — paste a URL or upload a document — then start the generator again.");
+  }
+
+  function wireConversationalBox(box) {
+    var sendBtn = box.querySelector("[data-bernard-send]");
+    var input = box.querySelector("[data-bernard-input]");
+    var thread = box.querySelector("[data-bernard-thread]");
+    if (!sendBtn || !input || !thread) return;
+    sendBtn.addEventListener("click", async function () {
+      var q = (input.value || "").trim();
+      if (!q) { input.focus(); return; }
+      thread.innerHTML += "<div class=\"chat-turn chat-you\"><strong>You:</strong> " + esc(q) + "</div>";
+      input.value = "";
+      sendBtn.disabled = true; sendBtn.textContent = "Bernard is thinking...";
+      try {
+        var response = await fetch("/api/genie", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            brief: parseBrief(),
+            step: "knowledge base",
+            step_label: "Knowledge base recovery",
+            payload: { question: q, context: "The knowledge base did not meet the requested floor. Help the user decide: refine the search, add a source, lower the tier, proceed evidence-limited, or explain the gap. If you recommend searching again, say so explicitly." }
+          })
+        });
+        var payload = await response.json();
+        if (!response.ok || !payload.ok) { throw new Error((payload.errors || ["Bernard could not respond."]).join(" ")); }
+        var answer = payload.answer || "Bernard reviewed this, but had nothing to add.";
+        thread.innerHTML += "<div class=\"chat-turn chat-bernard\"><strong>Bernard:</strong> " + esc(answer) + "</div>";
+        // If Bernard's answer implies a re-search, offer a confirm button (no auto-run).
+        if (/search again|re-?search|look again|another round|run discovery|find more sources/i.test(answer)) {
+          var confirm = document.createElement("div");
+          confirm.className = "assist-actions chat-confirm";
+          confirm.innerHTML = "<button type=\"button\" class=\"primary\" data-confirm-research>Yes, have Bernard search again</button>";
+          thread.appendChild(confirm);
+          confirm.querySelector("[data-confirm-research]").addEventListener("click", function (e) {
+            remediateKnowledgeBase(e.target);
+          });
+        }
+        try { thread.scrollIntoView({ behavior: "smooth", block: "end" }); } catch (e) {}
+      } catch (error) {
+        thread.innerHTML += "<div class=\"chat-turn chat-bernard chat-error\"><strong>Bernard:</strong> " + esc(error.message || "Could not respond.") + "</div>";
+      } finally {
+        sendBtn.disabled = false; sendBtn.textContent = "Ask Bernard";
+      }
+    });
+  }
+
+  // Present a CHANGE ORDER: score, situation, options menu, conversational box.
   function presentChangeOrder(payload) {
     closeGeneratorTracker();
     var co = payload.change_order || {};
     var rec = co.recommendation || {};
     var challenges = (co.challenges || []).map(function (c) { return "<li>" + esc(c) + "</li>"; }).join("");
-    var tradeoffs = (rec.tradeoffs || []).map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("");
     var tried = (co.what_bernard_tried || []).map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("");
-
-    var approveBtn = "";
-    if (rec.action === "lower_tier" && co.approval_tokens && co.approval_tokens.accept_tier) {
-      approveBtn = "<button type=\"button\" class=\"primary\" data-approve-tier=\"" + attr(co.approval_tokens.accept_tier) + "\">Approve: build " + esc((payload.offered_tier && payload.offered_tier.label) || co.approval_tokens.accept_tier) + "</button>";
-    } else if (co.approval_tokens && co.approval_tokens.accept_change_order) {
-      approveBtn = "<button type=\"button\" class=\"primary\" data-approve-change-order=\"true\">Approve: build evidence-limited class</button>";
-    }
-    var retryBtn = "<button type=\"button\" class=\"ghost\" data-remediate-again=\"true\">Have Bernard search again</button>";
+    var options = payload.options || co.options || [];
 
     var box = document.createElement("div");
     box.className = "notice change-order";
     box.innerHTML =
-      "<h3>Change order needs your approval</h3>" +
+      "<h3>Here's what Bernard built — your call on next steps</h3>" +
+      scoreHtml(payload.score || co.score) +
       "<p><strong>Situation.</strong> " + esc(co.situation || "") + "</p>" +
-      "<p><strong>Challenges.</strong></p><ul>" + challenges + "</ul>" +
-      "<p><strong>Recommendation.</strong> " + esc(rec.summary || "") + "</p>" +
-      (tradeoffs ? "<p><strong>What this means.</strong></p><ul>" + tradeoffs + "</ul>" : "") +
+      (challenges ? "<p><strong>Challenges.</strong></p><ul>" + challenges + "</ul>" : "") +
+      (rec.summary ? "<p><strong>Bernard's recommendation.</strong> " + esc(rec.summary) + "</p>" : "") +
+      "<p><strong>Your options:</strong></p>" +
+      optionsHtml(options) +
       (tried ? "<details><summary>What Bernard tried</summary><ul>" + tried + "</ul></details>" : "") +
-      "<div class=\"assist-actions\">" + approveBtn + retryBtn + "</div>";
+      conversationalBoxHtml();
     if (validationBox) { validationBox.innerHTML = ""; validationBox.appendChild(box); }
-
-    var t = box.querySelector("[data-approve-tier]");
-    if (t) t.addEventListener("click", function () { runGeneratorWithApproval({ accept_tier: t.getAttribute("data-approve-tier") }); });
-    var c = box.querySelector("[data-approve-change-order]");
-    if (c) c.addEventListener("click", function () { runGeneratorWithApproval({ accept_change_order: true }); });
-    var r = box.querySelector("[data-remediate-again]");
-    if (r) r.addEventListener("click", function () { remediateKnowledgeBase(r); });
+    wireResolutionUI(box);
     try { box.scrollIntoView({ behavior: "smooth", block: "center" }); } catch (error) {}
   }
 
-  // Present the last-resort precise request when nothing can be auto-resolved.
+  // Present the precise request when the floor is not met — now graded and with
+  // the full options menu + conversational box (never a bare wall).
   function presentHumanRequest(payload) {
     closeGeneratorTracker();
     var hr = payload.human_request || {};
     var co = payload.change_order || {};
-    var options = (hr.your_options || []).map(function (o) { return "<li>" + esc(o) + "</li>"; }).join("");
+    var options = payload.options || co.options || [];
+    var tried = (hr.what_i_tried || []).map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("");
+
     var box = document.createElement("div");
-    box.className = "notice warn";
+    box.className = "notice change-order";
     box.innerHTML =
-      "<h3>" + esc(hr.headline || "More source material is needed") + "</h3>" +
-      "<p>Here is exactly what would unblock this:</p><ul>" + options + "</ul>" +
-      ((co.approval_tokens && co.approval_tokens.accept_change_order)
-        ? "<div class=\"assist-actions\"><button type=\"button\" class=\"primary\" data-approve-change-order=\"true\">Proceed evidence-limited on what was found</button><button type=\"button\" class=\"ghost\" data-remediate-again=\"true\">Have Bernard search again</button></div>"
-        : "<div class=\"assist-actions\"><button type=\"button\" class=\"ghost\" data-remediate-again=\"true\">Have Bernard search again</button></div>");
+      "<h3>" + esc(hr.headline || "Here's where the knowledge base landed") + "</h3>" +
+      scoreHtml(payload.score || co.score) +
+      "<p>You decide how to proceed — nothing is blocked:</p>" +
+      optionsHtml(options) +
+      (tried ? "<details><summary>What Bernard tried</summary><ul>" + tried + "</ul></details>" : "") +
+      conversationalBoxHtml();
     if (validationBox) { validationBox.innerHTML = ""; validationBox.appendChild(box); }
-    var c = box.querySelector("[data-approve-change-order]");
-    if (c) c.addEventListener("click", function () { runGeneratorWithApproval({ accept_change_order: true }); });
-    var r = box.querySelector("[data-remediate-again]");
-    if (r) r.addEventListener("click", function () { remediateKnowledgeBase(r); });
+    wireResolutionUI(box);
     try { box.scrollIntoView({ behavior: "smooth", block: "center" }); } catch (error) {}
   }
 
+
+  // Render a quality-score badge (0-100) with band coloring, like the KB score.
+  function qualityScoreHtml(score, band) {
+    if (score == null) return "";
+    var bandClass = band === "excellent" ? "score-excellent"
+      : band === "strong" ? "score-strong"
+      : band === "usable" ? "score-usable" : "score-thin";
+    return "<div class=\"kb-score " + bandClass + "\">" +
+      "<div class=\"kb-score-head\"><span class=\"kb-score-num\">" + score + "<span class=\"kb-score-den\">/100</span></span>" +
+      "<span class=\"kb-score-band\">" + esc(band || "") + "</span></div></div>";
+  }
+
+  // QUALITY DECISION: deck is structurally sound but scored below the release
+  // bar. Graded, with ship-anyway / auto-improve / ask-Bernard. Never a wall.
+  function presentQualityDecision(payload) {
+    closeGeneratorTracker();
+    var qo = payload.qa_outcome || {};
+    var options = payload.options || qo.options || [];
+    var weak = (qo.weakest_areas || []).map(function (w) { return "<li>" + esc(w) + "</li>"; }).join("");
+    var box = document.createElement("div");
+    box.className = "notice change-order";
+    box.innerHTML =
+      "<h3>" + esc(qo.headline || "Your class is below the quality bar — your call") + "</h3>" +
+      qualityScoreHtml(payload.quality_score, payload.quality_band) +
+      (qo.explanation ? "<p>" + esc(qo.explanation) + "</p>" : "") +
+      (weak ? "<p><strong>Weakest areas:</strong></p><ul>" + weak + "</ul>" : "") +
+      "<p><strong>Your options:</strong></p>" +
+      optionsHtml(options) +
+      conversationalBoxHtml();
+    if (validationBox) { validationBox.innerHTML = ""; validationBox.appendChild(box); }
+    wireResolutionUI(box);
+    try { box.scrollIntoView({ behavior: "smooth", block: "center" }); } catch (error) {}
+  }
+
+  // STRUCTURAL BLOCK: genuinely unshippable (broken build / missing citations).
+  // Explained clearly with a regenerate path — not a raw error wall.
+  function presentStructuralBlock(payload) {
+    closeGeneratorTracker();
+    var qo = payload.qa_outcome || {};
+    var options = payload.options || qo.options || [];
+    var issues = (qo.structural_issues || []).map(function (s) {
+      return "<li><strong>" + esc(s.kind || "issue") + ":</strong> " + esc(s.issue) + "</li>";
+    }).join("");
+    var box = document.createElement("div");
+    box.className = "notice warn";
+    box.innerHTML =
+      "<h3>" + esc(qo.headline || "The generated class has structural problems") + "</h3>" +
+      (qo.explanation ? "<p>" + esc(qo.explanation) + "</p>" : "") +
+      (issues ? "<details open><summary>What needs fixing</summary><ul>" + issues + "</ul></details>" : "") +
+      "<p><strong>Your options:</strong></p>" +
+      optionsHtml(options) +
+      conversationalBoxHtml();
+    if (validationBox) { validationBox.innerHTML = ""; validationBox.appendChild(box); }
+    // 'regenerate' option re-runs the generator from scratch.
+    box.querySelectorAll("[data-option-id]").forEach(function (btn) {
+      if (btn.getAttribute("data-option-id") === "regenerate") {
+        btn.addEventListener("click", function () { runGenerator(); });
+      }
+    });
+    wireConversationalBox(box);
+    try { box.scrollIntoView({ behavior: "smooth", block: "center" }); } catch (error) {}
+  }
 
   function openGeneratedPreview() {
     if (!generation || !generation.preview_html) return setGenie("Generate a masterclass first, then the preview opens here.");

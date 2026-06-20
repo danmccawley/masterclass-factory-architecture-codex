@@ -149,6 +149,89 @@ function sourceCounts(brief) {
   return { total: uploads.length, primary, secondary, unknown };
 }
 
+// Blended knowledge-base quality score (0-100). Turns the binary floor gate
+// into a graded assessment so the human gets a real read on what was built, not
+// just pass/fail. Three weighted components:
+//   Coverage  (50%) — how well counts meet the tier floor (total + primary)
+//   Authority (30%) — quality of sources (primary>secondary>unknown; verifiable text bonus)
+//   Recency   (20%) — share of sources within the brief's recency floor
+function recencyFloorYear(brief) {
+  const raw = text(brief && brief.knowledge_base && brief.knowledge_base.research && brief.knowledge_base.research.recency_floor, "");
+  const m = raw.match(/(\d{4})/);
+  return m ? parseInt(m[1], 10) : 0;
+}
+
+function sourceYear(source) {
+  const candidates = [source && source.published, source && source.date, source && source.year, source && source.updated];
+  for (const c of candidates) {
+    const m = String(c == null ? "" : c).match(/(\d{4})/);
+    if (m) return parseInt(m[1], 10);
+  }
+  return 0;
+}
+
+function scoreKnowledgeBase(brief) {
+  const tier = classTierSpec(brief);
+  const counts = sourceCounts(brief);
+  const uploads = Array.isArray(brief && brief.knowledge_base && brief.knowledge_base.uploads)
+    ? brief.knowledge_base.uploads
+    : [];
+
+  // Coverage: how close to the floor (capped at 1 each), averaged.
+  const totalCov = tier.source_floor ? Math.min(1, counts.total / tier.source_floor) : 1;
+  const primaryCov = tier.primary_source_floor ? Math.min(1, counts.primary / tier.primary_source_floor) : 1;
+  const coverage = (totalCov + primaryCov) / 2;
+
+  // Authority: weight each source by trust, with a bonus for fetchable text.
+  let authPoints = 0;
+  let authMax = 0;
+  uploads.forEach((s) => {
+    const trust = text(s && s.trust, "unknown").toLowerCase();
+    const base = trust === "primary" ? 1 : trust === "secondary" ? 0.6 : 0.3;
+    const verifiable = (s && (s.fetched === true || s.verified === true)) ? 0.15 : 0;
+    authPoints += Math.min(1, base + verifiable);
+    authMax += 1;
+  });
+  const authority = authMax ? authPoints / authMax : 0;
+
+  // Recency: share of dated sources at/after the recency floor. If no floor or
+  // no dates are known, treat recency as neutral (does not penalize).
+  const floorYear = recencyFloorYear(brief);
+  let dated = 0;
+  let fresh = 0;
+  uploads.forEach((s) => {
+    const y = sourceYear(s);
+    if (y) { dated += 1; if (!floorYear || y >= floorYear) fresh += 1; }
+  });
+  const recency = dated ? fresh / dated : 0.75; // neutral-ish when unknown
+
+  const score = Math.round((coverage * 0.5 + authority * 0.3 + recency * 0.2) * 100);
+  const band = score >= 85 ? "excellent" : score >= 70 ? "strong" : score >= 55 ? "usable" : "thin";
+
+  return {
+    score,
+    band,
+    components: {
+      coverage: Math.round(coverage * 100),
+      authority: Math.round(authority * 100),
+      recency: Math.round(recency * 100)
+    },
+    weights: { coverage: 0.5, authority: 0.3, recency: 0.2 },
+    detail: {
+      total: counts.total,
+      primary: counts.primary,
+      secondary: counts.secondary,
+      required_total: tier.source_floor,
+      required_primary: tier.primary_source_floor,
+      dated_sources: dated,
+      recency_floor_year: floorYear || null
+    },
+    summary: `Knowledge-base score ${score}/100 (${band}): ` +
+      `coverage ${Math.round(coverage * 100)}, authority ${Math.round(authority * 100)}, recency ${Math.round(recency * 100)}. ` +
+      `${counts.total}/${tier.source_floor} sources, ${counts.primary}/${tier.primary_source_floor} primary.`
+  };
+}
+
 function knowledgeBaseStandard(brief) {
   const tier = classTierSpec(brief);
   const counts = sourceCounts(brief);
@@ -178,6 +261,7 @@ function knowledgeBaseStandard(brief) {
     evidence_limited: evidenceLimited,
     tier,
     counts,
+    score: scoreKnowledgeBase(brief),
     required_sources: tier.source_floor,
     required_primary_sources: tier.primary_source_floor,
     source_gap: sourceGap,
@@ -854,10 +938,72 @@ function buildChangeOrder(brief, standard, discovery, scarcity, metTier) {
         ? `Re-POST with accept_tier:'${recommended_tier}' to build at the recommended tier.`
         : "Add sources or enable research, then start the generator again. Or re-POST with accept_change_order:true to proceed evidence-limited on what was found.",
     approval_tokens: {
-      accept_change_order: action === "evidence_limited_proceed" || (scarcity.genuinely_scarce && counts.total > 0),
+      // The human can ALWAYS choose to proceed evidence-limited as long as there
+      // is at least one usable source to build from — not only when the system
+      // judged the topic "genuinely scarce". The system still recommends adding
+      // sources, but the final call is the human's (no dead ends, always an
+      // override path).
+      accept_change_order: counts.total > 0,
       accept_tier: metTier ? metTier.level : (canMeetBriefing ? "briefing" : null)
-    }
+    },
+    score: standard.score,
+    options: buildResolutionOptions(brief, standard, metTier, canMeetBriefing, counts)
   };
+}
+
+// The concrete, always-present menu the human chooses from. Mirrors the
+// approval tokens but as labeled, render-ready choices. Never empty: even with
+// zero sources, "add a source", "search again", and "ask Bernard" remain.
+function buildResolutionOptions(brief, standard, metTier, canMeetBriefing, counts) {
+  const options = [];
+  if (counts.total > 0) {
+    options.push({
+      id: "proceed_evidence_limited",
+      label: `Build it now on what was found (score ${standard.score.score}/100)`,
+      detail: `Proceeds with the ${counts.total} verified source(s). The class is built and clearly flagged as evidence-limited below the ${standard.tier.label} bar.`,
+      token: { accept_change_order: true },
+      kind: "build"
+    });
+  }
+  if (metTier && metTier.level !== standard.tier.level) {
+    options.push({
+      id: "lower_tier",
+      label: `Build a ${metTier.label} instead (its floor is fully met)`,
+      detail: `Your evidence fully satisfies the ${metTier.label} bar (${metTier.source_floor}/${metTier.primary_source_floor}). No disclosure needed.`,
+      token: { accept_tier: metTier.level },
+      kind: "build"
+    });
+  } else if (canMeetBriefing && (!metTier || metTier.level !== "briefing")) {
+    options.push({
+      id: "lower_tier_briefing",
+      label: "Build a Briefing instead (its floor is met)",
+      detail: "Your evidence meets the Briefing bar (4/1). A focused, fully-supported short class.",
+      token: { accept_tier: "briefing" },
+      kind: "build"
+    });
+  }
+  options.push({
+    id: "search_again",
+    label: "Have Bernard search again",
+    detail: "Run another round of web research, optionally with guidance you provide.",
+    token: null,
+    kind: "research"
+  });
+  options.push({
+    id: "add_source",
+    label: "Add a specific source or URL",
+    detail: "Paste a standard, regulator page, manufacturer guide, or certification document and re-run.",
+    token: null,
+    kind: "input"
+  });
+  options.push({
+    id: "ask_bernard",
+    label: "Ask Bernard (describe what you want)",
+    detail: "Tell Bernard in your own words — refine the search, explain the gap, or get help adding a source. Any re-search is confirmed with you first.",
+    token: null,
+    kind: "conversational"
+  });
+  return options;
 }
 
 // The recovery ladder. The knowledge-base gate must never produce a dead end.
@@ -2524,6 +2670,76 @@ function qaGate(files, generated, sourcePaper, brief) {
   return { ok: issues.length === 0, issues };
 }
 
+// The QA/quality gate must not dead-end either. Two distinct failure kinds:
+//   STRUCTURAL (broken JS globals, invalid slide/quiz/glossary shape, citations
+//     to non-existent sources) → genuinely unshippable; explained clearly, but
+//     a hard stop. These are bugs in the build, not judgment calls.
+//   QUALITY (overall score below the release bar, thin-but-present content) →
+//     a graded human decision: ship anyway with disclosure, auto-improve, or
+//     go back. Never a bare wall.
+function resolveQaOutcome(sourceCheck, qa, quality) {
+  const structuralIssues = []
+    .concat(sourceCheck.ok ? [] : sourceCheck.issues.map((i) => ({ kind: "source-citation", issue: i })))
+    .concat(qa.ok ? [] : qa.issues.map((i) => ({ kind: "schema", issue: i })));
+
+  // Quality-only shortfall: the deck is structurally valid but scored below bar.
+  const qualityShortfall = quality && !quality.ok && structuralIssues.length === 0;
+
+  if (structuralIssues.length) {
+    return {
+      kind: "structural_block",
+      shippable: false,
+      structural_issues: structuralIssues,
+      quality_score: quality ? quality.score : null,
+      headline: "The generated class has structural problems that must be fixed before it can ship.",
+      explanation: "These are build-integrity issues (missing data, invalid shapes, or citations to sources that do not exist) — not quality judgments. Shipping with these would produce a broken or unverifiable class.",
+      options: [
+        { id: "regenerate", label: "Regenerate the class", detail: "Run the generator again — structural issues are often transient and clear on a fresh build.", token: null, kind: "research" },
+        { id: "ask_bernard", label: "Ask Bernard what went wrong", detail: "Describe the issue and Bernard will explain the structural problem in plain terms.", token: null, kind: "conversational" }
+      ]
+    };
+  }
+
+  if (qualityShortfall) {
+    const score = quality.score;
+    const options = [
+      {
+        id: "ship_anyway",
+        label: `Publish it anyway (quality ${score}/100)`,
+        detail: "The class is structurally sound but scored below the release bar. It will be published with a disclosed quality note so learners and reviewers see the limitation.",
+        token: { accept_quality: true },
+        kind: "build"
+      },
+      {
+        id: "auto_improve",
+        label: "Have the generator auto-improve weak areas",
+        detail: "Re-run with extra depth on the lowest-scoring rubric areas (content density, deep dives, objective alignment).",
+        token: { improve_quality: true },
+        kind: "research"
+      },
+      {
+        id: "ask_bernard",
+        label: "Ask Bernard (describe what you want)",
+        detail: "Talk through which parts to strengthen, or get an explanation of the score. Any re-run is confirmed with you first.",
+        token: null,
+        kind: "conversational"
+      }
+    ];
+    return {
+      kind: "quality_decision",
+      shippable: true,
+      quality_score: score,
+      quality_band: quality.status,
+      headline: `Your class scored ${score}/100 (${quality.status}) — below the ${70} release bar, but it's structurally sound and your call to make.`,
+      explanation: "Nothing is broken. The score reflects depth and rigor against the rubric. You can publish it with a disclosed quality note, auto-improve the weak areas, or refine and re-run.",
+      weakest_areas: (quality.recommendations || []).slice(0, 5),
+      options
+    };
+  }
+
+  return { kind: "pass", shippable: true, quality_score: quality ? quality.score : null };
+}
+
 function repairContentDepth(generated, sourcePaper, brief) {
   const report = {
     stage: "content-depth-repair",
@@ -2952,6 +3168,8 @@ module.exports = async function generateHandler(req, res) {
           failed_stage: "knowledge-base-standard",
           resolution: "change_order",
           change_order: recovery.change_order,
+          score: recovery.change_order.score || recovery.standard.score,
+          options: recovery.change_order.options || [],
           offered_tier: recovery.offered_tier || null,
           requested_tier: recovery.requested_tier || recovery.standard.tier,
           knowledge_standard: recovery.standard,
@@ -2972,6 +3190,8 @@ module.exports = async function generateHandler(req, res) {
         resolution: "needs_human",
         human_request: recovery.human_request,
         change_order: recovery.change_order || null,
+        score: (recovery.change_order && recovery.change_order.score) || recovery.standard.score,
+        options: (recovery.change_order && recovery.change_order.options) || [],
         knowledge_standard: recovery.standard,
         source_discovery: sourceDiscovery,
         recovery_ladder: recovery.ladder,
@@ -3013,17 +3233,55 @@ module.exports = async function generateHandler(req, res) {
     const sourceCheck = sourceVerify(generated, sourceBuild.sourcePaper);
     const qa = qaGate(files, generated, sourceBuild.sourcePaper, effectiveBrief);
     const quality = qualityAudit(effectiveBrief, generated, sourceBuild.sourcePaper, sourceCheck, qa);
-    if (!sourceCheck.ok || !qa.ok || !quality.ok) {
-      send(res, 500, {
+
+    // The QA/quality gate never dead-ends. Structural problems are a clear (but
+    // explained) block; a quality-only shortfall is a graded human decision.
+    const acceptQuality = Boolean(body && body.accept_quality);
+    const qaOutcome = resolveQaOutcome(sourceCheck, qa, quality);
+
+    if (qaOutcome.kind === "structural_block") {
+      send(res, 200, {
         ok: false,
-        errors: sourceCheck.issues.concat(qa.issues).concat(quality.issues),
+        status: "qa_structural",
+        failed_stage: "qa-structural",
+        resolution: "needs_human",
+        qa_outcome: qaOutcome,
+        score: quality && quality.knowledge_standard ? quality.knowledge_standard.score : null,
+        options: qaOutcome.options,
         source_verify: sourceCheck,
         qa,
         quality,
         knowledge_standard: quality.knowledge_standard,
-        source_discovery: sourceDiscovery
+        source_discovery: sourceDiscovery,
+        errors: qaOutcome.structural_issues.map((s) => s.issue)
       });
       return;
+    }
+
+    if (qaOutcome.kind === "quality_decision" && !acceptQuality) {
+      send(res, 200, {
+        ok: false,
+        status: "needs_decision",
+        failed_stage: "quality",
+        resolution: "quality_decision",
+        qa_outcome: qaOutcome,
+        quality_score: qaOutcome.quality_score,
+        quality_band: qaOutcome.quality_band,
+        options: qaOutcome.options,
+        source_verify: sourceCheck,
+        qa,
+        quality,
+        knowledge_standard: quality.knowledge_standard,
+        source_discovery: sourceDiscovery,
+        errors: [qaOutcome.headline]
+      });
+      return;
+    }
+    // acceptQuality === true on a quality-only shortfall: proceed, but stamp a
+    // disclosed quality note so the shortfall is transparent downstream.
+    if (qaOutcome.kind === "quality_decision" && acceptQuality) {
+      quality.published_below_bar = true;
+      quality.published_note = `Published by human decision at quality ${quality.score}/100 (${quality.status}), below the 70-point release bar. Weak areas were disclosed at publish time.`;
     }
 
     generated.source_discovery = sourceDiscovery;
@@ -3097,6 +3355,8 @@ module.exports._internal = {
   // exported for the test harness so tests run the REAL implementations,
   // never hand-copied mirrors:
   validateOpenAIKey,
+  scoreKnowledgeBase,
+  resolveQaOutcome,
   openAIKeyUsable,
   openAIKey,
   resolveKnowledgeBase,

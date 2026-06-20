@@ -178,6 +178,21 @@ test("met lower tier recommends lower_tier", () => {
   assert.strictEqual(co.recommendation.action, "lower_tier");
   assert.strictEqual(co.approval_tokens.accept_tier, "standard");
 });
+test("human can ALWAYS override when sources exist (even if NOT genuinely scarce)", () => {
+  // Middle case: professional requested, found 6/2 — short of floor, not a met
+  // tier, and NOT genuinely scarce. Previously this withheld the override. The
+  // human must still get a 'proceed evidence-limited' option.
+  const b = withSources(baseBrief(), 6, 2);
+  const std = I.knowledgeBaseStandard(b);
+  const co = I.buildChangeOrder(b, std, { notes: [], gaps: [], rejected_sources: [] }, { kind: "verification_bottleneck", genuinely_scarce: false }, null);
+  assert.strictEqual(co.approval_tokens.accept_change_order, true, "override must be offered whenever sources exist");
+});
+test("no override offered when there are ZERO sources (nothing to build from)", () => {
+  const b = baseBrief(); // zero sources
+  const std = I.knowledgeBaseStandard(b);
+  const co = I.buildChangeOrder(b, std, { notes: [], gaps: [], rejected_sources: [] }, { kind: "no_research_capability", genuinely_scarce: false }, null);
+  assert.strictEqual(co.approval_tokens.accept_change_order, false, "cannot proceed evidence-limited with nothing");
+});
 
 // ---------------------------------------------------------------------------
 group("SSRF guard (isPrivateAddress + assertFetchableUrl)");
@@ -411,6 +426,121 @@ test("recovery ladder does NOT skip discovery when a valid key is present", asyn
   } finally {
     if (had === undefined) delete process.env.OPENAI_API_KEY; else process.env.OPENAI_API_KEY = had;
   }
+});
+
+// ---------------------------------------------------------------------------
+group("Knowledge-base scoring (blended: coverage/authority/recency)");
+
+test("empty KB scores low (thin)", () => {
+  const s = I.scoreKnowledgeBase(baseBrief());
+  assert.ok(s.score < 55, "empty should be thin, got " + s.score);
+  assert.strictEqual(s.band, "thin");
+});
+test("full floor scores high (excellent)", () => {
+  const b = withSources(baseBrief(), 12, 3);
+  b.knowledge_base.uploads.forEach((u) => { u.fetched = true; u.published = "2025"; });
+  const s = I.scoreKnowledgeBase(b);
+  assert.ok(s.score >= 85, "full should be excellent, got " + s.score);
+});
+test("all-primary scores higher than mixed at same count (authority works)", () => {
+  const mixed = withSources(baseBrief(), 6, 2);
+  const allP = withSources(baseBrief(), 6, 6);
+  assert.ok(I.scoreKnowledgeBase(allP).score > I.scoreKnowledgeBase(mixed).score);
+});
+test("stale sources score lower than fresh (recency works)", () => {
+  const fresh = withSources(baseBrief(), 6, 2);
+  fresh.knowledge_base.research = { recency_floor: "2024-01-01" };
+  fresh.knowledge_base.uploads.forEach((u) => { u.published = "2025"; });
+  const stale = withSources(baseBrief(), 6, 2);
+  stale.knowledge_base.research = { recency_floor: "2024-01-01" };
+  stale.knowledge_base.uploads.forEach((u) => { u.published = "2019"; });
+  assert.ok(I.scoreKnowledgeBase(fresh).score > I.scoreKnowledgeBase(stale).score);
+});
+test("score has component breakdown and summary", () => {
+  const s = I.scoreKnowledgeBase(withSources(baseBrief(), 6, 2));
+  assert.ok(typeof s.components.coverage === "number");
+  assert.ok(typeof s.components.authority === "number");
+  assert.ok(typeof s.components.recency === "number");
+  assert.ok(s.summary && s.summary.length > 0);
+});
+
+group("Resolution options menu (never empty, always actionable)");
+
+test("change order includes score and options", () => {
+  const b = withSources(baseBrief(), 6, 2);
+  const std = I.knowledgeBaseStandard(b);
+  const co = I.buildChangeOrder(b, std, { notes: [], gaps: [], rejected_sources: [] }, { kind: "verification_bottleneck", genuinely_scarce: false }, null);
+  assert.ok(co.score && typeof co.score.score === "number");
+  assert.ok(Array.isArray(co.options) && co.options.length >= 3);
+});
+test("options always include search_again, add_source, ask_bernard", () => {
+  const b = baseBrief(); // zero sources
+  const std = I.knowledgeBaseStandard(b);
+  const co = I.buildChangeOrder(b, std, { notes: [], gaps: [], rejected_sources: [] }, { kind: "no_research_capability", genuinely_scarce: false }, null);
+  const ids = co.options.map((o) => o.id);
+  assert.ok(ids.indexOf("search_again") !== -1);
+  assert.ok(ids.indexOf("add_source") !== -1);
+  assert.ok(ids.indexOf("ask_bernard") !== -1);
+});
+test("proceed_evidence_limited option appears only when sources exist", () => {
+  const withSrc = I.buildChangeOrder(withSources(baseBrief(), 3, 1), I.knowledgeBaseStandard(withSources(baseBrief(), 3, 1)), { notes: [] }, { kind: "topic_scarce", genuinely_scarce: true }, null);
+  const zero = I.buildChangeOrder(baseBrief(), I.knowledgeBaseStandard(baseBrief()), { notes: [] }, { kind: "no_research_capability", genuinely_scarce: false }, null);
+  assert.ok(withSrc.options.some((o) => o.id === "proceed_evidence_limited"));
+  assert.ok(!zero.options.some((o) => o.id === "proceed_evidence_limited"));
+});
+
+group("QA gate (structural block vs. graded quality decision — no dead-end)");
+
+test("structural failure => structural_block, not shippable", () => {
+  const o = I.resolveQaOutcome(
+    { ok: false, issues: ["Slide x cites missing source section S9."] },
+    { ok: true, issues: [] },
+    { ok: false, score: 55, status: "needs revision", knowledge_standard: {} }
+  );
+  assert.strictEqual(o.kind, "structural_block");
+  assert.strictEqual(o.shippable, false);
+  assert.ok(o.options.some((x) => x.id === "regenerate"));
+});
+test("schema failure also blocks structurally", () => {
+  const o = I.resolveQaOutcome(
+    { ok: true, issues: [] },
+    { ok: false, issues: ["content.js missing window.SLIDES."] },
+    { ok: false, score: 80, status: "strong", knowledge_standard: {} }
+  );
+  assert.strictEqual(o.kind, "structural_block");
+});
+test("quality-only shortfall => graded decision, shippable with options", () => {
+  const o = I.resolveQaOutcome(
+    { ok: true, issues: [] },
+    { ok: true, issues: [] },
+    { ok: false, score: 64, status: "needs revision", recommendations: ["Deepen deep dives"], knowledge_standard: {} }
+  );
+  assert.strictEqual(o.kind, "quality_decision");
+  assert.strictEqual(o.shippable, true);
+  assert.strictEqual(o.quality_score, 64);
+  const ids = o.options.map((x) => x.id);
+  assert.ok(ids.indexOf("ship_anyway") !== -1);
+  assert.ok(ids.indexOf("auto_improve") !== -1);
+  assert.ok(ids.indexOf("ask_bernard") !== -1);
+});
+test("ship_anyway option carries accept_quality token", () => {
+  const o = I.resolveQaOutcome({ ok: true, issues: [] }, { ok: true, issues: [] }, { ok: false, score: 64, status: "needs revision", recommendations: [], knowledge_standard: {} });
+  const ship = o.options.find((x) => x.id === "ship_anyway");
+  assert.ok(ship.token && ship.token.accept_quality === true);
+});
+test("all gates pass => pass outcome", () => {
+  const o = I.resolveQaOutcome({ ok: true, issues: [] }, { ok: true, issues: [] }, { ok: true, score: 88, status: "strong" });
+  assert.strictEqual(o.kind, "pass");
+  assert.strictEqual(o.shippable, true);
+});
+test("structural block takes precedence over quality shortfall", () => {
+  // Both structural AND low quality: must block structurally (the worse problem)
+  const o = I.resolveQaOutcome(
+    { ok: false, issues: ["citation gap"] },
+    { ok: true, issues: [] },
+    { ok: false, score: 50, status: "needs revision", knowledge_standard: {} }
+  );
+  assert.strictEqual(o.kind, "structural_block");
 });
 
 // ---------------------------------------------------------------------------
