@@ -116,6 +116,11 @@ function buildReport(body, server){
   const pollCount = Object.keys(body.poll_defs || {}).length;
   const wordCount = Object.keys(body.word_defs || {}).length;
   const quizCount = Math.max(1, Number(body.quiz_count) || 1);
+  const evidenceRows = Array.isArray(body.evidence_map) ? body.evidence_map : [];
+  const mappedEvidence = evidenceRows.filter((row)=>Array.isArray(row.source_ids) && row.source_ids.length).length;
+  const blueprintModules = body.class_blueprint && Array.isArray(body.class_blueprint.modules) ? body.class_blueprint.modules.length : 0;
+  const standardOk = body.class_standard && typeof body.class_standard.ok === "boolean" ? body.class_standard.ok : null;
+  const bernardReady = Boolean(body.bernard_config && body.bernard_config.name);
   const slideCompletion = viewed / slideCount;
   const participationScore = Math.min(100, Math.round(
     (slideCompletion * 35) +
@@ -124,7 +129,15 @@ function buildReport(body, server){
     (Math.min(1, quizAttempts / quizCount) * 15) +
     (Math.min(1, (chatQuestions + feedbackSent) / 3) * 15)
   ));
-  const level = participationScore >= 75 ? "strong" : participationScore >= 45 ? "developing" : "low";
+  const evidenceScore = evidenceRows.length ? Math.round((mappedEvidence / evidenceRows.length) * 100) : 0;
+  const buildIntegrityScore = Math.round(
+    (standardOk === false ? 0 : standardOk === true ? 35 : 20) +
+    Math.min(35, evidenceScore * 0.35) +
+    (blueprintModules >= 5 ? 20 : Math.min(20, blueprintModules * 4)) +
+    (bernardReady ? 10 : 0)
+  );
+  const overallScore = Math.round(participationScore * 0.7 + buildIntegrityScore * 0.3);
+  const level = overallScore >= 75 ? "strong" : overallScore >= 45 ? "developing" : "low";
   const recommendations = [];
   if(slideCompletion < 0.7) recommendations.push("Invite learners to continue through more of the deck before judging mastery.");
   if(pollCount && pollVotes < pollCount) recommendations.push("Use the poll moments to check confidence and misconceptions.");
@@ -132,20 +145,27 @@ function buildReport(body, server){
   if(quizAttempts < Math.min(2, quizCount)) recommendations.push("Have learners attempt the checks for understanding before judging mastery.");
   if(!chatQuestions) recommendations.push("Encourage learners to ask Bernard questions when they hesitate.");
   if(!feedbackSent) recommendations.push("Ask for slide feedback near the end so the class can improve.");
+  if(standardOk === false) recommendations.push("Do not treat this class as final until the Knowledge Base Standard passes.");
+  if(evidenceScore < 90) recommendations.push("Review the evidence map and close source gaps before the next revision.");
+  if(blueprintModules < 5) recommendations.push("Regenerate with a complete course blueprint.");
+  if(!bernardReady) recommendations.push("Enable Bernard metadata so learners know how to use the conversational layer.");
   if(!recommendations.length) recommendations.push("Participation signals are healthy. Review feedback and quiz misses for the next revision.");
 
   return {
     ok: true,
     checked_at: new Date().toISOString(),
     quality: {
-      score: participationScore,
+      score: overallScore,
       status: level,
       rubric: [
         "Slide progress",
         "Poll participation",
         "Word-cloud participation",
         "Quiz attempts",
-        "Bernard questions and feedback"
+        "Bernard questions and feedback",
+        "Knowledge Base Standard",
+        "Evidence-map coverage",
+        "Course blueprint"
       ]
     },
     participation: {
@@ -158,6 +178,15 @@ function buildReport(body, server){
       feedback_items: feedbackSent,
       total_interaction_signals: interactionCount,
       storage: server.storage
+    },
+    class_integrity: {
+      score: buildIntegrityScore,
+      knowledge_standard_ok: standardOk,
+      evidence_rows: evidenceRows.length,
+      mapped_evidence_rows: mappedEvidence,
+      evidence_coverage: evidenceScore,
+      blueprint_modules: blueprintModules,
+      bernard_ready: bernardReady
     },
     recommendations
   };
