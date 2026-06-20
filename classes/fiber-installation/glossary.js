@@ -2,35 +2,43 @@
 window.GLOSSARY = {
   "fiber optic cable": {
     "d": "A cable made of thin strands of glass or plastic fibers that transmit data as pulses of light.",
-    "r": "Understanding fiber optic cables is essential for proper installation and ensuring network reliability."
+    "r": "Understanding cable types is essential for selecting and installing the right fiber for specific communication needs."
   },
   "splicing": {
     "d": "The process of joining two fiber optic cables end-to-end to create a continuous optical path.",
-    "r": "Proper splicing is critical to maintain signal quality and minimize data loss."
-  },
-  "termination": {
-    "d": "The process of attaching connectors to the ends of fiber optic cables for connection to devices or other cables.",
-    "r": "Correct termination ensures secure connections and optimal signal transmission."
-  },
-  "signal loss": {
-    "d": "Reduction in light signal strength as it travels through a fiber optic cable, caused by factors like bending, splicing, or damage.",
-    "r": "Recognizing causes of signal loss helps in troubleshooting and maintaining network performance."
+    "r": "Proper splicing ensures signal integrity and minimizes data loss in fiber installations."
   },
   "installation plan": {
-    "d": "Technical documentation that outlines the layout, routing, and specifications for fiber optic cable installation.",
-    "r": "Interpreting installation plans accurately is necessary to perform installation tasks correctly."
+    "d": "A technical document or diagram outlining the layout and specifications for fiber optic cable installation.",
+    "r": "Accurate interpretation of plans guides correct cable placement and compliance with project requirements."
   },
   "testing and troubleshooting": {
-    "d": "Procedures used to verify signal quality and identify faults or issues in fiber optic installations.",
-    "r": "Testing confirms installation success, while troubleshooting locates and resolves problems to ensure network reliability."
+    "d": "Procedures used to verify fiber optic cable performance and identify faults or issues in the installation.",
+    "r": "Basic testing ensures the installation meets quality standards and troubleshooting resolves connectivity problems."
   },
-  "safety measures": {
-    "d": "Practices and guidelines followed to protect workers and equipment during fiber optic installation.",
-    "r": "Applying safety measures consistently prevents accidents and damage during installation work."
+  "safety precautions": {
+    "d": "Measures taken to protect workers from hazards related to fiber optic installation, such as eye injury or chemical exposure.",
+    "r": "Following safety protocols prevents accidents and ensures a safe working environment."
   },
-  "fiber optic installation tools": {
-    "d": "Specialized equipment used for cutting, stripping, splicing, terminating, and testing fiber optic cables.",
-    "r": "Operating these tools safely and effectively is vital for quality installation and worker safety."
+  "handling techniques": {
+    "d": "Methods used to manage fiber optic cables carefully during installation to avoid damage.",
+    "r": "Proper handling preserves cable integrity and prevents costly repairs or signal degradation."
+  },
+  "compliance": {
+    "d": "Adherence to relevant codes, standards, and regulations governing fiber optic installation work.",
+    "r": "Compliance ensures installations are legal, safe, and meet industry quality benchmarks."
+  },
+  "fiber optic components": {
+    "d": "Parts that make up fiber optic systems, including cables, connectors, splices, and protective hardware.",
+    "r": "Knowing components helps in selecting, installing, and maintaining fiber optic networks effectively."
+  },
+  "technical diagrams": {
+    "d": "Visual representations such as schematics or blueprints used to convey installation details.",
+    "r": "Reading diagrams accurately is critical for following installation plans and avoiding errors."
+  },
+  "standard tools": {
+    "d": "Commonly used equipment for preparing and installing fiber optic cables, like strippers, cleavers, and fusion splicers.",
+    "r": "Using the right tools ensures efficient and correct installation processes."
   },
   "terminal learning objective": {
     "d": "The main capability learners should demonstrate by the end of the class.",

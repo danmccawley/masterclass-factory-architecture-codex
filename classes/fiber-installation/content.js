@@ -2,105 +2,107 @@
 window.CLASS_TITLE = "fiber installation";
 window.DECK_META = {
   "slug": "fiber-installation",
-  "generated": "2026-06-20T02:31:56.510Z",
+  "generated": "2026-06-20T02:46:08.022Z",
   "language": "en"
 };
 window.SLIDES = [
   {
     "id": "slide1",
-    "eyebrow": "Fiber Optic Basics",
+    "eyebrow": "Introduction",
     "num": "01",
-    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">01</span><span class=\"bar\"></span>Fiber Optic Basics</div><h2 class=\"head anim\">Common Fiber Optic Cable Types and Components</h2><ul><li>Single-mode vs. multi-mode cables: differences in core size and usage</li><li>Core, cladding, buffer coating: key cable components</li><li>Connectors and jackets: protect and interface with equipment</li><li>Importance of selecting correct cable type for installation environment</li></ul><p class=\"lede anim\">Connect this point to the source paper and learner profile. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p></div>",
+    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">01</span><span class=\"bar\"></span>Introduction</div><h2 class=\"head anim\">Common Fiber Optic Cable Types and Components</h2><ul><li>Single-mode vs. multi-mode fiber cables</li><li>Core, cladding, buffer, and jacket layers</li><li>Connectors and adapters basics</li><li>Importance of cable type selection for installation</li></ul><p class=\"lede anim\">Connect this point to the source paper and learner profile. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p></div>",
     "paper": {
       "secnum": "Slide 1",
       "h": "Common Fiber Optic Cable Types and Components",
-      "body": "<p>Introduce learners to the fundamental types of fiber optic cables, emphasizing the difference between single-mode and multi-mode fibers. Explain the main components of a fiber optic cable and their functions. Highlight why choosing the right cable type is critical for installation success and network reliability. Use visual aids to show examples of each type and component. Reference industry standards for cable classification and components [s1].</p>"
+      "body": "<p>Introduce learners to the main fiber optic cable types and their components. Emphasize the differences between single-mode and multi-mode fibers and why choosing the right cable matters for installation success. Use simple diagrams to illustrate cable layers and common connectors.</p>"
     },
-    "words": "word-cloud-cable-types"
+    "words": "wordcloud1-cable-types"
   },
   {
     "id": "slide2",
-    "eyebrow": "Installation Tools",
+    "eyebrow": "Tools & Safety",
     "num": "02",
-    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">02</span><span class=\"bar\"></span>Installation Tools</div><h2 class=\"head anim\">Operating Fiber Optic Installation Tools Safely</h2><ul><li>Common tools: fiber strippers, cleavers, fusion splicers, termination kits</li><li>Proper handling to avoid fiber damage and personal injury</li><li>Calibration and maintenance of tools for accurate results</li><li>Following manufacturer guidelines and safety protocols</li></ul><p class=\"lede anim\">Connect this point to the source paper and learner profile. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p></div>",
+    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">02</span><span class=\"bar\"></span>Tools &amp; Safety</div><h2 class=\"head anim\">Standard Tools and Safety Precautions in Fiber Installation</h2><ul><li>Essential tools: cleavers, strippers, splicers, and testers</li><li>Personal protective equipment (PPE) requirements</li><li>Common hazards: glass shards, laser exposure, and electrical risks</li><li>Best practices to minimize injury and damage</li></ul><p class=\"lede anim\">Connect this point to the source paper and learner profile. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p></div>",
     "paper": {
       "secnum": "Slide 2",
-      "h": "Operating Fiber Optic Installation Tools Safely",
-      "body": "<p>Discuss the essential tools used in fiber optic installation, focusing on their purpose and correct operation. Stress the importance of safety when handling sharp tools and delicate fibers to prevent damage and injury. Explain the need for regular tool maintenance and calibration to ensure quality splices and terminations. Encourage learners to always follow manufacturer instructions and workplace safety guidelines [s1].</p>"
+      "h": "Standard Tools and Safety Precautions in Fiber Installation",
+      "body": "<p>Cover the key tools used in fiber optic cable preparation and installation. Highlight safety hazards specific to fiber work, such as handling glass fibers and laser safety. Stress the importance of PPE and following safety protocols to protect both the installer and the equipment.</p>"
     },
-    "poll": "poll-tool-safety"
+    "poll": "poll1-safety-hazards"
   },
   {
     "id": "slide3",
     "eyebrow": "Installation Plans",
     "num": "03",
-    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">03</span><span class=\"bar\"></span>Installation Plans</div><h2 class=\"head anim\">Reading and Interpreting Fiber Optic Installation Documentation</h2><ul><li>Understanding layout diagrams and cable routing plans</li><li>Identifying symbols and notation used in fiber installation drawings</li><li>Cross-referencing documentation with physical site conditions</li><li>Importance of accurate interpretation for successful installation</li></ul><p class=\"lede anim\">Connect this point to the source paper and learner profile. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p><div id=\"quiz-slide3\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which document should you consult to correctly carry out fiber optic cable installation tasks?&quot;,&quot;options&quot;:[&quot;Installation plans and technical diagrams&quot;,&quot;Software configuration manuals&quot;,&quot;Wireless communication protocols&quot;,&quot;Manufacturing process guides&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;Installation plans and technical diagrams provide the necessary instructions to perform fiber optic installation tasks correctly.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Describe the proper steps to perform fiber optic cable splicing using standard tools.&quot;,&quot;rubric&quot;:&quot;The answer should include identification of tools, preparation of fiber ends, alignment, fusion or mechanical splicing, and inspection to ensure quality.&quot;,&quot;sample&quot;:&quot;First, prepare the fiber ends by stripping and cleaning. Then use the fusion splicer to align and fuse the fibers. Finally, inspect the splice for quality and protect it with a splice protector.&quot;,&quot;accept&quot;:[&quot;Prepare fiber ends, align fibers, splice using fusion or mechanical method, inspect splice quality&quot;,&quot;Strip and clean fibers, use splicing tool to join fibers, check splice integrity&quot;,&quot;Use proper tools to strip, cleave, align, splice, and protect fiber ends&quot;]}]\" data-pop=\"1\"></div></div>",
+    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">03</span><span class=\"bar\"></span>Installation Plans</div><h2 class=\"head anim\">Reading and Interpreting Fiber Installation Plans</h2><ul><li>Understanding symbols and notation in fiber diagrams</li><li>Identifying cable routes and splice points</li><li>Recognizing installation notes and specifications</li><li>Using plans to guide accurate cable placement</li></ul><p class=\"lede anim\">Connect this point to the source paper and learner profile. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p><div id=\"quiz-slide3\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which of the following is the correct order of steps for preparing a fiber optic cable for splicing?&quot;,&quot;options&quot;:[&quot;Strip the cable jacket, clean the fiber, cleave the fiber, then splice&quot;,&quot;Clean the fiber, strip the cable jacket, splice, then cleave the fiber&quot;,&quot;Splice the fiber, strip the cable jacket, clean the fiber, then cleave&quot;,&quot;Cleave the fiber, strip the cable jacket, clean the fiber, then splice&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;Proper preparation involves first stripping the cable jacket to expose the fiber, cleaning the fiber to remove contaminants, cleaving the fiber to create a clean end face, and then performing the splice.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Describe how you would interpret a simple fiber optic installation plan to ensure correct cable routing and compliance with safety standards.&quot;,&quot;rubric&quot;:&quot;The answer should mention identifying cable types and routes, understanding symbols and annotations, verifying compliance with codes, and recognizing safety considerations such as avoiding hazards and proper cable support.&quot;,&quot;sample&quot;:&quot;I would first identify the cable types and their designated routes on the plan. Then, I would interpret symbols and notes to understand installation requirements. I would check that the plan complies with relevant safety codes and regulations, ensuring cables avoid hazards and are properly supported.&quot;,&quot;accept&quot;:[&quot;Identify cable routes and types, interpret symbols, check compliance with codes and safety&quot;,&quot;Read the plan to understand cable paths, verify safety and installation standards&quot;,&quot;Analyze installation diagrams for correct routing and adherence to safety regulations&quot;]}]\" data-pop=\"1\"></div></div>",
     "paper": {
       "secnum": "Slide 3",
-      "h": "Reading and Interpreting Fiber Optic Installation Documentation",
-      "body": "<p>Guide learners through the process of reading fiber optic installation plans and technical diagrams. Explain common symbols and notation conventions used in industry documentation. Emphasize the importance of verifying plans against actual site conditions to avoid errors. Provide examples of typical installation drawings and highlight key details to focus on [s1].</p>"
+      "h": "Reading and Interpreting Fiber Installation Plans",
+      "body": "<p>Explain how to read simple fiber installation plans and technical diagrams. Point out common symbols and how to interpret routing and splicing instructions. Encourage learners to ask questions about unclear elements to build confidence in plan interpretation.</p>"
     }
   },
   {
     "id": "slide4",
-    "eyebrow": "Testing & Troubleshooting",
+    "eyebrow": "Installation Techniques",
     "num": "04",
-    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">04</span><span class=\"bar\"></span>Testing &amp; Troubleshooting</div><h2 class=\"head anim\">Confirming Signal Quality and Locating Faults</h2><ul><li>Use of optical time-domain reflectometer (OTDR) and power meters</li><li>Common causes of signal loss: bends, breaks, dirty connectors</li><li>Step-by-step troubleshooting procedures</li><li>Documenting test results and corrective actions</li></ul><p class=\"lede anim\">Connect this point to the source paper and learner profile. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p><div id=\"quiz-slide4\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which document should you consult to correctly carry out fiber optic cable installation tasks?&quot;,&quot;options&quot;:[&quot;Installation plans and technical diagrams&quot;,&quot;Software configuration manuals&quot;,&quot;Wireless communication protocols&quot;,&quot;Manufacturing process guides&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;Installation plans and technical diagrams provide the necessary instructions to perform fiber optic installation tasks correctly.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Describe the proper steps to perform fiber optic cable splicing using standard tools.&quot;,&quot;rubric&quot;:&quot;The answer should include identification of tools, preparation of fiber ends, alignment, fusion or mechanical splicing, and inspection to ensure quality.&quot;,&quot;sample&quot;:&quot;First, prepare the fiber ends by stripping and cleaning. Then use the fusion splicer to align and fuse the fibers. Finally, inspect the splice for quality and protect it with a splice protector.&quot;,&quot;accept&quot;:[&quot;Prepare fiber ends, align fibers, splice using fusion or mechanical method, inspect splice quality&quot;,&quot;Strip and clean fibers, use splicing tool to join fibers, check splice integrity&quot;,&quot;Use proper tools to strip, cleave, align, splice, and protect fiber ends&quot;]}]\" data-pop=\"1\"></div></div>",
+    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">04</span><span class=\"bar\"></span>Installation Techniques</div><h2 class=\"head anim\">Proper Handling and Splicing of Fiber Optic Cables</h2><ul><li>Handling fiber cables to avoid damage and stress</li><li>Cleaning and preparing fiber ends before splicing</li><li>Splicing methods: fusion and mechanical</li><li>Ensuring secure and low-loss splices</li></ul><p class=\"lede anim\">Connect this point to the source paper and learner profile. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p><div id=\"quiz-slide4\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which of the following is the correct order of steps for preparing a fiber optic cable for splicing?&quot;,&quot;options&quot;:[&quot;Strip the cable jacket, clean the fiber, cleave the fiber, then splice&quot;,&quot;Clean the fiber, strip the cable jacket, splice, then cleave the fiber&quot;,&quot;Splice the fiber, strip the cable jacket, clean the fiber, then cleave&quot;,&quot;Cleave the fiber, strip the cable jacket, clean the fiber, then splice&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;Proper preparation involves first stripping the cable jacket to expose the fiber, cleaning the fiber to remove contaminants, cleaving the fiber to create a clean end face, and then performing the splice.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Describe how you would interpret a simple fiber optic installation plan to ensure correct cable routing and compliance with safety standards.&quot;,&quot;rubric&quot;:&quot;The answer should mention identifying cable types and routes, understanding symbols and annotations, verifying compliance with codes, and recognizing safety considerations such as avoiding hazards and proper cable support.&quot;,&quot;sample&quot;:&quot;I would first identify the cable types and their designated routes on the plan. Then, I would interpret symbols and notes to understand installation requirements. I would check that the plan complies with relevant safety codes and regulations, ensuring cables avoid hazards and are properly supported.&quot;,&quot;accept&quot;:[&quot;Identify cable routes and types, interpret symbols, check compliance with codes and safety&quot;,&quot;Read the plan to understand cable paths, verify safety and installation standards&quot;,&quot;Analyze installation diagrams for correct routing and adherence to safety regulations&quot;]}]\" data-pop=\"1\"></div></div>",
     "paper": {
       "secnum": "Slide 4",
-      "h": "Confirming Signal Quality and Locating Faults",
-      "body": "<p>Explain the key testing tools and methods used to verify fiber optic signal quality and identify faults. Describe typical causes of signal degradation and how to detect them using OTDRs and power meters. Outline a systematic approach to troubleshooting fiber optic installations. Stress the importance of documenting findings and repairs for quality assurance [s1].</p>"
+      "h": "Proper Handling and Splicing of Fiber Optic Cables",
+      "body": "<p>Demonstrate correct handling techniques to prevent fiber damage. Describe the steps for cleaning and preparing fibers before splicing. Compare fusion and mechanical splicing methods, emphasizing industry best practices for achieving reliable connections.</p>"
     }
   },
   {
     "id": "slide5",
-    "eyebrow": "Safety First",
+    "eyebrow": "Testing & Compliance",
     "num": "05",
-    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">05</span><span class=\"bar\"></span>Safety First</div><h2 class=\"head anim\">Applying Safety Measures and Best Practices</h2><ul><li>Wear appropriate personal protective equipment (PPE)</li><li>Handle fiber scraps and chemicals safely</li><li>Maintain clean work environment to prevent contamination</li><li>Follow workplace safety guidelines and emergency procedures</li></ul><p class=\"lede anim\">Connect this point to the source paper and learner profile. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p></div>",
+    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">05</span><span class=\"bar\"></span>Testing &amp; Compliance</div><h2 class=\"head anim\">Basic Testing, Troubleshooting, and Compliance</h2><ul><li>Common tests: continuity, loss, and OTDR</li><li>Identifying and resolving common installation issues</li><li>Adhering to industry codes and safety regulations</li><li>Documenting test results and compliance checks</li></ul><p class=\"lede anim\">Connect this point to the source paper and learner profile. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p><div id=\"quiz-slide5\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which of the following is the correct order of steps for preparing a fiber optic cable for splicing?&quot;,&quot;options&quot;:[&quot;Strip the cable jacket, clean the fiber, cleave the fiber, then splice&quot;,&quot;Clean the fiber, strip the cable jacket, splice, then cleave the fiber&quot;,&quot;Splice the fiber, strip the cable jacket, clean the fiber, then cleave&quot;,&quot;Cleave the fiber, strip the cable jacket, clean the fiber, then splice&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;Proper preparation involves first stripping the cable jacket to expose the fiber, cleaning the fiber to remove contaminants, cleaving the fiber to create a clean end face, and then performing the splice.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Describe how you would interpret a simple fiber optic installation plan to ensure correct cable routing and compliance with safety standards.&quot;,&quot;rubric&quot;:&quot;The answer should mention identifying cable types and routes, understanding symbols and annotations, verifying compliance with codes, and recognizing safety considerations such as avoiding hazards and proper cable support.&quot;,&quot;sample&quot;:&quot;I would first identify the cable types and their designated routes on the plan. Then, I would interpret symbols and notes to understand installation requirements. I would check that the plan complies with relevant safety codes and regulations, ensuring cables avoid hazards and are properly supported.&quot;,&quot;accept&quot;:[&quot;Identify cable routes and types, interpret symbols, check compliance with codes and safety&quot;,&quot;Read the plan to understand cable paths, verify safety and installation standards&quot;,&quot;Analyze installation diagrams for correct routing and adherence to safety regulations&quot;]}]\" data-pop=\"1\"></div></div>",
     "paper": {
       "secnum": "Slide 5",
-      "h": "Applying Safety Measures and Best Practices",
-      "body": "<p>Highlight critical safety practices for fiber optic installation work. Discuss the use of PPE such as safety glasses and gloves. Explain proper disposal of fiber scraps and handling of cleaning chemicals. Emphasize maintaining a clean workspace to avoid contamination that can affect fiber performance. Reinforce adherence to all workplace safety protocols to protect personnel and equipment [s1].</p>"
+      "h": "Basic Testing, Troubleshooting, and Compliance",
+      "body": "<p>Introduce basic fiber optic testing methods and their purposes. Discuss typical troubleshooting steps for installation problems. Highlight the importance of following codes and regulations to ensure safety and quality. Stress proper documentation for accountability and future reference.</p>"
     }
   }
 ];
 window.POLLS = {
-  "poll-tool-safety": {
-    "q": "Which safety practice is most important when operating fiber optic installation tools?",
-    "desc": "This poll checks understanding of key safety measures when using fiber optic tools.",
+  "poll1-safety-hazards": {
+    "q": "Which of the following are common safety hazards when working with fiber optic cables?",
+    "desc": "Select all hazards you think are relevant to fiber optic installation work.",
     "opts": [
-      "Always wear protective eyewear",
-      "Use tools without gloves for better grip",
-      "Ignore workplace safety signs if in a hurry",
-      "Operate tools only after proper training"
+      "Glass fiber shards causing skin or eye injury",
+      "Exposure to high voltage electrical cables",
+      "Tripping over loose cables and tools",
+      "Inhalation of toxic fumes from cable jackets",
+      "Radiation exposure from fiber optic signals"
     ]
   },
-  "poll-signal-loss-causes": {
-    "q": "What is a common cause of fiber optic signal loss?",
-    "desc": "This poll assesses recognition of typical causes of signal degradation in fiber optic cables.",
+  "poll2-tools-equipment": {
+    "q": "Which tools are essential for preparing and installing fiber optic cables?",
+    "desc": "Choose the tools you believe are standard for fiber optic cable preparation and installation.",
     "opts": [
-      "Physical damage to the cable",
-      "Using the wrong software configuration",
-      "Wireless interference",
-      "Incorrect network architecture design"
+      "Fiber optic stripper",
+      "Crimping tool for copper cables",
+      "Fusion splicer",
+      "Cable cutter",
+      "Soldering iron"
     ]
   }
 };
 window.WORDS = {
-  "word-cloud-cable-types": {
-    "q": "What types of fiber optic cables and components have you observed or learned about?",
-    "desc": "Gather learner observations on common fiber optic cable types and their components."
+  "wordcloud1-cable-types": {
+    "q": "Name common fiber optic cable types and components you know.",
+    "desc": "Submit terms related to fiber optic cable types and components to build a shared vocabulary."
   },
-  "word-cloud-installation-tools": {
-    "q": "List the tools used in fiber optic cable splicing and termination.",
-    "desc": "Collect learner input on standard tools for fiber optic installation."
+  "wordcloud2-safety-precautions": {
+    "q": "List safety precautions important for fiber optic installation work.",
+    "desc": "Share safety measures and best practices to avoid hazards during fiber optic cable handling and installation."
   },
-  "word-cloud-signal-loss": {
-    "q": "What factors can cause signal loss or damage in fiber optic cables?",
-    "desc": "Identify typical causes of signal loss and physical damage from learner perspective."
+  "wordcloud3-installation-plans": {
+    "q": "What key elements do you look for when reading fiber installation plans?",
+    "desc": "Contribute terms or concepts important for interpreting fiber optic installation documentation."
   },
-  "word-cloud-safety-measures": {
-    "q": "What safety measures should be followed during fiber optic installation?",
-    "desc": "Gather best practices and safety guidelines learners recall."
+  "wordcloud4-handling-splicing": {
+    "q": "What techniques or tools are involved in proper fiber optic cable handling and splicing?",
+    "desc": "Gather terms related to correct handling and splicing methods for fiber optic cables."
   }
 };

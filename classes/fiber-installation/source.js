@@ -13,7 +13,7 @@ window.SOURCE_PAPER = {
       "id": "s2",
       "num": "2",
       "title": "Research prompts and knowledge-base questions",
-      "body": "<ul><li>inddustry standard fiber installation guidelines</li></ul>"
+      "body": "<ul><li>industry standard publications</li></ul>"
     }
   ]
 };
