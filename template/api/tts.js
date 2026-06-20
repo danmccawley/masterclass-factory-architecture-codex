@@ -3,7 +3,7 @@
 // If OPENAI_API_KEY is not set, returns 503 and the client falls back to the
 // browser's built-in (robotic) speech synthesis, so Listen mode still works.
 const MODEL = "gpt-4o-mini-tts";   // natural + inexpensive. Fallback option: "tts-1".
-const DEFAULT_VOICE = "alloy";     // alloy | echo | fable | onyx | nova | shimmer
+const DEFAULT_VOICE = "fable";     // Bernard voice target. Fallback options include alloy, echo, onyx, nova, shimmer.
 
 function readBody(req){
   return new Promise((resolve)=>{

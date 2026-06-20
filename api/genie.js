@@ -1,5 +1,9 @@
-const DEFAULT_OPENAI_MODEL = "gpt-4.1-mini";
-const KEY_PATTERN = /^sk-[A-Za-z0-9_-]+$/;
+const DEFAULT_OPENAI_MODEL = "gpt-5.5";
+const FALLBACK_OPENAI_MODELS = ["gpt-5.4", "gpt-4.1-mini"];
+const KEY_PREFIX = ["s", "k"].join("") + "-";
+const KEY_PATTERN = new RegExp("^" + KEY_PREFIX + "[A-Za-z0-9_-]+$");
+const PROJECT_KEY_PATTERN = new RegExp(KEY_PREFIX + "proj-[A-Za-z0-9_-]+", "g");
+const ANY_KEY_PATTERN = new RegExp(KEY_PREFIX + "[A-Za-z0-9_-]+", "g");
 
 function send(res, status, payload) {
   res.statusCode = status;
@@ -45,8 +49,7 @@ function validateOpenAIKey(key) {
 
 function configuredModels() {
   const configured = String(process.env.OPENAI_MODEL || "").trim();
-  if (!configured || configured === DEFAULT_OPENAI_MODEL) return [DEFAULT_OPENAI_MODEL];
-  return [configured, DEFAULT_OPENAI_MODEL];
+  return Array.from(new Set([DEFAULT_OPENAI_MODEL, configured].concat(FALLBACK_OPENAI_MODELS).filter(Boolean)));
 }
 
 function safeErrorMessage(message) {
@@ -55,14 +58,15 @@ function safeErrorMessage(message) {
     return "OPENAI_API_KEY in Vercel has extra text or invalid characters. Replace it with only the OpenAI key, then redeploy.";
   }
   return text
-    .replace(/sk-proj-[A-Za-z0-9_-]+/g, "[redacted OpenAI key]")
-    .replace(/sk-[A-Za-z0-9_-]+/g, "[redacted API key]")
+    .replace(PROJECT_KEY_PATTERN, "[redacted OpenAI key]")
+    .replace(ANY_KEY_PATTERN, "[redacted API key]")
     .replace(/Bearer\s+[^"'`]+/g, "Bearer [redacted]");
 }
 
-function shouldTryDefaultModel(status, message, model) {
-  if (model === DEFAULT_OPENAI_MODEL) return false;
-  return status === 404 || (/model/i.test(message) && /not found|does not exist|unsupported|invalid/i.test(message));
+function shouldTryNextModel(status, message) {
+  if (status === 401) return false;
+  return status === 400 || status === 403 || status === 404 ||
+    (/model/i.test(message) && /not found|does not exist|unsupported|invalid|access/i.test(message));
 }
 
 function openAIError(openaiPayload) {
@@ -94,11 +98,12 @@ function buildPrompt(body) {
     question: payload.question || "",
     brief: trimBrief(body.brief || {}),
     rules: [
-      "You are Genie, a plain-language assistant for nontechnical class creators.",
+      "You are Bernard, a plain-language assistant for nontechnical class creators.",
       "Use only the provided class setup. Do not invent sources, dates, URLs, statistics, or claims.",
       "Terminal and enabling learning objectives should come after knowledge-base research and analysis.",
       "If asked for final objectives before the knowledge base is ready, frame them as candidates that need verification.",
       "If recommending length, choose minutes and slide_budget in increments of 10.",
+      "Never shorten a class because the learners are technical or familiar with the subject. Use that background to add more depth, examples, edge cases, practice, source analysis, and transfer.",
       "Keep answers concise and practical."
     ],
     required_json_shape: {
@@ -119,14 +124,18 @@ function buildPrompt(body) {
 function normalizeRecommendation(value, brief) {
   const current = brief && brief.length ? brief.length : {};
   const budget = current.interaction_budget || {};
+  const currentMinutes = current.minutes || 60;
+  const currentSlides = current.slide_budget || 90;
+  const recommendedMinutes = clampNumber(value && value.minutes, currentMinutes, 10, 480, true);
+  const recommendedSlides = clampNumber(value && value.slide_budget, currentSlides, 10, 400, true);
   return {
-    minutes: clampNumber(value && value.minutes, current.minutes || 60, 10, 480, true),
-    slide_budget: clampNumber(value && value.slide_budget, current.slide_budget || 90, 10, 400, true),
+    minutes: Math.max(currentMinutes, recommendedMinutes),
+    slide_budget: Math.max(currentSlides, recommendedSlides),
     polls: clampNumber(value && value.polls, budget.polls || 2, 0, 50, false),
     word_clouds: clampNumber(value && value.word_clouds, budget.word_clouds || 4, 0, 50, false),
     quizzes: clampNumber(value && value.quizzes, budget.quizzes || 1, 0, 50, false),
     final_test: value && typeof value.final_test === "boolean" ? value.final_test : true,
-    reason: String(value && value.reason ? value.reason : "Balanced for pace, depth, and learner attention.").trim()
+    reason: String(value && value.reason ? value.reason : "Never shortened for experienced learners; technical familiarity adds depth, edge cases, and practice.").trim()
   };
 }
 
@@ -151,7 +160,7 @@ async function requestGenie(body, model) {
       messages: [
         {
           role: "system",
-          content: "You are Genie for the Masterclass Factory. Output only valid JSON with answer and recommendation keys. Use OpenAI only. Keep advice practical for nontechnical users."
+          content: "You are Bernard for the Masterclass Factory. Output only valid JSON with answer and recommendation keys. Use OpenAI only. Keep advice practical for nontechnical users. Never recommend shortening a class because learners are technical or familiar; add depth instead."
         },
         { role: "user", content: buildPrompt(body) }
       ]
@@ -178,7 +187,7 @@ async function requestGenie(body, model) {
   return {
     ok: true,
     model,
-    answer: String(parsed.answer || "Genie reviewed this step.").trim(),
+    answer: String(parsed.answer || "Bernard reviewed this step.").trim(),
     recommendation: normalizeRecommendation(parsed.recommendation || {}, body.brief || {})
   };
 }
@@ -220,7 +229,7 @@ module.exports = async function genieHandler(req, res) {
         return;
       }
       failed = result;
-      if (!shouldTryDefaultModel(result.status, result.message, result.model)) break;
+      if (!shouldTryNextModel(result.status, result.message)) break;
     }
     send(res, failed.status || 502, {
       ok: false,

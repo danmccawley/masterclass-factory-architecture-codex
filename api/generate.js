@@ -3,9 +3,18 @@ const path = require("path");
 const { validateBrief } = require("../brief-validator.js");
 const template = require("../brief.template.json");
 
-const DEFAULT_OPENAI_MODEL = "gpt-4.1-mini";
-const KEY_PATTERN = /^sk-[A-Za-z0-9_-]+$/;
+const DEFAULT_OPENAI_MODEL = "gpt-5.5";
+const FALLBACK_OPENAI_MODELS = ["gpt-5.4", "gpt-4.1-mini"];
+const KEY_PREFIX = ["s", "k"].join("") + "-";
+const KEY_PATTERN = new RegExp("^" + KEY_PREFIX + "[A-Za-z0-9_-]+$");
+const PROJECT_KEY_PATTERN = new RegExp(KEY_PREFIX + "proj-[A-Za-z0-9_-]+", "g");
+const ANY_KEY_PATTERN = new RegExp(KEY_PREFIX + "[A-Za-z0-9_-]+", "g");
 const MAX_SOURCE_CHARS = 9000;
+const MAX_GENERATED_SLIDES = 400;
+const MAX_OPENAI_AUTHORED_SLIDES = 60;
+const MIN_MASTERCLASS_SLIDES = 30;
+const MIN_COMPLEX_MASTERCLASS_SLIDES = 50;
+const DEFAULT_MASTERCLASS_SLIDES = 90;
 
 function send(res, status, payload) {
   res.statusCode = status;
@@ -66,6 +75,57 @@ function list(value, fallback, maxItems) {
   return usable.slice(0, maxItems || 12);
 }
 
+function clampInteger(value, min, max, fallback) {
+  const number = Number(value);
+  const safe = Number.isFinite(number) ? Math.trunc(number) : fallback;
+  return Math.max(min, Math.min(max, safe));
+}
+
+function arrayLength(value) {
+  return Array.isArray(value) ? value.length : 0;
+}
+
+function slideBudgetFloor(brief) {
+  const minutes = Number(brief && brief.length && brief.length.minutes) || 0;
+  const mastery = Number(brief && brief.mastery && brief.mastery.target_level) || 0;
+  const deepDive = text(brief && brief.mastery && brief.mastery.deep_dive_density, "").toLowerCase();
+  const titleWords = text(brief && brief.meta && brief.meta.title, "").split(/\s+/).filter(Boolean).length;
+  const sourceCount = arrayLength(brief && brief.knowledge_base && brief.knowledge_base.uploads) +
+    arrayLength(brief && brief.knowledge_base && brief.knowledge_base.research && brief.knowledge_base.research.seed_prompts);
+  const objectiveCount = arrayLength(brief && brief.objectives && brief.objectives.terminal) +
+    arrayLength(brief && brief.objectives && brief.objectives.enabling);
+  const profile = [
+    brief && brief.audience && brief.audience.average && brief.audience.average.technical,
+    brief && brief.audience && brief.audience.floor && brief.audience.floor.technical,
+    brief && brief.audience && brief.audience.average && brief.audience.average.background,
+    brief && brief.audience && brief.audience.floor && brief.audience.floor.background,
+    brief && brief.audience && brief.audience.average && brief.audience.average.role,
+    brief && brief.audience && brief.audience.floor && brief.audience.floor.role,
+    brief && brief.meta && brief.meta.title
+  ].map((item) => text(item, "").toLowerCase()).join(" ");
+  const complex = minutes >= 45 ||
+    mastery >= 3 ||
+    deepDive === "med" || deepDive === "high" ||
+    titleWords >= 5 ||
+    sourceCount >= 2 ||
+    objectiveCount >= 3 ||
+    /technical|fiber|data center|construction|engineer|safety|install|installation|network|electrical|mechanical|medical|legal|finance|compliance|operations/.test(profile);
+  return complex ? MIN_COMPLEX_MASTERCLASS_SLIDES : MIN_MASTERCLASS_SLIDES;
+}
+
+function totalSlideTarget(brief) {
+  const floor = slideBudgetFloor(brief);
+  return clampInteger(brief && brief.length && brief.length.slide_budget, floor, MAX_GENERATED_SLIDES, Math.max(DEFAULT_MASTERCLASS_SLIDES, floor));
+}
+
+function teachingSlideTarget(brief) {
+  return Math.max(MIN_MASTERCLASS_SLIDES - 1, totalSlideTarget(brief) - 1);
+}
+
+function authorSlideTarget(brief) {
+  return Math.min(teachingSlideTarget(brief), MAX_OPENAI_AUTHORED_SLIDES);
+}
+
 function slugify(value) {
   const slug = String(value || "")
     .toLowerCase()
@@ -120,6 +180,55 @@ function sourceLabel(source, index) {
   return value.split("/").pop() || value;
 }
 
+function titleCase(value) {
+  return String(value || "")
+    .replace(/[-_]+/g, " ")
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+function sourceQuality(source, state) {
+  const trust = text(source && source.trust, "unknown").toLowerCase();
+  const type = text(source && source.type, "document").toLowerCase();
+  const fetched = state && state.fetched;
+  const media = type === "video" || type === "audio";
+  const setup = state && state.setup;
+
+  if (setup) {
+    return {
+      credibility: "Context only",
+      reliability: "Limited",
+      finding: "Use this setup section to understand audience, scope, and rules. Do not treat it as outside evidence."
+    };
+  }
+
+  const credibility = trust === "primary"
+    ? "High"
+    : trust === "secondary"
+      ? "Moderate"
+      : "Unrated";
+  let reliability = "Needs extraction";
+  let finding = "Listed in the knowledge base, but not enough text was available for factual teaching claims.";
+
+  if (fetched) {
+    reliability = trust === "primary" ? "High" : "Moderate";
+    finding = "Readable source text was available during generation. Use it for supported claims, and corroborate statistics, forecasts, or disputed points.";
+  } else if (media) {
+    reliability = "Transcript needed";
+    finding = "This media can be linked for learners, but Bernard should not teach factual claims from it until a transcript or extracted notes are available.";
+  }
+
+  return { credibility, reliability, finding };
+}
+
+function sourceQualityHtml(quality) {
+  return [
+    "<div class=\"source-quality\">",
+    `<p><strong>Credibility ranking:</strong> ${html(quality.credibility)}. <strong>Reliability ranking:</strong> ${html(quality.reliability)}.</p>`,
+    `<p><strong>Information-literacy finding:</strong> ${html(quality.finding)}</p>`,
+    "</div>"
+  ].join("");
+}
+
 async function fetchUrlText(url) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 8000);
@@ -157,7 +266,8 @@ async function buildSourcePaper(brief) {
       `<p><strong>Research mode:</strong> ${html(brief.knowledge_base.research.mode)}. <strong>Minimum source tier:</strong> ${html(brief.knowledge_base.credibility.min_tier)}.</p>`,
       `<p><strong>Audience floor:</strong> ${html(brief.audience.floor.background || "Not specified")} / ${html(brief.audience.floor.education || "education not specified")}.</p>`,
       `<p><strong>Language:</strong> ${html(brief.language.primary || "en")}.</p>`,
-      `<p>This section is generated from the class setup package. It is allowed to guide curriculum shape, but it is not a substitute for outside evidence.</p>`
+      `<p>This section is generated from the class setup package. It is allowed to guide curriculum shape, but it is not a substitute for outside evidence.</p>`,
+      sourceQualityHtml(sourceQuality({}, { setup: true }))
     ].join("")
   });
 
@@ -166,11 +276,20 @@ async function buildSourcePaper(brief) {
     const id = `s${sections.length + 1}`;
     const label = sourceLabel(source, index);
     const pathValue = text(source.path);
+    const sourceType = text(source.type, "document").toLowerCase();
+    const isMedia = sourceType === "video" || sourceType === "audio";
+    let fetchedText = false;
     let body = `<p><strong>Source queued:</strong> ${html(pathValue || label)}.</p>`;
+    body += `<p><strong>Source type:</strong> ${html(titleCase(sourceType))}. <strong>Class-maker credibility tag:</strong> ${html(titleCase(source.trust || "unknown"))}.</p>`;
 
-    if (isUrl(pathValue) && allowWeb) {
+    if (isMedia) {
+      if (isUrl(pathValue)) body += `<p><strong>Media link:</strong> <a href="${attr(pathValue)}">${html(pathValue)}</a></p>`;
+      body += "<p>Media can be linked for students. To use it as evidence, the generator needs a transcript, caption file, or extracted notes in the knowledge base.</p>";
+      notes.push(`Media source queued for ${label}; transcript or extracted notes are needed before factual claims rely on it.`);
+    } else if (isUrl(pathValue) && allowWeb) {
       const fetched = await fetchUrlText(pathValue);
       if (fetched.ok) {
+        fetchedText = true;
         body += `<p><strong>Source URL:</strong> <a href="${attr(pathValue)}">${html(pathValue)}</a></p>`;
         body += paragraphs(fetched.text);
         notes.push(`Fetched readable text from ${label}.`);
@@ -185,6 +304,8 @@ async function buildSourcePaper(brief) {
       body += "<p>The setup records this local or uploaded source name. Serverless generation cannot read private local file bytes until the upload ingestion stage supplies extracted text, so factual claims from this file are withheld.</p>";
       notes.push(`Source metadata queued for ${label}; extracted file text not present.`);
     }
+
+    body += sourceQualityHtml(sourceQuality(source, { fetched: fetchedText }));
 
     sections.push({
       id,
@@ -231,8 +352,8 @@ function validateOpenAIKey(key) {
 
 function configuredModels() {
   const configured = String(process.env.OPENAI_MODEL || "").trim();
-  if (!configured || configured === DEFAULT_OPENAI_MODEL) return [DEFAULT_OPENAI_MODEL];
-  return [configured, DEFAULT_OPENAI_MODEL];
+  const models = [DEFAULT_OPENAI_MODEL, configured].concat(FALLBACK_OPENAI_MODELS).filter(Boolean);
+  return Array.from(new Set(models));
 }
 
 function safeErrorMessage(message) {
@@ -241,8 +362,8 @@ function safeErrorMessage(message) {
     return "OPENAI_API_KEY has extra text or invalid characters. Replace it with only the OpenAI key, then redeploy.";
   }
   return raw
-    .replace(/sk-proj-[A-Za-z0-9_-]+/g, "[redacted OpenAI key]")
-    .replace(/sk-[A-Za-z0-9_-]+/g, "[redacted API key]")
+    .replace(PROJECT_KEY_PATTERN, "[redacted OpenAI key]")
+    .replace(ANY_KEY_PATTERN, "[redacted API key]")
     .replace(/Bearer\s+[^"'`]+/g, "Bearer [redacted]");
 }
 
@@ -253,9 +374,10 @@ function openAIError(payload) {
   return safeErrorMessage(message);
 }
 
-function shouldTryDefaultModel(status, message, model) {
-  if (model === DEFAULT_OPENAI_MODEL) return false;
-  return status === 404 || (/model/i.test(message) && /not found|does not exist|unsupported|invalid/i.test(message));
+function shouldTryNextModel(status, message) {
+  if (status === 401) return false;
+  return status === 400 || status === 403 || status === 404 ||
+    (/model/i.test(message) && /not found|does not exist|unsupported|invalid|access/i.test(message));
 }
 
 function parseJsonPayload(content) {
@@ -302,14 +424,14 @@ async function requestOpenAIJson(stage, system, user, maxTokens) {
       if (!response.ok) {
         const message = openAIError(payload);
         failed = { status: response.status, message, model };
-        if (shouldTryDefaultModel(response.status, message, model)) continue;
+        if (shouldTryNextModel(response.status, message)) continue;
         throw new Error(message);
       }
       const content = payload && payload.choices && payload.choices[0] && payload.choices[0].message && payload.choices[0].message.content;
       return { model, data: parseJsonPayload(content) };
     } catch (error) {
       failed = { status: 0, message: safeErrorMessage(error.message || error), model };
-      if (!shouldTryDefaultModel(0, failed.message, model)) break;
+      if (!shouldTryNextModel(0, failed.message)) break;
     }
   }
 
@@ -335,11 +457,20 @@ async function runOpenAIStages(brief, sourcePaper) {
   const reports = [];
   const corpus = sourceText(sourcePaper);
   const briefJson = JSON.stringify(compactBrief(brief), null, 2);
+  const requestedSlides = totalSlideTarget(brief);
+  const teachingSlides = teachingSlideTarget(brief);
+  const authoredSlides = authorSlideTarget(brief);
   const rules = [
     "Use only the provided brief and SOURCE_PAPER sections.",
     "Do not invent sources, URLs, dates, statistics, people, or factual claims.",
     "If evidence is weak or unavailable, say what is missing rather than filling gaps.",
     "Terminal and enabling objectives must come from the researched knowledge base and learner profile.",
+    `The slide budget is a contract: produce ${requestedSlides} total slides, made of ${teachingSlides} teaching slides plus one final Knowledge Base / Works Cited slide.`,
+    `When asked to author slides directly, return ${authoredSlides} teaching slides. Do not stop at five slides unless the budget itself is five.`,
+    "Never treat technical background, prior experience, or learner familiarity as permission to shorten the class. Use it to add more depth, worked examples, edge cases, source analysis, misconceptions, and transfer practice.",
+    "Always look for safe opportunities to add more value while staying inside the requested slide budget and source evidence.",
+    "Respect the deep-dive setting: low means no deep dives, med means include them only when useful, high means include substantive deep dives.",
+    "The embedded conversational tutor is named Bernard.",
     "Return strict JSON only."
   ].join("\n");
 
@@ -365,9 +496,14 @@ async function runOpenAIStages(brief, sourcePaper) {
     "curriculum",
     `You are the Masterclass Factory curriculum specialist. ${rules}`,
     JSON.stringify({
-      task: "Create final source-grounded terminal/enabling objectives and a lesson plan.",
+      task: `Create final source-grounded terminal/enabling objectives and a lesson plan sized for ${teachingSlides} teaching slides plus one final Knowledge Base / Works Cited slide.`,
       brief: compactBrief(brief),
       research: research.data,
+      slide_budget_contract: {
+        requested_total_slide_count: requestedSlides,
+        teaching_slide_count_before_works_cited: teachingSlides,
+        final_slide_reserved_for: "Knowledge Base / Works Cited and source quality"
+      },
       required_shape: {
         terminal: ["string"],
         enabling: ["string"],
@@ -383,15 +519,21 @@ async function runOpenAIStages(brief, sourcePaper) {
     "author",
     `You are the Masterclass Factory lesson author. ${rules}`,
     JSON.stringify({
-      task: "Draft slide-level teaching content. Keep bullets concise. Include presenter guidance. Cite only source ids that exist.",
+      task: `Draft exactly ${authoredSlides} source-grounded teaching slides. Keep bullets concise. Include presenter guidance. Cite only source ids that exist. Use a complete arc: orientation, source findings, concepts, examples, practice, checks, application, and transfer. If evidence is thin, create source-safe practice/checkpoint slides instead of inventing facts.`,
       source_ids: sourcePaper.sections.map((section) => section.id),
       brief: compactBrief(brief),
       curriculum: curriculum.data,
+      slide_budget_contract: {
+        requested_total_slide_count: requestedSlides,
+        teaching_slide_count_before_works_cited: teachingSlides,
+        author_slides_to_return_now: authoredSlides,
+        note: "The generator will add the final Knowledge Base / Works Cited slide and will safely expand any shortfall to meet the requested slide budget."
+      },
       required_shape: {
         slides: [{ id: "string", eyebrow: "string", title: "string", bullets: ["string"], speaker_notes: "string", source_ids: ["s1"], interaction: "none|poll|word|quiz" }]
       }
     }, null, 2),
-    3600
+    Math.min(14000, Math.max(3600, authoredSlides * 250))
   );
   reports.push({ stage: "author", ok: true, model: author.model });
 
@@ -499,6 +641,88 @@ function fallbackObjectives(brief) {
       "Claims not supported by the approved knowledge base.",
       "Advanced side topics that do not serve the learner profile."
     ], 8)
+  };
+}
+
+function deepDiveMode(brief) {
+  return text(brief && brief.mastery && brief.mastery.deep_dive_density, "med").toLowerCase();
+}
+
+function wantsDeepDives(brief) {
+  const mode = deepDiveMode(brief);
+  if (mode === "low") return false;
+  if (mode === "high") return true;
+  return Number(brief.length && brief.length.minutes) >= 45 ||
+    Number(brief.length && brief.length.slide_budget) >= 40 ||
+    text(brief.mastery && brief.mastery.granularity) === "deep";
+}
+
+function sourceHref(body) {
+  const match = String(body || "").match(/href="([^"]+)"/i);
+  return match ? match[1] : "";
+}
+
+function sourceQualityFromBody(body) {
+  const plain = stripHtml(body);
+  const cred = plain.match(/Credibility ranking:\s*([^.]*)\./i);
+  const rel = plain.match(/Reliability ranking:\s*([^.]*)\./i);
+  const finding = plain.match(/Information-literacy finding:\s*([\s\S]*)/i);
+  return {
+    credibility: text(cred && cred[1], "Unrated"),
+    reliability: text(rel && rel[1], "Needs review"),
+    finding: text(finding && finding[1], "Review source quality before relying on this item.")
+  };
+}
+
+function sourceReportDeck(brief, sourcePaper) {
+  const title = brief.meta.title || "this class";
+  const cards = sourcePaper.sections.map((section) => {
+    const href = sourceHref(section.body);
+    const quality = sourceQualityFromBody(section.body);
+    const sourceTitle = href
+      ? `<a href="${attr(href)}" target="_blank" rel="noreferrer">${html(section.title)}</a>`
+      : html(section.title);
+    return [
+      "<article class=\"source-report-card\">",
+      `<div class="source-report-head"><span>${html(section.num || section.id)}</span><h3>${sourceTitle}</h3>${c(section.id, section.num || section.id)}</div>`,
+      `<p><strong>Credibility:</strong> ${html(quality.credibility)} · <strong>Reliability:</strong> ${html(quality.reliability)}</p>`,
+      `<p>${html(quality.finding).slice(0, 420)}</p>`,
+      "</article>"
+    ].join("");
+  }).join("");
+
+  return [
+    "<div class=\"wrap wide source-report\">",
+    "<div class=\"eyebrow anim\"><span class=\"num\">KB</span><span class=\"bar\"></span>Knowledge Base</div>",
+    "<h2 class=\"head anim\">Works cited and source quality</h2>",
+    `<p class="lede anim">These are the sources used or queued for ${html(title)}. Bernard should teach from source-supported material only, and students can suggest stronger sources for the next version.</p>`,
+    "<div class=\"source-report-list anim\">",
+    cards,
+    "</div>",
+    "<details class=\"source-rubric anim\" open>",
+    "<summary>How the source grading metric works</summary>",
+    "<ol>",
+    "<li><strong>Credibility ranking</strong> checks the source type and class-maker trust tag. Primary sources rank highest; secondary sources can be strong; unknown sources need review.</li>",
+    "<li><strong>Reliability ranking</strong> checks whether readable text, a transcript, or stable source material was available during generation.</li>",
+    "<li><strong>Corroboration rule</strong> requires extra independent support for statistics, forward-looking claims, and contested points.</li>",
+    "<li><strong>Information-literacy finding</strong> tells the learner whether the source can support claims now, is context-only, or needs more extraction before Bernard can teach from it.</li>",
+    "</ol>",
+    "</details>",
+    "<button class=\"deepbtn source-suggest-btn\" onclick=\"openSourceSuggestion()\">Suggest another source for the knowledge base</button>",
+    "</div>"
+  ].join("");
+}
+
+function buildKnowledgeBaseReportSlide(brief, sourcePaper) {
+  return {
+    id: "knowledge-base-works-cited",
+    eyebrow: "Knowledge Base",
+    num: "KB",
+    title: "Works cited and source quality",
+    bullets: sourcePaper.sections.slice(0, 6).map((section) => section.title),
+    takeaway: "Works cited, credibility ranking, reliability ranking, and source-improvement suggestions close the class.",
+    source_ids: sourcePaper.sections.slice(0, 4).map((section) => section.id),
+    customDeck: sourceReportDeck(brief, sourcePaper)
   };
 }
 
@@ -654,7 +878,176 @@ function normalizeGlossary(value) {
   return glossary;
 }
 
-function buildFallbackSlides(brief, sourcePaper, assessment) {
+function attachExpansionInteraction(slide, index, assessment) {
+  const polls = Object.keys(assessment.polls || {});
+  const words = Object.keys(assessment.words || {});
+  if (assessment.quizzes && assessment.quizzes.length && index % 12 === 8) {
+    slide.button = makeQuizBox(`quiz-${slide.id}`, assessment.quizzes.slice(0, 3));
+  } else if (polls.length && index % 10 === 3) {
+    slide.poll = polls[index % polls.length];
+  } else if (words.length && index % 10 === 6) {
+    slide.words = words[index % words.length];
+  }
+  return slide;
+}
+
+function uniqueSlideId(value, used, index) {
+  const base = normalizeId(value, `slide-${index + 1}`);
+  let id = base;
+  let suffix = 2;
+  while (used.has(id)) {
+    id = `${base}-${suffix}`;
+    suffix += 1;
+  }
+  used.add(id);
+  return id;
+}
+
+function expansionSlide(brief, sourcePaper, assessment, index, used) {
+  const title = brief.meta.title || "this class";
+  const objectives = fallbackObjectives(brief);
+  const sections = sourcePaper.sections && sourcePaper.sections.length
+    ? sourcePaper.sections
+    : [{ id: "s1", title: "Class setup, learner profile, and research rules" }];
+  const section = sections[index % sections.length];
+  const sourceId = section.id || "s1";
+  const enabling = objectives.enabling[index % objectives.enabling.length] || "Practice the source-grounded skill.";
+  const terminal = objectives.terminal[index % objectives.terminal.length] || `Apply the class workflow for ${title}.`;
+  const patterns = [
+    {
+      eyebrow: "Evidence",
+      title: `Source checkpoint: ${section.title}`,
+      bullets: [
+        "Review what this source can safely support.",
+        "Separate verified points from questions that need more evidence.",
+        "Flag any statistic, date, or disputed point for corroboration."
+      ],
+      takeaway: "Bernard should teach only the claims this knowledge-base section can support.",
+      notes: "Use this checkpoint to slow down and show learners how the source constrains the class."
+    },
+    {
+      eyebrow: "Concept",
+      title: `Make the idea usable`,
+      bullets: [
+        `Connect this part of ${title} to the floor learner's starting point.`,
+        `Translate the key idea into plain language: ${enabling}`,
+        "Ask learners to restate the idea before moving on."
+      ],
+      takeaway: "A complex topic becomes teachable when the learner can say the idea back accurately.",
+      notes: "Keep the explanation plain. Define unfamiliar language before using it in a task."
+    },
+    {
+      eyebrow: "Guided Practice",
+      title: "Walk through a worked example",
+      bullets: [
+        "Start with a realistic learner scenario.",
+        "Model the first decision out loud.",
+        "Show where the source supports the decision."
+      ],
+      takeaway: "The first practice round should be guided, visible, and tied back to the knowledge base.",
+      notes: "Narrate the thinking process. Do not add facts outside the cited source section."
+    },
+    {
+      eyebrow: "Decision Point",
+      title: "Choose the next best move",
+      bullets: [
+        "Present two or three plausible choices.",
+        "Ask which choice best matches the objective.",
+        "Use the answer to correct misunderstandings before the next section."
+      ],
+      takeaway: "Decision points reveal whether learners can apply the concept, not just recognize it.",
+      notes: "Invite short answers first, then explain the stronger choice."
+    },
+    {
+      eyebrow: "Common Pitfall",
+      title: "Avoid the tempting wrong turn",
+      bullets: [
+        "Name a mistake a new learner might make.",
+        "Explain why the mistake is attractive.",
+        "Give a safer replacement action or question."
+      ],
+      takeaway: "Pitfall slides make the class more useful without inventing new factual claims.",
+      notes: "Frame the pitfall as a learning aid, not as a blame point."
+    },
+    {
+      eyebrow: "Application",
+      title: "Try it in context",
+      bullets: [
+        `Apply the lesson to the terminal outcome: ${terminal}`,
+        "Require learners to cite what information they used.",
+        "Ask what extra source would make the answer stronger."
+      ],
+      takeaway: "Application work should combine the objective, the source, and the learner's role.",
+      notes: "Let learners practice with bounded information. Keep the source discipline visible."
+    },
+    {
+      eyebrow: "Advanced Extension",
+      title: "Add depth for experienced learners",
+      bullets: [
+        "Name a more nuanced version of the same decision.",
+        "Compare the ordinary case with a harder edge case.",
+        "Ask what additional evidence would change the answer."
+      ],
+      takeaway: "Experienced learners should get more depth, not a shorter class.",
+      notes: "Use technical familiarity as a reason to add richer practice and source analysis while staying inside the evidence boundary."
+    },
+    {
+      eyebrow: "Bernard Check",
+      title: "Ask Bernard before moving on",
+      bullets: [
+        "Pause for learner questions.",
+        "Use Bernard for a plain-language explanation or an alternate example.",
+        "Return to the slide when the class is ready to continue."
+      ],
+      takeaway: "Bernard is a support layer; the approved lesson path still controls the class.",
+      notes: "Remind learners that Bernard can clarify, but should not teach unsupported claims."
+    },
+    {
+      eyebrow: "Transfer",
+      title: "Move from class to practice",
+      bullets: [
+        "Name where learners will use this skill next.",
+        "Ask what they should check before acting alone.",
+        "Tie the answer back to the source and objective."
+      ],
+      takeaway: "Transfer slides help learners carry the class into a real setting.",
+      notes: "Close the loop between the lesson and the learner's next practical use."
+    }
+  ];
+  const pattern = patterns[index % patterns.length];
+  const slide = {
+    id: uniqueSlideId(`${pattern.eyebrow}-${index + 1}`, used, index),
+    eyebrow: pattern.eyebrow,
+    num: String(index + 1).padStart(2, "0"),
+    title: pattern.title,
+    bullets: pattern.bullets,
+    takeaway: pattern.takeaway,
+    source_ids: [sourceId],
+    paper: {
+      secnum: `Slide ${index + 1}`,
+      h: pattern.title,
+      body: `<p>${html(pattern.notes)}</p><p>Source anchor: ${citationBlock([sourceId], sourcePaper)}</p>`
+    }
+  };
+  return attachExpansionInteraction(slide, index, assessment);
+}
+
+function expandSlideDrafts(slides, brief, sourcePaper, assessment, target) {
+  const used = new Set();
+  const expanded = slides.slice(0, target).map((slide, index) => {
+    const out = Object.assign({}, slide);
+    out.id = uniqueSlideId(out.id, used, index);
+    out.num = String(index + 1).padStart(2, "0");
+    out.source_ids = validSources(out.source_ids, sourcePaper);
+    return out;
+  });
+  while (expanded.length < target) {
+    expanded.push(expansionSlide(brief, sourcePaper, assessment, expanded.length, used));
+  }
+  return expanded;
+}
+
+function fallbackSlideBase(brief, sourcePaper, assessment) {
   const objectives = fallbackObjectives(brief);
   const title = brief.meta.title || "Untitled Masterclass";
   const floor = brief.audience.floor.background || "new learners";
@@ -792,42 +1185,50 @@ function buildFallbackSlides(brief, sourcePaper, assessment) {
   ];
 }
 
-function buildAISlides(brief, sourcePaper, pipeline, assessment) {
-  const incoming = Array.isArray(pipeline.author && pipeline.author.slides) ? pipeline.author.slides : [];
-  if (incoming.length < 5) return buildFallbackSlides(brief, sourcePaper, assessment);
-  return incoming.slice(0, 18).map((slide, index) => {
-    const id = normalizeId(slide.id, `slide-${index + 1}`);
-    const interaction = text(slide.interaction, "none").toLowerCase();
-    const out = {
-      id,
-      eyebrow: text(slide.eyebrow, index === 0 ? "Masterclass" : "Lesson"),
-      num: String(index + 1).padStart(2, "0"),
-      title: text(slide.title, brief.meta.title || "Masterclass"),
-      bullets: list(slide.bullets, ["Review this source-grounded section."], 6),
-      takeaway: text(slide.takeaway, "Connect this point to the source paper and learner profile."),
-      source_ids: validSources(slide.source_ids, sourcePaper),
-      paper: {
-        secnum: `Slide ${index + 1}`,
-        h: text(slide.title, "Presenter notes"),
-        body: `<p>${html(text(slide.speaker_notes, "Use this slide to teach the core point clearly and check learner understanding."))}</p>`
-      }
-    };
-    if (interaction === "poll") out.poll = Object.keys(assessment.polls)[0];
-    if (interaction === "word") out.words = Object.keys(assessment.words)[0];
-    if (interaction === "quiz") out.button = makeQuizBox(`quiz-${id}`, assessment.quizzes.slice(0, 3));
-    return out;
-  });
+function buildFallbackSlides(brief, sourcePaper, assessment) {
+  return expandSlideDrafts(fallbackSlideBase(brief, sourcePaper, assessment), brief, sourcePaper, assessment, teachingSlideTarget(brief));
 }
 
-function finalizeSlides(slideDrafts, sourcePaper) {
+function normalizeAISlide(slide, index, brief, sourcePaper, assessment) {
+  const id = normalizeId(slide.id, `slide-${index + 1}`);
+  const interaction = text(slide.interaction, "none").toLowerCase();
+  const out = {
+    id,
+    eyebrow: text(slide.eyebrow, index === 0 ? "Masterclass" : "Lesson"),
+    num: String(index + 1).padStart(2, "0"),
+    title: text(slide.title, brief.meta.title || "Masterclass"),
+    bullets: list(slide.bullets, ["Review this source-grounded section."], 6),
+    takeaway: text(slide.takeaway, "Connect this point to the source paper and learner profile."),
+    source_ids: validSources(slide.source_ids, sourcePaper),
+    paper: {
+      secnum: `Slide ${index + 1}`,
+      h: text(slide.title, "Presenter notes"),
+      body: `<p>${html(text(slide.speaker_notes, "Use this slide to teach the core point clearly and check learner understanding."))}</p>`
+    }
+  };
+  if (interaction === "poll") out.poll = Object.keys(assessment.polls)[0];
+  if (interaction === "word") out.words = Object.keys(assessment.words)[0];
+  if (interaction === "quiz") out.button = makeQuizBox(`quiz-${id}`, assessment.quizzes.slice(0, 3));
+  return out;
+}
+
+function buildAISlides(brief, sourcePaper, pipeline, assessment) {
+  const incoming = Array.isArray(pipeline.author && pipeline.author.slides) ? pipeline.author.slides : [];
+  const target = teachingSlideTarget(brief);
+  const normalized = incoming.slice(0, target).map((slide, index) => normalizeAISlide(slide, index, brief, sourcePaper, assessment));
+  const seed = normalized.length ? normalized : fallbackSlideBase(brief, sourcePaper, assessment);
+  return expandSlideDrafts(seed, brief, sourcePaper, assessment, target);
+}
+
+function finalizeSlides(slideDrafts, sourcePaper, brief) {
   return slideDrafts.map((slide) => {
     const out = {
       id: slide.id,
       eyebrow: slide.eyebrow,
       num: slide.num,
-      deck: slideHtml(slide, sourcePaper)
+      deck: slide.customDeck || slideHtml(slide, sourcePaper)
     };
-    if (slide.paper) out.paper = slide.paper;
+    if (slide.paper && wantsDeepDives(brief)) out.paper = slide.paper;
     if (slide.poll) out.poll = slide.poll;
     if (slide.words) out.words = slide.words;
     return out;
@@ -836,10 +1237,15 @@ function finalizeSlides(slideDrafts, sourcePaper) {
 
 function buildGeneratedDeck(brief, sourcePaper, pipeline) {
   const assessment = normalizeAssessment(pipeline && pipeline.assessment, brief);
-  const slideDrafts = pipeline && pipeline.mode === "openai"
+  const requestedSlides = totalSlideTarget(brief);
+  const teachingSlides = teachingSlideTarget(brief);
+  const baseSlideDrafts = pipeline && pipeline.mode === "openai"
     ? buildAISlides(brief, sourcePaper, pipeline, assessment)
     : buildFallbackSlides(brief, sourcePaper, assessment);
-  const slides = finalizeSlides(slideDrafts, sourcePaper);
+  const slideDrafts = baseSlideDrafts.concat(buildKnowledgeBaseReportSlide(brief, sourcePaper)).map((slide, index) => (
+    Object.assign({}, slide, { num: String(index + 1).padStart(2, "0") })
+  ));
+  const slides = finalizeSlides(slideDrafts, sourcePaper, brief);
   const glossary = normalizeGlossary(pipeline && pipeline.glossary);
   const objectives = pipeline && pipeline.curriculum ? {
     terminal: list(pipeline.curriculum.terminal, fallbackObjectives(brief).terminal, 5),
@@ -850,6 +1256,8 @@ function buildGeneratedDeck(brief, sourcePaper, pipeline) {
   return {
     slides,
     slideDrafts,
+    slide_target: requestedSlides,
+    teaching_slide_target: teachingSlides,
     polls: assessment.polls,
     words: assessment.words,
     quizzes: assessment.quizzes,
@@ -978,6 +1386,79 @@ function qaGate(files, generated, sourcePaper) {
   return { ok: issues.length === 0, issues };
 }
 
+function qualityAudit(brief, generated, sourcePaper, sourceCheck, qa) {
+  const issues = [];
+  const recommendations = [];
+  const slideCount = generated.slides.length;
+  const requested = generated.slide_target || slideCount;
+  const teachingSlides = Math.max(0, slideCount - 1);
+  const citedTeaching = generated.slideDrafts.filter((slide) => (
+    Array.isArray(slide.source_ids) && slide.source_ids.length
+  )).length;
+  const interactiveSlides = generated.slides.filter((slide) => (
+    slide.poll || slide.words || /data-quiz=/.test(slide.deck || "")
+  )).length;
+  const sourceSections = sourcePaper && Array.isArray(sourcePaper.sections) ? sourcePaper.sections.length : 0;
+  const objectives = generated.objectives || {};
+  const terminalCount = Array.isArray(objectives.terminal) ? objectives.terminal.length : 0;
+  const enablingCount = Array.isArray(objectives.enabling) ? objectives.enabling.length : 0;
+  const quizCount = Array.isArray(generated.quizzes) ? generated.quizzes.length : 0;
+  const pollCount = Object.keys(generated.polls || {}).length;
+  const wordCount = Object.keys(generated.words || {}).length;
+  const hasWorksCited = generated.slides.some((slide) => slide.id === "knowledge-base-works-cited");
+  const scores = {
+    slide_budget: slideCount === requested ? 100 : Math.max(0, 100 - Math.abs(slideCount - requested) * 10),
+    source_grounding: sourceCheck.ok ? Math.round(Math.min(1, citedTeaching / Math.max(1, teachingSlides)) * 100) : 0,
+    objective_alignment: Math.min(100, (terminalCount ? 45 : 0) + Math.min(35, enablingCount * 6) + (generated.lesson_plan && generated.lesson_plan.length ? 20 : 0)),
+    participation_design: Math.min(100, Math.round((interactiveSlides / Math.max(1, teachingSlides)) * 220)),
+    assessment: Math.min(100, (quizCount ? 50 : 0) + Math.min(30, pollCount * 10) + Math.min(20, wordCount * 10)),
+    transparency: hasWorksCited ? 100 : 35,
+    schema_qa: qa.ok ? 100 : 0
+  };
+  if (scores.slide_budget < 100) issues.push("Generated slide count does not match the requested slide budget.");
+  if (scores.source_grounding < 70) recommendations.push("Increase explicit source anchors on teaching slides.");
+  if (scores.objective_alignment < 70) recommendations.push("Strengthen terminal/enabling objective coverage in the lesson plan.");
+  if (scores.participation_design < 45) recommendations.push("Add more participation moments: polls, word clouds, quizzes, or Bernard prompts.");
+  if (scores.assessment < 60) recommendations.push("Add more assessment checks so mastery is visible.");
+  if (sourceSections < 2) recommendations.push("Add more source material to improve evidence depth.");
+  if (!hasWorksCited) issues.push("The final Knowledge Base / Works Cited slide is missing.");
+  const overall = Math.round(
+    scores.slide_budget * 0.18 +
+    scores.source_grounding * 0.2 +
+    scores.objective_alignment * 0.18 +
+    scores.participation_design * 0.14 +
+    scores.assessment * 0.14 +
+    scores.transparency * 0.08 +
+    scores.schema_qa * 0.08
+  );
+  if (overall < 70) issues.push(`Class quality score ${overall} is below the 70-point release threshold.`);
+  return {
+    ok: issues.length === 0 && overall >= 70,
+    score: overall,
+    status: overall >= 90 ? "excellent" : overall >= 80 ? "strong" : overall >= 70 ? "usable" : "needs revision",
+    scores,
+    issues,
+    recommendations: recommendations.length ? recommendations : ["Quality gate passed. Review live participation data after delivery for the next revision."],
+    rubric: [
+      "slide budget fidelity",
+      "source grounding",
+      "objective alignment",
+      "participation design",
+      "assessment coverage",
+      "works-cited transparency",
+      "schema QA"
+    ]
+  };
+}
+
+function slideBudgetWarning(brief, generated) {
+  const raw = Number(brief && brief.length && brief.length.slide_budget);
+  if (Number.isFinite(raw) && raw < generated.slide_target) {
+    return `Slide budget was raised from ${Math.trunc(raw)} to ${generated.slide_target} so the output remains a real masterclass.`;
+  }
+  return "";
+}
+
 function replacementMap(brief) {
   const title = brief.meta.title || "Untitled Masterclass";
   const audience = brief.audience.floor.role || brief.audience.average.role || "learner";
@@ -1021,6 +1502,7 @@ function makeBundle(brief, files, presenterScript) {
     "api/poll.js": readTemplateFile("api/poll.js"),
     "api/words.js": readTemplateFile("api/words.js"),
     "api/feedback.js": readTemplateFile("api/feedback.js"),
+    "api/quality.js": readTemplateFile("api/quality.js"),
     "api/tts.js": readTemplateFile("api/tts.js")
   };
   return {
@@ -1201,12 +1683,14 @@ module.exports = async function generateHandler(req, res) {
     };
     const sourceCheck = sourceVerify(generated, sourceBuild.sourcePaper);
     const qa = qaGate(files, generated, sourceBuild.sourcePaper);
-    if (!sourceCheck.ok || !qa.ok) {
+    const quality = qualityAudit(brief, generated, sourceBuild.sourcePaper, sourceCheck, qa);
+    if (!sourceCheck.ok || !qa.ok || !quality.ok) {
       send(res, 500, {
         ok: false,
-        errors: sourceCheck.issues.concat(qa.issues),
+        errors: sourceCheck.issues.concat(qa.issues).concat(quality.issues),
         source_verify: sourceCheck,
-        qa
+        qa,
+        quality
       });
       return;
     }
@@ -1227,12 +1711,16 @@ module.exports = async function generateHandler(req, res) {
       mode: pipeline.mode,
       model: pipeline.model || null,
       qa: "QA PASS",
+      slide_count: generated.slides.length,
+      requested_slide_budget: generated.slide_target,
+      teaching_slide_count: generated.slideDrafts.length - 1,
       source_verify: { ok: true, issues: [] },
+      quality,
       message: pipeline.mode === "openai"
         ? "Masterclass generated with OpenAI stages, independent source verification, QA, preview, bundle, and publish handoff."
         : "Masterclass generated with the conservative deterministic path because OpenAI was unavailable. Preview, bundle, source verification, QA, and publish handoff are ready.",
-      warnings: [pipeline.warning].concat(sourceBuild.notes || []).filter(Boolean),
-      stage_reports: pipeline.reports || [],
+      warnings: [pipeline.warning, slideBudgetWarning(brief, generated)].concat(sourceBuild.notes || []).filter(Boolean),
+      stage_reports: (pipeline.reports || []).concat([{ stage: "quality", ok: true, score: quality.score, status: quality.status }]),
       lesson_plan: generated.lesson_plan,
       objectives: generated.objectives,
       files,

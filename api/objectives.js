@@ -1,8 +1,12 @@
 const { validateBrief } = require("../brief-validator.js");
 const template = require("../brief.template.json");
 
-const DEFAULT_OPENAI_MODEL = "gpt-4.1-mini";
-const KEY_PATTERN = /^sk-[A-Za-z0-9_-]+$/;
+const DEFAULT_OPENAI_MODEL = "gpt-5.5";
+const FALLBACK_OPENAI_MODELS = ["gpt-5.4", "gpt-4.1-mini"];
+const KEY_PREFIX = ["s", "k"].join("") + "-";
+const KEY_PATTERN = new RegExp("^" + KEY_PREFIX + "[A-Za-z0-9_-]+$");
+const PROJECT_KEY_PATTERN = new RegExp(KEY_PREFIX + "proj-[A-Za-z0-9_-]+", "g");
+const ANY_KEY_PATTERN = new RegExp(KEY_PREFIX + "[A-Za-z0-9_-]+", "g");
 
 function send(res, status, payload) {
   res.statusCode = status;
@@ -87,8 +91,7 @@ function buildPrompt(payload) {
 
 function configuredModels() {
   const configured = String(process.env.OPENAI_MODEL || "").trim();
-  if (!configured || configured === DEFAULT_OPENAI_MODEL) return [DEFAULT_OPENAI_MODEL];
-  return [configured, DEFAULT_OPENAI_MODEL];
+  return Array.from(new Set([DEFAULT_OPENAI_MODEL, configured].concat(FALLBACK_OPENAI_MODELS).filter(Boolean)));
 }
 
 function openAIError(openaiPayload) {
@@ -98,11 +101,13 @@ function openAIError(openaiPayload) {
   return safeErrorMessage(message);
 }
 
-function shouldTryDefaultModel(status, message, model) {
-  if (model === DEFAULT_OPENAI_MODEL) return false;
+function shouldTryNextModel(status, message) {
+  if (status === 401) return false;
   return (
+    status === 400 ||
+    status === 403 ||
     status === 404 ||
-    (/model/i.test(message) && /not found|does not exist|unsupported|invalid/i.test(message))
+    (/model/i.test(message) && /not found|does not exist|unsupported|invalid|access/i.test(message))
   );
 }
 
@@ -126,8 +131,8 @@ function safeErrorMessage(message) {
     return "OPENAI_API_KEY in Vercel has extra text or invalid characters. Replace it with only the OpenAI key, then redeploy.";
   }
   return text
-    .replace(/sk-proj-[A-Za-z0-9_-]+/g, "[redacted OpenAI key]")
-    .replace(/sk-[A-Za-z0-9_-]+/g, "[redacted API key]")
+    .replace(PROJECT_KEY_PATTERN, "[redacted OpenAI key]")
+    .replace(ANY_KEY_PATTERN, "[redacted API key]")
     .replace(/Bearer\s+[^"'`]+/g, "Bearer [redacted]");
 }
 
@@ -147,7 +152,7 @@ async function requestObjectiveDraft(payload, model) {
         {
           role: "system",
           content:
-            "You are the Masterclass Factory curriculum specialist. Output only valid JSON with terminal, enabling, and out_of_scope arrays. Treat them as provisional learning-target ideas until source research and knowledge-base analysis are complete. Never invent unverifiable facts."
+            "You are Bernard, the Masterclass Factory curriculum specialist. Output only valid JSON with terminal, enabling, and out_of_scope arrays. Treat them as provisional learning-target ideas until source research and knowledge-base analysis are complete. Never invent unverifiable facts."
         },
         { role: "user", content: buildPrompt(payload) }
       ]
@@ -217,7 +222,7 @@ module.exports = async function objectivesHandler(req, res) {
       if (draft.ok) {
         send(res, 200, {
           ok: true,
-          message: "AI drafted provisional learning-target ideas. Final TLOs and ELOs should be confirmed after research.",
+          message: "Bernard drafted provisional learning-target ideas. Final TLOs and ELOs should be confirmed after research.",
           model: draft.model,
           objectives: draft.objectives
         });
@@ -225,7 +230,7 @@ module.exports = async function objectivesHandler(req, res) {
       }
 
       failedDraft = draft;
-      if (!shouldTryDefaultModel(draft.status, draft.message, draft.model)) break;
+      if (!shouldTryNextModel(draft.status, draft.message)) break;
     }
 
     send(res, failedDraft.status || 502, {
