@@ -16,17 +16,54 @@
   var generation = null;
   var generatorTrackerTimer = null;
   var generatorTrackerIndex = 0;
+  var generatorFailedIndex = -1;
   var generatorProgress = [];
   var generatorStages = [
-    { label: "Order received", detail: "Validating the class setup and generator contract." },
-    { label: "Knowledge base", detail: "Building the source list and source-quality report." },
-    { label: "Research kitchen", detail: "Bernard is searching, checking source URLs, and rejecting anything unverifiable. This can take a little time on AI-owned research." },
-    { label: "Blueprint check", detail: "Confirming the approved course architecture and slide allocation." },
-    { label: "Lesson recipe", detail: "Sequencing the lesson map, checks, and deep dives." },
-    { label: "Slide oven", detail: "Writing every teaching slide required by the slide budget." },
-    { label: "Source check", detail: "Checking citations against the approved knowledge base." },
-    { label: "QA counter", detail: "Testing schema, quality, participation design, and class shell behavior." },
-    { label: "Out for launch", detail: "Preparing the preview, QR code, presenter script, and GitHub/Vercel handoff." }
+    {
+      label: "Order received",
+      detail: "Validating the class setup and generator contract.",
+      work: ["Check the class setup data", "Confirm the generator contract", "Prepare the run"]
+    },
+    {
+      label: "Knowledge base",
+      detail: "Building the source list and source-quality report.",
+      work: ["Collect uploaded and requested sources", "Measure the selected knowledge-base standard", "Block the run if the source floor is not met"]
+    },
+    {
+      label: "Research kitchen",
+      detail: "Bernard is searching, checking source URLs, and rejecting anything unverifiable. This can take a little time on AI-owned research.",
+      work: ["Search for additional credible sources", "Check candidate source URLs", "Reject unverifiable or weak sources"]
+    },
+    {
+      label: "Blueprint check",
+      detail: "Confirming the approved course architecture and slide allocation.",
+      work: ["Confirm the class tier and slide budget", "Match lesson structure to the learner profile", "Keep the course from being shortened because learners are advanced"]
+    },
+    {
+      label: "Lesson recipe",
+      detail: "Sequencing the lesson map, checks, and deep dives.",
+      work: ["Build the lesson sequence", "Place knowledge checks and participation prompts", "Plan deep dives where the topic needs more depth"]
+    },
+    {
+      label: "Slide oven",
+      detail: "Writing every teaching slide required by the slide budget.",
+      work: ["Write the required slide count", "Fill presenter notes and student-facing content", "Repair thin slides before QA"]
+    },
+    {
+      label: "Source check",
+      detail: "Checking citations against the approved knowledge base.",
+      work: ["Verify slide claims against source sections", "Check the works-cited slide", "Block unsupported claims"]
+    },
+    {
+      label: "QA counter",
+      detail: "Testing schema, quality, participation design, and class shell behavior.",
+      work: ["Run schema checks", "Score class quality and participation design", "Block launch if quality gates fail"]
+    },
+    {
+      label: "Out for launch",
+      detail: "Preparing the preview, QR code, presenter script, and GitHub/Vercel handoff.",
+      work: ["Assemble the preview package", "Prepare QR and class launch links", "Send the generated files toward GitHub and Vercel"]
+    }
   ];
 
   if (!form || !stepTitle || !briefView) return;
@@ -551,9 +588,20 @@
 
   function trackerHtml() {
     var steps = generatorStages.map(function (stage, index) {
-      return "<a class=\"tracker-step\" href=\"#tracker-stage-" + index + "\" id=\"tracker-stage-" + index + "\" data-tracker-step=\"" + index + "\" aria-label=\"Watch progress for " + attr(stage.label) + "\">" +
+      return "<a class=\"tracker-step\" href=\"#tracker-stage-detail-" + index + "\" data-tracker-step=\"" + index + "\" aria-label=\"Watch progress for " + attr(stage.label) + "\">" +
         "<span>" + String(index + 1).padStart(2, "0") + "</span><strong>" + esc(stage.label) + "</strong>" +
         "<em class=\"tracker-odometer\" data-tracker-percent>0%</em><small>Waiting</small></a>";
+    }).join("");
+    var panels = generatorStages.map(function (stage, index) {
+      var work = (stage.work || [stage.detail]).map(function (item) {
+        return "<li>" + esc(item) + "</li>";
+      }).join("");
+      return "<section class=\"tracker-stage-panel\" id=\"tracker-stage-detail-" + index + "\" data-tracker-panel=\"" + index + "\" tabindex=\"-1\">" +
+        "<div class=\"tracker-stage-panel-head\"><div><p>Stage " + String(index + 1).padStart(2, "0") + "</p><h3>" + esc(stage.label) + "</h3></div>" +
+        "<em class=\"tracker-odometer\" data-panel-percent>0%</em></div>" +
+        "<p class=\"tracker-stage-status\" data-panel-status>Waiting</p>" +
+        "<p>" + esc(stage.detail) + "</p>" +
+        "<ul>" + work + "</ul></section>";
     }).join("");
     return "<section class=\"tracker-card\" aria-live=\"polite\">" +
       "<p class=\"kicker\">Masterclass Factory</p>" +
@@ -563,6 +611,7 @@
       "<div class=\"tracker-road\">" + steps + "</div>" +
       "<div class=\"tracker-progress\"><span data-tracker-progress></span></div>" +
       "<p class=\"tracker-small\" data-tracker-small>This stays on screen until the masterclass package is ready. Bernard is coordinating source analysis, lesson writing, source verification, QA, quality scoring, and launch packaging.</p>" +
+      "<div class=\"tracker-stage-panels\" aria-label=\"Generator stage details\">" + panels + "</div>" +
       "<div class=\"tracker-actions\"><button type=\"button\" class=\"ghost\" data-close-tracker>Hide tracker</button></div>" +
       "</section>";
   }
@@ -570,6 +619,7 @@
   function startGeneratorTracker() {
     closeGeneratorTracker();
     generatorTrackerIndex = 0;
+    generatorFailedIndex = -1;
     generatorProgress = generatorStages.map(function () { return 0; });
     var tracker = document.createElement("div");
     tracker.className = "generator-tracker-screen";
@@ -579,9 +629,6 @@
     setGeneratorTrackerStage(0);
     generatorTrackerTimer = window.setInterval(function () {
       tickGeneratorOdometer();
-      if (generatorTrackerIndex < 2) {
-        setGeneratorTrackerStage(generatorTrackerIndex + 1);
-      }
     }, 950);
     return tracker;
   }
@@ -590,9 +637,24 @@
     if (!generatorProgress.length) return;
     var current = generatorProgress[generatorTrackerIndex] || 0;
     if (generatorTrackerIndex < generatorStages.length - 1) {
-      generatorProgress[generatorTrackerIndex] = Math.min(96, current + (current < 60 ? 7 : current < 85 ? 4 : 1));
+      generatorProgress[generatorTrackerIndex] = Math.min(94, current + (current < 45 ? 5 : current < 75 ? 3 : 1));
     }
     updateTrackerOdometers();
+  }
+
+  function markTrackerStagePassed(index) {
+    if (!generatorProgress.length) generatorProgress = generatorStages.map(function () { return 0; });
+    var passed = Math.max(0, Math.min(generatorStages.length - 1, index));
+    generatorProgress[passed] = 100;
+    updateTrackerOdometers();
+  }
+
+  function trackerStatusForStep(stepIndex) {
+    var percent = Math.round(generatorProgress[stepIndex] || 0);
+    if (stepIndex === generatorFailedIndex) return "Blocked";
+    if (percent >= 100) return "Done";
+    if (stepIndex === generatorTrackerIndex) return "In progress";
+    return "Waiting";
   }
 
   function updateTrackerOdometers() {
@@ -600,9 +662,28 @@
     if (!tracker) return;
     Array.from(tracker.querySelectorAll("[data-tracker-step]")).forEach(function (step) {
       var stepIndex = Number(step.getAttribute("data-tracker-step"));
+      var percentValue = Math.round(generatorProgress[stepIndex] || 0);
+      var statusValue = trackerStatusForStep(stepIndex);
       var percent = step.querySelector("[data-tracker-percent]");
-      if (percent) percent.textContent = Math.round(generatorProgress[stepIndex] || 0) + "%";
-      step.setAttribute("aria-valuenow", String(Math.round(generatorProgress[stepIndex] || 0)));
+      if (percent) percent.textContent = percentValue + "%";
+      step.classList.toggle("done", statusValue === "Done");
+      step.classList.toggle("active", stepIndex === generatorTrackerIndex);
+      step.classList.toggle("blocked", statusValue === "Blocked");
+      step.setAttribute("aria-valuenow", String(percentValue));
+      var status = step.querySelector("small");
+      if (status) status.textContent = statusValue;
+    });
+    Array.from(tracker.querySelectorAll("[data-tracker-panel]")).forEach(function (panel) {
+      var panelIndex = Number(panel.getAttribute("data-tracker-panel"));
+      var panelPercentValue = Math.round(generatorProgress[panelIndex] || 0);
+      var panelStatusValue = trackerStatusForStep(panelIndex);
+      var panelPercent = panel.querySelector("[data-panel-percent]");
+      if (panelPercent) panelPercent.textContent = panelPercentValue + "%";
+      panel.classList.toggle("done", panelStatusValue === "Done");
+      panel.classList.toggle("active", panelIndex === generatorTrackerIndex);
+      panel.classList.toggle("blocked", panelStatusValue === "Blocked");
+      var panelStatus = panel.querySelector("[data-panel-status]");
+      if (panelStatus) panelStatus.textContent = panelStatusValue;
     });
     var progress = tracker.querySelector("[data-tracker-progress]");
     if (progress) progress.style.width = Math.round(generatorProgress.reduce(function (sum, value) { return sum + value; }, 0) / generatorStages.length) + "%";
@@ -614,18 +695,7 @@
     if (!tracker) return;
     var active = generatorStages[generatorTrackerIndex];
     if (!generatorProgress.length) generatorProgress = generatorStages.map(function () { return 0; });
-    generatorProgress = generatorProgress.map(function (value, stepIndex) {
-      if (stepIndex < generatorTrackerIndex) return 100;
-      if (stepIndex === generatorTrackerIndex) return Math.max(value || 0, 8);
-      return value || 0;
-    });
-    Array.from(tracker.querySelectorAll("[data-tracker-step]")).forEach(function (step) {
-      var stepIndex = Number(step.getAttribute("data-tracker-step"));
-      step.classList.toggle("done", stepIndex < generatorTrackerIndex);
-      step.classList.toggle("active", stepIndex === generatorTrackerIndex);
-      var status = step.querySelector("small");
-      if (status) status.textContent = stepIndex < generatorTrackerIndex ? "Done" : stepIndex === generatorTrackerIndex ? "In progress" : "Waiting";
-    });
+    generatorProgress[generatorTrackerIndex] = Math.max(generatorProgress[generatorTrackerIndex] || 0, 8);
     var nowStage = tracker.querySelector("[data-tracker-now-stage]");
     if (nowStage) nowStage.textContent = active.label;
     var detailBox = tracker.querySelector("[data-tracker-detail]");
@@ -636,6 +706,7 @@
   function completeGeneratorTracker(payload) {
     if (generatorTrackerTimer) window.clearInterval(generatorTrackerTimer);
     generatorTrackerTimer = null;
+    generatorFailedIndex = -1;
     generatorProgress = generatorStages.map(function () { return 100; });
     setGeneratorTrackerStage(generatorStages.length - 1, "Masterclass generated. QA passed. Launch package is ready.");
     var tracker = document.querySelector("[data-generator-tracker]");
@@ -669,8 +740,9 @@
     generatorTrackerTimer = null;
     var tracker = document.querySelector("[data-generator-tracker]");
     if (!tracker) return;
-    setGeneratorTrackerStage(trackerIndexForFailure(error), "The generator stopped here because this gate did not pass.");
-    generatorProgress[generatorTrackerIndex] = Math.max(generatorProgress[generatorTrackerIndex] || 0, 99);
+    generatorFailedIndex = trackerIndexForFailure(error);
+    setGeneratorTrackerStage(generatorFailedIndex, "The generator stopped here because this gate did not pass.");
+    generatorProgress[generatorTrackerIndex] = Math.min(generatorProgress[generatorTrackerIndex] || 0, 94);
     updateTrackerOdometers();
     tracker.classList.add("failed");
     var detail = tracker.querySelector("[data-tracker-detail]");
@@ -684,6 +756,7 @@
   function closeGeneratorTracker() {
     if (generatorTrackerTimer) window.clearInterval(generatorTrackerTimer);
     generatorTrackerTimer = null;
+    generatorFailedIndex = -1;
     var tracker = document.querySelector("[data-generator-tracker]");
     if (tracker && tracker.parentNode) tracker.parentNode.removeChild(tracker);
   }
@@ -702,6 +775,7 @@
     try {
       setGeneratorTrackerStage(0, "Checking that the setup data matches the contract.");
       await fetch("/api/brief", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(parseBrief()) });
+      markTrackerStagePassed(0);
       setGeneratorTrackerStage(1, "Building the knowledge base and source-quality list.");
       var response = await fetch("/api/generate", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ brief: parseBrief(), publish: true }) });
       var payload = await response.json();
@@ -713,9 +787,17 @@
         failure.source_discovery = payload.source_discovery || null;
         throw failure;
       }
+      markTrackerStagePassed(1);
+      setGeneratorTrackerStage(2, "Knowledge base passed. Research and source-grounded objectives are complete.");
+      markTrackerStagePassed(2);
       setGeneratorTrackerStage(3, "Blueprint passed. Lesson plan, slides, and deep dives were built from the approved knowledge base.");
+      markTrackerStagePassed(3);
+      setGeneratorTrackerStage(4, "Lesson recipe passed. Slide generation and content-depth repair are complete.");
+      markTrackerStagePassed(4);
       setGeneratorTrackerStage(5, "Slides are built. Running citation verification.");
+      markTrackerStagePassed(5);
       setGeneratorTrackerStage(6, "Running source verification and QA.");
+      markTrackerStagePassed(6);
       generation = payload;
       completeGeneratorTracker(payload);
       if (payload.publish && payload.publish.status === "published") {
