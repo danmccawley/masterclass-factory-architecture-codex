@@ -2,7 +2,7 @@
   "use strict";
 
   var steps = [
-    ["create", "Create", "Name the class", "Start with the class title and a short link-friendly name. The required engine version stays fixed in the background."],
+    ["create", "Create", "Name and tier", "Start with the class title, a short link-friendly name, and the class tier that sets the knowledge-base standard."],
     ["knowledge", "Knowledge base", "Sources and research", "Add source files or URLs, then choose how tightly later stages may research around them."],
     ["objectives", "Learning Target", "Draft target", "Capture the class creator's early intent. Final TLOs and ELOs are confirmed only after the knowledge base is researched and analyzed."],
     ["mastery", "Mastery", "Depth and checks", "Set the intended assessment level and how much disagreement or deep-dive material the course should include."],
@@ -71,6 +71,9 @@
         slug: "",
         created: new Date().toISOString(),
         engine_contract: "v-texas"
+      },
+      class_tier: {
+        level: "professional"
       },
       knowledge_base: {
         uploads: [],
@@ -212,8 +215,44 @@
     return grid(
       inputField("Class title", "meta.title", "Example: AI Strategy for Healthcare Leaders") +
       inputField("Short link name", "meta.slug", "ai-strategy-healthcare-leaders") +
-      inputField("Created", "meta.created", "", "datetime-local")
+      inputField("Created", "meta.created", "", "datetime-local") +
+      classTierPlanner()
     );
+  }
+
+  function classTierPlanner() {
+    return card("Class tier and knowledge-base standard",
+      "<p class=\"hint\">Choose the quality bar before research starts. The selected tier controls the minimum source floor, primary-source expectation, and minimum slide depth.</p>" +
+      "<div class=\"mode-grid class-tier-grid\">" + classTierOptions().map(function (tier) {
+        var selected = brief.class_tier.level === tier.id;
+        return "<label class=\"mode-card tier-card\"><input type=\"radio\" name=\"classTier\" data-class-tier-level value=\"" + attr(tier.id) + "\"" +
+          (selected ? " checked" : "") + "> <span><strong>" + esc(tier.label) + "</strong><small>" + esc(tier.description) + "</small></span></label>";
+      }).join("") + "</div>" +
+      classTierSummary(),
+      "full class-tier-planner");
+  }
+
+  function classTierOptions() {
+    return [
+      { id: "briefing", label: "Quick briefing", sources: 4, primary: 1, slides: 30, description: "Short, source-aware orientation. Useful for overviews, not full mastery." },
+      { id: "standard", label: "Standard class", sources: 8, primary: 2, slides: 40, description: "Solid internal training with enough evidence for reliable instruction." },
+      { id: "professional", label: "Professional masterclass", sources: 12, primary: 3, slides: 60, description: "Default quality bar. Built for serious workplace learning and strong source discipline." },
+      { id: "expert", label: "Expert / safety-critical", sources: 18, primary: 5, slides: 90, description: "Highest bar for technical, safety, compliance, infrastructure, or high-risk classes." }
+    ];
+  }
+
+  function classTier() {
+    var selected = brief.class_tier && brief.class_tier.level;
+    return classTierOptions().find(function (tier) { return tier.id === selected; }) || classTierOptions()[2];
+  }
+
+  function classTierSummary() {
+    var tier = classTier();
+    return "<div class=\"standard-grid tier-standard-grid\">" +
+      standardStat("Source floor", tier.sources + " usable sources") +
+      standardStat("Primary-source floor", tier.primary + " primary sources") +
+      standardStat("Minimum depth", tier.slides + " slides") +
+      "</div>";
   }
 
   function knowledgeStep() {
@@ -227,6 +266,7 @@
       sourceTrustSelect("secondary", "data-new-source-trust") +
       "<button type=\"button\" class=\"primary\" data-add-source>Add</button></div>" +
       sourceRows() + "</div>" +
+      knowledgeStandardCard() +
       sourceCompositionCard() +
       grid(
         selectField("Research mode", "knowledge_base.research.mode", [
@@ -439,6 +479,33 @@
       "full kb-composition-card");
   }
 
+  function knowledgeStandardCard() {
+    var tier = classTier();
+    var uploads = brief.knowledge_base.uploads || [];
+    var total = uploads.length;
+    var primary = uploads.filter(function (source) { return source.trust === "primary"; }).length;
+    var sourceOk = total >= tier.sources;
+    var primaryOk = primary >= tier.primary;
+    var status = sourceOk && primaryOk ? "Meets selected standard" : "Needs more knowledge-base work";
+    var missing = [];
+    if (!sourceOk) missing.push((tier.sources - total) + " more usable source" + (tier.sources - total === 1 ? "" : "s"));
+    if (!primaryOk) missing.push((tier.primary - primary) + " more primary source" + (tier.primary - primary === 1 ? "" : "s"));
+    return card("Knowledge-base standard check",
+      "<div class=\"standard-status " + (sourceOk && primaryOk ? "ok" : "warn") + "\"><strong>" + esc(status) + "</strong><span>" +
+      esc(missing.length ? "Add " + missing.join(" and ") + " before treating this as generator-ready." : "The listed sources meet the selected class tier floor.") + "</span></div>" +
+      "<div class=\"standard-grid\">" +
+      standardStat("Selected tier", tier.label) +
+      standardStat("Sources listed", total + " / " + tier.sources) +
+      standardStat("Primary sources", primary + " / " + tier.primary) +
+      standardStat("Slide floor", tier.slides + "+") +
+      "</div>",
+      "full kb-standard-card");
+  }
+
+  function standardStat(label, value) {
+    return "<div class=\"standard-stat\"><span>" + esc(label) + "</span><strong>" + esc(value) + "</strong></div>";
+  }
+
   function sourceCompositionList() {
     if (!brief.knowledge_base.uploads.length) {
       return "<div class=\"kb-empty\">Add at least one source so the class maker can build a works cited list and information-literacy report.</div>";
@@ -588,6 +655,12 @@
       render();
       return;
     }
+    if (target.dataset.classTierLevel !== undefined) {
+      brief.class_tier.level = target.value;
+      syncOutput();
+      render();
+      return;
+    }
     if (target.dataset.studentLanguage !== undefined) {
       state.studentLanguage = target.value;
       applyLanguagePreference();
@@ -719,6 +792,11 @@
     var warnings = [];
     if (!brief.meta.title.trim()) warnings.push("Add a class title.");
     if (!brief.knowledge_base.uploads.length && brief.knowledge_base.research.mode === "none") warnings.push("Research mode is uploads-only, but no sources are listed.");
+    var tier = classTier();
+    var primaryCount = brief.knowledge_base.uploads.filter(function (source) { return source.trust === "primary"; }).length;
+    if (brief.knowledge_base.uploads.length < tier.sources || primaryCount < tier.primary) {
+      warnings.push("Knowledge base does not yet meet the " + tier.label + " standard: " + tier.sources + " usable sources and " + tier.primary + " primary sources are required.");
+    }
     if (!brief.objectives.terminal.length) warnings.push("Add an initial learning target if the creator already knows one.");
     if (!brief.objectives.enabling.length) warnings.push("Initial enabling skills are optional now; final ELOs should be produced after knowledge-base analysis.");
     if (!brief.audience.floor.background.trim()) warnings.push("Describe the floor learner's background.");

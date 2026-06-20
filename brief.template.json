@@ -1,5 +1,6 @@
 {
   "meta": { "title": "", "slug": "", "created": "", "engine_contract": "v-texas" },
+  "class_tier": { "level": "professional" },
   "knowledge_base": {
     "uploads": [],
     "research": { "mode": "grounded", "seed_prompts": [], "allow_web": true, "recency_floor": "2024-01-01" },

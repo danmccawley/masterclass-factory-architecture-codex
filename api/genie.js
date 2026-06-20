@@ -79,6 +79,7 @@ function openAIError(openaiPayload) {
 function trimBrief(brief) {
   return {
     title: brief && brief.meta && brief.meta.title,
+    class_tier: brief && brief.class_tier,
     sources: brief && brief.knowledge_base && brief.knowledge_base.uploads,
     research: brief && brief.knowledge_base && brief.knowledge_base.research,
     credibility: brief && brief.knowledge_base && brief.knowledge_base.credibility,
@@ -100,6 +101,7 @@ function buildPrompt(body) {
     rules: [
       "You are Bernard, a plain-language assistant for nontechnical class creators.",
       "Use only the provided class setup. Do not invent sources, dates, URLs, statistics, or claims.",
+      "Treat the selected class tier as the knowledge-base standard. If the source list is thin for that tier, say exactly what is missing.",
       "Terminal and enabling learning objectives should come after knowledge-base research and analysis.",
       "If asked for final objectives before the knowledge base is ready, frame them as candidates that need verification.",
       "If recommending length, choose minutes and slide_budget in increments of 10.",

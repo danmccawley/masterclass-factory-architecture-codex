@@ -69,6 +69,17 @@ Knowledge Base analysis is where terminal and enabling learning objective candid
 prepared. Step 03 reviews and approves them. Final TLOs and ELOs must be produced after the
 knowledge base has been researched, analyzed, and matched to the learner profile.
 
+The builder now has selectable class tiers. The Create step lets the class maker choose Quick
+briefing, Standard class, Professional masterclass, or Expert / safety-critical masterclass.
+The selected tier is stored in the exact setup contract as `class_tier.level`; Professional
+masterclass is the default quality bar.
+
+The selected class tier controls the Knowledge Base Standard. The Knowledge Base step shows the
+required usable-source floor and primary-source floor, and `/api/generate` enforces that gate before
+returning `QA PASS`. Generated classes also show the selected tier, required source floor, current
+source counts, and source-quality findings on the final Knowledge Base / Works Cited slide and in
+the presenter script.
+
 Technical learner background must never be used as a reason to shorten a class. If learners are
 technical, experienced, or familiar with the subject, Bernard and the generator should add more
 depth, edge cases, source analysis, practice, transfer, and advanced examples while still respecting

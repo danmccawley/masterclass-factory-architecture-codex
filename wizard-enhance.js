@@ -404,7 +404,7 @@
   }
 
   function fallbackAnswer(type) {
-    if (type === "knowledge-check") return "Build the knowledge base first: add sources, set research rules, then use analysis to draft objective candidates. Final objectives should not be treated as finished until the corpus is verified.";
+    if (type === "knowledge-check") return "Build the knowledge base first: choose the class tier, add enough sources to meet that tier's source floor, set research rules, then use analysis to draft objective candidates. Final objectives should not be treated as finished until the corpus is verified.";
     if (type === "check-step") return "This step is safe to continue when the required fields are clear, the source assumptions are explicit, and the setup check says it is ready.";
     if (type === "recommend-length") return lengthText(fallbackRecommendation());
     return "Bernard can guide this step even before the API key is connected. For final AI assistance, make sure OPENAI_API_KEY is set in Vercel and redeployed.";
@@ -473,6 +473,7 @@
     var files = generation.files || {};
     var publish = generation.publish || {};
     var quality = generation.quality || {};
+    var standard = generation.knowledge_standard || quality.knowledge_standard || {};
     var classUrl = publish.status === "published" ? (generation.class_url || publish.expected_url || "") : "";
     var slideCount = Number(generation.slide_count || 0);
     var requestedSlides = Number(generation.requested_slide_budget || 0);
@@ -480,6 +481,7 @@
     var deepDiveText = Number(generation.deep_dive_count || 0) + " / " + Number(generation.required_deep_dive_count || 0) + " required";
     var densityText = Number(generation.average_visible_slide_words || 0) + " words/slide; " + Number(generation.average_deep_dive_words || 0) + " words/deep dive";
     var qualityText = quality.score ? quality.score + " / 100 (" + (quality.status || "checked") + ")" : "Not run";
+    var standardText = standard.tier ? (standard.tier.label + " · " + (standard.ok ? "KB PASS" : "KB needs work")) : "Not checked";
     var stages = (generation.stage_reports || []).map(function (stage) {
       return "<li><strong>" + esc(stage.stage || "stage") + ":</strong> " + (stage.ok ? "passed" : esc(stage.message || "used fallback")) + "</li>";
     }).join("");
@@ -495,7 +497,7 @@
       publishNotice = "<div class=\"notice warn\"><strong>Generated, publish failed:</strong> " + esc(publish.message || "GitHub publish failed.") + "</div>";
     }
     return "<h3>Generated masterclass</h3>" +
-      "<div class=\"generator-status\"><div class=\"notice\"><strong>QA:</strong> " + esc(generation.qa || "Not run") + " · <strong>Source check:</strong> " + (generation.source_verify && generation.source_verify.ok ? "PASS" : "Not run") + " · <strong>Quality:</strong> " + esc(qualityText) + " · <strong>Slides:</strong> " + esc(slideText) + " · <strong>Deep dives:</strong> " + esc(deepDiveText) + " · <strong>Depth:</strong> " + esc(densityText) + " · <strong>Mode:</strong> " + esc(generation.mode || "unknown") + "</div>" +
+      "<div class=\"generator-status\"><div class=\"notice\"><strong>QA:</strong> " + esc(generation.qa || "Not run") + " · <strong>Knowledge standard:</strong> " + esc(standardText) + " · <strong>Source check:</strong> " + (generation.source_verify && generation.source_verify.ok ? "PASS" : "Not run") + " · <strong>Quality:</strong> " + esc(qualityText) + " · <strong>Slides:</strong> " + esc(slideText) + " · <strong>Deep dives:</strong> " + esc(deepDiveText) + " · <strong>Depth:</strong> " + esc(densityText) + " · <strong>Mode:</strong> " + esc(generation.mode || "unknown") + "</div>" +
       publishNotice +
       (classUrl ? "<div class=\"class-url-card\"><span class=\"mini-label\">Generated class URL</span><a href=\"" + attr(classUrl) + "\" target=\"_blank\" rel=\"noreferrer\">" + esc(classUrl) + "</a><img class=\"qr-image\" alt=\"QR code for generated class\" src=\"/api/qr?url=" + encodeURIComponent(classUrl) + "\"><button type=\"button\" class=\"ghost\" data-copy-class-url>Copy class link</button></div>" : "") +
       "<div class=\"generated-actions\"><button type=\"button\" class=\"primary\" data-open-preview>Open preview</button><button type=\"button\" class=\"ghost\" data-download-preview>Download preview HTML</button><button type=\"button\" class=\"ghost\" data-download-bundle>Download deploy bundle</button><button type=\"button\" class=\"ghost\" data-download-script>Download presenter script</button></div>" +

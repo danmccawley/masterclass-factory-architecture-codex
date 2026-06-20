@@ -638,6 +638,64 @@ pre {
   line-height: 1.35;
 }
 
+.class-tier-grid .mode-card {
+  min-height: 136px;
+}
+
+.standard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+  gap: 10px;
+}
+
+.tier-standard-grid {
+  margin-top: 12px;
+}
+
+.standard-stat {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid rgba(29, 159, 194, 0.2);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 253, 247, 0.66);
+}
+
+.standard-stat span {
+  color: var(--ink-soft);
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.standard-stat strong {
+  overflow-wrap: anywhere;
+}
+
+.standard-status {
+  display: grid;
+  gap: 4px;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(29, 159, 194, 0.2);
+  background: rgba(223, 244, 248, 0.44);
+  color: var(--water-deep);
+}
+
+.standard-status.warn {
+  border-color: rgba(154, 92, 69, 0.2);
+  background: rgba(154, 92, 69, 0.12);
+  color: var(--clay);
+}
+
+.standard-status span {
+  color: inherit;
+  line-height: 1.45;
+}
+
 .wizard-nav,
 .drawer-actions,
 .review-actions,

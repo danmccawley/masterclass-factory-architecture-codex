@@ -11,6 +11,7 @@
 
   var DEFAULT_TEMPLATE = {
     meta: { title: "", slug: "", created: "", engine_contract: "v-texas" },
+    class_tier: { level: "professional" },
     knowledge_base: {
       uploads: [],
       research: {
@@ -73,6 +74,7 @@
 
   var ENUMS = {
     "meta.engine_contract": ["v-texas"],
+    "class_tier.level": ["briefing", "standard", "professional", "expert"],
     "knowledge_base.research.mode": ["none", "grounded", "collaborative"],
     "knowledge_base.credibility.min_tier": ["primary", "secondary", "unknown"],
     "mastery.granularity": ["survey", "working", "deep"],
