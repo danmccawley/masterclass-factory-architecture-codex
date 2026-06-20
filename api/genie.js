@@ -43,7 +43,9 @@ function openAIKey() {
 
 function validateOpenAIKey(key) {
   if (!key) return "AI assistance is not connected. Set OPENAI_API_KEY in Vercel, then redeploy.";
-  if (!KEY_PATTERN.test(key)) return "OPENAI_API_KEY in Vercel has extra text or is malformed. Replace it with only the OpenAI key, then redeploy.";
+  if (!key.startsWith(KEY_PREFIX)) return "OPENAI_API_KEY does not look like an OpenAI key (should start with 'sk-'). Replace it with only the key, then redeploy.";
+  if (/\s/.test(key)) return "OPENAI_API_KEY has spaces or line breaks in it. Paste only the key, then redeploy.";
+  if (key.length < 20) return "OPENAI_API_KEY looks too short. Re-copy the full key, then redeploy.";
   return "";
 }
 

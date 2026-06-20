@@ -2,6 +2,9 @@
   "name": "masterclass-factory",
   "private": true,
   "type": "commonjs",
+  "scripts": {
+    "test": "node test/harness.js"
+  },
   "dependencies": {
     "qrcode": "1.5.4"
   }

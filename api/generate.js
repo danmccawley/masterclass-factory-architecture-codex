@@ -413,7 +413,10 @@ async function fetchUrlText(url) {
 
 function configuredSearchModels() {
   const configured = String(process.env.OPENAI_SEARCH_MODEL || "").trim();
-  return Array.from(new Set([configured, DEFAULT_OPENAI_SEARCH_MODEL].filter(Boolean)));
+  // Try the dedicated search model first if configured/available, then fall back
+  // to the regular models so web research never hard-fails just because the
+  // special search model name isn't enabled on this account.
+  return Array.from(new Set([configured, DEFAULT_OPENAI_SEARCH_MODEL, DEFAULT_OPENAI_MODEL].concat(FALLBACK_OPENAI_MODELS).filter(Boolean)));
 }
 
 function responsesOutputText(payload) {
@@ -1071,7 +1074,14 @@ function openAIKey() {
 
 function validateOpenAIKey(key) {
   if (!key) return "OPENAI_API_KEY is not set, so the generator used the conservative deterministic path.";
-  if (!KEY_PATTERN.test(key)) return "OPENAI_API_KEY has extra text or invalid characters. Replace it with only the OpenAI key, then redeploy.";
+  // Accept any current OpenAI key shape: must start with "sk-", be reasonably
+  // long, and contain no whitespace. We deliberately do NOT restrict the body to
+  // a narrow character class — newer keys (sk-proj-..., service keys, etc.) use a
+  // wider alphabet, and an over-strict pattern was rejecting valid keys and
+  // forcing the deterministic/no-research path.
+  if (!key.startsWith(KEY_PREFIX)) return "OPENAI_API_KEY does not look like an OpenAI key (it should start with 'sk-'). Replace it with only the key, then redeploy.";
+  if (/\s/.test(key)) return "OPENAI_API_KEY has spaces or line breaks in it. Paste only the key with no surrounding quotes or spaces, then redeploy.";
+  if (key.length < 20) return "OPENAI_API_KEY looks too short to be valid. Re-copy the full key, then redeploy.";
   return "";
 }
 
@@ -3074,5 +3084,29 @@ module.exports._internal = {
   researchOwner,
   readBody,
   send,
-  safeErrorMessage
+  safeErrorMessage,
+  // exported for the test harness so tests run the REAL implementations,
+  // never hand-copied mirrors:
+  validateOpenAIKey,
+  classTierKey,
+  classTierSpec,
+  slugify,
+  isUrl,
+  isPrivateAddress,
+  assertFetchableUrl,
+  highestMetTier,
+  assessSourceScarcity,
+  buildChangeOrder,
+  clampInteger,
+  wordCount,
+  stripHtml,
+  paragraphs,
+  html,
+  attr,
+  text,
+  list,
+  configuredModels,
+  configuredSearchModels,
+  CLASS_TIERS,
+  KEY_PREFIX
 };
