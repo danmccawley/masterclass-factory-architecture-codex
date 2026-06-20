@@ -9,7 +9,7 @@ HTML/CSS/JS with Vercel serverless functions under `api/`.
 - `brief.template.json` — the Course Brief intake contract (fill this per deck; everything downstream reads it).
 - `index.html`, `styles.css`, `wizard.js`, `brief-validator.js` — Milestone 1 Class Creator wizard. It emits a human-friendly class setup file while keeping the hidden `brief.json` contract valid.
 - `api/brief.js` — Vercel serverless validator for posted setup payloads.
-- `api/genie.js` — OpenAI-only always-on Genie helper for step guidance and length recommendations.
+- `api/genie.js` — OpenAI-only always-on Bernard helper for step guidance and length recommendations.
 - `api/objectives.js` — OpenAI-only objective drafting endpoint for terminal, enabling, and out-of-scope learning targets.
 - `api/generate.js` — full generator endpoint. It validates the setup, builds a source paper,
   runs OpenAI specialist stages when the API key is present, falls back to a conservative
@@ -33,16 +33,16 @@ The deployed Vercel app runs the full serverless path. In the Class Creator, use
 - Download presenter script
 - GitHub/Vercel class URL after auto-publish is configured
 
-All AI uses OpenAI only. Genie, objective drafting, deck generation, tutor chat, grading, and TTS use
+All AI uses OpenAI only. Bernard, objective drafting, deck generation, tutor chat, grading, and TTS use
 these Vercel environment variables:
 
 ```bash
 OPENAI_API_KEY=your OpenAI API key
-OPENAI_MODEL=gpt-4.1-mini # optional
+OPENAI_MODEL=gpt-5.5 # optional; GPT-5.5 is already the built-in default
 ```
 
-If `OPENAI_MODEL` is not set, the app uses `gpt-4.1-mini`. If the configured model is unavailable to
-the API key, the endpoints try `gpt-4.1-mini` before returning the exact OpenAI error. If
+If `OPENAI_MODEL` is not set, the app tries `gpt-5.5` first. If that model is unavailable to
+the API key, the endpoints fall back through `gpt-5.4` and `gpt-4.1-mini` before returning the exact OpenAI error. If
 `OPENAI_API_KEY` is missing or malformed, the wizard still works manually and the generator returns a
 conservative source-honest draft instead of blocking the user.
 

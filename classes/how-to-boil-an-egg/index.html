@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>how to boil an egg</title>
-<meta name="description" content="how to boil an egg for mixed" />
+<meta name="description" content="how to boil an egg for learners" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -608,6 +608,25 @@
   #srcpaper .src-meta{font-family:var(--mono);font-size:12.5px;color:#7a6f56;border-bottom:1px solid var(--paper-line);padding-bottom:16px;margin-bottom:24px;}
   .src-sec{scroll-margin-top:40px;border-radius:8px;padding:6px 12px;margin:0 -12px;transition:background .4s;}
   .src-sec.src-hl{background:rgba(70,200,192,.14);}
+  /* ---- end-of-class knowledge base report ---- */
+  .source-report .lede{max-width:74ch;}
+  .source-report-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:22px 0;}
+  .source-report-card{display:grid;gap:8px;min-width:0;background:linear-gradient(160deg,var(--card),var(--card2));
+    border:1px solid var(--line);border-radius:12px;padding:15px 16px;}
+  .source-report-head{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:start;}
+  .source-report-head > span{display:inline-grid;place-items:center;min-width:28px;height:28px;border-radius:999px;
+    border:1px solid rgba(230,160,66,.5);color:var(--amber);font-family:var(--mono);font-size:11px;}
+  .source-report-head h3{margin:0;font-family:var(--serif);font-size:18px;line-height:1.2;color:var(--ink);overflow-wrap:anywhere;}
+  .source-report-head a{color:var(--ink);text-decoration-color:rgba(70,200,192,.55);text-underline-offset:3px;}
+  .source-report-card p{font-size:13.5px;line-height:1.5;color:var(--dim);}
+  .source-report-card strong{color:var(--ink);}
+  .source-rubric{margin-top:10px;padding:15px 18px;border:1px solid rgba(230,160,66,.35);border-radius:12px;
+    background:rgba(230,160,66,.08);color:var(--dim);}
+  .source-rubric summary{cursor:pointer;color:var(--amber);font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;}
+  .source-rubric ol{margin:12px 0 0 20px;}
+  .source-rubric li{font-size:13.5px;line-height:1.5;margin-bottom:8px;}
+  .source-rubric strong{color:var(--ink);}
+  .source-suggest-btn{margin-top:14px;}
   /* ---- interactive tile + detail popup ---- */
   .tile-interactive{cursor:pointer;position:relative;transition:transform .14s,border-color .2s,box-shadow .2s;}
   .tile-interactive:hover{transform:translateY(-2px);border-color:rgba(70,200,192,.55);box-shadow:0 10px 30px -14px rgba(0,0,0,.7),0 0 22px -10px rgba(70,200,192,.5);}
@@ -650,7 +669,7 @@
   #scrollcue .sc-label{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);opacity:.8;}
   @keyframes scuebob{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(5px);}}
   @media (max-width:600px){ #scrollcue{bottom:54px;} }
-  /* ---- select-any-text -> Ask AI menu ---- */
+  /* ---- select-any-text -> Ask Bernard menu ---- */
   #selAsk{position:fixed;z-index:62;background:linear-gradient(160deg,#0d1117,#0a0d12);border:1px solid rgba(70,200,192,.5);
     border-radius:12px;padding:10px 11px;box-shadow:0 18px 54px -14px rgba(0,0,0,.85),0 0 28px -12px rgba(70,200,192,.5);
     opacity:0;visibility:hidden;transform:translateY(5px);transition:opacity .15s,transform .15s,visibility .15s;max-width:300px;}
@@ -663,6 +682,32 @@
   #selAsk .sel-opt:hover{background:rgba(70,200,192,.27);}
   #selAsk .sel-opt:active{transform:scale(.97);}
   @media (max-width:600px){ #selAsk .sel-opts{grid-template-columns:1fr 1fr;} #selAsk{max-width:84vw;} }
+  @media (max-width:760px){.source-report-list{grid-template-columns:1fr;}}
+
+  /* final mobile control pass: keep tools, nav, listen bar, and modals from overlapping */
+  @media (max-width:600px){
+    .slide{padding:76px 5vw 92px;}
+    #tools{top:8px;right:8px;left:8px;bottom:auto;flex-direction:row;align-items:flex-start;justify-content:flex-end;pointer-events:none;}
+    #tools .toolbtn{pointer-events:auto;white-space:normal;}
+    #tools .tools-toggle{flex:0 0 auto;}
+    #tools .tools-items{width:min(360px,calc(100vw - 16px));align-items:stretch;}
+    #tools.open .tools-items{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;}
+    #tools.open{align-items:start;}
+    #tools button,#tools .toolbtn{min-height:38px;font-size:10.5px;padding:8px 9px;}
+    #nav{bottom:0;height:58px;padding:0 10px calc(env(safe-area-inset-bottom));background:linear-gradient(to top,rgba(8,10,14,.96),rgba(8,10,14,.6));}
+    #nav button{width:40px;height:40px;}
+    .progress{margin:0 10px;}
+    #scrollcue{bottom:64px;}
+    #listenBar{left:8px;right:8px;bottom:66px;max-width:none;transform:translateY(18px);gap:8px;}
+    #listenBar.on{transform:translateY(0);}
+    #listenBar .lb-btns{gap:6px;}
+    .lb-btn{padding:8px 9px;}
+    .modal{align-items:flex-start;justify-content:center;padding:70px 10px 72px;}
+    .panel{width:100%;max-height:calc(100dvh - 148px);padding:18px;border-radius:14px;}
+    .chat-inrow{display:grid;grid-template-columns:minmax(0,1fr) auto;}
+    .source-report-head{grid-template-columns:auto minmax(0,1fr);}
+    .source-report-head .cite{grid-column:1 / -1;justify-self:start;}
+  }
   @media (prefers-reduced-motion: reduce){ body::before{opacity:.4;} }
 </style>
 </head>
@@ -676,7 +721,7 @@
     <button class="toolbtn" onclick="openListen()" id="listenToolBtn">▶ Listen</button>
     <button class="toolbtn" onclick="openLevel()" id="levelBtn">◎ Level</button>
     <button class="toolbtn" onclick="openFeedback()" id="fbToolBtn">✎ Feedback</button>
-    <button class="toolbtn" data-modal="chat">✦ Ask AI</button>
+    <button class="toolbtn" data-modal="chat">✦ Ask Bernard</button>
   </div>
 </div>
 
@@ -684,15 +729,15 @@
   <span id="listenStatus">Starting…</span>
   <div class="lb-btns">
     <button id="lbPlay" class="lb-btn" onclick="listenPlayPause()" title="Play / pause">⏸</button>
-    <button id="lbAsk" class="lb-btn lb-ask" onclick="listenAsk()" title="Ask a question out loud">🎤 Ask</button>
+    <button id="lbAsk" class="lb-btn lb-ask" onclick="listenAsk()" title="Ask Bernard out loud">🎤 Ask Bernard</button>
     <button id="lbStop" class="lb-btn" onclick="listenStop()" title="Stop listening">⏹</button>
   </div>
 </div>
 
 <div id="scrollcue" aria-hidden="true"><span class="sc-arrow">⌄</span><span class="sc-label">more below</span></div>
 
-<div id="selAsk" role="menu" aria-label="Ask AI about the selected text">
-  <div class="sel-head">Ask AI about “<span id="selAskText"></span>”</div>
+<div id="selAsk" role="menu" aria-label="Ask Bernard about the selected text">
+  <div class="sel-head">Ask Bernard about “<span id="selAskText"></span>”</div>
   <div class="sel-opts">
     <button class="sel-opt" data-kind="definition">📖 Definition</button>
     <button class="sel-opt" data-kind="context">🧭 Context</button>
@@ -770,11 +815,11 @@
 <!-- CHAT MODAL -->
 <div class="modal" id="chatModal">
   <div class="panel">
-    <h3>Ask the AI tutor</h3>
-    <div class="desc">Scoped to this class — how to boil an egg for mixed</div>
+    <h3>Ask Bernard</h3>
+    <div class="desc">Bernard is the conversational AI layer for this class. Click Ask Bernard, or say “Bernard” while Listen mode is active, and he will help in clear English with an English-accent voice when your browser supports it. Scoped to this class — how to boil an egg for learners</div>
     <div class="chatlog" id="chatlog"></div>
     <div class="chat-inrow">
-      <input class="chatin" id="chatIn" placeholder="Ask a question, or use the mic…" />
+      <input class="chatin" id="chatIn" placeholder="Ask Bernard a question, or use the mic…" />
       <button class="btn chat-mic" id="chatMic" onclick="toggleChatDictation()" title="Speak your question">🎤</button>
     </div>
     <span class="muted" id="chatMicState"></span>

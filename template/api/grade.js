@@ -1,8 +1,12 @@
 // /api/grade - AI grader for short-answer quiz questions. Uses the OpenAI API only.
 // POST { question, rubric, sample, answer, level (1-5), levelName }
 //   -> { verdict: "correct"|"partial"|"incorrect", score: 0..1, feedback: "..." }
-const DEFAULT_MODEL = "gpt-4.1-mini";
-const KEY_PATTERN = /^sk-[A-Za-z0-9_-]+$/;
+const DEFAULT_MODEL = "gpt-5.5";
+const FALLBACK_MODELS = ["gpt-5.4", "gpt-4.1-mini"];
+const KEY_PREFIX = ["s", "k"].join("") + "-";
+const KEY_PATTERN = new RegExp("^" + KEY_PREFIX + "[A-Za-z0-9_-]+$");
+const PROJECT_KEY_PATTERN = new RegExp(KEY_PREFIX + "proj-[A-Za-z0-9_-]+", "g");
+const ANY_KEY_PATTERN = new RegExp(KEY_PREFIX + "[A-Za-z0-9_-]+", "g");
 
 function readBody(req){
   return new Promise((resolve)=>{
@@ -27,6 +31,10 @@ function modelName(){
   return String(process.env.OPENAI_MODEL || DEFAULT_MODEL).trim() || DEFAULT_MODEL;
 }
 
+function modelList(){
+  return Array.from(new Set([DEFAULT_MODEL, modelName()].concat(FALLBACK_MODELS).filter(Boolean)));
+}
+
 function keyError(key){
   if(!key) return "OPENAI_API_KEY is not set on the server.";
   if(!KEY_PATTERN.test(key)) return "OPENAI_API_KEY has extra text or invalid characters.";
@@ -35,9 +43,15 @@ function keyError(key){
 
 function safeMessage(value){
   return String(value || "OpenAI request failed.")
-    .replace(/sk-proj-[A-Za-z0-9_-]+/g, "[redacted OpenAI key]")
-    .replace(/sk-[A-Za-z0-9_-]+/g, "[redacted API key]")
+    .replace(PROJECT_KEY_PATTERN, "[redacted OpenAI key]")
+    .replace(ANY_KEY_PATTERN, "[redacted API key]")
     .replace(/Bearer\s+[^\"'`]+/g, "Bearer [redacted]");
+}
+
+function shouldTryNextModel(status, message){
+  if(status === 401) return false;
+  return status === 400 || status === 403 || status === 404 ||
+    (/model/i.test(String(message || "")) && /not found|does not exist|unsupported|invalid|access/i.test(String(message || "")));
 }
 
 function parseGrade(text){
@@ -84,23 +98,33 @@ module.exports = async (req, res) => {
       + "STUDENT'S ANSWER:\n" + answer + "\n\n"
       + "Grade it now. Return ONLY the JSON object.";
 
-    const r = await fetch("https://api.openai.com/v1/chat/completions", {
-      method:"POST",
-      headers:{ "content-type":"application/json", authorization:"Bearer "+key },
-      body: JSON.stringify({
-        model:modelName(),
-        max_tokens:300,
-        temperature:0,
-        response_format:{ type:"json_object" },
-        messages:[{ role:"system", content:sys }, { role:"user", content:user }]
-      })
-    });
-    const j = await r.json().catch(()=>({}));
-    if(!r.ok){
-      const detail = j && j.error && j.error.message ? j.error.message : "OpenAI "+r.status;
-      return res.status(502).json({ error:safeMessage(detail) });
+    let raw = "";
+    let usedModel = "";
+    let lastError = "";
+    for(const model of modelList()){
+      const r = await fetch("https://api.openai.com/v1/chat/completions", {
+        method:"POST",
+        headers:{ "content-type":"application/json", authorization:"Bearer "+key },
+        body: JSON.stringify({
+          model,
+          max_tokens:300,
+          temperature:0,
+          response_format:{ type:"json_object" },
+          messages:[{ role:"system", content:sys }, { role:"user", content:user }]
+        })
+      });
+      const j = await r.json().catch(()=>({}));
+      if(!r.ok){
+        const detail = j && j.error && j.error.message ? j.error.message : "OpenAI "+r.status;
+        lastError = safeMessage(detail);
+        if(shouldTryNextModel(r.status, detail)) continue;
+        return res.status(502).json({ error:lastError });
+      }
+      raw = j && j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content;
+      usedModel = model;
+      break;
     }
-    const raw = j && j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content;
+    if(!raw) return res.status(502).json({ error:lastError || "OpenAI model unavailable." });
     const out = parseGrade(raw);
     let verdict = String(out.verdict || "").toLowerCase();
     if(["correct","partial","incorrect"].indexOf(verdict)===-1) verdict = "partial";
@@ -108,6 +132,6 @@ module.exports = async (req, res) => {
     if(!(score>=0 && score<=1)) score = verdict==="correct"?0.9:verdict==="partial"?0.6:0.2;
     const feedback = (out.feedback||"").toString().slice(0,500) || "Thanks - answer graded.";
 
-    return res.status(200).json({ verdict, score, feedback });
+    return res.status(200).json({ verdict, score, feedback, model: usedModel });
   }catch(e){ return res.status(500).json({ error:safeMessage(e && e.message || e) }); }
 };

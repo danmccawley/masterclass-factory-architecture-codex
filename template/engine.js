@@ -18,6 +18,16 @@
   var counter = document.getElementById("counter");
   var idx = 0;
 
+  function setDeviceClass(){
+    var width = window.innerWidth || document.documentElement.clientWidth || 0;
+    var touch = ("ontouchstart" in window) || (navigator.maxTouchPoints > 0);
+    var device = width <= 600 ? "phone" : width <= 1180 ? "tablet" : "desktop";
+    document.documentElement.setAttribute("data-device", device);
+    document.documentElement.classList.toggle("touch-device", !!touch);
+  }
+  setDeviceClass();
+  window.addEventListener("resize", setDeviceClass, { passive:true });
+
   /* ---------- POLL / WORD definitions (deck-defined in content.js) ---------- */
   var POLLS = window.POLLS || {};
   var WORDS = window.WORDS || {};
@@ -368,7 +378,7 @@
         if(frac>0)     return { verdict:"partial", score:0.5, feedback:"You're on the right track but missed some key points. (Graded offline.)" };
         return { verdict:"incorrect", score:0, feedback:"That misses the main idea — check the strong answer below. (Graded offline.)" };
       }
-      return { verdict:"partial", score:0.6, feedback:"Answer recorded. The AI grader wasn't reachable, so this wasn't fully scored — use the ✦ Ask AI tutor to check your thinking." };
+      return { verdict:"partial", score:0.6, feedback:"Answer recorded. The AI grader wasn't reachable, so this wasn't fully scored — use ✦ Ask Bernard to check your thinking." };
     }
 
     function results(){
@@ -435,14 +445,14 @@
       if(_hideT){ clearTimeout(_hideT); _hideT=null; }
       var term = el.textContent;
       tip.innerHTML = "<div class='gt-term'>"+term+"</div><div class='gt-def'>"+g.d+"</div><div class='gt-rel'><span>Why it matters:</span> "+g.r+"</div>"
-        + "<button class='gt-askai' onclick='askAboutTerm(\""+term.replace(/"/g,"&quot;").replace(/'/g,"\\'")+"\")'>\u2728 Ask AI about this</button>";
+        + "<button class='gt-askai' onclick='askAboutTerm(\""+term.replace(/"/g,"&quot;").replace(/'/g,"\\'")+"\")'>\u2728 Ask Bernard about this</button>";
       tip.classList.add("show");
       tip.style.left="-9999px"; tip.style.top="0"; // measure first
       requestAnimationFrame(function(){ place(el); });
     }
     function hide(){ tip.classList.remove("show"); }
     function hideSoon(){ if(_hideT) clearTimeout(_hideT); _hideT = setTimeout(hide, 220); }
-    // keep tooltip open while pointer is over it (so the Ask AI button is reachable)
+    // keep tooltip open while pointer is over it (so the Ask Bernard button is reachable)
     if(tip.getAttribute("data-hoverbound")!=="1"){
       tip.setAttribute("data-hoverbound","1");
       tip.addEventListener("mouseenter", function(){ if(_hideT){ clearTimeout(_hideT); _hideT=null; } });
@@ -584,7 +594,7 @@
     paperInner.innerHTML =
       '<div class="paper-secnum">'+s.paper.secnum+'</div>'+
       '<h1>'+s.paper.h+'</h1>'+ s.paper.body +
-      '<div class="paper-fb"><button class="deepbtn" onclick="openChat()">✦ Ask AI</button> <button class="deepbtn" onclick="openFeedback(true)">✎ Feedback on this deep dive</button></div>';
+      '<div class="paper-fb"><button class="deepbtn" onclick="openChat()">✦ Ask Bernard</button> <button class="deepbtn" onclick="openFeedback(true)">✎ Feedback on this deep dive</button></div>';
     paper.classList.add("open");
     paper.scrollTop = 0;
     bindGlossary();
@@ -624,6 +634,18 @@
       el.addEventListener("click", function(e){ e.stopPropagation(); openSource(el.getAttribute("data-src")); });
     });
   }
+
+  window.openSourceSuggestion = function(){
+    openFeedback(false);
+    _fbContext = "source suggestion";
+    var label = document.getElementById("fbSlideLabel");
+    var ta = document.getElementById("fbText");
+    if(label) label.textContent = "Suggest another source for the knowledge base";
+    if(ta){
+      ta.placeholder = "Paste a URL, citation, author, title, transcript link, or note about why this source should be added...";
+      ta.focus();
+    }
+  };
 
   /* ---------- INTERACTIVE TILE DETAIL ---------- */
   window.openTile = function(el){
@@ -724,7 +746,8 @@
     var ctxLabel = _fbContext === "deep dive" ? ", deep dive" : "";
     if(label) label.textContent = "Slide " + (idx+1) + " of " + SLIDES.length + ctxLabel + (s.eyebrow ? " — " + s.eyebrow : "");
     var muted = document.getElementById("fbMuted"); if(muted) muted.textContent = "";
-    var ta = document.getElementById("fbText"); if(ta) ta.value = "";
+    var ta = document.getElementById("fbText");
+    if(ta){ ta.value = ""; ta.placeholder = "Speak or type your feedback here…"; }
     // mic availability
     var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     var mic = document.getElementById("fbMic");
@@ -785,7 +808,7 @@
   }
   // Feedback modal mic
   window.toggleDictation = function(){ startDictation("fbText","fbMic","fbMicState","🎤 Start voice"); };
-  // Ask AI chat mic
+  // Ask Bernard chat mic
   window.toggleChatDictation = function(){ startDictation("chatIn","chatMic","chatMicState","🎤"); };
 
   window.submitFeedback = function(){
@@ -909,13 +932,13 @@
     });
   }
 
-  /* ---------- AI TUTOR ---------- */
+  /* ---------- BERNARD AI TUTOR ---------- */
   var history = [];
   function openChat(prefill){
     document.getElementById("chatModal").classList.add("open");
     document.getElementById("chatMuted").textContent="";
     if(!history.length){
-      addMsg("a", "Ask me anything about {{TOPIC}} — {{TOPIC_GREETING}}.");
+      addMsg("a", "Hello, I'm Bernard. Ask me anything about {{TOPIC}} — {{TOPIC_GREETING}}.");
     }
     var inp = document.getElementById("chatIn");
     if(prefill){ inp.value = prefill; }
@@ -923,7 +946,7 @@
   }
   window.openChat = openChat;
 
-  /* ---------- SELECT-ANY-TEXT -> ASK AI ---------- */
+  /* ---------- SELECT-ANY-TEXT -> ASK BERNARD ---------- */
   (function(){
     var menu = document.getElementById("selAsk");
     if(!menu) return;
@@ -1010,9 +1033,9 @@
     api("/api/chat", "POST", { message:q, slide: SLIDES[idx].id, slideTitle: (SLIDES[idx].eyebrow||""), history: history.slice(-8) })
       .then(function(j){
         if(j && j.reply){ thinking.textContent = j.reply; history.push({role:"assistant", content:j.reply}); }
-        else { thinking.textContent = "The AI tutor backend returned an error. It needs OPENAI_API_KEY set on the server."; }
+        else { thinking.textContent = "Bernard's backend returned an error. It needs OPENAI_API_KEY set on the server."; }
       })
-      .catch(function(){ thinking.textContent = "Can't reach the AI tutor — it only works once the site is deployed with an API key. The rest of the class runs offline."; });
+      .catch(function(){ thinking.textContent = "Can't reach Bernard — he only works once the site is deployed with an API key. The rest of the class runs offline."; });
   };
   function addMsg(role, text){
     var log = document.getElementById("chatlog");
@@ -1038,15 +1061,16 @@
   function getLocalWords(qid){ var raw=getLS("wc:"+qid); var o; try{o=JSON.parse(raw);}catch(e){} return o||{}; }
   function setLocalWords(qid,o){ setLS("wc:"+qid, JSON.stringify(o)); }
 
-  /* ---------- LISTEN MODE: spoken narration + tap-to-talk Q&A ----------
+  /* ---------- LISTEN MODE: spoken narration + Bernard Q&A ----------
      Narrates each slide aloud and auto-advances like a podcast. A "raise hand"
-     button pauses, listens for a spoken question, asks the AI tutor, and speaks
+     button pauses, listens for a spoken question, asks Bernard, and speaks
      the answer back. Natural voice via /api/tts (OpenAI); if that key isn't set
      the browser's built-in speech synthesis is used as a fallback. NOTE: mobile
      browsers suspend audio + mic when the screen locks or the tab backgrounds —
      keep the tab in front. True screen-off hands-free needs a native app. */
   (function(){
     var _audio=null, _apiState="unknown" /* unknown|ok|off */, _listening=false, _paused=false, _busy=false, _primed=false, _pausedOnInteractive=false;
+    var _wakeRec=null, _wakeOn=false;
     var bar, statusEl, playBtn;
 
     function ensureBar(){
@@ -1058,6 +1082,37 @@
     function showBar(){ ensureBar(); if(bar) bar.classList.add("on"); }
     function hideBar(){ if(bar) bar.classList.remove("on"); }
     function syncPlay(){ if(playBtn) playBtn.textContent = _paused ? "\u25B6" : "\u23F8"; }
+    function stopWakeWord(){
+      if(_wakeRec && _wakeOn){ try{ _wakeRec.stop(); }catch(e){} }
+      _wakeOn=false;
+      _wakeRec=null;
+    }
+    function startWakeWord(){
+      if(_wakeOn || !_listening || !_paused || _busy) return;
+      var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if(!SR) return;
+      try{
+        _wakeRec = new SR();
+        _wakeRec.lang = "en-GB";
+        _wakeRec.interimResults = false;
+        _wakeRec.continuous = true;
+        _wakeRec.onstart = function(){ _wakeOn=true; };
+        _wakeRec.onerror = function(){ _wakeOn=false; };
+        _wakeRec.onend = function(){ _wakeOn=false; if(_listening && _paused && !_busy) setTimeout(startWakeWord, 700); };
+        _wakeRec.onresult = function(ev){
+          for(var k=ev.resultIndex; k<ev.results.length; k++){
+            var spoken = (ev.results[k][0] && ev.results[k][0].transcript || "").trim();
+            if(!/\bbernard\b/i.test(spoken)) continue;
+            var q = spoken.replace(/^.*?\bbernard\b[,\s]*/i, "").trim();
+            stopWakeWord();
+            if(q) answerQuestion(q);
+            else window.listenAsk();
+            break;
+          }
+        };
+        _wakeRec.start();
+      }catch(e){}
+    }
 
     // Must run INSIDE a user gesture (called from the onclick handlers) so Chrome
     // lets audio + speech start later from async callbacks.
@@ -1076,8 +1131,17 @@
 
     // ---- speech output ----
     function stopSpeaking(){
+      stopWakeWord();
       if(_audio){ try{ _audio.pause(); }catch(e){} _audio=null; }
       if(window.speechSynthesis){ try{ window.speechSynthesis.cancel(); }catch(e){} }
+    }
+    function britishVoice(){
+      var ss = window.speechSynthesis;
+      if(!ss || !ss.getVoices) return null;
+      var voices = ss.getVoices() || [];
+      return voices.filter(function(v){ return /^en[-_]GB/i.test(v.lang || ""); })[0] ||
+        voices.filter(function(v){ return /(Daniel|Oliver|Arthur|Serena|Kate|Martha|Fiona|Moira|Tessa)/i.test(v.name || ""); })[0] ||
+        null;
     }
     // Chrome cuts off long utterances (~15s) and dislikes async starts, so we
     // split into sentences and speak them one at a time, resuming as we go.
@@ -1091,7 +1155,8 @@
       function speakChunk(){
         if(done) return;
         if(ci>=chunks.length){ finish(); return; }
-        var u=new SpeechSynthesisUtterance(chunks[ci]); u.rate=1; u.pitch=1; u.volume=1;
+        var u=new SpeechSynthesisUtterance(chunks[ci]); u.rate=1; u.pitch=1; u.volume=1; u.lang="en-GB";
+        var voice = britishVoice(); if(voice) u.voice = voice;
         u.onend=function(){ ci++; speakChunk(); };
         u.onerror=function(){ ci++; speakChunk(); };
         try{ ss.resume(); ss.speak(u); }
@@ -1104,7 +1169,7 @@
       stopSpeaking();
       if(!text){ if(onend) onend(); return; }
       if(_apiState==="off"){ speakBrowser(text, onend); return; }   // already know natural voice is unavailable
-      fetch("/api/tts", { method:"POST", headers:{"content-type":"application/json"}, body: JSON.stringify({ text: text.slice(0,3800) }) })
+      fetch("/api/tts", { method:"POST", headers:{"content-type":"application/json"}, body: JSON.stringify({ text: text.slice(0,3800), voice:"fable" }) })
         .then(function(r){ if(!r.ok) return Promise.reject("http "+r.status); return r.blob(); })
         .then(function(blob){
           if(!blob || blob.size < 200) return Promise.reject("empty audio");
@@ -1194,7 +1259,8 @@
         speak(interactiveScript(inter), function(){
           if(!_listening) return;
           _paused=true; _pausedOnInteractive=true; syncPlay();
-          setStatus("Your turn — respond on the screen, then tap \u25B6 to continue.");
+          setStatus("Your turn — respond on the screen, tap \u25B6 to continue, or say \u201CBernard\u201D for help.");
+          startWakeWord();
         });
         return;
       }
@@ -1208,7 +1274,7 @@
         if(!_listening || _paused) return;
         var cur = window.currentSlide();
         if(cur < SLIDES.length-1){ window.go(cur+1); setTimeout(narrateCurrent, 350); }
-        else { setStatus("End of the class. Tap \u25B6 to replay, or \u23F9 to close."); _paused=true; syncPlay(); }
+        else { setStatus("End of the class. Tap \u25B6 to replay, say \u201CBernard\u201D for help, or \u23F9 to close."); _paused=true; syncPlay(); startWakeWord(); }
       });
     }
     // Resume: if we paused on an interactive slide (waiting for the student), advance past it.
@@ -1219,6 +1285,7 @@
         var cur=window.currentSlide();
         if(cur < SLIDES.length-1){ window.go(cur+1); }
       }
+      stopWakeWord();
       narrateCurrent();
     }
 
@@ -1230,9 +1297,9 @@
       primeVoice();
       if(!_listening){ window.openListen(); return; }
       if(_paused){ resumeNarration(); }
-      else { _paused=true; stopSpeaking(); syncPlay(); setStatus("Paused. Tap \u25B6 to resume, or \uD83C\uDF99 to ask a question."); }
+      else { _paused=true; stopSpeaking(); syncPlay(); setStatus("Paused. Tap \u25B6 to resume, tap \uD83C\uDF99, or say \u201CBernard\u201D to ask a question."); startWakeWord(); }
     };
-    window.listenStop = function(){ _listening=false; _paused=false; _busy=false; stopSpeaking(); hideBar(); };
+    window.listenStop = function(){ _listening=false; _paused=false; _busy=false; stopWakeWord(); stopSpeaking(); hideBar(); };
 
     // ---- tap-to-talk question ----
     function captureOnce(cb){
@@ -1253,27 +1320,38 @@
         .then(function(res){
           if(res.ok && res.j && res.j.reply){ cb(res.j.reply); return; }
           var detail = (res.j && res.j.error) || ("HTTP " + res.status);
-          setStatus("Tutor error: " + String(detail).slice(0,90));
-          cb("The tutor isn't reachable right now. The error was: " + detail + ".");
+          setStatus("Bernard error: " + String(detail).slice(0,90));
+          cb("Bernard isn't reachable right now. The error was: " + detail + ".");
         })
-        .catch(function(){ setStatus("Network error reaching the tutor."); cb("I couldn't reach the tutor — check the connection."); });
+        .catch(function(){ setStatus("Network error reaching Bernard."); cb("I couldn't reach Bernard — check the connection."); });
+    }
+    function answerQuestion(q){
+      if(_busy) return;
+      stopWakeWord();
+      _paused=true; stopSpeaking(); syncPlay();
+      _busy=true;
+      setStatus("You asked Bernard: \u201C" + q + "\u201D — thinking…");
+      askChat(q, function(reply){
+        setStatus("Bernard is answering…");
+        speak(reply, function(){
+          _busy=false;
+          setStatus("Tap \u25B6 to continue, tap \uD83C\uDF99, or say \u201CBernard\u201D to ask again.");
+          startWakeWord();
+        });
+      });
     }
     window.listenAsk = function(){
       primeVoice();
       if(_busy) return;
+      stopWakeWord();
       _paused=true; stopSpeaking(); syncPlay();
       _busy=true;
-      setStatus("\uD83C\uDF99 Listening — ask your question…");
+      setStatus("\uD83C\uDF99 Listening — ask Bernard your question…");
       captureOnce(function(q){
-        if(!q){ _busy=false; setStatus("Didn't catch that. Tap \uD83C\uDF99 to try again, or \u25B6 to continue."); return; }
-        setStatus("You asked: \u201C" + q + "\u201D — thinking…");
-        askChat(q, function(reply){
-          setStatus("Answering…");
-          speak(reply, function(){
-            _busy=false;
-            setStatus("Tap \u25B6 to continue, or \uD83C\uDF99 to ask again.");
-          });
-        });
+        _busy=false;
+        q = (q || "").replace(/^bernard[,\s]*/i, "").trim();
+        if(!q){ setStatus("Didn't catch that. Tap \uD83C\uDF99 to try again, say \u201CBernard\u201D, or \u25B6 to continue."); startWakeWord(); return; }
+        answerQuestion(q);
       });
     };
   })();

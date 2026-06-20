@@ -13,6 +13,17 @@
   var genieAsk = document.getElementById("genieAskButton");
   var recommendation = null;
   var generation = null;
+  var generatorTrackerTimer = null;
+  var generatorTrackerIndex = 0;
+  var generatorStages = [
+    { label: "Setup check", detail: "Validating the class setup and generator contract." },
+    { label: "Knowledge base", detail: "Building the source list and source-quality report." },
+    { label: "Research", detail: "Analyzing sources and shaping source-grounded objectives." },
+    { label: "Slide writing", detail: "Writing the teaching slides to match the requested slide budget." },
+    { label: "Source verify", detail: "Checking citations against the approved knowledge base." },
+    { label: "QA gate", detail: "Testing the generated content layer and class shell." },
+    { label: "Publish", detail: "Preparing the launch link, QR code, preview, and GitHub/Vercel handoff." }
+  ];
 
   if (!form || !stepTitle || !briefView) return;
 
@@ -36,6 +47,14 @@
     var downloadBundle = closest(event.target, "[data-download-bundle]");
     var downloadScript = closest(event.target, "[data-download-script]");
     var copyClassUrl = closest(event.target, "[data-copy-class-url]");
+    var closeTracker = closest(event.target, "[data-close-tracker]");
+
+    if (closeTracker) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      closeGeneratorTracker();
+      return;
+    }
 
     if (quick) {
       event.preventDefault();
@@ -141,7 +160,7 @@
       "knowledge base": "Build the knowledge base first. Objective candidates should come from source and research analysis.",
       "learning target": "Treat these as provisional ideas. Final TLOs and ELOs belong after knowledge-base analysis.",
       "learning objectives": "Review and approve the TLO/ELO candidates after the knowledge base is analyzed.",
-      "length": "Use the sliders, exact boxes, or ask Genie to balance time, slide count, and learner load.",
+      "length": "Use the sliders, exact boxes, or ask Bernard to balance time, slide count, and learner load.",
       "review & generate": "Start the generator only after the setup check is valid."
     };
     var key = Object.keys(hints).find(function (item) { return currentStep().indexOf(item) !== -1; });
@@ -168,7 +187,7 @@
     card.setAttribute("data-enhanced-analysis", "true");
     card.innerHTML =
       "<h3>Knowledge-base analysis</h3>" +
-      "<p class=\"hint\">Terminal and enabling objectives should be identified after sources are collected, researched, and analyzed. Genie can prepare conservative objective candidates for the next step; the later AI pipeline must still verify them against the corpus.</p>" +
+      "<p class=\"hint\">Terminal and enabling objectives should be identified after sources are collected, researched, and analyzed. Bernard can prepare conservative objective candidates for the next step; the later AI pipeline must still verify them against the corpus.</p>" +
       "<div class=\"analysis-flow\"><span>Sources</span><span>Research rules</span><span>KB analysis</span><span>TLO/ELO candidates</span></div>" +
       "<div class=\"assist-actions\"><button type=\"button\" class=\"ghost\" data-genie-quick=\"knowledge-check\">Check knowledge base</button>" +
       "<button type=\"button\" class=\"primary\" data-ai=\"fill\">Prepare objective candidates</button></div>";
@@ -197,10 +216,10 @@
     help.className = "summary-card full assist-panel";
     help.setAttribute("data-enhanced-length-help", "true");
     help.innerHTML =
-      "<h3>Genie budget help</h3>" +
-      "<p class=\"hint\">Choose a preset in increments of 10, drag the slider, type an exact number, ask for a recommendation, or leave the decision to Genie.</p>" +
-      "<div class=\"assist-actions\"><button type=\"button\" class=\"ghost\" data-length-ai=\"recommend\">Ask Genie for recommendation</button>" +
-      "<button type=\"button\" class=\"primary\" data-length-ai=\"apply\">Leave it to Genie</button></div>" +
+      "<h3>Bernard budget help</h3>" +
+      "<p class=\"hint\">Choose a preset in increments of 10, drag the slider, type an exact number, ask for a recommendation, or leave the decision to Bernard.</p>" +
+      "<div class=\"assist-actions\"><button type=\"button\" class=\"ghost\" data-length-ai=\"recommend\">Ask Bernard for recommendation</button>" +
+      "<button type=\"button\" class=\"primary\" data-length-ai=\"apply\">Leave it to Bernard</button></div>" +
       "<div class=\"notice\" data-length-result>No recommendation yet.</div>";
 
     var grid = form.querySelector(".form-grid") || form;
@@ -286,7 +305,7 @@
 
   async function askGenie(type) {
     var question = genieInput ? genieInput.value.trim() : "";
-    setGenie("Thinking...");
+    setGenie("Bernard is thinking...");
     try {
       var payload = await callGenie(type, question);
       setGenie(payload.answer || fallbackAnswer(type));
@@ -324,7 +343,7 @@
       })
     }).then(function (response) {
       return response.json().then(function (body) {
-        if (!response.ok || !body.ok) throw new Error((body.errors || ["Genie is not connected yet."]).join(" "));
+        if (!response.ok || !body.ok) throw new Error((body.errors || ["Bernard is not connected yet."]).join(" "));
         return body;
       });
     });
@@ -334,7 +353,7 @@
     if (type === "knowledge-check") return "Build the knowledge base first: add sources, set research rules, then use analysis to draft objective candidates. Final objectives should not be treated as finished until the corpus is verified.";
     if (type === "check-step") return "This step is safe to continue when the required fields are clear, the source assumptions are explicit, and the setup check says it is ready.";
     if (type === "recommend-length") return lengthText(fallbackRecommendation());
-    return "Genie can guide this step even before the API key is connected. For final AI assistance, make sure OPENAI_API_KEY is set in Vercel and redeployed.";
+    return "Bernard can guide this step even before the API key is connected. For final AI assistance, make sure OPENAI_API_KEY is set in Vercel and redeployed.";
   }
 
   function fallbackRecommendation() {
@@ -360,7 +379,7 @@
   }
 
   function lengthText(value) {
-    return "Genie recommends " + value.minutes + " minutes, " + value.slide_budget + " slides, " + value.polls + " polls, " + value.word_clouds + " word clouds, and " + value.quizzes + " quiz. " + value.reason;
+    return "Bernard recommends " + value.minutes + " minutes, " + value.slide_budget + " slides, " + value.polls + " polls, " + value.word_clouds + " word clouds, and " + value.quizzes + " quiz. " + value.reason;
   }
 
   function enhanceReviewStep() {
@@ -379,6 +398,9 @@
     var files = generation.files || {};
     var publish = generation.publish || {};
     var classUrl = publish.status === "published" ? (generation.class_url || publish.expected_url || "") : "";
+    var slideCount = Number(generation.slide_count || 0);
+    var requestedSlides = Number(generation.requested_slide_budget || 0);
+    var slideText = slideCount ? slideCount + (requestedSlides ? " / " + requestedSlides + " requested" : "") : "unknown";
     var stages = (generation.stage_reports || []).map(function (stage) {
       return "<li><strong>" + esc(stage.stage || "stage") + ":</strong> " + (stage.ok ? "passed" : esc(stage.message || "used fallback")) + "</li>";
     }).join("");
@@ -394,7 +416,7 @@
       publishNotice = "<div class=\"notice warn\"><strong>Generated, publish failed:</strong> " + esc(publish.message || "GitHub publish failed.") + "</div>";
     }
     return "<h3>Generated masterclass</h3>" +
-      "<div class=\"generator-status\"><div class=\"notice\"><strong>QA:</strong> " + esc(generation.qa || "Not run") + " · <strong>Source check:</strong> " + (generation.source_verify && generation.source_verify.ok ? "PASS" : "Not run") + " · <strong>Mode:</strong> " + esc(generation.mode || "unknown") + "</div>" +
+      "<div class=\"generator-status\"><div class=\"notice\"><strong>QA:</strong> " + esc(generation.qa || "Not run") + " · <strong>Source check:</strong> " + (generation.source_verify && generation.source_verify.ok ? "PASS" : "Not run") + " · <strong>Slides:</strong> " + esc(slideText) + " · <strong>Mode:</strong> " + esc(generation.mode || "unknown") + "</div>" +
       publishNotice +
       (classUrl ? "<div class=\"class-url-card\"><span class=\"mini-label\">Generated class URL</span><a href=\"" + attr(classUrl) + "\" target=\"_blank\" rel=\"noreferrer\">" + esc(classUrl) + "</a><img class=\"qr-image\" alt=\"QR code for generated class\" src=\"/api/qr?url=" + encodeURIComponent(classUrl) + "\"><button type=\"button\" class=\"ghost\" data-copy-class-url>Copy class link</button></div>" : "") +
       "<div class=\"generated-actions\"><button type=\"button\" class=\"primary\" data-open-preview>Open preview</button><button type=\"button\" class=\"ghost\" data-download-preview>Download preview HTML</button><button type=\"button\" class=\"ghost\" data-download-bundle>Download deploy bundle</button><button type=\"button\" class=\"ghost\" data-download-script>Download presenter script</button></div>" +
@@ -404,14 +426,106 @@
       filePreview("content.js", files["content.js"]) + filePreview("glossary.js", files["glossary.js"]) + filePreview("source.js", files["source.js"]) + "</div>";
   }
 
+  function trackerHtml() {
+    var steps = generatorStages.map(function (stage, index) {
+      return "<div class=\"tracker-step\" data-tracker-step=\"" + index + "\"><span>" + String(index + 1).padStart(2, "0") + "</span><strong>" + esc(stage.label) + "</strong></div>";
+    }).join("");
+    return "<section class=\"tracker-card\" aria-live=\"polite\">" +
+      "<p class=\"kicker\">Masterclass Factory</p>" +
+      "<h2>Building your masterclass</h2>" +
+      "<p class=\"tracker-detail\" data-tracker-detail>Starting the generator.</p>" +
+      "<div class=\"tracker-road\">" + steps + "</div>" +
+      "<div class=\"tracker-progress\"><span data-tracker-progress></span></div>" +
+      "<p class=\"tracker-small\" data-tracker-small>Bernard is coordinating the pipeline: source analysis, lesson writing, source verification, QA, and launch packaging.</p>" +
+      "<div class=\"tracker-actions\"><button type=\"button\" class=\"ghost\" data-close-tracker>Hide tracker</button></div>" +
+      "</section>";
+  }
+
+  function startGeneratorTracker() {
+    closeGeneratorTracker();
+    generatorTrackerIndex = 0;
+    var tracker = document.createElement("div");
+    tracker.className = "generator-tracker-screen";
+    tracker.setAttribute("data-generator-tracker", "true");
+    tracker.innerHTML = trackerHtml();
+    document.body.appendChild(tracker);
+    setGeneratorTrackerStage(0);
+    generatorTrackerTimer = window.setInterval(function () {
+      if (generatorTrackerIndex < generatorStages.length - 2) {
+        setGeneratorTrackerStage(generatorTrackerIndex + 1);
+      }
+    }, 1700);
+    return tracker;
+  }
+
+  function setGeneratorTrackerStage(index, detail) {
+    generatorTrackerIndex = Math.max(0, Math.min(generatorStages.length - 1, index));
+    var tracker = document.querySelector("[data-generator-tracker]");
+    if (!tracker) return;
+    var active = generatorStages[generatorTrackerIndex];
+    Array.from(tracker.querySelectorAll("[data-tracker-step]")).forEach(function (step) {
+      var stepIndex = Number(step.getAttribute("data-tracker-step"));
+      step.classList.toggle("done", stepIndex < generatorTrackerIndex);
+      step.classList.toggle("active", stepIndex === generatorTrackerIndex);
+    });
+    var detailBox = tracker.querySelector("[data-tracker-detail]");
+    if (detailBox) detailBox.textContent = detail || active.detail;
+    var progress = tracker.querySelector("[data-tracker-progress]");
+    if (progress) progress.style.width = Math.round(((generatorTrackerIndex + 1) / generatorStages.length) * 100) + "%";
+  }
+
+  function completeGeneratorTracker(payload) {
+    if (generatorTrackerTimer) window.clearInterval(generatorTrackerTimer);
+    generatorTrackerTimer = null;
+    setGeneratorTrackerStage(generatorStages.length - 1, "Masterclass generated. QA passed. Launch package is ready.");
+    var tracker = document.querySelector("[data-generator-tracker]");
+    if (!tracker) return;
+    tracker.classList.add("complete");
+    var small = tracker.querySelector("[data-tracker-small]");
+    var slideCount = payload && payload.slide_count ? payload.slide_count : "the requested";
+    if (small) small.textContent = "Built " + slideCount + " slides, assembled the deck shell, and prepared the preview, QR code, presenter script, and deploy bundle.";
+    var action = tracker.querySelector("[data-close-tracker]");
+    if (action) action.textContent = "See generated class package";
+    window.setTimeout(function () {
+      var stillThere = document.querySelector("[data-generator-tracker]");
+      if (stillThere && stillThere.classList.contains("complete")) closeGeneratorTracker();
+    }, 1800);
+  }
+
+  function failGeneratorTracker(error) {
+    if (generatorTrackerTimer) window.clearInterval(generatorTrackerTimer);
+    generatorTrackerTimer = null;
+    var tracker = document.querySelector("[data-generator-tracker]");
+    if (!tracker) return;
+    tracker.classList.add("failed");
+    var detail = tracker.querySelector("[data-tracker-detail]");
+    if (detail) detail.textContent = "The generator needs attention: " + (error && error.message ? error.message : "unknown error");
+    var small = tracker.querySelector("[data-tracker-small]");
+    if (small) small.textContent = "Nothing was published from this failed run. Fix the message shown on the page, then start the generator again.";
+    var action = tracker.querySelector("[data-close-tracker]");
+    if (action) action.textContent = "Return to setup";
+  }
+
+  function closeGeneratorTracker() {
+    if (generatorTrackerTimer) window.clearInterval(generatorTrackerTimer);
+    generatorTrackerTimer = null;
+    var tracker = document.querySelector("[data-generator-tracker]");
+    if (tracker && tracker.parentNode) tracker.parentNode.removeChild(tracker);
+  }
+
   async function runGenerator() {
     if (validationBox) validationBox.innerHTML = "<div class=\"notice\">Starting the generator...</div>";
+    startGeneratorTracker();
     try {
+      setGeneratorTrackerStage(0, "Checking that the setup data matches the contract.");
       await fetch("/api/brief", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(parseBrief()) });
+      setGeneratorTrackerStage(1, "Building the knowledge base and source-quality list.");
       var response = await fetch("/api/generate", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ brief: parseBrief(), publish: true }) });
+      setGeneratorTrackerStage(5, "Running source verification and QA.");
       var payload = await response.json();
       if (!response.ok || !payload.ok) throw new Error((payload.errors || ["Generator failed."]).join(" "));
       generation = payload;
+      completeGeneratorTracker(payload);
       if (payload.publish && payload.publish.status === "published") {
         setGenie("Masterclass generated and sent to GitHub. Vercel should launch it at the generated class URL after the GitHub deployment finishes.");
       } else {
@@ -422,6 +536,7 @@
       if (card) card.innerHTML = generatorHtml();
       if (validationBox) validationBox.innerHTML = "<div class=\"notice\">Generator complete. Preview, deploy bundle, and presenter script are shown in Review & Generate.</div>";
     } catch (error) {
+      failGeneratorTracker(error);
       if (validationBox) validationBox.innerHTML = "<div class=\"notice warn\">Generator could not finish here: " + esc(error.message || "Unknown error") + "</div>";
     }
   }

@@ -12,8 +12,8 @@ template/
 ├── engine.js         # the whole engine (render, nav, quizzes, polls, glossary, tutor, listen…)
 ├── navscrubber.js    # bottom progress scrubber (no tokens; reused as-is)
 └── api/
-    ├── chat.js       # AI tutor      (Anthropic)        — has tokens
-    ├── grade.js      # AI grader     (Anthropic)        — has tokens; BAR ladder is generic, keep it
+    ├── chat.js       # Bernard tutor (OpenAI)           — has tokens
+    ├── grade.js      # AI grader     (OpenAI)           — has tokens; BAR ladder is generic, keep it
     ├── tts.js        # natural voice (OpenAI)           — no tokens
     ├── poll.js       # live polls    (Upstash Redis)    — no tokens
     ├── words.js      # word clouds   (Upstash Redis)    — no tokens
@@ -44,7 +44,7 @@ is topic-agnostic — leave it exactly as-is.
 - `window.POLLS` / `window.WORDS` deck-defined; quiz keys `type/level/q/options/answer/why` (+`rubric/sample/accept[]`).
 
 ## Env vars (set on the deck's Vercel project)
-`OPENAI_API_KEY` (chat+grade+tts) · optional `OPENAI_MODEL` · `KV_REST_API_URL` · `KV_REST_API_TOKEN` · `POLL_ADMIN_KEY`
+`OPENAI_API_KEY` (chat+grade+tts) · optional `OPENAI_MODEL` (defaults to GPT-5.5) · `KV_REST_API_URL` · `KV_REST_API_TOKEN` · `POLL_ADMIN_KEY`
 
 > Provenance: derived from the shipped Texas Revolution deck, with all topic/audience strings replaced
 > by tokens and the stale "Micro Data Centers" header comment fixed. Engine logic is unchanged.

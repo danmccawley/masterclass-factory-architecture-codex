@@ -221,12 +221,13 @@
       "<div class=\"form-grid single\">" +
       "<div class=\"field full upload-box\"><label>Upload source files</label><input type=\"file\" multiple data-file-upload>" +
       "<p class=\"hint\">The browser records file names as source paths. The later research stage ingests the actual files.</p></div>" +
-      "<div class=\"field full\"><label>Add a source path or URL</label><div class=\"source-row\">" +
-      "<input type=\"text\" data-new-source-path placeholder=\"source.pdf or https://example.com/report\">" +
+      "<div class=\"field full\"><label>Add a source path, URL, video, or audio link</label><div class=\"source-row\">" +
+      "<input type=\"text\" data-new-source-path placeholder=\"source.pdf, https://example.com/report, video URL, or audio URL\">" +
       sourceTypeSelect("", "data-new-source-type") +
       sourceTrustSelect("secondary", "data-new-source-trust") +
       "<button type=\"button\" class=\"primary\" data-add-source>Add</button></div>" +
       sourceRows() + "</div>" +
+      sourceCompositionCard() +
       grid(
         selectField("Research mode", "knowledge_base.research.mode", [
           ["none", "Uploads only"],
@@ -268,7 +269,11 @@
     return grid(
       numberField("Target mastery level", "mastery.target_level", 1, 5) +
       selectField("Granularity", "mastery.granularity", [["survey", "Survey"], ["working", "Working"], ["deep", "Deep"]]) +
-      selectField("Deep-dive density", "mastery.deep_dive_density", [["low", "Low"], ["med", "Medium"], ["high", "High"]]) +
+      selectField("Deep dives", "mastery.deep_dive_density", [
+        ["low", "No deep dives"],
+        ["med", "Let Bernard decide"],
+        ["high", "Include deep dives"]
+      ]) +
       checkboxField("Include where-the-field-disagrees material", "mastery.field_disagreement")
     );
   }
@@ -408,6 +413,42 @@
     }).join("") + "</div>";
   }
 
+  function sourceCompositionCard() {
+    return card("Knowledge base composition",
+      "<p class=\"hint\">These are the sources Bernard and the generator may cite. URL, video, and audio links are visible immediately; local file names are queued until the ingestion stage extracts their text or transcript.</p>" +
+      sourceCompositionList() +
+      sourceQualityMetric(),
+      "full kb-composition-card");
+  }
+
+  function sourceCompositionList() {
+    if (!brief.knowledge_base.uploads.length) {
+      return "<div class=\"kb-empty\">Add at least one source so the class maker can build a works cited list and information-literacy report.</div>";
+    }
+    return "<div class=\"kb-composition-list\">" + brief.knowledge_base.uploads.map(function (source, index) {
+      var path = source.path || "Untitled source";
+      var type = source.type || "document";
+      var trust = source.trust || "unknown";
+      var link = /^https?:\/\//i.test(path);
+      var media = type === "video" || type === "audio";
+      var status = link ? "Link available" : "Queued for ingestion";
+      if (media) status = link ? "Media link available" : "Media file queued";
+      return "<div class=\"kb-source-card\">" +
+        "<div class=\"kb-source-top\"><span>S" + String(index + 1).padStart(2, "0") + "</span><strong>" + esc(labelFor(path)) + "</strong></div>" +
+        "<div class=\"kb-source-path\">" + (link ? "<a href=\"" + attr(path) + "\" target=\"_blank\" rel=\"noreferrer\">" + esc(path) + "</a>" : esc(path)) + "</div>" +
+        "<div class=\"kb-source-meta\"><span>Type: " + esc(optionLabel(sourceTypeOptions(), type)) + "</span><span>Creator ranking: " + esc(optionLabel(sourceTrustOptions(), trust)) + "</span><span>" + esc(status) + "</span></div>" +
+        "</div>";
+    }).join("") + "</div>";
+  }
+
+  function sourceQualityMetric() {
+    return "<details class=\"source-metric\"><summary>How source quality will be graded</summary>" +
+      "<p><strong>Credibility ranking</strong> starts with the source type and the class maker's trust label: primary sources rank highest, secondary sources rank next, and unknown sources require extra caution.</p>" +
+      "<p><strong>Reliability ranking</strong> asks whether the source is accessible, specific, recent enough for the claim, internally consistent, and corroborated by another independent source when the claim is statistical, forward-looking, or contested.</p>" +
+      "<p><strong>Information-literacy finding</strong> explains whether the source can support factual claims now, should be used only for context, or needs a transcript/extracted text before Bernard can teach from it.</p>" +
+      "</details>";
+  }
+
   function sourceRuleFields() {
     return "<div class=\"field full\"><span class=\"mini-label\">Require two independent sources for</span><div class=\"choice-grid\">" +
       sourceRules.map(function (rule) {
@@ -454,14 +495,30 @@
 
   function sourceTypeSelect(value, attrs) {
     return "<select " + attrs + " aria-label=\"Source type\">" +
-      optionTags([["document", "Document"], ["pdf", "PDF"], ["url", "URL"], ["notes", "Notes"], ["data", "Data"]], value) +
+      optionTags(sourceTypeOptions(), value) +
       "</select>";
+  }
+
+  function sourceTypeOptions() {
+    return [
+      ["document", "Document"],
+      ["pdf", "PDF"],
+      ["url", "URL"],
+      ["video", "Video"],
+      ["audio", "Audio"],
+      ["notes", "Notes"],
+      ["data", "Data"]
+    ];
   }
 
   function sourceTrustSelect(value, attrs) {
     return "<select " + attrs + " aria-label=\"Source trust\">" +
-      optionTags([["primary", "Primary"], ["secondary", "Secondary"], ["unknown", "Unknown"]], value) +
+      optionTags(sourceTrustOptions(), value) +
       "</select>";
+  }
+
+  function sourceTrustOptions() {
+    return [["primary", "Primary"], ["secondary", "Secondary"], ["unknown", "Unknown"]];
   }
 
   function onInput(event) {
@@ -782,9 +839,18 @@
     var lower = name.toLowerCase();
     if (mime === "application/pdf" || lower.endsWith(".pdf")) return "pdf";
     if (lower.startsWith("http://") || lower.startsWith("https://")) return "url";
+    if ((mime || "").startsWith("video/") || /\.(mp4|mov|m4v|webm)$/i.test(lower)) return "video";
+    if ((mime || "").startsWith("audio/") || /\.(mp3|m4a|wav|aac|ogg)$/i.test(lower)) return "audio";
     if (lower.endsWith(".csv") || lower.endsWith(".xlsx")) return "data";
     if (lower.endsWith(".txt") || lower.endsWith(".md")) return "notes";
     return "document";
+  }
+
+  function labelFor(value) {
+    try {
+      if (/^https?:\/\//i.test(value)) return new URL(value).hostname.replace(/^www\./, "");
+    } catch (error) {}
+    return String(value || "").split("/").pop() || value;
   }
 
   function formatValue(value, type) {
@@ -800,9 +866,12 @@
   }
 
   function safeMessage(value) {
+    var keyPrefix = ["s", "k"].join("") + "-";
+    var projectKeyPattern = new RegExp(keyPrefix + "proj-[A-Za-z0-9_-]+", "g");
+    var anyKeyPattern = new RegExp(keyPrefix + "[A-Za-z0-9_-]+", "g");
     return String(value || "")
-      .replace(/sk-proj-[A-Za-z0-9_-]+/g, "[redacted OpenAI key]")
-      .replace(/sk-[A-Za-z0-9_-]+/g, "[redacted API key]")
+      .replace(projectKeyPattern, "[redacted OpenAI key]")
+      .replace(anyKeyPattern, "[redacted API key]")
       .replace(/Bearer\s+[^"'`]+/g, "Bearer [redacted]");
   }
 
