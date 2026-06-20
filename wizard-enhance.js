@@ -574,7 +574,7 @@
     document.body.appendChild(tracker);
     setGeneratorTrackerStage(0);
     generatorTrackerTimer = window.setInterval(function () {
-      if (generatorTrackerIndex < generatorStages.length - 2) {
+      if (generatorTrackerIndex < 2) {
         setGeneratorTrackerStage(generatorTrackerIndex + 1);
       }
     }, 1700);
@@ -615,11 +615,28 @@
     if (action) action.textContent = "See generated class package";
   }
 
+  function trackerIndexForFailure(error) {
+    var stage = String(error && (error.failed_stage || error.stage) || "").toLowerCase();
+    if (/knowledge-base-standard|knowledge_base|source-floor|primary-source/.test(stage)) return 1;
+    if (/knowledge-base-discovery|research/.test(stage)) return 2;
+    if (/blueprint/.test(stage)) return 3;
+    if (/lesson|curriculum/.test(stage)) return 4;
+    if (/author|slide|content-density|deep-dive/.test(stage)) return 5;
+    if (/source|citation/.test(stage)) return 6;
+    if (/qa|quality|schema/.test(stage)) return 7;
+    var message = String(error && error.message || "").toLowerCase();
+    if (/knowledge base|usable sources|primary sources|source floor/.test(message)) return 1;
+    if (/research|bernard searched|web research/.test(message)) return 2;
+    if (/slide|deep-dive|too thin/.test(message)) return 5;
+    return generatorTrackerIndex;
+  }
+
   function failGeneratorTracker(error) {
     if (generatorTrackerTimer) window.clearInterval(generatorTrackerTimer);
     generatorTrackerTimer = null;
     var tracker = document.querySelector("[data-generator-tracker]");
     if (!tracker) return;
+    setGeneratorTrackerStage(trackerIndexForFailure(error), "The generator stopped here because this gate did not pass.");
     tracker.classList.add("failed");
     var detail = tracker.querySelector("[data-tracker-detail]");
     if (detail) detail.textContent = "The generator needs attention: " + (error && error.message ? error.message : "unknown error");
@@ -652,9 +669,18 @@
       await fetch("/api/brief", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(parseBrief()) });
       setGeneratorTrackerStage(1, "Building the knowledge base and source-quality list.");
       var response = await fetch("/api/generate", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ brief: parseBrief(), publish: true }) });
-      setGeneratorTrackerStage(6, "Running source verification and QA.");
       var payload = await response.json();
-      if (!response.ok || !payload.ok) throw new Error((payload.errors || ["Generator failed."]).join(" "));
+      if (!response.ok || !payload.ok) {
+        var failure = new Error((payload.errors || ["Generator failed."]).join(" "));
+        failure.failed_stage = payload.failed_stage || "";
+        failure.stage_reports = payload.stage_reports || [];
+        failure.knowledge_standard = payload.knowledge_standard || null;
+        failure.source_discovery = payload.source_discovery || null;
+        throw failure;
+      }
+      setGeneratorTrackerStage(3, "Blueprint passed. Lesson plan, slides, and deep dives were built from the approved knowledge base.");
+      setGeneratorTrackerStage(5, "Slides are built. Running citation verification.");
+      setGeneratorTrackerStage(6, "Running source verification and QA.");
       generation = payload;
       completeGeneratorTracker(payload);
       if (payload.publish && payload.publish.status === "published") {
