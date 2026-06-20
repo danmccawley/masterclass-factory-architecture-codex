@@ -2883,6 +2883,37 @@ module.exports = async function generateHandler(req, res) {
     return;
   }
 
+  // Safe diagnostic: GET /api/generate?diag=1 reports the SHAPE of the runtime
+  // OpenAI key (length, prefix, whitespace) without ever revealing the key, so
+  // we can confirm whether the function actually receives a valid key in this
+  // environment. Remove after debugging.
+  if (req.method === "GET") {
+    const url = new URL(req.url || "/", "http://localhost");
+    if (url.searchParams.get("diag") === "1") {
+      const raw = process.env.OPENAI_API_KEY;
+      const key = String(raw == null ? "" : raw);
+      const validationError = validateOpenAIKey(key.trim());
+      send(res, 200, {
+        ok: true,
+        diagnostic: "openai-key-shape",
+        present: raw !== undefined && raw !== null,
+        length: key.length,
+        starts_with_sk: key.startsWith("sk-"),
+        prefix: key.slice(0, 7),
+        has_leading_space: /^\s/.test(key),
+        has_trailing_whitespace: /\s$/.test(key),
+        has_internal_whitespace: /\s/.test(key.trim()),
+        has_quotes: /^["']|["']$/.test(key),
+        passes_validation_raw: validateOpenAIKey(key) === "",
+        passes_validation_trimmed: validationError === "",
+        validation_message_raw: validateOpenAIKey(key) || "(passes)"
+      });
+      return;
+    }
+    send(res, 405, { ok: false, errors: ["Use POST with a class setup body."] });
+    return;
+  }
+
   if (req.method !== "POST") {
     send(res, 405, { ok: false, errors: ["Use POST with a class setup body."] });
     return;
