@@ -31,6 +31,11 @@
     var quick = closest(event.target, "[data-genie-quick]");
     var lengthButton = closest(event.target, "[data-length-ai]");
     var reviewPost = closest(event.target, "[data-post-review]");
+    var openPreview = closest(event.target, "[data-open-preview]");
+    var downloadPreview = closest(event.target, "[data-download-preview]");
+    var downloadBundle = closest(event.target, "[data-download-bundle]");
+    var downloadScript = closest(event.target, "[data-download-script]");
+    var copyClassUrl = closest(event.target, "[data-copy-class-url]");
 
     if (quick) {
       event.preventDefault();
@@ -50,6 +55,41 @@
       event.preventDefault();
       event.stopImmediatePropagation();
       runGenerator();
+      return;
+    }
+
+    if (openPreview) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      openGeneratedPreview();
+      return;
+    }
+
+    if (downloadPreview) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      downloadGeneratedPreview();
+      return;
+    }
+
+    if (downloadBundle) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      downloadGeneratedBundle();
+      return;
+    }
+
+    if (downloadScript) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      downloadPresenterScript();
+      return;
+    }
+
+    if (copyClassUrl) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      copyGeneratedClassUrl();
       return;
     }
 
@@ -298,9 +338,32 @@
   }
 
   function generatorHtml() {
-    if (!generation) return "<h3>Generator output</h3><p class=\"hint\">No deck content has been generated in this session yet. Start generator will run the deterministic content-layer path first; later milestones replace placeholders with sourced AI content and independent QA.</p>";
+    if (!generation) return "<h3>Generated masterclass</h3><p class=\"hint\">No masterclass has been generated in this session yet. Start generator will build the content layer, run source verification and QA, assemble the deck template, and prepare a preview plus deployable bundle.</p>";
     var files = generation.files || {};
-    return "<h3>Generator output</h3><div class=\"notice\">QA status: " + esc(generation.qa || "Not run") + "</div><div class=\"generated-files\">" +
+    var publish = generation.publish || {};
+    var classUrl = publish.status === "published" ? (generation.class_url || publish.expected_url || "") : "";
+    var stages = (generation.stage_reports || []).map(function (stage) {
+      return "<li><strong>" + esc(stage.stage || "stage") + ":</strong> " + (stage.ok ? "passed" : esc(stage.message || "used fallback")) + "</li>";
+    }).join("");
+    var warnings = (generation.warnings || []).map(function (warning) {
+      return "<li>" + esc(warning) + "</li>";
+    }).join("");
+    var publishNotice = "";
+    if (publish.status === "published") {
+      publishNotice = "<div class=\"notice\"><strong>Published:</strong> GitHub received the generated class. Vercel should launch it at the link below after the GitHub deployment finishes.</div>";
+    } else if (publish.status === "not_configured") {
+      publishNotice = "<div class=\"notice warn\"><strong>Generated, not auto-published yet:</strong> Add GITHUB_TOKEN, GITHUB_OWNER, and GITHUB_REPO in Vercel to let the Factory send classes to GitHub automatically.</div>";
+    } else if (publish.status === "failed") {
+      publishNotice = "<div class=\"notice warn\"><strong>Generated, publish failed:</strong> " + esc(publish.message || "GitHub publish failed.") + "</div>";
+    }
+    return "<h3>Generated masterclass</h3>" +
+      "<div class=\"generator-status\"><div class=\"notice\"><strong>QA:</strong> " + esc(generation.qa || "Not run") + " · <strong>Source check:</strong> " + (generation.source_verify && generation.source_verify.ok ? "PASS" : "Not run") + " · <strong>Mode:</strong> " + esc(generation.mode || "unknown") + "</div>" +
+      publishNotice +
+      (classUrl ? "<div class=\"class-url-card\"><span class=\"mini-label\">Generated class URL</span><a href=\"" + attr(classUrl) + "\" target=\"_blank\" rel=\"noreferrer\">" + esc(classUrl) + "</a><img class=\"qr-image\" alt=\"QR code for generated class\" src=\"/api/qr?url=" + encodeURIComponent(classUrl) + "\"><button type=\"button\" class=\"ghost\" data-copy-class-url>Copy class link</button></div>" : "") +
+      "<div class=\"generated-actions\"><button type=\"button\" class=\"primary\" data-open-preview>Open preview</button><button type=\"button\" class=\"ghost\" data-download-preview>Download preview HTML</button><button type=\"button\" class=\"ghost\" data-download-bundle>Download deploy bundle</button><button type=\"button\" class=\"ghost\" data-download-script>Download presenter script</button></div>" +
+      (stages ? "<details class=\"generated-meta\"><summary>Pipeline stages</summary><ul>" + stages + "</ul></details>" : "") +
+      (warnings ? "<details class=\"generated-meta\"><summary>Warnings and source notes</summary><ul>" + warnings + "</ul></details>" : "") +
+      "</div><div class=\"generated-files\">" +
       filePreview("content.js", files["content.js"]) + filePreview("glossary.js", files["glossary.js"]) + filePreview("source.js", files["source.js"]) + "</div>";
   }
 
@@ -308,15 +371,19 @@
     if (validationBox) validationBox.innerHTML = "<div class=\"notice\">Starting the generator...</div>";
     try {
       await fetch("/api/brief", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(parseBrief()) });
-      var response = await fetch("/api/generate", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(parseBrief()) });
+      var response = await fetch("/api/generate", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ brief: parseBrief(), publish: true }) });
       var payload = await response.json();
       if (!response.ok || !payload.ok) throw new Error((payload.errors || ["Generator failed."]).join(" "));
       generation = payload;
-      setGenie("Generator produced the content layer and reported " + (payload.qa || "QA status unknown") + ". Next milestones replace placeholders with sourced AI content, independent verification, and a deployed class link.");
+      if (payload.publish && payload.publish.status === "published") {
+        setGenie("Masterclass generated and sent to GitHub. Vercel should launch it at the generated class URL after the GitHub deployment finishes.");
+      } else {
+        setGenie("Masterclass generated with " + (payload.qa || "QA status unknown") + ". Open the preview now. Auto-publish will turn on once the GitHub token env vars are added in Vercel.");
+      }
       enhanceReviewStep();
       var card = form.querySelector("[data-enhanced-generator]");
       if (card) card.innerHTML = generatorHtml();
-      if (validationBox) validationBox.innerHTML = "<div class=\"notice\">Generator complete. Content layer files are shown in Review & Generate.</div>";
+      if (validationBox) validationBox.innerHTML = "<div class=\"notice\">Generator complete. Preview, deploy bundle, and presenter script are shown in Review & Generate.</div>";
     } catch (error) {
       if (validationBox) validationBox.innerHTML = "<div class=\"notice warn\">Generator could not finish here: " + esc(error.message || "Unknown error") + "</div>";
     }
@@ -324,6 +391,60 @@
 
   function filePreview(name, content) {
     return "<details class=\"generated-file\"><summary>" + esc(name) + "</summary><pre>" + esc(String(content || "Not generated yet.").slice(0, 2400)) + "</pre></details>";
+  }
+
+  function openGeneratedPreview() {
+    if (!generation || !generation.preview_html) return setGenie("Generate a masterclass first, then the preview opens here.");
+    var url = URL.createObjectURL(new Blob([generation.preview_html], { type: "text/html" }));
+    window.open(url, "_blank", "noopener,noreferrer");
+    window.setTimeout(function () { URL.revokeObjectURL(url); }, 60000);
+  }
+
+  function downloadGeneratedPreview() {
+    if (!generation || !generation.preview_html) return setGenie("Generate a masterclass first, then the preview can be downloaded.");
+    downloadText(classSlug() + "-masterclass-preview.html", generation.preview_html, "text/html");
+  }
+
+  function downloadGeneratedBundle() {
+    if (!generation || !generation.bundle) return setGenie("Generate a masterclass first, then the deploy bundle can be downloaded.");
+    downloadText(classSlug() + "-deploy-bundle.json", JSON.stringify(generation.bundle, null, 2) + "\n", "application/json");
+  }
+
+  function downloadPresenterScript() {
+    if (!generation || !generation.presenter_script) return setGenie("Generate a masterclass first, then the presenter script can be downloaded.");
+    downloadText(classSlug() + "-presenter-script.md", generation.presenter_script + "\n", "text/markdown");
+  }
+
+  async function copyGeneratedClassUrl() {
+    var url = generation && (generation.class_url || (generation.publish && generation.publish.expected_url));
+    if (!url) return setGenie("There is no generated class URL yet.");
+    try {
+      await navigator.clipboard.writeText(url);
+      setGenie("Copied the generated class link.");
+    } catch (error) {
+      setGenie("Clipboard was blocked. Copy the visible generated class link manually.");
+    }
+  }
+
+  function downloadText(filename, content, type) {
+    var url = URL.createObjectURL(new Blob([content], { type: type || "text/plain" }));
+    var link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  function classSlug() {
+    var brief = parseBrief();
+    return String((brief.meta && (brief.meta.slug || brief.meta.title)) || "masterclass")
+      .toLowerCase()
+      .replace(/['"]/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 80) || "masterclass";
   }
 
   function setGenie(text) {
@@ -341,5 +462,9 @@
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#39;");
+  }
+
+  function attr(value) {
+    return esc(value).replace(/`/g, "&#96;");
   }
 })();
