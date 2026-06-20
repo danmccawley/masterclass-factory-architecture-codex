@@ -2452,6 +2452,21 @@ module.exports = async function generateHandler(req, res) {
     const prepared = await prepareKnowledgeBase(brief);
     const effectiveBrief = prepared.brief;
     const sourceDiscovery = prepared.discovery;
+    const preparedStandard = knowledgeBaseStandard(effectiveBrief);
+    if (!preparedStandard.ok) {
+      send(res, 422, {
+        ok: false,
+        failed_stage: "knowledge-base-standard",
+        errors: [`Knowledge base does not meet the selected ${preparedStandard.tier.label} standard: ${preparedStandard.messages.join(" ")}`],
+        knowledge_standard: preparedStandard,
+        source_discovery: sourceDiscovery,
+        stage_reports: [
+          { stage: "knowledge-base-discovery", ok: !sourceDiscovery.attempted || Boolean(sourceDiscovery.added_sources && sourceDiscovery.added_sources.length), owner: sourceDiscovery.owner, model: sourceDiscovery.model || null, added_sources: sourceDiscovery.added_sources.length },
+          { stage: "knowledge-base-standard", ok: false, tier: preparedStandard.tier.label, message: preparedStandard.messages.join(" ") }
+        ]
+      });
+      return;
+    }
     const sourceBuild = await buildSourcePaper(effectiveBrief);
     let pipeline;
     const keyError = validateOpenAIKey(openAIKey());
