@@ -82,9 +82,13 @@ source counts, and source-quality findings on the final Knowledge Base / Works C
 the presenter script.
 
 The Knowledge Base step also includes a quality-system dashboard: source mix, research gaps,
-recommended research strings, and a draft evidence map. The Review step includes a course blueprint
-approval gate, so the class maker sees the module plan and slide allocation before the generator
-writes the deck.
+recommended research strings, and a draft evidence map. It now asks who owns research:
+the class creator, the class creator with Bernard's help, or Bernard completely. "Help me research"
+adds AI-guided research prompts and gap guidance while the creator still approves sources. "Assign
+to Bernard" tells `/api/generate` to run an OpenAI web-search discovery pass, add only source URLs
+that pass a readability check, then continue through source verification and QA. The Review step
+includes a course blueprint approval gate, so the class maker sees the module plan and slide
+allocation before the generator writes the deck.
 
 Technical learner background must never be used as a reason to shorten a class. If learners are
 technical, experienced, or familiar with the subject, Bernard and the generator should add more

@@ -33,7 +33,8 @@
     objectiveMode: "hybrid",
     studentLanguage: "en",
     delivery: "english",
-    aiStatus: null
+    aiStatus: null,
+    researchStatus: null
   };
 
   var template = window.BriefValidator.DEFAULT_TEMPLATE;
@@ -78,6 +79,7 @@
       knowledge_base: {
         uploads: [],
         research: {
+          owner: "creator",
           mode: "grounded",
           seed_prompts: [],
           allow_web: true,
@@ -267,17 +269,18 @@
       "<button type=\"button\" class=\"primary\" data-add-source>Add</button></div>" +
       sourceRows() + "</div>" +
       knowledgeStandardCard() +
+      researchOwnershipCard() +
       knowledgeDashboardCard() +
       researchWorkflowCard() +
       evidenceMapCard() +
       sourceCompositionCard() +
       grid(
-        selectField("Research mode", "knowledge_base.research.mode", [
-          ["none", "Uploads only"],
-          ["grounded", "Grounded in corpus"],
-          ["collaborative", "May propose new sources"]
+        selectField("Evidence boundary", "knowledge_base.research.mode", [
+          ["none", "Use only the sources I add"],
+          ["grounded", "Analyze my source list"],
+          ["collaborative", "May add verified research"]
         ]) +
-        checkboxField("Allow web research in collaborative mode", "knowledge_base.research.allow_web") +
+        checkboxField("Allow verified web research", "knowledge_base.research.allow_web") +
         inputField("Recency floor", "knowledge_base.research.recency_floor", "2024-01-01", "date") +
         selectField("Minimum source tier", "knowledge_base.credibility.min_tier", [
           ["primary", "Primary"],
@@ -504,6 +507,30 @@
       standardStat("Slide floor", tier.slides + "+") +
       "</div>",
       "full kb-standard-card");
+  }
+
+  function researchOwnershipCard() {
+    var modes = [
+      ["creator", "I will build it", "The class creator adds the source list. Bernard can still analyze it later, but does not own source gathering."],
+      ["assisted", "Help me research", "Bernard suggests search prompts, missing source types, and gaps while the class creator approves what goes into the knowledge base."],
+      ["ai", "Assign to Bernard", "Bernard is responsible for finding enough verified sources during generation, then source verification and QA still gate the class."]
+    ];
+    return card("Who owns knowledge-base research?",
+      "<p class=\"hint\">Choose the responsibility model before objectives are finalized. Final TLOs and ELOs should come after this research path is complete.</p>" +
+      "<div class=\"mode-grid research-owner-grid\">" + modes.map(function (mode) {
+        return "<label class=\"mode-card\"><input type=\"radio\" name=\"researchOwner\" data-research-owner value=\"" + mode[0] + "\"" +
+          (brief.knowledge_base.research.owner === mode[0] ? " checked" : "") + "> <span><strong>" + esc(mode[1]) +
+          "</strong><small>" + esc(mode[2]) + "</small></span></label>";
+      }).join("") + "</div>" +
+      "<div class=\"assist-actions\"><button type=\"button\" class=\"ghost\" data-research-action=\"plan\">Ask Bernard for research help</button>" +
+      "<button type=\"button\" class=\"primary\" data-research-action=\"assign\">Assign research to Bernard</button></div>" +
+      researchNotice(),
+      "full research-owner-card assist-panel");
+  }
+
+  function researchNotice() {
+    if (!state.researchStatus) return "";
+    return "<div class=\"notice" + (state.researchStatus.warn ? " warn" : "") + "\">" + esc(state.researchStatus.text) + "</div>";
   }
 
   function knowledgeDashboardCard() {
@@ -835,6 +862,12 @@
       render();
       return;
     }
+    if (target.dataset.researchOwner !== undefined) {
+      applyResearchOwner(target.value);
+      state.researchStatus = null;
+      render();
+      return;
+    }
     if (target.dataset.deepDiveMode !== undefined) {
       brief.mastery.deep_dive_density = target.value;
       syncOutput();
@@ -881,9 +914,11 @@
 
   function onClick(event) {
     var aiButton = event.target.closest("[data-ai]");
+    var researchButton = event.target.closest("[data-research-action]");
     var addButton = event.target.closest("[data-add-source]");
     var removeButton = event.target.closest("[data-remove-source]");
     if (aiButton) return draftObjectives(aiButton.dataset.ai);
+    if (researchButton) return handleResearchAction(researchButton.dataset.researchAction);
     if (addButton) return addSource();
     if (removeButton) {
       brief.knowledge_base.uploads.splice(Number(removeButton.dataset.removeSource), 1);
@@ -903,6 +938,64 @@
     var path = pathInput.value.trim();
     if (!path) return;
     brief.knowledge_base.uploads.push({ path: path, type: typeInput.value, trust: trustInput.value });
+    render();
+  }
+
+  function applyResearchOwner(owner) {
+    brief.knowledge_base.research.owner = owner;
+    if (owner === "creator") {
+      if (brief.knowledge_base.research.mode === "collaborative") brief.knowledge_base.research.mode = "grounded";
+      return;
+    }
+    brief.knowledge_base.research.mode = "collaborative";
+    brief.knowledge_base.research.allow_web = true;
+  }
+
+  function mergeResearchPrompts(prompts) {
+    var existing = brief.knowledge_base.research.seed_prompts || [];
+    brief.knowledge_base.research.seed_prompts = merge(existing, prompts).slice(0, 18);
+  }
+
+  async function handleResearchAction(action) {
+    if (action === "assign") {
+      applyResearchOwner("ai");
+      mergeResearchPrompts(researchSearchPlan());
+      state.researchStatus = {
+        text: "Research assigned to Bernard. During generation, Bernard will run verified OpenAI research, add source candidates only when URLs can be checked, and still pass source verification before a class is released."
+      };
+      render();
+      return;
+    }
+
+    applyResearchOwner("assisted");
+    mergeResearchPrompts(researchSearchPlan());
+    state.researchStatus = { text: "Asking Bernard for a research plan..." };
+    render();
+    try {
+      var response = await fetch("/api/genie", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          step: "knowledge",
+          step_label: "Knowledge base",
+          brief: brief,
+          payload: {
+            type: "research-help",
+            question: "Help me research this topic enough to build the knowledge base. Identify missing source categories, search directions, and what should not become final learning objectives until verified."
+          }
+        })
+      });
+      var payload = await response.json().catch(function () {
+        return { ok: false, errors: ["Bernard's research plan was not usable."] };
+      });
+      if (!response.ok || !payload.ok) throw new Error((payload.errors || ["Bernard could not make a research plan."]).join(" "));
+      state.researchStatus = { text: payload.answer || "Bernard added research prompts and source gaps for the knowledge base." };
+    } catch (error) {
+      state.researchStatus = {
+        warn: true,
+        text: "Bernard could not connect, so I added the standard research prompts. Check OPENAI_API_KEY and OPENAI_MODEL in Vercel if you want live AI help."
+      };
+    }
     render();
   }
 
@@ -981,7 +1074,11 @@
     var tier = classTier();
     var primaryCount = brief.knowledge_base.uploads.filter(function (source) { return source.trust === "primary"; }).length;
     if (brief.knowledge_base.uploads.length < tier.sources || primaryCount < tier.primary) {
-      warnings.push("Knowledge base does not yet meet the " + tier.label + " standard: " + tier.sources + " usable sources and " + tier.primary + " primary sources are required.");
+      if (brief.knowledge_base.research.owner === "ai") {
+        warnings.push("Bernard is assigned to close the knowledge-base gap during generation; unverifiable sources will still be rejected.");
+      } else {
+        warnings.push("Knowledge base does not yet meet the " + tier.label + " standard: " + tier.sources + " usable sources and " + tier.primary + " primary sources are required.");
+      }
     }
     if (!brief.objectives.terminal.length) warnings.push("Add an initial learning target if the creator already knows one.");
     if (!brief.objectives.enabling.length) warnings.push("Initial enabling skills are optional now; final ELOs should be produced after knowledge-base analysis.");
