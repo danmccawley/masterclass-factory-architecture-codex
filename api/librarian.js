@@ -64,10 +64,19 @@ function readSavedClasses() {
     .map((entry) => {
       const slug = entry.name;
       const sourcePath = path.join(root, slug, "source.js");
+      const recordPath = path.join(root, slug, "class-record.json");
       if (!fs.existsSync(sourcePath)) return null;
       try {
         const paper = parseSourcePaper(fs.readFileSync(sourcePath, "utf8"));
         if (!paper || !Array.isArray(paper.sections)) return null;
+        let record = null;
+        if (fs.existsSync(recordPath)) {
+          try {
+            record = JSON.parse(fs.readFileSync(recordPath, "utf8"));
+          } catch (error) {
+            record = { error: String(error && error.message || error) };
+          }
+        }
         const sources = paper.sections.map((section) => {
           const urls = extractUrls(section);
           const quality = sourceQuality(section.body);
@@ -84,6 +93,11 @@ function readSavedClasses() {
           slug,
           title: paper.title || slug,
           cite: paper.cite || "",
+          class_tier: record && record.class_tier ? record.class_tier.label : "",
+          quality_score: record && record.quality ? record.quality.score : null,
+          quality_status: record && record.quality ? record.quality.status : "",
+          exports: record && Array.isArray(record.exports) ? record.exports : [],
+          class_record: record,
           source_count: sources.length,
           url_count: sources.reduce((sum, source) => sum + source.urls.length, 0),
           sources
@@ -177,6 +191,10 @@ function reviewReasons(klass, previousMap) {
   const reasons = [];
   if (klass.error) reasons.push("source.js could not be parsed");
   if (!klass.source_count) reasons.push("no source paper found");
+  if (klass.class_record && klass.class_record.error) reasons.push("class-record.json could not be parsed");
+  if (klass.class_record && klass.class_record.knowledge_standard && klass.class_record.knowledge_standard.ok === false) reasons.push("knowledge standard did not pass at generation time");
+  if (Number.isFinite(klass.quality_score) && klass.quality_score < 85) reasons.push("quality score below reserve-library target");
+  if (klass.exports && klass.exports.length < 4) reasons.push("supporting export package is incomplete");
   if (!klass.url_count) reasons.push("no live source URLs to monitor");
   (klass.url_checks || []).forEach((check) => {
     const previous = previousMap[check.url];

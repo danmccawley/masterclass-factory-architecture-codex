@@ -267,6 +267,9 @@
       "<button type=\"button\" class=\"primary\" data-add-source>Add</button></div>" +
       sourceRows() + "</div>" +
       knowledgeStandardCard() +
+      knowledgeDashboardCard() +
+      researchWorkflowCard() +
+      evidenceMapCard() +
       sourceCompositionCard() +
       grid(
         selectField("Research mode", "knowledge_base.research.mode", [
@@ -401,6 +404,7 @@
         "<div><span class=\"mini-label\">Launch link</span><a href=\"" + attr(launchUrl) + "\" target=\"_blank\" rel=\"noreferrer\">" + esc(launchUrl) + "</a></div></div>") +
       "<div class=\"summary-card qr-card\"><h3>QR code</h3><p class=\"hint\">This code opens the Vercel launch link. After the deck generator is connected, this same area will point learners to the generated masterclass.</p>" +
       "<img class=\"qr-image large\" alt=\"QR code for the Vercel launch link\" src=\"" + attr(qrUrl(launchUrl)) + "\"></div>" +
+      courseBlueprintCard() +
       card("Generator readiness",
         (result.ok ? "<div class=\"notice\">The class setup is ready for the generator.</div>" : "<div class=\"notice warn\">Fix the listed setup errors before starting the generator.</div>") +
         errorList(result.errors)) +
@@ -502,6 +506,184 @@
       "full kb-standard-card");
   }
 
+  function knowledgeDashboardCard() {
+    var score = knowledgeScore();
+    var mix = sourceMix();
+    var gaps = knowledgeGaps();
+    return card("Knowledge Base Standard dashboard",
+      "<div class=\"kb-score-row\"><div class=\"kb-score\"><strong>" + score.score + "</strong><span>/100</span></div>" +
+      "<div><h4>" + esc(score.label) + "</h4><p class=\"hint\">" + esc(score.note) + "</p></div></div>" +
+      "<div class=\"standard-grid\">" +
+      standardStat("Standards", mix.standards) +
+      standardStat("Technical guides", mix.technical) +
+      standardStat("Safety / compliance", mix.safety) +
+      standardStat("Training / certification", mix.training) +
+      standardStat("Current practice", mix.practice) +
+      "</div>" +
+      "<div class=\"kb-gap-list\"><strong>Bernard should resolve these before final objectives:</strong>" +
+      "<ul>" + gaps.map(function (gap) { return "<li>" + esc(gap) + "</li>"; }).join("") + "</ul></div>",
+      "full kb-dashboard-card");
+  }
+
+  function researchWorkflowCard() {
+    var tier = classTier();
+    var searches = researchSearchPlan();
+    return card("Research methodology",
+      "<p class=\"hint\">This is the research sequence Bernard must satisfy before the class becomes a finished masterclass. The generator can draft only inside the approved evidence boundary.</p>" +
+      "<div class=\"analysis-flow research-flow\"><span>Collect</span><span>Screen</span><span>Map</span><span>Approve</span></div>" +
+      "<div class=\"method-grid\">" +
+      "<div><h4>Required collection</h4><p>" + esc(tier.sources + " usable sources, including " + tier.primary + " primary sources.") + "</p></div>" +
+      "<div><h4>Screening test</h4><p>Reject weak, outdated, unverifiable, duplicate, or vendor-only sources unless they are clearly labeled as context.</p></div>" +
+      "<div><h4>Evidence map</h4><p>Every major objective, module, safety point, and assessment item needs a source anchor or a visible research gap.</p></div>" +
+      "</div>" +
+      "<details class=\"source-metric\" open><summary>Recommended research strings</summary><ul>" +
+      searches.map(function (item) { return "<li>" + esc(item) + "</li>"; }).join("") +
+      "</ul></details>",
+      "full kb-method-card");
+  }
+
+  function evidenceMapCard() {
+    var rows = evidenceRows();
+    return card("Evidence map",
+      "<p class=\"hint\">This draft map shows what the knowledge base can support right now. Rows marked as gaps should be researched before Bernard finalizes TLOs, ELOs, and slides.</p>" +
+      "<div class=\"evidence-table\">" + rows.map(function (row) {
+        return "<div class=\"evidence-row " + (row.ok ? "ok" : "warn") + "\">" +
+          "<div><span class=\"mini-label\">" + esc(row.kind) + "</span><strong>" + esc(row.claim) + "</strong></div>" +
+          "<div>" + row.sources.map(function (source) { return "<span class=\"source-chip\">" + esc(source) + "</span>"; }).join("") + "</div>" +
+          "<p>" + esc(row.note) + "</p></div>";
+      }).join("") + "</div>",
+      "full evidence-map-card");
+  }
+
+  function sourceMix() {
+    var counts = { standards: 0, technical: 0, safety: 0, training: 0, practice: 0 };
+    (brief.knowledge_base.uploads || []).forEach(function (source) {
+      var category = classifySource(source);
+      counts[category] += 1;
+    });
+    return counts;
+  }
+
+  function classifySource(source) {
+    var combined = [
+      source && source.type,
+      source && source.path
+    ].join(" ").toLowerCase();
+    if (/standard|ansi|tia|bicsi|iso|ieee|nec|nfpa|code|regulation/.test(combined)) return "standards";
+    if (/safety|osha|hazard|ppe|compliance|risk|procedure/.test(combined)) return "safety";
+    if (/certification|training|curriculum|course|credential|exam/.test(combined)) return "training";
+    if (/manufacturer|install guide|installation guide|manual|spec|datasheet|technical|corning|commscope|belden|panduit/.test(combined)) return "technical";
+    return "practice";
+  }
+
+  function knowledgeScore() {
+    var tier = classTier();
+    var uploads = brief.knowledge_base.uploads || [];
+    var primary = uploads.filter(function (source) { return source.trust === "primary"; }).length;
+    var mix = sourceMix();
+    var sourcePart = Math.min(1, uploads.length / Math.max(1, tier.sources)) * 35;
+    var primaryPart = Math.min(1, primary / Math.max(1, tier.primary)) * 25;
+    var mixHits = ["standards", "technical", "safety", "training", "practice"].filter(function (key) { return mix[key] > 0; }).length;
+    var mixPart = Math.min(1, mixHits / 4) * 25;
+    var rulePart = Math.min(10, (brief.knowledge_base.credibility.require_two_sources_for || []).length * 3.5);
+    var recencyPart = brief.knowledge_base.research.recency_floor ? 5 : 0;
+    var score = Math.round(sourcePart + primaryPart + mixPart + rulePart + recencyPart);
+    return {
+      score: score,
+      label: score >= 90 ? "Ready for masterclass generation" : score >= 70 ? "Close, but review gaps" : "Not ready yet",
+      note: score >= 90
+        ? "The source list meets the selected tier and has enough mix for a serious class."
+        : "Keep building the knowledge base before treating the output as final."
+    };
+  }
+
+  function knowledgeGaps() {
+    var tier = classTier();
+    var uploads = brief.knowledge_base.uploads || [];
+    var primary = uploads.filter(function (source) { return source.trust === "primary"; }).length;
+    var mix = sourceMix();
+    var gaps = [];
+    if (uploads.length < tier.sources) gaps.push("Add " + (tier.sources - uploads.length) + " more usable sources for the selected tier.");
+    if (primary < tier.primary) gaps.push("Add " + (tier.primary - primary) + " more primary sources.");
+    if (!mix.standards) gaps.push("Add at least one standards, code, regulator, or governing-body source where relevant.");
+    if (!mix.technical) gaps.push("Add manufacturer, technical manual, specification, or install-guide evidence.");
+    if (!mix.safety) gaps.push("Add safety, compliance, risk, or procedure evidence for technical classes.");
+    if (!brief.knowledge_base.research.seed_prompts.length) gaps.push("Add research seed prompts so Bernard knows what to investigate.");
+    if (!gaps.length) gaps.push("No major source-floor gaps are visible. The generator still verifies citations independently.");
+    return gaps.slice(0, 6);
+  }
+
+  function researchSearchPlan() {
+    var title = brief.meta.title || "the class topic";
+    return [
+      title + " standards governing body official guidance",
+      title + " manufacturer installation guide technical manual",
+      title + " safety procedure hazards PPE checklist",
+      title + " certification training objectives assessment",
+      title + " current best practices lessons learned",
+      title + " common errors troubleshooting quality assurance"
+    ];
+  }
+
+  function evidenceRows() {
+    var uploads = brief.knowledge_base.uploads || [];
+    var sourceLabels = uploads.map(function (source, index) { return "S" + String(index + 1).padStart(2, "0") + " " + sourceLabelFor(source.path || "Source"); });
+    var terminal = brief.objectives.terminal.length ? brief.objectives.terminal : ["Final terminal learning objectives after knowledge-base analysis"];
+    var enabling = brief.objectives.enabling.length ? brief.objectives.enabling.slice(0, 3) : ["Enabling skills after source analysis"];
+    var rows = [];
+    terminal.slice(0, 3).forEach(function (item, index) {
+      rows.push(evidenceRow("Terminal outcome", item, sourceLabels.slice(index, index + 3)));
+    });
+    enabling.slice(0, 4).forEach(function (item, index) {
+      rows.push(evidenceRow("Enabling skill", item, sourceLabels.slice(index + 1, index + 4)));
+    });
+    rows.push(evidenceRow("Safety / quality risk", "Claims involving risk, safety, standards, or procedure need two independent sources.", sourceLabels.filter(function (_, index) { return index % 2 === 0; }).slice(0, 4)));
+    rows.push(evidenceRow("Out of scope", brief.objectives.out_of_scope.join("; ") || "Unsupported claims and topics outside the approved source boundary.", sourceLabels.slice(0, 2)));
+    return rows.slice(0, 8);
+  }
+
+  function evidenceRow(kind, claim, sources) {
+    var ok = sources && sources.length > 0;
+    return {
+      kind: kind,
+      claim: claim,
+      sources: ok ? sources : ["Gap"],
+      ok: ok,
+      note: ok ? "Mapped to the current source list for verification." : "Needs source evidence before this can become final class content."
+    };
+  }
+
+  function courseBlueprintCard() {
+    var modules = blueprintModules();
+    return card("Course blueprint approval",
+      "<p class=\"hint\">Approve the architecture before the generator writes slides. This is the course plan Bernard and the generator should follow.</p>" +
+      "<div class=\"blueprint-grid\">" + modules.map(function (module) {
+        return "<div class=\"blueprint-module\"><span>" + esc(module.slides + " slides") + "</span><strong>" + esc(module.title) + "</strong><p>" + esc(module.goal) + "</p></div>";
+      }).join("") + "</div>" +
+      "<label class=\"choice blueprint-approval\"><input type=\"checkbox\" data-blueprint-approved> <span>I approve this blueprint for generation.</span></label>",
+      "full blueprint-card");
+  }
+
+  function blueprintModules() {
+    var tier = classTier();
+    var total = Math.max(tier.slides, Number(brief.length.slide_budget) || tier.slides);
+    var teaching = Math.max(1, total - 1);
+    var weights = [
+      ["Orientation and learner baseline", 0.08, "Set purpose, audience floor, assumptions, and success criteria."],
+      ["Knowledge base and source boundary", 0.12, "Show what sources can support, what is missing, and what must not be invented."],
+      ["Core concepts and vocabulary", 0.18, "Teach essential terms, mental models, and decision points."],
+      ["Guided practice and examples", 0.22, "Work through realistic cases, mistakes, and checks for understanding."],
+      ["Deep dives, edge cases, and quality risks", 0.22, "Add expert detail, safety cautions, disagreement, and richer transfer examples."],
+      ["Assessment, transfer, and works cited", 0.18, "Prove mastery, capture participation, and close with sources and next research needs."]
+    ];
+    var used = 0;
+    return weights.map(function (item, index) {
+      var slides = index === weights.length - 1 ? Math.max(1, teaching - used) : Math.max(1, Math.round(teaching * item[1]));
+      used += slides;
+      return { title: item[0], slides: slides, goal: item[2] };
+    });
+  }
+
   function standardStat(label, value) {
     return "<div class=\"standard-stat\"><span>" + esc(label) + "</span><strong>" + esc(value) + "</strong></div>";
   }
@@ -519,7 +701,7 @@
       var status = link ? "Link available" : "Queued for ingestion";
       if (media) status = link ? "Media link available" : "Media file queued";
       return "<div class=\"kb-source-card\">" +
-        "<div class=\"kb-source-top\"><span>S" + String(index + 1).padStart(2, "0") + "</span><strong>" + esc(labelFor(path)) + "</strong></div>" +
+        "<div class=\"kb-source-top\"><span>S" + String(index + 1).padStart(2, "0") + "</span><strong>" + esc(sourceLabelFor(path)) + "</strong></div>" +
         "<div class=\"kb-source-path\">" + (link ? "<a href=\"" + attr(path) + "\" target=\"_blank\" rel=\"noreferrer\">" + esc(path) + "</a>" : esc(path)) + "</div>" +
         "<div class=\"kb-source-meta\"><span>Type: " + esc(optionLabel(sourceTypeOptions(), type)) + "</span><span>Creator ranking: " + esc(optionLabel(sourceTrustOptions(), trust)) + "</span><span>" + esc(status) + "</span></div>" +
         "</div>";
@@ -592,7 +774,11 @@
       ["video", "Video"],
       ["audio", "Audio"],
       ["notes", "Notes"],
-      ["data", "Data"]
+      ["data", "Data"],
+      ["standard", "Standard / code"],
+      ["manufacturer guide", "Manufacturer / technical guide"],
+      ["safety procedure", "Safety / compliance procedure"],
+      ["certification training", "Training / certification"]
     ];
   }
 
@@ -909,13 +1095,13 @@
   }
 
   function languageSummary() {
-    var language = labelFor(languages, state.studentLanguage);
+    var language = optionLabel(languages, state.studentLanguage);
     if (state.delivery === "split" && state.studentLanguage !== "en") return "English + " + language + " split screen";
     if (state.delivery === "translated" && state.studentLanguage !== "en") return language + " translation";
     return "English";
   }
 
-  function labelFor(options, value) {
+  function optionLabel(options, value) {
     var match = options.find(function (option) { return option[0] === value; });
     return match ? match[1] : value;
   }
@@ -948,7 +1134,7 @@
     return "document";
   }
 
-  function labelFor(value) {
+  function sourceLabelFor(value) {
     try {
       if (/^https?:\/\//i.test(value)) return new URL(value).hostname.replace(/^www\./, "");
     } catch (error) {}

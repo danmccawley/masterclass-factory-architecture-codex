@@ -45,6 +45,7 @@ quality summaries, and TTS use these Vercel environment variables:
 ```bash
 OPENAI_API_KEY=your OpenAI API key
 OPENAI_MODEL=gpt-5.5 # optional; GPT-5.5 is already the built-in default
+POLL_ADMIN_KEY=owner-only admin key for /api/admin
 ```
 
 If `OPENAI_MODEL` is not set, the app tries `gpt-5.5` first. If that model is unavailable to
@@ -80,6 +81,11 @@ returning `QA PASS`. Generated classes also show the selected tier, required sou
 source counts, and source-quality findings on the final Knowledge Base / Works Cited slide and in
 the presenter script.
 
+The Knowledge Base step also includes a quality-system dashboard: source mix, research gaps,
+recommended research strings, and a draft evidence map. The Review step includes a course blueprint
+approval gate, so the class maker sees the module plan and slide allocation before the generator
+writes the deck.
+
 Technical learner background must never be used as a reason to shorten a class. If learners are
 technical, experienced, or familiar with the subject, Bernard and the generator should add more
 depth, edge cases, source analysis, practice, transfer, and advanced examples while still respecting
@@ -97,10 +103,18 @@ word count and deep-dive word count before returning `QA PASS`.
 The returned deploy bundle contains the topic-specific `index.html`, `engine.js`,
 `navscrubber.js`, `content.js`, `glossary.js`, `source.js`, serverless backends, and presenter
 script. The generated content layer stays data-only; the engine and shell remain topic-agnostic.
+It also includes `student-handout.md`, `facilitator-guide.md`, `quiz-answer-key.md`,
+`evidence-map.json`, `class-blueprint.json`, and `class-record.json`.
+
+## Owner/Admin Path
+`/api/admin?key=<POLL_ADMIN_KEY>` returns an owner-only JSON summary of generated classes, quality
+scores, source counts, export completeness, and classes needing attention. If `POLL_ADMIN_KEY` is
+not set, the endpoint refuses to run.
 
 ## Knowledge Librarian
 Saved masterclasses can be treated as reserve items. The Librarian endpoint:
 - reads each saved class source paper from `classes/<slug>/source.js`
+- reads `classes/<slug>/class-record.json` when present
 - reports credibility and reliability fields from the Works Cited / Knowledge Base slide data
 - checks source URLs for availability, `ETag`, and `Last-Modified` changes
 - flags classes that need review or regeneration
@@ -120,8 +134,9 @@ moving through the deck and participating in polls, word clouds, quizzes, feedba
 questions. If KV is configured, poll/word/feedback signals aggregate across devices; otherwise the
 report still works from the current learner's browser. `/api/generate` also runs a build-time
 quality gate before handing back a class, so source verification, schema QA, slide budget fidelity,
-content density, deep-dive coverage, assessment coverage, and participation design are checked before
-publish.
+research rigor, evidence-map coverage, blueprint completeness, content density, deep-dive coverage,
+assessment coverage, and participation design are checked before publish. The in-class Quality tool
+also reports build-integrity signals from `CLASS_STANDARD`, `CLASS_BLUEPRINT`, and `EVIDENCE_MAP`.
 
 ## To author a real deck
 Replace the `GENERATED PER DECK` region of `build_content.py` (the `slide(...)`/`quiz_slide(...)`

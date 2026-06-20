@@ -448,7 +448,7 @@ pre {
 
 .source-row {
   display: grid;
-  grid-template-columns: minmax(0, 1.3fr) 160px 150px 42px;
+  grid-template-columns: minmax(0, 1.3fr) minmax(180px, 0.45fr) 150px 42px;
   gap: 8px;
   align-items: center;
 }
@@ -694,6 +694,157 @@ pre {
 .standard-status span {
   color: inherit;
   line-height: 1.45;
+}
+
+.kb-score-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+}
+
+.kb-score {
+  display: grid;
+  place-items: center;
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, rgba(29, 159, 194, 0.18), rgba(196, 160, 107, 0.18));
+  border: 1px solid rgba(29, 159, 194, 0.28);
+}
+
+.kb-score strong {
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 2.2rem;
+  line-height: 1;
+}
+
+.kb-score span {
+  color: var(--ink-soft);
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.72rem;
+}
+
+.kb-score-row h4,
+.method-grid h4 {
+  margin: 0 0 4px;
+  font-size: 0.95rem;
+}
+
+.kb-gap-list {
+  display: grid;
+  gap: 8px;
+  padding: 13px;
+  border: 1px solid rgba(196, 160, 107, 0.24);
+  border-radius: var(--radius-sm);
+  background: rgba(196, 160, 107, 0.1);
+}
+
+.kb-gap-list ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.method-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+  gap: 10px;
+}
+
+.method-grid > div {
+  padding: 13px;
+  border: 1px solid rgba(29, 159, 194, 0.18);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 253, 247, 0.62);
+}
+
+.method-grid p {
+  margin: 0;
+  color: var(--ink-soft);
+  line-height: 1.45;
+}
+
+.research-flow {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.evidence-table,
+.blueprint-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.evidence-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(130px, 0.8fr);
+  gap: 10px;
+  align-items: start;
+  padding: 12px;
+  border: 1px solid rgba(29, 159, 194, 0.2);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 253, 247, 0.66);
+}
+
+.evidence-row.warn {
+  border-color: rgba(154, 92, 69, 0.22);
+  background: rgba(154, 92, 69, 0.08);
+}
+
+.evidence-row strong {
+  display: block;
+  margin-top: 2px;
+  overflow-wrap: anywhere;
+}
+
+.evidence-row p {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
+.source-chip {
+  display: inline-flex;
+  margin: 0 5px 5px 0;
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: rgba(29, 159, 194, 0.12);
+  color: var(--water-deep);
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.blueprint-grid {
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+}
+
+.blueprint-module {
+  display: grid;
+  gap: 7px;
+  padding: 13px;
+  border: 1px solid rgba(29, 159, 194, 0.18);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 253, 247, 0.66);
+}
+
+.blueprint-module span {
+  color: var(--water-deep);
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.blueprint-module p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
+.blueprint-approval {
+  margin-top: 6px;
 }
 
 .wizard-nav,

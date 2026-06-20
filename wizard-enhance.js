@@ -20,6 +20,7 @@
     { label: "Order received", detail: "Validating the class setup and generator contract." },
     { label: "Knowledge base", detail: "Building the source list and source-quality report." },
     { label: "Research kitchen", detail: "Analyzing sources and shaping source-grounded objectives." },
+    { label: "Blueprint check", detail: "Confirming the approved course architecture and slide allocation." },
     { label: "Lesson recipe", detail: "Sequencing the lesson map, checks, and deep dives." },
     { label: "Slide oven", detail: "Writing every teaching slide required by the slide budget." },
     { label: "Source check", detail: "Checking citations against the approved knowledge base." },
@@ -48,6 +49,9 @@
     var downloadPreview = closest(event.target, "[data-download-preview]");
     var downloadBundle = closest(event.target, "[data-download-bundle]");
     var downloadScript = closest(event.target, "[data-download-script]");
+    var downloadHandout = closest(event.target, "[data-download-handout]");
+    var downloadGuide = closest(event.target, "[data-download-guide]");
+    var downloadAnswerKey = closest(event.target, "[data-download-answer-key]");
     var copyClassUrl = closest(event.target, "[data-copy-class-url]");
     var closeTracker = closest(event.target, "[data-close-tracker]");
     var mobileMenu = closest(event.target, "#mobileMenuButton");
@@ -127,6 +131,27 @@
       event.preventDefault();
       event.stopImmediatePropagation();
       downloadPresenterScript();
+      return;
+    }
+
+    if (downloadHandout) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      downloadBundleFile("student-handout.md", classSlug() + "-student-handout.md", "text/markdown");
+      return;
+    }
+
+    if (downloadGuide) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      downloadBundleFile("facilitator-guide.md", classSlug() + "-facilitator-guide.md", "text/markdown");
+      return;
+    }
+
+    if (downloadAnswerKey) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      downloadBundleFile("quiz-answer-key.md", classSlug() + "-quiz-answer-key.md", "text/markdown");
       return;
     }
 
@@ -482,6 +507,7 @@
     var densityText = Number(generation.average_visible_slide_words || 0) + " words/slide; " + Number(generation.average_deep_dive_words || 0) + " words/deep dive";
     var qualityText = quality.score ? quality.score + " / 100 (" + (quality.status || "checked") + ")" : "Not run";
     var standardText = standard.tier ? (standard.tier.label + " · " + (standard.ok ? "KB PASS" : "KB needs work")) : "Not checked";
+    var exportsText = (generation.exports || (generation.bundle && generation.bundle.manifest && generation.bundle.manifest.exports) || []).join(", ");
     var stages = (generation.stage_reports || []).map(function (stage) {
       return "<li><strong>" + esc(stage.stage || "stage") + ":</strong> " + (stage.ok ? "passed" : esc(stage.message || "used fallback")) + "</li>";
     }).join("");
@@ -500,7 +526,8 @@
       "<div class=\"generator-status\"><div class=\"notice\"><strong>QA:</strong> " + esc(generation.qa || "Not run") + " · <strong>Knowledge standard:</strong> " + esc(standardText) + " · <strong>Source check:</strong> " + (generation.source_verify && generation.source_verify.ok ? "PASS" : "Not run") + " · <strong>Quality:</strong> " + esc(qualityText) + " · <strong>Slides:</strong> " + esc(slideText) + " · <strong>Deep dives:</strong> " + esc(deepDiveText) + " · <strong>Depth:</strong> " + esc(densityText) + " · <strong>Mode:</strong> " + esc(generation.mode || "unknown") + "</div>" +
       publishNotice +
       (classUrl ? "<div class=\"class-url-card\"><span class=\"mini-label\">Generated class URL</span><a href=\"" + attr(classUrl) + "\" target=\"_blank\" rel=\"noreferrer\">" + esc(classUrl) + "</a><img class=\"qr-image\" alt=\"QR code for generated class\" src=\"/api/qr?url=" + encodeURIComponent(classUrl) + "\"><button type=\"button\" class=\"ghost\" data-copy-class-url>Copy class link</button></div>" : "") +
-      "<div class=\"generated-actions\"><button type=\"button\" class=\"primary\" data-open-preview>Open preview</button><button type=\"button\" class=\"ghost\" data-download-preview>Download preview HTML</button><button type=\"button\" class=\"ghost\" data-download-bundle>Download deploy bundle</button><button type=\"button\" class=\"ghost\" data-download-script>Download presenter script</button></div>" +
+      (exportsText ? "<div class=\"notice\"><strong>Exports:</strong> " + esc(exportsText) + "</div>" : "") +
+      "<div class=\"generated-actions\"><button type=\"button\" class=\"primary\" data-open-preview>Open preview</button><button type=\"button\" class=\"ghost\" data-download-handout>Download student handout</button><button type=\"button\" class=\"ghost\" data-download-guide>Download facilitator guide</button><button type=\"button\" class=\"ghost\" data-download-answer-key>Download answer key</button><button type=\"button\" class=\"ghost\" data-download-preview>Download preview HTML</button><button type=\"button\" class=\"ghost\" data-download-bundle>Download deploy bundle</button><button type=\"button\" class=\"ghost\" data-download-script>Download presenter script</button></div>" +
       (stages ? "<details class=\"generated-meta\"><summary>Pipeline stages</summary><ul>" + stages + "</ul></details>" : "") +
       (quality.score ? "<details class=\"generated-meta\"><summary>Quality audit</summary>" + qualityHtml(quality) + "</details>" : "") +
       (warnings ? "<details class=\"generated-meta\"><summary>Warnings and source notes</summary><ul>" + warnings + "</ul></details>" : "") +
@@ -610,6 +637,14 @@
   }
 
   async function runGenerator() {
+    var approval = form.querySelector("[data-blueprint-approved]");
+    if (approval && !approval.checked) {
+      var message = "Approve the course blueprint first. That keeps the generator from writing slides before the class architecture is accepted.";
+      if (validationBox) validationBox.innerHTML = "<div class=\"notice warn\">" + esc(message) + "</div>";
+      setGenie(message);
+      try { approval.scrollIntoView({ behavior: "smooth", block: "center" }); } catch (error) {}
+      return;
+    }
     if (validationBox) validationBox.innerHTML = "<div class=\"notice\">Starting the generator...</div>";
     startGeneratorTracker();
     try {
@@ -617,7 +652,7 @@
       await fetch("/api/brief", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(parseBrief()) });
       setGeneratorTrackerStage(1, "Building the knowledge base and source-quality list.");
       var response = await fetch("/api/generate", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ brief: parseBrief(), publish: true }) });
-      setGeneratorTrackerStage(5, "Running source verification and QA.");
+      setGeneratorTrackerStage(6, "Running source verification and QA.");
       var payload = await response.json();
       if (!response.ok || !payload.ok) throw new Error((payload.errors || ["Generator failed."]).join(" "));
       generation = payload;
@@ -661,6 +696,12 @@
   function downloadPresenterScript() {
     if (!generation || !generation.presenter_script) return setGenie("Generate a masterclass first, then the presenter script can be downloaded.");
     downloadText(classSlug() + "-presenter-script.md", generation.presenter_script + "\n", "text/markdown");
+  }
+
+  function downloadBundleFile(name, filename, type) {
+    var files = generation && generation.bundle && generation.bundle.files;
+    if (!files || !files[name]) return setGenie("Generate a masterclass first, then " + name + " can be downloaded.");
+    downloadText(filename || name, files[name], type || "text/plain");
   }
 
   async function copyGeneratedClassUrl() {

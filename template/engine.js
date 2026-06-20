@@ -1119,6 +1119,10 @@
       quiz_count: document.querySelectorAll("[data-quiz]").length,
       poll_defs: POLLS,
       word_defs: WORDS,
+      class_standard: window.CLASS_STANDARD || null,
+      class_blueprint: window.CLASS_BLUEPRINT || null,
+      evidence_map: window.EVIDENCE_MAP || [],
+      bernard_config: window.BERNARD_CONFIG || null,
       local: PARTICIPATION
     };
   }
@@ -1148,6 +1152,7 @@
     var box = document.getElementById("qualityReport");
     if(!box) return;
     var p = report.participation || {};
+    var integrity = report.class_integrity || {};
     var q = report.quality || {};
     var recs = (report.recommendations || []).map(function(item){ return "<li>"+escText(item)+"</li>"; }).join("");
     var ai = report.ai && report.ai.available && report.ai.report
@@ -1162,6 +1167,9 @@
         qualityMetric("Quiz attempts", p.quiz_attempts || 0) +
         qualityMetric("Bernard questions", p.chat_questions || 0) +
         qualityMetric("Feedback items", p.feedback_items || 0) +
+        qualityMetric("Class tier", ((window.CLASS_STANDARD && window.CLASS_STANDARD.tier && window.CLASS_STANDARD.tier.label) || (window.DECK_META && window.DECK_META.class_tier) || "Not set")) +
+        qualityMetric("Evidence rows", (window.EVIDENCE_MAP || []).length) +
+        qualityMetric("Build integrity", (integrity.score || 0) + " / 100") +
       "</div>" +
       ai +
       (recs ? "<h4>Recommended next moves</h4><ul class='quality-list'>" + recs + "</ul>" : "");

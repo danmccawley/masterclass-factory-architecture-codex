@@ -913,6 +913,81 @@ function buildKnowledgeBaseReportSlide(brief, sourcePaper) {
   };
 }
 
+function sourceTitleMap(sourcePaper) {
+  const map = {};
+  (sourcePaper.sections || []).forEach((section) => {
+    map[section.id] = section.title || section.id;
+  });
+  return map;
+}
+
+function buildEvidenceMap(brief, sourcePaper, objectives, lessonPlan) {
+  const sources = sourcePaper.sections || [];
+  const titles = sourceTitleMap(sourcePaper);
+  const fallbackIds = sources.slice(0, 4).map((section) => section.id);
+  const rows = [];
+  function add(kind, claim, ids, status) {
+    const usable = validSources(ids && ids.length ? ids : fallbackIds, sourcePaper);
+    rows.push({
+      kind,
+      claim,
+      source_ids: usable,
+      source_titles: usable.map((id) => titles[id] || id),
+      status: status || (usable.length ? "mapped" : "gap"),
+      finding: usable.length
+        ? "Mapped to approved source-paper sections for source verification."
+        : "Research gap: add evidence before treating this as final class content."
+    });
+  }
+  list(objectives.terminal, fallbackObjectives(brief).terminal, 5).forEach((item, index) => {
+    add("terminal objective", item, fallbackIds.slice(index, index + 3));
+  });
+  list(objectives.enabling, fallbackObjectives(brief).enabling, 12).slice(0, 8).forEach((item, index) => {
+    add("enabling objective", item, fallbackIds.slice(index + 1, index + 4));
+  });
+  (lessonPlan || []).slice(0, 12).forEach((section, index) => {
+    add("lesson section", section.title || section.teaching_goal || `Lesson section ${index + 1}`, section.source_ids || fallbackIds);
+  });
+  add("safety / quality claims", "Statistics, standards, safety procedures, contested points, and forward-looking claims require corroboration.", fallbackIds.slice(0, 4), "corroboration-required");
+  add("out of scope", list(objectives.out_of_scope, fallbackObjectives(brief).out_of_scope, 5).join("; "), fallbackIds.slice(0, 2), "scope-boundary");
+  return rows;
+}
+
+function buildCourseBlueprint(brief, generatedShell) {
+  const tier = classTierSpec(brief);
+  const total = totalSlideTarget(brief);
+  const teaching = Math.max(1, total - 1);
+  const standard = knowledgeBaseStandard(brief);
+  const modules = [
+    ["Orientation and learner baseline", 0.08, "Set the purpose, audience floor, assumptions, and mastery target."],
+    ["Knowledge base and source boundary", 0.12, "Show what the approved sources support, what is missing, and what must not be invented."],
+    ["Core concepts and vocabulary", 0.18, "Teach the essential terms, mental models, and decision points."],
+    ["Guided practice and examples", 0.22, "Work through realistic cases, common mistakes, checks, and facilitator prompts."],
+    ["Deep dives, edge cases, and quality risks", 0.22, "Add expert detail, safety cautions, disagreements, and advanced transfer examples."],
+    ["Assessment, transfer, and works cited", 0.18, "Prove mastery, capture participation, and close with source transparency."]
+  ];
+  let used = 0;
+  return {
+    tier: tier.label,
+    slide_target: total,
+    teaching_slide_target: teaching,
+    knowledge_standard: standard,
+    approved_before_generation: true,
+    modules: modules.map((item, index) => {
+      const slides = index === modules.length - 1 ? Math.max(1, teaching - used) : Math.max(1, Math.round(teaching * item[1]));
+      used += slides;
+      return {
+        order: index + 1,
+        title: item[0],
+        slide_budget: slides,
+        goal: item[2],
+        deep_dive_expectation: wantsDeepDives(brief) ? "substantive deep dives where required by tier and setting" : "no deep dives selected"
+      };
+    }),
+    lesson_sections: generatedShell && generatedShell.lesson_plan ? generatedShell.lesson_plan.length : 0
+  };
+}
+
 function fallbackAssessment(brief) {
   const title = brief.meta.title || "this class";
   return {
@@ -1483,6 +1558,12 @@ function buildGeneratedDeck(brief, sourcePaper, pipeline) {
     out_of_scope: list(pipeline.curriculum.out_of_scope, fallbackObjectives(brief).out_of_scope, 8)
   } : fallbackObjectives(brief);
 
+  const lessonPlan = pipeline && pipeline.curriculum && Array.isArray(pipeline.curriculum.lesson_sections)
+    ? pipeline.curriculum.lesson_sections
+    : slideDrafts.map((slide) => ({ id: slide.id, title: slide.title, teaching_goal: slide.takeaway, source_ids: slide.source_ids }));
+  const evidenceMap = buildEvidenceMap(brief, sourcePaper, objectives, lessonPlan);
+  const blueprint = buildCourseBlueprint(brief, { lesson_plan: lessonPlan });
+
   return {
     slides,
     slideDrafts,
@@ -1493,17 +1574,22 @@ function buildGeneratedDeck(brief, sourcePaper, pipeline) {
     quizzes: assessment.quizzes,
     glossary,
     objectives,
-    lesson_plan: pipeline && pipeline.curriculum && Array.isArray(pipeline.curriculum.lesson_sections)
-      ? pipeline.curriculum.lesson_sections
-      : slideDrafts.map((slide) => ({ id: slide.id, title: slide.title, teaching_goal: slide.takeaway, source_ids: slide.source_ids }))
+    lesson_plan: lessonPlan,
+    evidence_map: evidenceMap,
+    course_blueprint: blueprint
   };
 }
 
 function makeContentJs(brief, generated) {
+  const standard = knowledgeBaseStandard(brief);
   return [
     `/* ${brief.meta.title || "Untitled Masterclass"} - generated content layer. */`,
     `window.CLASS_TITLE = ${js(brief.meta.title || "Untitled Masterclass")};`,
     `window.DECK_META = ${JSON.stringify({ slug: brief.meta.slug, generated: new Date().toISOString(), language: brief.language.primary, class_tier: classTierSpec(brief).label }, null, 2)};`,
+    `window.CLASS_STANDARD = ${JSON.stringify(standard, null, 2)};`,
+    `window.CLASS_BLUEPRINT = ${JSON.stringify(generated.course_blueprint, null, 2)};`,
+    `window.EVIDENCE_MAP = ${JSON.stringify(generated.evidence_map, null, 2)};`,
+    `window.BERNARD_CONFIG = ${JSON.stringify({ name: "Bernard", wake_word: "Bernard", voice: "English accent when supported by the browser", scope: "approved class sources and current slide" }, null, 2)};`,
     `window.SLIDES = ${JSON.stringify(generated.slides, null, 2)};`,
     `window.POLLS = ${JSON.stringify(generated.polls, null, 2)};`,
     `window.WORDS = ${JSON.stringify(generated.words, null, 2)};`
@@ -1551,6 +1637,124 @@ function makePresenterScript(brief, generated, sourcePaper, pipeline) {
     lines.push("");
   }
   return lines.join("\n");
+}
+
+function markdownList(items) {
+  return (items || []).map((item) => `- ${item}`).join("\n");
+}
+
+function makeStudentHandout(brief, generated, sourcePaper) {
+  const lines = [];
+  lines.push(`# Student Handout: ${brief.meta.title || "Untitled Masterclass"}`);
+  lines.push("");
+  lines.push(`Class tier: ${classTierSpec(brief).label}`);
+  lines.push(`Bernard support: ask Bernard for clarification, examples, translation, quiz help, or a deeper explanation. Bernard must stay inside the approved source boundary.`);
+  lines.push("");
+  lines.push("## Learning Objectives");
+  lines.push(markdownList(generated.objectives.terminal.map((item) => `TLO: ${item}`)));
+  lines.push(markdownList(generated.objectives.enabling.map((item) => `ELO: ${item}`)));
+  lines.push("");
+  lines.push("## Course Blueprint");
+  generated.course_blueprint.modules.forEach((module) => {
+    lines.push(`- ${module.order}. ${module.title} (${module.slide_budget} slides): ${module.goal}`);
+  });
+  lines.push("");
+  lines.push("## Key Terms");
+  Object.keys(generated.glossary).forEach((term) => {
+    lines.push(`- ${term}: ${generated.glossary[term].d} Why it matters: ${generated.glossary[term].r}`);
+  });
+  lines.push("");
+  lines.push("## Works Cited");
+  sourcePaper.sections.forEach((section) => {
+    lines.push(`- ${section.num || section.id}. ${section.title}`);
+  });
+  lines.push("");
+  lines.push("## Source Suggestion");
+  lines.push("At the end of the class, use the source-suggestion button to recommend additional sources for the knowledge base.");
+  return lines.join("\n");
+}
+
+function makeFacilitatorGuide(brief, generated, quality) {
+  const lines = [];
+  lines.push(`# Facilitator Guide: ${brief.meta.title || "Untitled Masterclass"}`);
+  lines.push("");
+  lines.push(`Quality score at build: ${quality.score} / 100 (${quality.status})`);
+  lines.push(`Class tier: ${classTierSpec(brief).label}`);
+  lines.push("");
+  lines.push("## How to Run This Class");
+  lines.push("- Start by explaining the knowledge-base boundary and why the final works-cited slide matters.");
+  lines.push("- Use polls, word clouds, quizzes, and Bernard questions as participation signals.");
+  lines.push("- Treat deep dives as optional learner paths during delivery, but required preparation for the presenter.");
+  lines.push("- If a learner asks for a claim outside the source base, mark it as a research gap instead of improvising.");
+  lines.push("");
+  lines.push("## Blueprint");
+  generated.course_blueprint.modules.forEach((module) => {
+    lines.push(`- ${module.title}: ${module.slide_budget} slides. ${module.goal}`);
+  });
+  lines.push("");
+  lines.push("## QA Notes");
+  (quality.recommendations || []).forEach((item) => lines.push(`- ${item}`));
+  return lines.join("\n");
+}
+
+function makeQuizAnswerKey(generated) {
+  const lines = ["# Quiz Answer Key", ""];
+  generated.quizzes.forEach((quiz, index) => {
+    lines.push(`## Question ${index + 1}`);
+    lines.push(quiz.q || "");
+    if (quiz.type === "mc") {
+      const answer = Array.isArray(quiz.options) ? quiz.options[quiz.answer] : quiz.answer;
+      lines.push(`Answer: ${answer}`);
+    } else {
+      lines.push(`Answer: ${String(quiz.answer)}`);
+    }
+    if (quiz.why) lines.push(`Why: ${quiz.why}`);
+    if (quiz.rubric) lines.push(`Rubric: ${quiz.rubric}`);
+    if (quiz.sample) lines.push(`Sample: ${quiz.sample}`);
+    lines.push("");
+  });
+  return lines.join("\n");
+}
+
+function makeClassRecord(brief, generated, sourcePaper, pipeline, quality) {
+  return {
+    title: brief.meta.title || "Untitled Masterclass",
+    slug: slugify(brief.meta.slug || brief.meta.title),
+    generated_at: new Date().toISOString(),
+    class_tier: classTierSpec(brief),
+    knowledge_standard: quality.knowledge_standard,
+    slide_count: generated.slides.length,
+    teaching_slide_count: generated.slideDrafts.length - 1,
+    deep_dive_count: quality.deep_dive_count,
+    required_deep_dive_count: quality.required_deep_dive_count,
+    quality: {
+      score: quality.score,
+      status: quality.status,
+      scores: quality.scores,
+      rubric: quality.rubric
+    },
+    pipeline_mode: pipeline && pipeline.mode,
+    bernard: {
+      embedded: true,
+      wake_word: "Bernard",
+      voice_note: "English accent when supported by the browser and configured TTS."
+    },
+    exports: [
+      "student-handout.md",
+      "facilitator-guide.md",
+      "quiz-answer-key.md",
+      "evidence-map.json",
+      "class-blueprint.json",
+      "class-record.json"
+    ],
+    source_paper: {
+      title: sourcePaper.title,
+      section_count: sourcePaper.sections.length,
+      sections: sourcePaper.sections.map((section) => ({ id: section.id, num: section.num, title: section.title }))
+    },
+    course_blueprint: generated.course_blueprint,
+    evidence_map: generated.evidence_map
+  };
 }
 
 function dataSrcIds(value) {
@@ -1666,6 +1870,11 @@ function qualityAudit(brief, generated, sourcePaper, sourceCheck, qa) {
   const pollCount = Object.keys(generated.polls || {}).length;
   const wordCloudCount = Object.keys(generated.words || {}).length;
   const hasWorksCited = generated.slides.some((slide) => slide.id === "knowledge-base-works-cited");
+  const evidenceRows = Array.isArray(generated.evidence_map) ? generated.evidence_map : [];
+  const mappedEvidence = evidenceRows.filter((row) => Array.isArray(row.source_ids) && row.source_ids.length).length;
+  const blueprintModules = generated.course_blueprint && Array.isArray(generated.course_blueprint.modules)
+    ? generated.course_blueprint.modules.length
+    : 0;
   const sourceCoverage = Math.min(1, standard.counts.total / Math.max(1, standard.required_sources));
   const primaryCoverage = Math.min(1, standard.counts.primary / Math.max(1, standard.required_primary_sources));
   const corroborationRules = Array.isArray(brief.knowledge_base && brief.knowledge_base.credibility && brief.knowledge_base.credibility.require_two_sources_for)
@@ -1675,6 +1884,8 @@ function qualityAudit(brief, generated, sourcePaper, sourceCheck, qa) {
     slide_budget: slideCount === requested ? 100 : Math.max(0, 100 - Math.abs(slideCount - requested) * 10),
     research_rigor: Math.round(sourceCoverage * 55 + primaryCoverage * 35 + Math.min(10, corroborationRules * 3.5)),
     source_grounding: sourceCheck.ok ? Math.round(Math.min(1, citedTeaching / Math.max(1, teachingSlides)) * 100) : 0,
+    evidence_map: evidenceRows.length ? Math.round((mappedEvidence / evidenceRows.length) * 100) : 0,
+    blueprint: blueprintModules >= 5 ? 100 : Math.min(100, blueprintModules * 18),
     objective_alignment: Math.min(100, (terminalCount ? 45 : 0) + Math.min(35, enablingCount * 6) + (generated.lesson_plan && generated.lesson_plan.length ? 20 : 0)),
     content_density: Math.min(100, Math.round((averageVisibleWords / MIN_VISIBLE_SLIDE_WORDS) * 100)),
     deep_dive_depth: requiredDeepDives ? Math.min(100, Math.round((deepDiveSlides / requiredDeepDives) * 70 + Math.min(1, averageDeepDiveWords / MIN_DEEP_DIVE_WORDS) * 30)) : 100,
@@ -1687,6 +1898,8 @@ function qualityAudit(brief, generated, sourcePaper, sourceCheck, qa) {
   if (!standard.ok) issues.push(`Knowledge base does not meet the selected ${standard.tier.label} standard: ${standard.messages.join(" ")}`);
   if (scores.research_rigor < 90) recommendations.push("Improve the knowledge base before relying on this as a finished masterclass.");
   if (scores.source_grounding < 70) recommendations.push("Increase explicit source anchors on teaching slides.");
+  if (scores.evidence_map < 90) issues.push("Evidence map coverage is below the release threshold.");
+  if (scores.blueprint < 90) issues.push("Course blueprint is missing or incomplete.");
   if (scores.objective_alignment < 70) recommendations.push("Strengthen terminal/enabling objective coverage in the lesson plan.");
   if (scores.content_density < 85) issues.push("Generated slide content is too thin for a masterclass.");
   if (scores.deep_dive_depth < 90) issues.push("Generated deep-dive coverage is below the selected depth setting.");
@@ -1695,14 +1908,16 @@ function qualityAudit(brief, generated, sourcePaper, sourceCheck, qa) {
   if (sourceSections < 2) recommendations.push("Add more source material to improve evidence depth.");
   if (!hasWorksCited) issues.push("The final Knowledge Base / Works Cited slide is missing.");
   const overall = Math.round(
-    scores.slide_budget * 0.12 +
-    scores.research_rigor * 0.16 +
-    scores.source_grounding * 0.14 +
-    scores.objective_alignment * 0.12 +
-    scores.content_density * 0.15 +
-    scores.deep_dive_depth * 0.15 +
-    scores.participation_design * 0.08 +
-    scores.assessment * 0.06 +
+    scores.slide_budget * 0.1 +
+    scores.research_rigor * 0.14 +
+    scores.source_grounding * 0.1 +
+    scores.evidence_map * 0.08 +
+    scores.blueprint * 0.06 +
+    scores.objective_alignment * 0.09 +
+    scores.content_density * 0.13 +
+    scores.deep_dive_depth * 0.13 +
+    scores.participation_design * 0.07 +
+    scores.assessment * 0.05 +
     scores.transparency * 0.03 +
     scores.schema_qa * 0.02
   );
@@ -1718,6 +1933,8 @@ function qualityAudit(brief, generated, sourcePaper, sourceCheck, qa) {
       "slide budget fidelity",
       "research rigor",
       "source grounding",
+      "evidence-map coverage",
+      "course blueprint completeness",
       "objective alignment",
       "content density",
       "deep-dive coverage",
@@ -1771,7 +1988,8 @@ function readTemplateFile(name) {
   return fs.readFileSync(path.join(__dirname, "..", "template", name), "utf8");
 }
 
-function makeBundle(brief, files, presenterScript) {
+function makeBundle(brief, files, presenterScript, generated, sourcePaper, pipeline, quality) {
+  const classRecord = makeClassRecord(brief, generated, sourcePaper, pipeline, quality);
   const bundleFiles = {
     "index.html": applyReplacements(readTemplateFile("index.html"), brief),
     "engine.js": applyReplacements(readTemplateFile("engine.js"), brief),
@@ -1780,6 +1998,12 @@ function makeBundle(brief, files, presenterScript) {
     "glossary.js": files["glossary.js"],
     "source.js": files["source.js"],
     "presenter-script.md": presenterScript,
+    "student-handout.md": makeStudentHandout(brief, generated, sourcePaper),
+    "facilitator-guide.md": makeFacilitatorGuide(brief, generated, quality),
+    "quiz-answer-key.md": makeQuizAnswerKey(generated),
+    "evidence-map.json": JSON.stringify(generated.evidence_map, null, 2) + "\n",
+    "class-blueprint.json": JSON.stringify(generated.course_blueprint, null, 2) + "\n",
+    "class-record.json": JSON.stringify(classRecord, null, 2) + "\n",
     "api/chat.js": applyReplacements(readTemplateFile("api/chat.js"), brief),
     "api/grade.js": applyReplacements(readTemplateFile("api/grade.js"), brief),
     "api/poll.js": readTemplateFile("api/poll.js"),
@@ -1793,9 +2017,11 @@ function makeBundle(brief, files, presenterScript) {
       slug: slugify(brief.meta.slug || brief.meta.title),
       title: brief.meta.title || "Untitled Masterclass",
       files: Object.keys(bundleFiles),
-      deploy_path: `classes/${slugify(brief.meta.slug || brief.meta.title)}/`
+      deploy_path: `classes/${slugify(brief.meta.slug || brief.meta.title)}/`,
+      exports: classRecord.exports
     },
-    files: bundleFiles
+    files: bundleFiles,
+    class_record: classRecord
   };
 }
 
@@ -1864,7 +2090,21 @@ async function publishToGitHub(req, brief, bundle) {
     };
   }
 
-  const staticNames = ["index.html", "engine.js", "navscrubber.js", "content.js", "glossary.js", "source.js", "presenter-script.md"];
+  const staticNames = [
+    "index.html",
+    "engine.js",
+    "navscrubber.js",
+    "content.js",
+    "glossary.js",
+    "source.js",
+    "presenter-script.md",
+    "student-handout.md",
+    "facilitator-guide.md",
+    "quiz-answer-key.md",
+    "evidence-map.json",
+    "class-blueprint.json",
+    "class-record.json"
+  ];
   const ref = await githubRequest(`/repos/${owner}/${repo}/git/ref/heads/${encodeURIComponent(branch)}`, {});
   const currentCommit = await githubRequest(`/repos/${owner}/${repo}/git/commits/${ref.object.sha}`, {});
   const tree = [];
@@ -1980,7 +2220,7 @@ module.exports = async function generateHandler(req, res) {
     }
 
     const presenterScript = makePresenterScript(brief, generated, sourceBuild.sourcePaper, pipeline);
-    const bundle = makeBundle(brief, files, presenterScript);
+    const bundle = makeBundle(brief, files, presenterScript, generated, sourceBuild.sourcePaper, pipeline, quality);
     const previewHtml = makePreviewHtml(bundle);
     let publish = { status: "skipped", message: "Auto-publish was not requested." };
     if (publishRequested) publish = await publishToGitHub(req, brief, bundle).catch((error) => ({
@@ -2014,10 +2254,14 @@ module.exports = async function generateHandler(req, res) {
         { stage: "quality", ok: true, score: quality.score, status: quality.status }
       ]),
       lesson_plan: generated.lesson_plan,
+      course_blueprint: generated.course_blueprint,
+      evidence_map: generated.evidence_map,
       objectives: generated.objectives,
       files,
       presenter_script: presenterScript,
       bundle,
+      class_record: bundle.class_record,
+      exports: bundle.manifest.exports,
       preview_html: previewHtml,
       publish,
       class_url: publish.status === "published" ? publish.expected_url : null
