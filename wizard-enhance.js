@@ -327,7 +327,7 @@
     planner.setAttribute("data-enhanced-length", "true");
     planner.innerHTML =
       budgetControl("Class length", "length.minutes", Number(brief.length && brief.length.minutes) || 60, 10, 480, "minutes") +
-      budgetControl("Slide budget", "length.slide_budget", Math.max(30, Number(brief.length && brief.length.slide_budget) || 90), 30, 400, "slides");
+      budgetControl("Slide budget", "length.slide_budget", Math.max(1, Number(brief.length && brief.length.slide_budget) || 90), 1, 400, "slides");
 
     var help = document.createElement("div");
     help.className = "summary-card full assist-panel";
@@ -883,6 +883,10 @@
         // The knowledge-base gate never dead-ends. A change order (scarce topic
         // or a met lower tier) or a precise human request is presented for a
         // decision instead of a bare failure.
+        if (payload.status === "knowledge_base_review") {
+          presentKnowledgeBaseReview(payload);
+          return;
+        }
         if (payload.status === "needs_decision" && payload.change_order) {
           presentChangeOrder(payload);
           return;
@@ -950,6 +954,7 @@
       var response = await fetch("/api/generate", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
       var payload = await response.json();
       if (!response.ok || !payload.ok) {
+        if (payload.status === "knowledge_base_review") { presentKnowledgeBaseReview(payload); return; }
         if (payload.status === "needs_decision" && payload.change_order) { presentChangeOrder(payload); return; }
         if (payload.status === "needs_decision" && payload.resolution === "quality_decision") { presentQualityDecision(payload); return; }
         if (payload.status === "qa_structural") { presentStructuralBlock(payload); return; }
@@ -1031,6 +1036,7 @@
       btn.addEventListener("click", function () {
         if (id === "search_again") { remediateKnowledgeBase(btn); }
         else if (id === "add_source") { goToKnowledgeBaseStep(); }
+        else if (id === "decline_build") { declineBuild(box); }
         else if (id === "ask_bernard") {
           var input = box.querySelector("[data-bernard-input]");
           if (input) { input.focus(); try { input.scrollIntoView({ behavior: "smooth", block: "center" }); } catch (e) {} }
@@ -1200,6 +1206,41 @@
       }
     });
     wireConversationalBox(box);
+    try { box.scrollIntoView({ behavior: "smooth", block: "center" }); } catch (error) {}
+  }
+
+  function declineBuild(box) {
+    if (validationBox) {
+      validationBox.innerHTML = "<div class=\"notice\">No problem — the build is paused. Add sources or adjust the setup on the Knowledge Base step, then start the generator again whenever you're ready. Nothing was generated.</div>";
+    }
+    setGenie("Build paused at your request. Add sources or adjust the setup, then start the generator again whenever you're ready.");
+  }
+
+  // KNOWLEDGE BASE REVIEW: the floor was not met, but nothing is blocked. Show
+  // the status, score, analysis, and recommendations — with "Build it anyway"
+  // as the prominent default. The human is the only off-switch.
+  function presentKnowledgeBaseReview(payload) {
+    closeGeneratorTracker();
+    var co = payload.change_order || {};
+    var rec = co.recommendation || {};
+    var options = payload.options || co.options || [];
+    var challenges = (co.challenges || []).map(function (c) { return "<li>" + esc(c) + "</li>"; }).join("");
+    var tried = (co.what_bernard_tried || []).map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("");
+    var box = document.createElement("div");
+    box.className = "notice change-order kb-review";
+    box.innerHTML =
+      "<h3>Knowledge base review — your call on how to proceed</h3>" +
+      "<p class=\"kb-review-lead\">Research is done. The class can be built right now — here's the status so you can decide. <strong>Nothing is blocked.</strong></p>" +
+      scoreHtml(payload.score || co.score) +
+      (co.situation ? "<p><strong>Status.</strong> " + esc(co.situation) + "</p>" : "") +
+      (challenges ? "<details><summary>Analysis</summary><ul>" + challenges + "</ul></details>" : "") +
+      (rec.summary ? "<p><strong>Bernard's recommendation.</strong> " + esc(rec.summary) + "</p>" : "") +
+      "<p><strong>Your options:</strong></p>" +
+      optionsHtml(options) +
+      (tried ? "<details><summary>What Bernard tried</summary><ul>" + tried + "</ul></details>" : "") +
+      conversationalBoxHtml();
+    if (validationBox) { validationBox.innerHTML = ""; validationBox.appendChild(box); }
+    wireResolutionUI(box);
     try { box.scrollIntoView({ behavior: "smooth", block: "center" }); } catch (error) {}
   }
 

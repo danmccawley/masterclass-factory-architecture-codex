@@ -302,7 +302,16 @@ function slideBudgetFloor(brief) {
 
 function totalSlideTarget(brief) {
   const floor = slideBudgetFloor(brief);
-  return clampInteger(brief && brief.length && brief.length.slide_budget, floor, MAX_GENERATED_SLIDES, Math.max(DEFAULT_MASTERCLASS_SLIDES, floor));
+  const requested = brief && brief.length && brief.length.slide_budget;
+  const hasExplicit = requested !== undefined && requested !== null && requested !== "" && Number.isFinite(Number(requested));
+  if (hasExplicit) {
+    // The human explicitly chose a slide count — honor it, down to 1. The floor
+    // is a recommended default, not a hard wall. A below-floor request still
+    // builds; slideBudgetWarning() discloses that it is below the usual depth.
+    return clampInteger(requested, 1, MAX_GENERATED_SLIDES, Math.max(DEFAULT_MASTERCLASS_SLIDES, floor));
+  }
+  // No explicit budget: fall back to the recommended floor/default.
+  return clampInteger(requested, floor, MAX_GENERATED_SLIDES, Math.max(DEFAULT_MASTERCLASS_SLIDES, floor));
 }
 
 function teachingSlideTarget(brief) {
@@ -956,20 +965,25 @@ function buildChangeOrder(brief, standard, discovery, scarcity, metTier) {
 // zero sources, "add a source", "search again", and "ask Bernard" remain.
 function buildResolutionOptions(brief, standard, metTier, canMeetBriefing, counts) {
   const options = [];
-  if (counts.total > 0) {
-    options.push({
-      id: "proceed_evidence_limited",
-      label: `Build it now on what was found (score ${standard.score.score}/100)`,
-      detail: `Proceeds with the ${counts.total} verified source(s). The class is built and clearly flagged as evidence-limited below the ${standard.tier.label} bar.`,
-      token: { accept_change_order: true },
-      kind: "build"
-    });
-  }
+  // PRIMARY, always first: build it anyway. The human is the only off-switch,
+  // so a build is always one click away regardless of source count (even zero).
+  options.push({
+    id: "proceed_anyway",
+    label: counts.total > 0
+      ? `Build it anyway (score ${standard.score.score}/100, ${counts.total} source${counts.total === 1 ? "" : "s"})`
+      : "Build it anyway (no verified sources yet)",
+    detail: counts.total > 0
+      ? `Creates the class now on the ${counts.total} verified source(s) and clearly flags it as evidence-limited below the ${standard.tier.label} bar. Recommended only if you accept the lighter evidence.`
+      : "Creates the class now with no verified sources. It will be clearly flagged as evidence-limited / unsourced. The factory never blocks — this is your call.",
+    token: { proceed_anyway: true },
+    kind: "build",
+    primary: true
+  });
   if (metTier && metTier.level !== standard.tier.level) {
     options.push({
       id: "lower_tier",
       label: `Build a ${metTier.label} instead (its floor is fully met)`,
-      detail: `Your evidence fully satisfies the ${metTier.label} bar (${metTier.source_floor}/${metTier.primary_source_floor}). No disclosure needed.`,
+      detail: `Your evidence fully satisfies the ${metTier.label} bar (${metTier.source_floor}/${metTier.primary_source_floor}). No evidence-limited flag needed.`,
       token: { accept_tier: metTier.level },
       kind: "build"
     });
@@ -984,41 +998,45 @@ function buildResolutionOptions(brief, standard, metTier, canMeetBriefing, count
   }
   options.push({
     id: "search_again",
-    label: "Have Bernard search again",
-    detail: "Run another round of web research, optionally with guidance you provide.",
+    label: "Have Bernard search again first",
+    detail: "Run another round of web research before building, optionally with guidance you provide.",
     token: null,
     kind: "research"
   });
   options.push({
     id: "add_source",
-    label: "Add a specific source or URL",
-    detail: "Paste a standard, regulator page, manufacturer guide, or certification document and re-run.",
+    label: "Add a specific source or URL first",
+    detail: "Paste a standard, regulator page, manufacturer guide, or certification document, then build.",
     token: null,
     kind: "input"
   });
   options.push({
     id: "ask_bernard",
     label: "Ask Bernard (describe what you want)",
-    detail: "Tell Bernard in your own words — refine the search, explain the gap, or get help adding a source. Any re-search is confirmed with you first.",
+    detail: "Talk it through — refine the search, explain the gap, or get help adding a source. Any re-search is confirmed with you first.",
     token: null,
     kind: "conversational"
+  });
+  options.push({
+    id: "decline_build",
+    label: "Don't build yet — let me work on sources",
+    detail: "Stops here so you can add sources or adjust the setup. This is the only thing that prevents a build.",
+    token: null,
+    kind: "decline"
   });
   return options;
 }
 
-// The recovery ladder. The knowledge-base gate must never produce a dead end.
-// It resolves to exactly one of:
-//   { resolution: "ready" }                 → floor met, generate normally
-//   { resolution: "tier_offer", ... }       → a lower tier IS met; offer it (needs consent)
-//   { resolution: "needs_human", ... }      → genuinely stuck; a specific, actionable ask
+// The knowledge-base step NEVER blocks a build. It researches, scores, and
+// analyzes — then, if the floor is not met, it PAUSES for informed consent. The
+// human is the only off-switch: they can build anyway (the default), drop to a
+// met tier, add sources, or decline. The factory and the AI never terminate a
+// job order; only the human can choose not to build.
 //
-// Rungs, in order:
-//   0. Gate check on the brief as-is.
-//   1. Auto-attempt discovery EVEN IF the class is creator/assisted-owned
-//      (forced for this run only) — failing without trying is not allowed.
-//   2. Multi-round broadening discovery (handled inside discoverKnowledgeBaseSources).
-//   3. Tier negotiation: if a lower tier is fully met, offer it instead of failing.
-//   4. Escalate to the human with a precise request — last resort only.
+// Resolutions:
+//   { resolution: "ready" }                  → floor met (or consent given); build now
+//   { resolution: "knowledge_base_review" }  → floor not met; pause, present status +
+//                                               analysis + recommendations, default = build anyway
 async function resolveKnowledgeBase(brief) {
   const working = JSON.parse(JSON.stringify(brief));
 
@@ -1054,9 +1072,56 @@ async function resolveKnowledgeBase(brief) {
     ladder.push(webAllowed ? "discovery-skipped-no-openai-key" : "discovery-skipped-web-disabled");
   }
 
-  // Rung 3: tier negotiation. If the evidence we DO have fully satisfies a
-  // lower tier, that is a legitimate class, not a failure — present it as a
-  // change order the human can accept.
+  // Floor not met. We DO NOT block. Build the full analysis + recommendations and
+  // return a single non-blocking review pause. The human decides whether to build.
+  const metTier = highestMetTier(working);
+  const scarcity = assessSourceScarcity(discovery, working);
+  const changeOrder = buildChangeOrder(working, standard, discovery || {}, scarcity, (metTier && metTier.level !== standard.tier.level) ? metTier : null);
+
+  return {
+    resolution: "knowledge_base_review",
+    brief: working,
+    standard,
+    discovery,
+    offered_tier: (metTier && metTier.level !== standard.tier.level) ? metTier : null,
+    requested_tier: standard.tier,
+    change_order: changeOrder,
+    scarcity,
+    ladder: ladder.concat(["knowledge-base-review:awaiting-human-decision"]),
+    message: changeOrder.recommendation.summary
+  };
+}
+
+// Retained for reference / older callers: the previous blocking resolver shape.
+// No longer used by the handler, which now treats KB as a non-blocking pause.
+async function resolveKnowledgeBaseLegacy(brief) {
+  const working = JSON.parse(JSON.stringify(brief));
+  let standard = knowledgeBaseStandard(working);
+  if (standard.ok) {
+    return { resolution: "ready", brief: working, standard, discovery: null, ladder: ["floor-met-as-submitted"] };
+  }
+  const ladder = [];
+  const owner = researchOwner(working);
+  const webAllowed = working.knowledge_base && working.knowledge_base.research && working.knowledge_base.research.allow_web !== false;
+  let discovery = null;
+  if (webAllowed && openAIKeyUsable()) {
+    if (owner !== "ai") {
+      working.knowledge_base.research = working.knowledge_base.research || {};
+      working.knowledge_base.research.owner = "ai";
+      ladder.push("forced-ai-research-for-recovery");
+    }
+    const prepared = await prepareKnowledgeBase(working);
+    discovery = prepared.discovery;
+    working.knowledge_base = prepared.brief.knowledge_base;
+    ladder.push(`discovery-rounds:${(discovery && discovery.rounds) || 0}`);
+    standard = knowledgeBaseStandard(working);
+    if (standard.ok) {
+      return { resolution: "ready", brief: working, standard, discovery, ladder };
+    }
+  } else {
+    ladder.push(webAllowed ? "discovery-skipped-no-openai-key" : "discovery-skipped-web-disabled");
+  }
+
   const metTier = highestMetTier(working);
   const scarcity = assessSourceScarcity(discovery, working);
   const changeOrder = buildChangeOrder(working, standard, discovery || {}, scarcity, (metTier && metTier.level !== standard.tier.level) ? metTier : null);
@@ -1076,8 +1141,6 @@ async function resolveKnowledgeBase(brief) {
     };
   }
 
-  // Rung 4: no tier is met. For a genuinely scarce topic this is a change order
-  // recommending an evidence-limited build; otherwise it's a precise ask for input.
   if (scarcity.genuinely_scarce && standard.counts.total > 0) {
     return {
       resolution: "change_order",
@@ -1658,7 +1721,11 @@ function requiredDeepDiveCount(brief, teachingSlides) {
   const mode = deepDiveMode(brief);
   if (!wantsDeepDives(brief) || !count) return 0;
   if (mode === "high") return count;
-  return Math.max(4, Math.ceil(count * 0.45));
+  // Never require more deep dives than there are teaching slides. For normal
+  // decks this is the usual ~45% (min 4); for very small decks (the human chose
+  // a low slide budget) it scales down so a 1-3 slide class is still buildable.
+  const target = Math.max(4, Math.ceil(count * 0.45));
+  return Math.min(count, target);
 }
 
 function wordCount(value) {
@@ -3123,81 +3190,76 @@ module.exports = async function generateHandler(req, res) {
       return;
     }
 
-    // Recovery ladder: the knowledge-base gate never dead-ends. It resolves to
-    // ready, a change order the human can accept, or a precise human request.
+    // Knowledge base NEVER blocks. It resolves to "ready" (floor met) or
+    // "knowledge_base_review" (floor not met → pause for the human's decision).
+    // The human is the only off-switch. Consent tokens:
+    //   proceed_anyway: true  → build regardless of sources (even zero), flagged
+    //   accept_tier: "<level>" → build at a specific (lower) met tier
+    //   accept_change_order:true → build evidence-limited on what was found
     const acceptTier = body && body.accept_tier ? String(body.accept_tier).toLowerCase() : null;
     const acceptChangeOrder = Boolean(body && body.accept_change_order);
+    const proceedAnyway = Boolean(body && body.proceed_anyway);
     const recovery = await resolveKnowledgeBase(brief);
     const sourceDiscovery = recovery.discovery || {
       owner: researchOwner(brief), attempted: false, model: "", added_sources: [], rejected_sources: [], gaps: [], notes: []
     };
 
-    if (recovery.resolution === "change_order") {
-      // The caller can approve the change order two ways:
-      //  - accept_tier: build at a specific (lower) tier whose floor is met
-      //  - accept_change_order: build evidence-limited on what was found
+    if (recovery.resolution === "knowledge_base_review") {
+      // Apply whatever consent the human gave, in priority order.
       if (acceptTier && CLASS_TIERS[acceptTier]) {
-        recovery.brief.class_tier = { level: acceptTier };
+        // Build at a specific tier the human picked.
+        recovery.brief.class_tier = Object.assign({}, recovery.brief.class_tier, { level: acceptTier });
         const reStandard = knowledgeBaseStandard(recovery.brief);
         if (reStandard.ok) {
           recovery.resolution = "ready";
           recovery.standard = reStandard;
           recovery.ladder.push(`accepted-tier:${acceptTier}`);
-        }
-      } else if (acceptChangeOrder && recovery.change_order && recovery.change_order.approval_tokens.accept_change_order) {
-        // Approve an evidence-limited build: optionally drop to the recommended
-        // tier, then stamp the human acknowledgment so the floor is waived with
-        // a disclosed trail.
-        const recTier = recovery.change_order.recommendation.recommended_tier;
-        if (recTier && CLASS_TIERS[recTier]) recovery.brief.class_tier = { level: recTier };
-        recovery.brief.class_tier = recovery.brief.class_tier || { level: "briefing" };
-        recovery.brief.class_tier.evidence_limited_ack = true;
-        recovery.brief.class_tier.evidence_limited_note = recovery.change_order.recommendation.summary;
-        const reStandard = knowledgeBaseStandard(recovery.brief);
-        if (reStandard.ok) {
+        } else {
+          // Even the chosen tier's floor isn't met — proceed evidence-limited so
+          // the human's choice still produces a class (never blocks).
+          recovery.brief.class_tier.evidence_limited_ack = true;
+          recovery.brief.class_tier.evidence_limited_note = `Built at ${acceptTier} by human decision, below its source floor.`;
+          recovery.standard = knowledgeBaseStandard(recovery.brief);
           recovery.resolution = "ready";
-          recovery.standard = reStandard;
-          recovery.ladder.push("accepted-change-order:evidence-limited");
+          recovery.ladder.push(`accepted-tier-evidence-limited:${acceptTier}`);
         }
+      } else if (proceedAnyway || acceptChangeOrder) {
+        // Universal "build it anyway" consent. Optionally drop to the
+        // recommended tier, then stamp the evidence-limited acknowledgment so the
+        // floor is waived with a disclosed trail. Works even with ZERO sources.
+        const recTier = recovery.change_order && recovery.change_order.recommendation && recovery.change_order.recommendation.recommended_tier;
+        if (recTier && CLASS_TIERS[recTier]) recovery.brief.class_tier = Object.assign({}, recovery.brief.class_tier, { level: recTier });
+        recovery.brief.class_tier = recovery.brief.class_tier || { level: (brief.class_tier && brief.class_tier.level) || "briefing" };
+        recovery.brief.class_tier.evidence_limited_ack = true;
+        recovery.brief.class_tier.evidence_limited_note = (recovery.change_order && recovery.change_order.recommendation && recovery.change_order.recommendation.summary) || "Built by human decision below the source floor; scope and confidence are disclosed.";
+        recovery.standard = knowledgeBaseStandard(recovery.brief);
+        recovery.resolution = "ready";
+        recovery.ladder.push("proceed-anyway:evidence-limited");
       }
 
-      if (recovery.resolution === "change_order") {
+      // No consent yet → pause and present status + analysis + recommendations.
+      // This is NOT a failure; it is a checkpoint. The default action in the UI
+      // is "Build it anyway".
+      if (recovery.resolution === "knowledge_base_review") {
         send(res, 200, {
           ok: false,
-          status: "needs_decision",
-          failed_stage: "knowledge-base-standard",
-          resolution: "change_order",
+          status: "knowledge_base_review",
+          failed_stage: "knowledge-base-review",
+          resolution: "knowledge_base_review",
           change_order: recovery.change_order,
-          score: recovery.change_order.score || recovery.standard.score,
-          options: recovery.change_order.options || [],
+          score: (recovery.change_order && recovery.change_order.score) || recovery.standard.score,
+          options: (recovery.change_order && recovery.change_order.options) || [],
           offered_tier: recovery.offered_tier || null,
           requested_tier: recovery.requested_tier || recovery.standard.tier,
           knowledge_standard: recovery.standard,
           source_discovery: sourceDiscovery,
           recovery_ladder: recovery.ladder,
-          how_to_proceed: recovery.change_order.how_to_approve,
-          errors: [recovery.message]
+          how_to_proceed: "Build it anyway (the class is created and flagged as evidence-limited), pick a tier whose floor is met, add sources, or decline. Nothing is blocked — your call.",
+          can_proceed_anyway: true,
+          message: recovery.message
         });
         return;
       }
-    }
-
-    if (recovery.resolution === "needs_human") {
-      send(res, 200, {
-        ok: false,
-        status: "needs_human",
-        failed_stage: "knowledge-base-standard",
-        resolution: "needs_human",
-        human_request: recovery.human_request,
-        change_order: recovery.change_order || null,
-        score: (recovery.change_order && recovery.change_order.score) || recovery.standard.score,
-        options: (recovery.change_order && recovery.change_order.options) || [],
-        knowledge_standard: recovery.standard,
-        source_discovery: sourceDiscovery,
-        recovery_ladder: recovery.ladder,
-        errors: [recovery.human_request.headline]
-      });
-      return;
     }
 
     const effectiveBrief = recovery.brief;
@@ -3357,6 +3419,9 @@ module.exports._internal = {
   validateOpenAIKey,
   scoreKnowledgeBase,
   resolveQaOutcome,
+  totalSlideTarget,
+  slideBudgetFloor,
+  requiredDeepDiveCount,
   openAIKeyUsable,
   openAIKey,
   resolveKnowledgeBase,

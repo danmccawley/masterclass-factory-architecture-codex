@@ -187,11 +187,16 @@ test("human can ALWAYS override when sources exist (even if NOT genuinely scarce
   const co = I.buildChangeOrder(b, std, { notes: [], gaps: [], rejected_sources: [] }, { kind: "verification_bottleneck", genuinely_scarce: false }, null);
   assert.strictEqual(co.approval_tokens.accept_change_order, true, "override must be offered whenever sources exist");
 });
-test("no override offered when there are ZERO sources (nothing to build from)", () => {
+test("legacy accept_change_order token still requires sources; proceed_anyway does not", () => {
   const b = baseBrief(); // zero sources
   const std = I.knowledgeBaseStandard(b);
   const co = I.buildChangeOrder(b, std, { notes: [], gaps: [], rejected_sources: [] }, { kind: "no_research_capability", genuinely_scarce: false }, null);
-  assert.strictEqual(co.approval_tokens.accept_change_order, false, "cannot proceed evidence-limited with nothing");
+  // The legacy evidence-limited token needs at least one source...
+  assert.strictEqual(co.approval_tokens.accept_change_order, false);
+  // ...but build-anyway is still offered as the primary option (the factory
+  // never blocks; the human is the only off-switch).
+  assert.strictEqual(co.options[0].id, "proceed_anyway");
+  assert.strictEqual(co.options[0].primary, true);
 });
 
 // ---------------------------------------------------------------------------
@@ -482,11 +487,25 @@ test("options always include search_again, add_source, ask_bernard", () => {
   assert.ok(ids.indexOf("add_source") !== -1);
   assert.ok(ids.indexOf("ask_bernard") !== -1);
 });
-test("proceed_evidence_limited option appears only when sources exist", () => {
+test("build-anyway is offered even with ZERO sources (human is the only off-switch)", () => {
   const withSrc = I.buildChangeOrder(withSources(baseBrief(), 3, 1), I.knowledgeBaseStandard(withSources(baseBrief(), 3, 1)), { notes: [] }, { kind: "topic_scarce", genuinely_scarce: true }, null);
   const zero = I.buildChangeOrder(baseBrief(), I.knowledgeBaseStandard(baseBrief()), { notes: [] }, { kind: "no_research_capability", genuinely_scarce: false }, null);
-  assert.ok(withSrc.options.some((o) => o.id === "proceed_evidence_limited"));
-  assert.ok(!zero.options.some((o) => o.id === "proceed_evidence_limited"));
+  // proceed_anyway must be present and PRIMARY in BOTH cases
+  assert.strictEqual(withSrc.options[0].id, "proceed_anyway");
+  assert.strictEqual(withSrc.options[0].primary, true);
+  assert.strictEqual(zero.options[0].id, "proceed_anyway");
+  assert.strictEqual(zero.options[0].primary, true);
+});
+test("options always include a decline (the only thing that prevents a build)", () => {
+  const co = I.buildChangeOrder(baseBrief(), I.knowledgeBaseStandard(baseBrief()), { notes: [] }, { kind: "no_research_capability", genuinely_scarce: false }, null);
+  assert.ok(co.options.some((o) => o.id === "decline_build"));
+});
+test("proceed_anyway token waives the floor even at zero sources", () => {
+  const b = baseBrief(); // zero sources, professional
+  b.class_tier = { level: "professional", evidence_limited_ack: true };
+  const std = I.knowledgeBaseStandard(b);
+  assert.strictEqual(std.ok, true, "must be buildable with consent even at zero sources");
+  assert.strictEqual(std.evidence_limited, true, "must be flagged evidence-limited");
 });
 
 group("QA gate (structural block vs. graded quality decision — no dead-end)");
@@ -541,6 +560,62 @@ test("structural block takes precedence over quality shortfall", () => {
     { ok: false, score: 50, status: "needs revision", knowledge_standard: {} }
   );
   assert.strictEqual(o.kind, "structural_block");
+});
+
+group("Slide budget (honor explicit low counts; floor is only a default)");
+
+function briefWithBudget(budget) {
+  const b = baseBrief();
+  b.length = b.length || {};
+  if (budget === undefined) delete b.length.slide_budget; else b.length.slide_budget = budget;
+  return b;
+}
+
+test("explicit budget of 1 yields 1 slide", () => {
+  assert.strictEqual(I.totalSlideTarget(briefWithBudget(1)), 1);
+});
+test("explicit budget of 3 yields 3 slides", () => {
+  assert.strictEqual(I.totalSlideTarget(briefWithBudget(3)), 3);
+});
+test("explicit budget of 10 yields 10 (below old 30 floor)", () => {
+  assert.strictEqual(I.totalSlideTarget(briefWithBudget(10)), 10);
+});
+test("explicit budget caps at 400 max", () => {
+  assert.strictEqual(I.totalSlideTarget(briefWithBudget(5000)), 400);
+});
+test("unset budget falls back to a sensible default (>= floor)", () => {
+  const t = I.totalSlideTarget(briefWithBudget(undefined));
+  assert.ok(t >= I.slideBudgetFloor(briefWithBudget(undefined)));
+});
+test("deep-dive requirement never exceeds teaching slides", () => {
+  const b = baseBrief();
+  b.mastery = b.mastery || {}; b.mastery.deep_dive_density = "med";
+  [1, 2, 3].forEach((ts) => {
+    assert.ok(I.requiredDeepDiveCount(b, ts) <= ts, "deep dives must not exceed " + ts + " teaching slides");
+  });
+});
+test("zero teaching slides requires zero deep dives", () => {
+  assert.strictEqual(I.requiredDeepDiveCount(baseBrief(), 0), 0);
+});
+
+group("Knowledge base never blocks (resolves to review pause, not failure)");
+
+test("floor-not-met resolves to knowledge_base_review (never needs_human/change_order block)", async () => {
+  const had = process.env.OPENAI_API_KEY;
+  delete process.env.OPENAI_API_KEY; // no research → definitely short of floor
+  try {
+    const r = await I.resolveKnowledgeBase(baseBrief());
+    assert.strictEqual(r.resolution, "knowledge_base_review", "must pause for review, not block");
+    assert.ok(r.change_order, "review carries the analysis/change_order");
+    assert.ok(r.standard && r.standard.score, "review carries the score");
+  } finally {
+    if (had !== undefined) process.env.OPENAI_API_KEY = had;
+  }
+});
+test("floor met resolves straight to ready", async () => {
+  const b = withSources(baseBrief(), 12, 3);
+  const r = await I.resolveKnowledgeBase(b);
+  assert.strictEqual(r.resolution, "ready");
 });
 
 // ---------------------------------------------------------------------------

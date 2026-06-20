@@ -1764,3 +1764,9 @@ pre {
 .chat-bernard { background: #f6f2ec; }
 .chat-error { background: #f7e7e3; }
 .chat-confirm { margin-top: 4px; }
+
+/* ── KB review: primary build-anyway option + decline ── */
+.kb-review-lead { font-size: 0.92rem; }
+.resolution-option.option-decline { border-left: 3px solid #999; opacity: 0.85; }
+.resolution-option[data-option-id="proceed_anyway"] { border-left-width: 4px; border-left-color: #2f8f5b; background: #f4faf6; }
+.resolution-option[data-option-id="proceed_anyway"] .option-label { color: #1c6b2e; }
