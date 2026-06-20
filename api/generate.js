@@ -5,6 +5,7 @@ const template = require("../brief.template.json");
 
 const DEFAULT_OPENAI_MODEL = "gpt-5.5";
 const FALLBACK_OPENAI_MODELS = ["gpt-5.4", "gpt-4.1-mini"];
+const DEFAULT_OPENAI_SEARCH_MODEL = "gpt-5-search-api";
 const KEY_PREFIX = ["s", "k"].join("") + "-";
 const KEY_PATTERN = new RegExp("^" + KEY_PREFIX + "[A-Za-z0-9_-]+$");
 const PROJECT_KEY_PATTERN = new RegExp(KEY_PREFIX + "proj-[A-Za-z0-9_-]+", "g");
@@ -125,6 +126,11 @@ function classTierKey(brief) {
 function classTierSpec(brief) {
   const key = classTierKey(brief);
   return Object.assign({ level: key }, CLASS_TIERS[key]);
+}
+
+function researchOwner(brief) {
+  const owner = text(brief && brief.knowledge_base && brief.knowledge_base.research && brief.knowledge_base.research.owner, "creator").toLowerCase();
+  return ["creator", "assisted", "ai"].includes(owner) ? owner : "creator";
 }
 
 function sourceCounts(brief) {
@@ -325,6 +331,269 @@ async function fetchUrlText(url) {
   }
 }
 
+function configuredSearchModels() {
+  const configured = String(process.env.OPENAI_SEARCH_MODEL || "").trim();
+  return Array.from(new Set([configured, DEFAULT_OPENAI_SEARCH_MODEL].filter(Boolean)));
+}
+
+function responsesOutputText(payload) {
+  if (payload && payload.output_text) return String(payload.output_text);
+  const output = Array.isArray(payload && payload.output) ? payload.output : [];
+  for (const item of output) {
+    const content = Array.isArray(item && item.content) ? item.content : [];
+    for (const part of content) {
+      if (part && typeof part.text === "string") return part.text;
+    }
+  }
+  return "";
+}
+
+async function requestOpenAIResponsesSearchJson(stage, user, maxTokens) {
+  const key = openAIKey();
+  const keyError = validateOpenAIKey(key);
+  if (keyError) {
+    const error = new Error(keyError);
+    error.stage = stage;
+    throw error;
+  }
+
+  let failed;
+  for (const model of configuredModels()) {
+    try {
+      const response = await fetch("https://api.openai.com/v1/responses", {
+        method: "POST",
+        headers: {
+          authorization: `Bearer ${key}`,
+          "content-type": "application/json"
+        },
+        body: JSON.stringify({
+          model,
+          tools: [{ type: "web_search", search_context_size: "high" }],
+          max_output_tokens: maxTokens || 3200,
+          instructions: "You are Bernard, the Masterclass Factory research librarian. Use web search. Return strict JSON only. Do not invent sources, URLs, dates, standards, or claims. Prefer official standards bodies, regulators, manufacturers, certification bodies, safety authorities, and reputable technical documentation.",
+          input: user
+        })
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        const message = openAIError(payload);
+        failed = { status: response.status, message, model };
+        if (shouldTryNextModel(response.status, message)) continue;
+        throw new Error(message);
+      }
+      return { model, data: parseJsonPayload(responsesOutputText(payload)) };
+    } catch (error) {
+      failed = { status: 0, message: safeErrorMessage(error.message || error), model };
+      if (!shouldTryNextModel(0, failed.message)) break;
+    }
+  }
+
+  const message = failed ? failed.message : "OpenAI Responses web research failed.";
+  const error = new Error(`${stage} failed: ${message}`);
+  error.stage = stage;
+  throw error;
+}
+
+async function requestOpenAISearchJson(stage, user, maxTokens) {
+  let responsesError = null;
+  try {
+    return await requestOpenAIResponsesSearchJson(stage, user, maxTokens);
+  } catch (error) {
+    responsesError = error;
+  }
+
+  const key = openAIKey();
+  const keyError = validateOpenAIKey(key);
+  if (keyError) {
+    const error = new Error(keyError);
+    error.stage = stage;
+    throw error;
+  }
+
+  let failed;
+  for (const model of configuredSearchModels()) {
+    try {
+      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          authorization: `Bearer ${key}`,
+          "content-type": "application/json"
+        },
+        body: JSON.stringify({
+          model,
+          web_search_options: {},
+          temperature: 0.1,
+          max_tokens: maxTokens || 2600,
+          messages: [
+            {
+              role: "system",
+              content: "You are Bernard, the Masterclass Factory research librarian. Use OpenAI web search. Return strict JSON only. Do not invent sources, URLs, dates, standards, or claims. Prefer official standards bodies, regulators, manufacturers, certification bodies, safety authorities, and reputable technical documentation."
+            },
+            { role: "user", content: user }
+          ]
+        })
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        const message = openAIError(payload);
+        failed = { status: response.status, message, model };
+        if (shouldTryNextModel(response.status, message)) continue;
+        throw new Error(message);
+      }
+      const content = payload && payload.choices && payload.choices[0] && payload.choices[0].message && payload.choices[0].message.content;
+      return { model, data: parseJsonPayload(content) };
+    } catch (error) {
+      failed = { status: 0, message: safeErrorMessage(error.message || error), model };
+      if (!shouldTryNextModel(0, failed.message)) break;
+    }
+  }
+
+  const message = failed ? failed.message : responsesError ? responsesError.message : "OpenAI web research failed.";
+  const error = new Error(`${stage} failed: ${message}`);
+  error.stage = stage;
+  throw error;
+}
+
+function normalizeSourceType(value) {
+  const sourceType = text(value, "url").toLowerCase();
+  if (/standard|code|regulator|regulation|authority/.test(sourceType)) return "standard";
+  if (/manufacturer|manual|technical|guide|spec/.test(sourceType)) return "manufacturer guide";
+  if (/safety|compliance|procedure|osha|risk/.test(sourceType)) return "safety procedure";
+  if (/training|certification|credential|curriculum/.test(sourceType)) return "certification training";
+  if (/video/.test(sourceType)) return "video";
+  if (/audio/.test(sourceType)) return "audio";
+  if (/data|dataset|statistics/.test(sourceType)) return "data";
+  return "url";
+}
+
+function normalizeTrust(value, sourceType) {
+  const trust = text(value, "").toLowerCase();
+  if (["primary", "secondary", "unknown"].includes(trust)) return trust;
+  return /standard|manufacturer|safety|certification/.test(sourceType) ? "primary" : "secondary";
+}
+
+function normalizeDiscoveredSources(data, existingPaths) {
+  const seen = new Set((existingPaths || []).map((item) => text(item, "").toLowerCase()));
+  const raw = []
+    .concat(Array.isArray(data && data.source_candidates) ? data.source_candidates : [])
+    .concat(Array.isArray(data && data.sources) ? data.sources : []);
+  return raw.map((item) => {
+    const url = text(item && (item.url || item.path || item.href));
+    if (!isUrl(url)) return null;
+    const key = url.toLowerCase();
+    if (seen.has(key)) return null;
+    seen.add(key);
+    const sourceType = normalizeSourceType(item && (item.type || item.source_type || item.category));
+    return {
+      path: url,
+      type: sourceType,
+      trust: normalizeTrust(item && (item.trust || item.credibility || item.tier), sourceType)
+    };
+  }).filter(Boolean).slice(0, 24);
+}
+
+async function discoverKnowledgeBaseSources(brief, standard) {
+  const owner = researchOwner(brief);
+  const discovery = {
+    owner,
+    attempted: false,
+    model: "",
+    added_sources: [],
+    rejected_sources: [],
+    gaps: [],
+    notes: []
+  };
+
+  if (owner !== "ai") return discovery;
+  if (!brief.knowledge_base.research.allow_web) {
+    discovery.notes.push("AI-owned research was selected, but verified web research is turned off.");
+    return discovery;
+  }
+
+  const current = sourceCounts(brief);
+  if (standard.ok) {
+    discovery.notes.push("The class maker's source list already meets the selected source floor; Bernard did not add extra sources.");
+    return discovery;
+  }
+
+  discovery.attempted = true;
+  const needed = {
+    total_sources_needed: Math.max(0, standard.required_sources - current.total),
+    primary_sources_needed: Math.max(0, standard.required_primary_sources - current.primary)
+  };
+  const prompt = JSON.stringify({
+    task: "Find source candidates for this masterclass knowledge base. Return more candidates than needed so verification can reject weak or unreachable pages.",
+    class_title: brief.meta.title,
+    selected_tier: standard.tier,
+    needed,
+    current_sources: brief.knowledge_base.uploads,
+    seed_prompts: brief.knowledge_base.research.seed_prompts,
+    recency_floor: brief.knowledge_base.research.recency_floor,
+    credibility_rules: brief.knowledge_base.credibility,
+    required_mix: [
+      "official standards, code, or governing-body guidance where relevant",
+      "manufacturer or technical installation guidance",
+      "safety, compliance, or risk procedure evidence",
+      "training or certification body guidance",
+      "current practice, quality, troubleshooting, or lessons-learned evidence"
+    ],
+    rules: [
+      "Use web search.",
+      "Return only source candidates with URLs you actually found.",
+      "Do not include fake URLs or generic homepages unless the page itself is useful evidence.",
+      "Prefer source pages that can support teaching claims, procedures, hazards, standards, vocabulary, or assessment.",
+      "Mark primary sources as primary only when the organization is the standard-setter, regulator, manufacturer, certification body, or direct publisher of the evidence."
+    ],
+    required_json_shape: {
+      summary: "string",
+      source_candidates: [{
+        title: "string",
+        url: "https://...",
+        type: "standard|manufacturer guide|safety procedure|certification training|url|data",
+        trust: "primary|secondary|unknown",
+        why: "string"
+      }],
+      gaps: ["string"]
+    }
+  }, null, 2);
+
+  const researched = await requestOpenAISearchJson("knowledge-base discovery", prompt, 3200);
+  discovery.model = researched.model;
+  discovery.gaps = list(researched.data && researched.data.gaps, [], 10);
+  const candidates = normalizeDiscoveredSources(researched.data, (brief.knowledge_base.uploads || []).map((source) => source.path));
+  const verified = [];
+  for (const candidate of candidates) {
+    if (verified.length >= Math.max(needed.total_sources_needed + 4, needed.primary_sources_needed + 2, 8)) break;
+    const fetched = await fetchUrlText(candidate.path);
+    if (fetched.ok) {
+      verified.push(candidate);
+    } else {
+      discovery.rejected_sources.push({ path: candidate.path, reason: fetched.error });
+    }
+  }
+  discovery.added_sources = verified;
+  if (!verified.length) discovery.notes.push("Bernard searched, but no candidate URLs passed the readability check.");
+  return discovery;
+}
+
+async function prepareKnowledgeBase(brief) {
+  const prepared = JSON.parse(JSON.stringify(brief));
+  const discovery = await discoverKnowledgeBaseSources(prepared, knowledgeBaseStandard(prepared)).catch((error) => ({
+    owner: researchOwner(prepared),
+    attempted: true,
+    model: "",
+    added_sources: [],
+    rejected_sources: [],
+    gaps: [],
+    notes: [`AI-owned research could not finish: ${safeErrorMessage(error.message || error)}`]
+  }));
+
+  if (discovery.added_sources && discovery.added_sources.length) {
+    prepared.knowledge_base.uploads = (prepared.knowledge_base.uploads || []).concat(discovery.added_sources);
+  }
+  return { brief: prepared, discovery };
+}
+
 async function buildSourcePaper(brief) {
   const sections = [];
   const notes = [];
@@ -341,7 +610,7 @@ async function buildSourcePaper(brief) {
     body: [
       `<p><strong>Class:</strong> ${html(title)}</p>`,
       `<p><strong>Class tier:</strong> ${html(standard.tier.label)}. <strong>Knowledge-base standard:</strong> ${html(standard.required_sources)} usable sources, including ${html(standard.required_primary_sources)} primary sources.</p>`,
-      `<p><strong>Research mode:</strong> ${html(brief.knowledge_base.research.mode)}. <strong>Minimum source tier:</strong> ${html(brief.knowledge_base.credibility.min_tier)}.</p>`,
+      `<p><strong>Research owner:</strong> ${html(researchOwner(brief))}. <strong>Research mode:</strong> ${html(brief.knowledge_base.research.mode)}. <strong>Minimum source tier:</strong> ${html(brief.knowledge_base.credibility.min_tier)}.</p>`,
       `<p><strong>Audience floor:</strong> ${html(brief.audience.floor.background || "Not specified")} / ${html(brief.audience.floor.education || "education not specified")}.</p>`,
       `<p><strong>Language:</strong> ${html(brief.language.primary || "en")}.</p>`,
       `<p>This section is generated from the class setup package. It is allowed to guide curriculum shape, but it is not a substitute for outside evidence.</p>`,
@@ -545,6 +814,7 @@ async function runOpenAIStages(brief, sourcePaper) {
     "Do not invent sources, URLs, dates, statistics, people, or factual claims.",
     "If evidence is weak or unavailable, say what is missing rather than filling gaps.",
     `The selected class tier is ${standard.tier.label}. The knowledge-base standard is ${standard.required_sources} usable sources including ${standard.required_primary_sources} primary sources.`,
+    `Knowledge-base research owner: ${researchOwner(brief)}. If the owner is ai, Bernard is responsible for closing source gaps before objectives are treated as final.`,
     "Terminal and enabling objectives must come from the researched knowledge base and learner profile.",
     `The slide budget is a contract: produce ${requestedSlides} total slides, made of ${teachingSlides} teaching slides plus one final Knowledge Base / Works Cited slide.`,
     `When asked to author slides directly, return ${authoredSlides} teaching slides. Do not stop at five slides unless the budget itself is five.`,
@@ -1722,6 +1992,8 @@ function makeClassRecord(brief, generated, sourcePaper, pipeline, quality) {
     slug: slugify(brief.meta.slug || brief.meta.title),
     generated_at: new Date().toISOString(),
     class_tier: classTierSpec(brief),
+    research_owner: researchOwner(brief),
+    source_discovery: generated.source_discovery || null,
     knowledge_standard: quality.knowledge_standard,
     slide_count: generated.slides.length,
     teaching_slide_count: generated.slideDrafts.length - 1,
@@ -2177,7 +2449,10 @@ module.exports = async function generateHandler(req, res) {
       return;
     }
 
-    const sourceBuild = await buildSourcePaper(brief);
+    const prepared = await prepareKnowledgeBase(brief);
+    const effectiveBrief = prepared.brief;
+    const sourceDiscovery = prepared.discovery;
+    const sourceBuild = await buildSourcePaper(effectiveBrief);
     let pipeline;
     const keyError = validateOpenAIKey(openAIKey());
     if (keyError) {
@@ -2188,7 +2463,7 @@ module.exports = async function generateHandler(req, res) {
       };
     } else {
       try {
-        pipeline = await runOpenAIStages(brief, sourceBuild.sourcePaper);
+        pipeline = await runOpenAIStages(effectiveBrief, sourceBuild.sourcePaper);
       } catch (error) {
         pipeline = {
           mode: "deterministic",
@@ -2198,15 +2473,15 @@ module.exports = async function generateHandler(req, res) {
       }
     }
 
-    const generated = buildGeneratedDeck(brief, sourceBuild.sourcePaper, pipeline);
+    const generated = buildGeneratedDeck(effectiveBrief, sourceBuild.sourcePaper, pipeline);
     const files = {
-      "content.js": makeContentJs(brief, generated),
+      "content.js": makeContentJs(effectiveBrief, generated),
       "glossary.js": makeGlossaryJs(generated.glossary),
       "source.js": makeSourceJs(sourceBuild.sourcePaper)
     };
     const sourceCheck = sourceVerify(generated, sourceBuild.sourcePaper);
-    const qa = qaGate(files, generated, sourceBuild.sourcePaper, brief);
-    const quality = qualityAudit(brief, generated, sourceBuild.sourcePaper, sourceCheck, qa);
+    const qa = qaGate(files, generated, sourceBuild.sourcePaper, effectiveBrief);
+    const quality = qualityAudit(effectiveBrief, generated, sourceBuild.sourcePaper, sourceCheck, qa);
     if (!sourceCheck.ok || !qa.ok || !quality.ok) {
       send(res, 500, {
         ok: false,
@@ -2214,19 +2489,21 @@ module.exports = async function generateHandler(req, res) {
         source_verify: sourceCheck,
         qa,
         quality,
-        knowledge_standard: quality.knowledge_standard
+        knowledge_standard: quality.knowledge_standard,
+        source_discovery: sourceDiscovery
       });
       return;
     }
 
-    const presenterScript = makePresenterScript(brief, generated, sourceBuild.sourcePaper, pipeline);
-    const bundle = makeBundle(brief, files, presenterScript, generated, sourceBuild.sourcePaper, pipeline, quality);
+    generated.source_discovery = sourceDiscovery;
+    const presenterScript = makePresenterScript(effectiveBrief, generated, sourceBuild.sourcePaper, pipeline);
+    const bundle = makeBundle(effectiveBrief, files, presenterScript, generated, sourceBuild.sourcePaper, pipeline, quality);
     const previewHtml = makePreviewHtml(bundle);
     let publish = { status: "skipped", message: "Auto-publish was not requested." };
-    if (publishRequested) publish = await publishToGitHub(req, brief, bundle).catch((error) => ({
+    if (publishRequested) publish = await publishToGitHub(req, effectiveBrief, bundle).catch((error) => ({
       status: "failed",
       message: safeErrorMessage(error.message || error),
-      expected_url: baseUrl(req) ? `${baseUrl(req)}/classes/${slugify(brief.meta.slug || brief.meta.title)}/` : ""
+      expected_url: baseUrl(req) ? `${baseUrl(req)}/classes/${slugify(effectiveBrief.meta.slug || effectiveBrief.meta.title)}/` : ""
     }));
 
     send(res, 200, {
@@ -2248,11 +2525,13 @@ module.exports = async function generateHandler(req, res) {
       message: pipeline.mode === "openai"
         ? "Masterclass generated with OpenAI stages, independent source verification, QA, preview, bundle, and publish handoff."
         : "Masterclass generated with the conservative deterministic path because OpenAI was unavailable. Preview, bundle, source verification, QA, and publish handoff are ready.",
-      warnings: [pipeline.warning, slideBudgetWarning(brief, generated)].concat(sourceBuild.notes || []).filter(Boolean),
+      warnings: [pipeline.warning, slideBudgetWarning(effectiveBrief, generated)].concat(sourceDiscovery.notes || []).concat(sourceBuild.notes || []).filter(Boolean),
       stage_reports: (pipeline.reports || []).concat([
+        { stage: "knowledge-base-discovery", ok: !sourceDiscovery.attempted || Boolean(sourceDiscovery.added_sources && sourceDiscovery.added_sources.length), owner: sourceDiscovery.owner, model: sourceDiscovery.model || null, added_sources: sourceDiscovery.added_sources.length },
         { stage: "knowledge-base-standard", ok: quality.knowledge_standard.ok, tier: quality.knowledge_standard.tier.label, message: quality.knowledge_standard.messages.join(" ") },
         { stage: "quality", ok: true, score: quality.score, status: quality.status }
       ]),
+      source_discovery: sourceDiscovery,
       lesson_plan: generated.lesson_plan,
       course_blueprint: generated.course_blueprint,
       evidence_map: generated.evidence_map,

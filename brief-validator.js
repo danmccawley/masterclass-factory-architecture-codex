@@ -15,6 +15,7 @@
     knowledge_base: {
       uploads: [],
       research: {
+        owner: "creator",
         mode: "grounded",
         seed_prompts: [],
         allow_web: true,
@@ -75,6 +76,7 @@
   var ENUMS = {
     "meta.engine_contract": ["v-texas"],
     "class_tier.level": ["briefing", "standard", "professional", "expert"],
+    "knowledge_base.research.owner": ["creator", "assisted", "ai"],
     "knowledge_base.research.mode": ["none", "grounded", "collaborative"],
     "knowledge_base.credibility.min_tier": ["primary", "secondary", "unknown"],
     "mastery.granularity": ["survey", "working", "deep"],

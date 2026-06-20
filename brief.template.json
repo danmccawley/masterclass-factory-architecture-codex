@@ -3,7 +3,7 @@
   "class_tier": { "level": "professional" },
   "knowledge_base": {
     "uploads": [],
-    "research": { "mode": "grounded", "seed_prompts": [], "allow_web": true, "recency_floor": "2024-01-01" },
+    "research": { "owner": "creator", "mode": "grounded", "seed_prompts": [], "allow_web": true, "recency_floor": "2024-01-01" },
     "credibility": { "min_tier": "secondary", "require_two_sources_for": ["statistics", "forward-looking claims", "contested points"] }
   },
   "objectives": { "terminal": [], "enabling": [], "out_of_scope": [] },

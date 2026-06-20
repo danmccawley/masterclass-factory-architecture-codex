@@ -642,6 +642,16 @@ pre {
   min-height: 136px;
 }
 
+.research-owner-grid .mode-card {
+  min-height: 138px;
+}
+
+.research-owner-card .assist-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
 .standard-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
