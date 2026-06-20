@@ -579,9 +579,6 @@
     setGeneratorTrackerStage(0);
     generatorTrackerTimer = window.setInterval(function () {
       tickGeneratorOdometer();
-      if (generatorTrackerIndex < 2) {
-        setGeneratorTrackerStage(generatorTrackerIndex + 1);
-      }
     }, 950);
     return tracker;
   }
@@ -590,8 +587,15 @@
     if (!generatorProgress.length) return;
     var current = generatorProgress[generatorTrackerIndex] || 0;
     if (generatorTrackerIndex < generatorStages.length - 1) {
-      generatorProgress[generatorTrackerIndex] = Math.min(96, current + (current < 60 ? 7 : current < 85 ? 4 : 1));
+      generatorProgress[generatorTrackerIndex] = Math.min(94, current + (current < 45 ? 5 : current < 75 ? 3 : 1));
     }
+    updateTrackerOdometers();
+  }
+
+  function markTrackerStagePassed(index) {
+    if (!generatorProgress.length) generatorProgress = generatorStages.map(function () { return 0; });
+    var passed = Math.max(0, Math.min(generatorStages.length - 1, index));
+    generatorProgress[passed] = 100;
     updateTrackerOdometers();
   }
 
@@ -614,17 +618,13 @@
     if (!tracker) return;
     var active = generatorStages[generatorTrackerIndex];
     if (!generatorProgress.length) generatorProgress = generatorStages.map(function () { return 0; });
-    generatorProgress = generatorProgress.map(function (value, stepIndex) {
-      if (stepIndex < generatorTrackerIndex) return 100;
-      if (stepIndex === generatorTrackerIndex) return Math.max(value || 0, 8);
-      return value || 0;
-    });
+    generatorProgress[generatorTrackerIndex] = Math.max(generatorProgress[generatorTrackerIndex] || 0, 8);
     Array.from(tracker.querySelectorAll("[data-tracker-step]")).forEach(function (step) {
       var stepIndex = Number(step.getAttribute("data-tracker-step"));
-      step.classList.toggle("done", stepIndex < generatorTrackerIndex);
+      step.classList.toggle("done", (generatorProgress[stepIndex] || 0) >= 100);
       step.classList.toggle("active", stepIndex === generatorTrackerIndex);
       var status = step.querySelector("small");
-      if (status) status.textContent = stepIndex < generatorTrackerIndex ? "Done" : stepIndex === generatorTrackerIndex ? "In progress" : "Waiting";
+      if (status) status.textContent = (generatorProgress[stepIndex] || 0) >= 100 ? "Done" : stepIndex === generatorTrackerIndex ? "In progress" : "Waiting";
     });
     var nowStage = tracker.querySelector("[data-tracker-now-stage]");
     if (nowStage) nowStage.textContent = active.label;
@@ -670,9 +670,11 @@
     var tracker = document.querySelector("[data-generator-tracker]");
     if (!tracker) return;
     setGeneratorTrackerStage(trackerIndexForFailure(error), "The generator stopped here because this gate did not pass.");
-    generatorProgress[generatorTrackerIndex] = Math.max(generatorProgress[generatorTrackerIndex] || 0, 99);
+    generatorProgress[generatorTrackerIndex] = Math.min(generatorProgress[generatorTrackerIndex] || 0, 94);
     updateTrackerOdometers();
     tracker.classList.add("failed");
+    var failedStep = tracker.querySelector("[data-tracker-step=\"" + generatorTrackerIndex + "\"] small");
+    if (failedStep) failedStep.textContent = "Blocked";
     var detail = tracker.querySelector("[data-tracker-detail]");
     if (detail) detail.textContent = "The generator needs attention: " + (error && error.message ? error.message : "unknown error");
     var small = tracker.querySelector("[data-tracker-small]");
@@ -702,6 +704,7 @@
     try {
       setGeneratorTrackerStage(0, "Checking that the setup data matches the contract.");
       await fetch("/api/brief", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(parseBrief()) });
+      markTrackerStagePassed(0);
       setGeneratorTrackerStage(1, "Building the knowledge base and source-quality list.");
       var response = await fetch("/api/generate", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ brief: parseBrief(), publish: true }) });
       var payload = await response.json();
@@ -713,9 +716,17 @@
         failure.source_discovery = payload.source_discovery || null;
         throw failure;
       }
+      markTrackerStagePassed(1);
+      setGeneratorTrackerStage(2, "Knowledge base passed. Research and source-grounded objectives are complete.");
+      markTrackerStagePassed(2);
       setGeneratorTrackerStage(3, "Blueprint passed. Lesson plan, slides, and deep dives were built from the approved knowledge base.");
+      markTrackerStagePassed(3);
+      setGeneratorTrackerStage(4, "Lesson recipe passed. Slide generation and content-depth repair are complete.");
+      markTrackerStagePassed(4);
       setGeneratorTrackerStage(5, "Slides are built. Running citation verification.");
+      markTrackerStagePassed(5);
       setGeneratorTrackerStage(6, "Running source verification and QA.");
+      markTrackerStagePassed(6);
       generation = payload;
       completeGeneratorTracker(payload);
       if (payload.publish && payload.publish.status === "published") {
