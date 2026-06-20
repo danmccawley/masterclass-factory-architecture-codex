@@ -26,6 +26,7 @@
 }
 
 body {
+  position: relative;
   margin: 0;
   min-height: 100vh;
   color: var(--ink);
@@ -34,6 +35,20 @@ body {
     radial-gradient(circle at 90% 6%, rgba(196, 160, 107, 0.14), transparent 28rem),
     linear-gradient(135deg, #fffdf7 0%, #f7f1e6 54%, #edf7fb 100%);
   font-family: "IBM Plex Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(120deg, transparent 0 46%, rgba(29, 159, 194, 0.05) 46% 47%, transparent 47% 100%),
+    repeating-linear-gradient(165deg, rgba(196, 160, 107, 0.055) 0 1px, transparent 1px 18px),
+    repeating-linear-gradient(20deg, rgba(29, 159, 194, 0.035) 0 1px, transparent 1px 24px);
+  opacity: 0.78;
 }
 
 button,
@@ -53,6 +68,8 @@ pre {
 }
 
 .app-shell {
+  position: relative;
+  z-index: 1;
   width: min(1480px, calc(100% - 32px));
   margin: 0 auto;
   padding: 28px 0;
@@ -248,7 +265,27 @@ pre {
 }
 
 .creator-panel {
+  position: relative;
   overflow: hidden;
+}
+
+.creator-panel::after {
+  content: "";
+  position: absolute;
+  right: -120px;
+  bottom: -150px;
+  width: 360px;
+  height: 360px;
+  pointer-events: none;
+  background:
+    radial-gradient(circle, rgba(29, 159, 194, 0.12), transparent 58%),
+    repeating-radial-gradient(circle, rgba(196, 160, 107, 0.09) 0 1px, transparent 1px 16px);
+  opacity: 0.7;
+}
+
+.creator-panel > * {
+  position: relative;
+  z-index: 1;
 }
 
 .panel-head,
@@ -305,6 +342,10 @@ pre {
 }
 
 .field.full {
+  grid-column: 1 / -1;
+}
+
+.form-grid > .full {
   grid-column: 1 / -1;
 }
 
@@ -695,20 +736,27 @@ pre {
 }
 
 .length-planner {
+  grid-column: 1 / -1;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   gap: 16px;
 }
 
 .budget-control {
   display: grid;
-  gap: 14px;
-  padding: 18px;
+  gap: 16px;
+  min-width: 0;
+  padding: 20px;
   border: 1px solid rgba(29, 159, 194, 0.22);
   border-radius: var(--radius-md);
   background:
     linear-gradient(145deg, rgba(223, 244, 248, 0.44), rgba(255, 253, 247, 0.8)),
     rgba(255, 253, 247, 0.7);
+}
+
+.budget-control-head {
+  display: grid;
+  gap: 6px;
 }
 
 .budget-control h3 {
@@ -718,14 +766,22 @@ pre {
 
 .budget-row {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(110px, 0.9fr);
-  gap: 10px;
+  grid-template-columns: minmax(180px, 1fr) minmax(150px, 220px);
+  gap: 12px;
 }
 
-.budget-row label,
+.budget-field,
 .range-row {
   display: grid;
-  gap: 7px;
+  min-width: 0;
+  gap: 8px;
+}
+
+.budget-field .mini-label,
+.range-row .mini-label {
+  display: block;
+  line-height: 1.2;
+  white-space: normal;
 }
 
 .budget-row select,
@@ -739,9 +795,24 @@ pre {
   border-radius: var(--radius-sm);
 }
 
+.range-row {
+  padding-top: 2px;
+}
+
 .range-row input[type="range"] {
   width: 100%;
+  min-width: 0;
+  min-height: 28px;
   accent-color: var(--water);
+}
+
+.budget-scale {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--ink-soft);
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.72rem;
 }
 
 .recommendation-grid {
