@@ -2,6 +2,23 @@ const fs = require("fs");
 const path = require("path");
 const { validateBrief } = require("../brief-validator.js");
 const template = require("../brief.template.json");
+const { readOpenAIUsage, createBudgetLedger } = require("./kb-budget.js");
+
+// Per-build cost ledger. Set at the start of each generate request and recorded
+// into at every OpenAI/Tavily call site, so the build's real spend is tracked.
+// NOTE: this is module-scoped and reset per request; it assumes one in-flight
+// generate per instance (the standard Node serverless model). If request-level
+// concurrency is enabled, thread the ledger through call args instead.
+let _costLedger = null;
+function recordOpenAISpend(payload, model) {
+  if (!_costLedger) return;
+  const u = readOpenAIUsage(payload);
+  if (u.total_tokens > 0) _costLedger.record({ kind: "openai", model: model, input_tokens: u.input_tokens, output_tokens: u.output_tokens });
+}
+function recordTavilySpend(searches) {
+  if (!_costLedger) return;
+  _costLedger.record({ kind: "tavily", searches: Number(searches) || 0 });
+}
 
 const DEFAULT_OPENAI_MODEL = "gpt-5.5";
 const FALLBACK_OPENAI_MODELS = ["gpt-5.4", "gpt-4.1-mini"];
@@ -590,6 +607,7 @@ async function requestOpenAIResponsesSearchJson(stage, user, maxTokens) {
         if (shouldTryNextModel(response.status, message)) continue;
         throw new Error(message);
       }
+      recordOpenAISpend(payload, model);
       return { model, data: parseJsonPayload(responsesOutputText(payload)) };
     } catch (error) {
       failed = { status: 0, message: safeErrorMessage(error.message || error), model };
@@ -656,6 +674,7 @@ async function requestOpenAISearchJson(stage, user, maxTokens) {
         throw new Error(message);
       }
       const content = payload && payload.choices && payload.choices[0] && payload.choices[0].message && payload.choices[0].message.content;
+      recordOpenAISpend(payload, model);
       return { model, data: parseJsonPayload(content) };
     } catch (error) {
       failed = { status: 0, message: safeErrorMessage(error.message || error), model };
@@ -720,6 +739,7 @@ async function tavilySearch(query, maxResults) {
     });
     if (!response.ok) return [];
     const payload = await response.json().catch(() => ({}));
+    recordTavilySpend(1);
     const results = Array.isArray(payload && payload.results) ? payload.results : [];
     return results.map((r) => {
       const url = text(r && r.url, "");
@@ -1589,6 +1609,7 @@ async function requestOpenAIJson(stage, system, user, maxTokens) {
         throw new Error(message);
       }
       const content = payload && payload.choices && payload.choices[0] && payload.choices[0].message && payload.choices[0].message.content;
+      recordOpenAISpend(payload, model);
       return { model, data: parseJsonPayload(content) };
     } catch (error) {
       failed = { status: 0, message: safeErrorMessage(error.message || error), model };
@@ -3424,6 +3445,12 @@ module.exports = async function generateHandler(req, res) {
     const body = await readBody(req);
     const brief = body && body.brief ? body.brief : body;
     const publishRequested = body && Object.prototype.hasOwnProperty.call(body, "publish") ? Boolean(body.publish) : true;
+    // Start a fresh per-build cost ledger. Budget is read from an OPTIONAL field
+    // (body.budget_usd or brief.budget_usd); 0/absent means "no budget set" — the
+    // ledger still tracks real spend, it just never raises an overage notice.
+    _costLedger = createBudgetLedger(
+      Number((body && body.budget_usd) || (brief && brief.budget_usd) || 0)
+    );
     const result = validateBrief(brief, template);
     if (!result.ok) {
       send(res, 422, { ok: false, errors: result.errors });
@@ -3645,6 +3672,8 @@ module.exports = async function generateHandler(req, res) {
       source_verify: { ok: true, issues: [] },
       knowledge_standard: quality.knowledge_standard,
       quality,
+      // Real per-build spend, computed from measured token usage (see kb-budget.js).
+      cost: _costLedger ? _costLedger.summary() : null,
       message: pipeline.mode === "openai"
         ? "Masterclass generated with OpenAI stages, independent source verification, QA, preview, bundle, and publish handoff."
         : "Masterclass generated with the conservative deterministic path because OpenAI was unavailable. Preview, bundle, source verification, QA, and publish handoff are ready.",
