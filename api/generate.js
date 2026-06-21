@@ -32,6 +32,17 @@ function sanitizeBriefForValidation(brief) {
     delete clone.knowledge_base.sealed;
     delete clone.knowledge_base.seal;
     delete clone.knowledge_base._class_tier;
+    // Sources discovered by the round engine carry verification metadata
+    // (fetched, reachable_only, title, relevance, ...) that the strict upload
+    // contract (path/type/trust only) does not allow. Whitelist each upload to
+    // the contract keys for validation — generation ignores the extra fields,
+    // so the real brief keeps them; only the validation copy is reduced. This is
+    // a whitelist (not a blacklist) so any future engine metadata is handled too.
+    if (Array.isArray(clone.knowledge_base.uploads)) {
+      clone.knowledge_base.uploads = clone.knowledge_base.uploads.map(function (u) {
+        return (u && typeof u === "object") ? { path: u.path, type: u.type, trust: u.trust } : u;
+      });
+    }
   }
   // budget_usd is an optional governor field, also outside the strict contract.
   if (clone) delete clone.budget_usd;

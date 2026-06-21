@@ -618,6 +618,21 @@ test("sanitizer does not mutate the original sealed brief", () => {
   I.sanitizeBriefForValidation(sealed);
   assert.strictEqual(sealed.knowledge_base.sealed, true); // original keeps sealed for the seal short-circuit
 });
+test("sanitizer whitelists round-engine upload metadata (fetched/reachable_only) so sealed sources validate", () => {
+  const sealed = JSON.parse(JSON.stringify(validator.DEFAULT_TEMPLATE));
+  sealed.knowledge_base.sealed = true;
+  // A source as the round engine folds it in on Accept & seal:
+  sealed.knowledge_base.uploads = [
+    { path: "https://ieee.org/x", type: "standard", trust: "primary", fetched: true, reachable_only: false, title: "X" }
+  ];
+  const rawErrors = validator.validateBrief(sealed, validator.DEFAULT_TEMPLATE);
+  assert.strictEqual(rawErrors.ok, false); // fetched/reachable_only/title rejected by exactKeys
+  const cleaned = I.sanitizeBriefForValidation(sealed);
+  const out = validator.validateBrief(cleaned, validator.DEFAULT_TEMPLATE);
+  assert.strictEqual(out.ok, true, out.errors && out.errors.join("; "));
+  // and the cleaned upload kept exactly the contract keys
+  assert.deepStrictEqual(Object.keys(cleaned.knowledge_base.uploads[0]).sort(), ["path", "trust", "type"]);
+});
 
 group("Slide budget (honor explicit low counts; floor is only a default)");
 
