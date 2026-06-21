@@ -1816,3 +1816,20 @@ pre {
 .obj-gap { font-weight: 600; }
 .obj-gap-structural { color: var(--clay); }
 .obj-gap-closeable { color: var(--water-deep); }
+
+/* ---- KB seal nudge: modal, status banner, attention pulse ---- */
+.kb-seal-status { margin: 8px 0 0; padding: 8px 12px; border-radius: var(--radius-sm); font-size: 0.9em; }
+.kb-seal-status.pending { background: rgba(154, 92, 69, 0.10); color: var(--clay); border: 1px solid rgba(154, 92, 69, 0.30); }
+.kb-seal-status.sealed { background: rgba(46, 139, 87, 0.10); color: #2e8b57; border: 1px solid rgba(46, 139, 87, 0.30); }
+
+.kb-nudge-overlay { position: fixed; inset: 0; background: rgba(34, 48, 47, 0.55); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 20px; }
+.kb-nudge-modal { background: var(--paper-2); border-radius: var(--radius-md); box-shadow: var(--shadow); max-width: 460px; width: 100%; padding: 24px 26px; }
+.kb-nudge-modal h3 { margin: 0 0 10px; color: var(--clay); }
+.kb-nudge-modal p { margin: 0 0 16px; color: var(--ink); line-height: 1.5; }
+.kb-nudge-modal .assist-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+@keyframes kbAttentionPulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(29, 159, 194, 0.55); }
+  50% { transform: scale(1.04); box-shadow: 0 0 0 10px rgba(29, 159, 194, 0); }
+}
+.kb-attention { animation: kbAttentionPulse 0.9s ease-in-out 3; outline: 2px solid var(--water); outline-offset: 2px; }

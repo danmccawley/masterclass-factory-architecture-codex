@@ -99,6 +99,27 @@
     var stepButton = closest(event.target, ".step-button");
     var librarianCheck = closest(event.target, "[data-librarian-check]");
 
+    // KB SEAL NUDGE. Strongly discourage leaving the Knowledge base step before
+    // the KB is sealed (skipping it sends the generator into its own discovery,
+    // which is slow and error-prone). This is a nudge, not a hard gate: the modal
+    // offers "Continue anyway," consistent with "the human is the only off-switch."
+    // Fires only on FORWARD navigation off the KB step while unsealed + not bypassed.
+    if (currentStep().indexOf("knowledge base") !== -1 && !sealedKnowledgeBase && !kbNudgeBypassed) {
+      var navTarget = null;
+      if (nextButton && (event.target === nextButton || nextButton.contains(event.target))) {
+        navTarget = { kind: "next" };
+      } else if (stepButton) {
+        var idx = Number(stepButton.getAttribute("data-step"));
+        if (!isNaN(idx) && idx > 1) navTarget = { kind: "step", el: stepButton }; // KB is step index 1
+      }
+      if (navTarget) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        showKbNudge(navTarget);
+        return;
+      }
+    }
+
     if (mobileMenu) {
       event.preventDefault();
       event.stopImmediatePropagation();
@@ -316,12 +337,17 @@
       "<div class=\"assist-actions\">" +
       "<button type=\"button\" class=\"primary\" data-kb-round>Start knowledge-base research</button>" +
       "<button type=\"button\" class=\"ghost\" data-ai=\"fill\">Prepare objective candidates</button></div>" +
+      "<p class=\"kb-seal-status pending\" data-kb-seal-status>&#9888; Not sealed yet &mdash; run knowledge-base research and seal before continuing.</p>" +
       "<div class=\"kb-step-result\" data-kb-step-result></div>";
     var grid = form.querySelector(".form-grid") || form;
     grid.appendChild(card);
 
     var roundBtn = card.querySelector("[data-kb-round]");
     if (roundBtn) roundBtn.addEventListener("click", function () { runKnowledgeBaseRounds(roundBtn); });
+
+    // Re-arm the nudge each time the human lands back on the KB step.
+    kbNudgeBypassed = false;
+    updateSealStatusBanner();
 
     // If a seal already exists in this session, reflect it immediately.
     if (sealedKnowledgeBase && sealedKnowledgeBase.seal) {
@@ -350,6 +376,95 @@
   // new-source count is a true per-round delta. Nothing seals until the human
   // chooses "Accept & seal". The human is the only off-switch.
   var kbRoundState = null;
+  // The seal nudge is bypassed only when the human explicitly chooses "Continue
+  // anyway." Re-armed when they re-enter the KB step or unseal.
+  var kbNudgeBypassed = false;
+
+  // What does the KB step need before the human leaves it?
+  //   "unrun"    — no research round has been run yet
+  //   "unsealed" — rounds run but not accepted/sealed
+  //   "ok"       — sealed (no nudge)
+  function kbNudgeState() {
+    if (sealedKnowledgeBase) return "ok";
+    if (kbRoundState === null) return "unrun";
+    return "unsealed";
+  }
+
+  // Pulse a button to draw the eye to the next action.
+  function pulseKbButton(selector) {
+    var el = form.querySelector(selector);
+    if (!el) return;
+    try { el.scrollIntoView({ behavior: "smooth", block: "center" }); } catch (e) {}
+    el.classList.add("kb-attention");
+    window.setTimeout(function () { el.classList.remove("kb-attention"); }, 4000);
+  }
+
+  function closeKbNudge() {
+    var overlay = document.querySelector("[data-kb-nudge]");
+    if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+  }
+
+  // The human chose "Continue anyway" — bypass the nudge once and replay the nav.
+  function proceedPastKb(target) {
+    kbNudgeBypassed = true;
+    closeKbNudge();
+    if (!target) return;
+    if (target.kind === "next" && nextButton) nextButton.click();
+    else if (target.kind === "step" && target.el) target.el.click();
+  }
+
+  // The state-aware modal: tells the human exactly what to do, points them to it,
+  // and still lets them proceed. Never a hard wall.
+  function showKbNudge(navTarget) {
+    closeKbNudge();
+    var state = kbNudgeState();
+    var unrun = state === "unrun";
+    var headline = unrun
+      ? "Run knowledge-base research first"
+      : "Accept &amp; seal what Bernard found";
+    var body = unrun
+      ? "Bernard hasn't researched the knowledge base yet. Sealing it here means the generator builds on verified sources instead of re-researching from scratch (which is slow and error-prone). It only takes a round or two."
+      : "Bernard found sources but the knowledge base isn't sealed yet. Accept &amp; seal so the generator builds on it &mdash; otherwise it re-researches from scratch downstream.";
+    var ctaLabel = unrun ? "Take me to the research button" : "Take me to Accept &amp; seal";
+    var targetSelector = unrun ? "[data-kb-round]" : "[data-kb-accept]";
+
+    var overlay = document.createElement("div");
+    overlay.className = "kb-nudge-overlay";
+    overlay.setAttribute("data-kb-nudge", "true");
+    overlay.innerHTML =
+      "<div class=\"kb-nudge-modal\" role=\"dialog\" aria-modal=\"true\">" +
+      "<h3>&#9888; " + headline + "</h3>" +
+      "<p>" + body + "</p>" +
+      "<div class=\"assist-actions\">" +
+      "<button type=\"button\" class=\"primary\" data-kb-nudge-go>" + ctaLabel + "</button> " +
+      "<button type=\"button\" class=\"ghost\" data-kb-nudge-proceed>Continue without sealing</button>" +
+      "</div></div>";
+    document.body.appendChild(overlay);
+
+    var go = overlay.querySelector("[data-kb-nudge-go]");
+    if (go) go.addEventListener("click", function () { closeKbNudge(); pulseKbButton(targetSelector); });
+    var proceed = overlay.querySelector("[data-kb-nudge-proceed]");
+    if (proceed) proceed.addEventListener("click", function () { proceedPastKb(navTarget); });
+    overlay.addEventListener("click", function (e) { if (e.target === overlay) closeKbNudge(); });
+  }
+
+  // A persistent status line on the KB step so the seal requirement is visible
+  // BEFORE the human tries to leave, not only when they're stopped.
+  function updateSealStatusBanner() {
+    var banner = form.querySelector("[data-kb-seal-status]");
+    if (!banner) return;
+    var state = kbNudgeState();
+    if (state === "ok") {
+      banner.className = "kb-seal-status sealed";
+      banner.innerHTML = "&#10003; Knowledge base sealed &mdash; ready to continue.";
+    } else if (state === "unsealed") {
+      banner.className = "kb-seal-status pending";
+      banner.innerHTML = "&#9888; Rounds run, but not sealed yet &mdash; Accept &amp; seal before continuing.";
+    } else {
+      banner.className = "kb-seal-status pending";
+      banner.innerHTML = "&#9888; Not sealed yet &mdash; run knowledge-base research and seal before continuing.";
+    }
+  }
 
   async function runKnowledgeBaseRounds(btn) {
     var target = form.querySelector("[data-kb-step-result]");
@@ -485,6 +600,7 @@
     var accept = box.querySelector("[data-kb-accept]");
     if (accept) accept.addEventListener("click", function () { acceptAndSeal(target); });
     wireConversationalBox(box);
+    updateSealStatusBanner();
   }
 
   // Accept the rounds result: fold the sources Bernard accepted into the brief
@@ -539,8 +655,11 @@
     var unseal = target.querySelector("[data-kb-unseal]");
     if (unseal) unseal.addEventListener("click", function () {
       sealedKnowledgeBase = null;
+      kbNudgeBypassed = false; // re-arm the nudge: an unsealed KB must be sealed again
+      updateSealStatusBanner();
       target.innerHTML = "<div class=\"notice\">Knowledge base re-opened. Review and seal again when ready.</div>";
     });
+    updateSealStatusBanner();
   }
 
   function enhanceLengthStep() {
