@@ -12,7 +12,7 @@ const PROJECT_KEY_PATTERN = new RegExp(KEY_PREFIX + "proj-[A-Za-z0-9_-]+", "g");
 const ANY_KEY_PATTERN = new RegExp(KEY_PREFIX + "[A-Za-z0-9_-]+", "g");
 const MAX_SOURCE_CHARS = 9000;
 const SOURCE_FETCH_TIMEOUT_MS = 9000;
-const OPENAI_SEARCH_TIMEOUT_MS = 60000;
+const OPENAI_SEARCH_TIMEOUT_MS = 22000;
 const MAX_DISCOVERY_URL_CHECKS = 16;
 // Cap discovery rounds so the serverless function stays under its execution
 // timeout. Each round is one OpenAI web-search call plus up to MAX_DISCOVERY_URL_CHECKS fetches.
@@ -571,7 +571,7 @@ async function requestOpenAIResponsesSearchJson(stage, user, maxTokens) {
         },
         body: JSON.stringify({
           model,
-          tools: [{ type: "web_search", search_context_size: "medium" }],
+          tools: [{ type: "web_search_preview", search_context_size: "medium" }],
           max_output_tokens: maxTokens || 3200,
           instructions: "You are Bernard, the Masterclass Factory research librarian. Use web search. Return strict JSON only. Do not invent sources, URLs, dates, standards, or claims. Prefer official standards bodies, regulators, manufacturers, certification bodies, safety authorities, and reputable technical documentation.",
           input: user
@@ -663,6 +663,109 @@ async function requestOpenAISearchJson(stage, user, maxTokens) {
   const error = new Error(`${stage} failed: ${message}`);
   error.stage = stage;
   throw error;
+}
+
+// ---------------------------------------------------------------------------
+// Fast, reliable source discovery via a dedicated search API (Tavily).
+//
+// OpenAI's hosted web_search tool has been hanging/timing out, which both
+// produced empty knowledge bases AND pushed the whole /api/generate function
+// past the Vercel time limit (504 -> non-JSON -> a hard "blocked" dead-end).
+// A dedicated search API returns candidate URLs in ~1-2s, so discovery can
+// never stall the function. When TAVILY_API_KEY is set this becomes the
+// primary finder; OpenAI web search is only a fallback when no key is present.
+// ---------------------------------------------------------------------------
+const TAVILY_SEARCH_TIMEOUT_MS = 12000;
+
+function tavilyConfigured() {
+  return Boolean(String(process.env.TAVILY_API_KEY || "").trim());
+}
+
+// Infer a source type + trust level from the host. Government, standards, and
+// education domains are treated as primary; everything else as secondary.
+function classifyByHost(url) {
+  let host = "";
+  try { host = new URL(url).hostname.toLowerCase(); } catch (e) { host = ""; }
+  const primary = /\.gov(\.[a-z]{2})?$|\.gov\.|\.mil$|\.edu$|\.edu\.|europa\.eu$|who\.int$|un\.org$|iso\.org$|nist\.gov$|loc\.gov$|stlouisfed\.org$/.test(host);
+  let type = "url";
+  if (/\.gov|\.mil|iso\.org|nist|standard|regulat/.test(host)) type = "standard";
+  else if (/\.edu/.test(host)) type = "certification training";
+  return { trust: primary ? "primary" : "secondary", type };
+}
+
+async function tavilySearch(query, maxResults) {
+  const key = String(process.env.TAVILY_API_KEY || "").trim();
+  if (!key) return [];
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), TAVILY_SEARCH_TIMEOUT_MS);
+  try {
+    const response = await fetch("https://api.tavily.com/search", {
+      method: "POST",
+      signal: controller.signal,
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        api_key: key,
+        query: String(query || "").slice(0, 380),
+        search_depth: "basic",
+        max_results: clampInteger(maxResults || 8, 1, 12),
+        include_answer: false,
+        include_raw_content: false
+      })
+    });
+    if (!response.ok) return [];
+    const payload = await response.json().catch(() => ({}));
+    const results = Array.isArray(payload && payload.results) ? payload.results : [];
+    return results.map((r) => {
+      const url = text(r && r.url, "");
+      const klass = classifyByHost(url);
+      return {
+        title: text(r && r.title, url),
+        url,
+        type: klass.type,
+        trust: klass.trust,
+        why: text(r && r.content, "").slice(0, 300)
+      };
+    }).filter((c) => isUrl(c.url));
+  } catch (error) {
+    return [];
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+// Unified candidate finder. Prefers the fast search API; falls back to the
+// OpenAI web-search path only when no search key is configured. Returns the
+// same { model, data: { summary, source_candidates, gaps } } shape the
+// discovery loop already understands.
+async function findSourceCandidates(prompt, brief, standard, needed) {
+  if (tavilyConfigured()) {
+    const title = text(brief && brief.meta && brief.meta.title, "").trim();
+    const queries = [];
+    if (title) {
+      queries.push(`${title} overview key facts`);
+      if (needed && needed.primary_sources_needed > 0) {
+        queries.push(`${title} official source government OR standards OR primary documentation`);
+      } else {
+        queries.push(`${title} authoritative guide reference`);
+      }
+    }
+    const seeds = list(brief && brief.knowledge_base && brief.knowledge_base.research && brief.knowledge_base.research.seed_prompts, [], 2);
+    seeds.forEach((s) => { if (text(s, "")) queries.push(`${title} ${text(s, "")}`.trim()); });
+
+    const seen = new Set();
+    const candidates = [];
+    for (const q of queries.slice(0, 3)) {
+      const batch = await tavilySearch(q, 8);
+      batch.forEach((c) => {
+        if (c.url && !seen.has(c.url)) { seen.add(c.url); candidates.push(c); }
+      });
+    }
+    if (candidates.length) {
+      return { model: "tavily-search", data: { summary: `Found ${candidates.length} candidate source(s) via search API.`, source_candidates: candidates, gaps: [] } };
+    }
+    // Tavily configured but returned nothing — fall through to OpenAI below.
+  }
+  return await requestOpenAISearchJson("knowledge-base discovery", prompt, 3200);
 }
 
 function normalizeSourceType(value) {
@@ -798,7 +901,7 @@ async function discoverKnowledgeBaseSources(brief, standard) {
 
     let researched;
     try {
-      researched = await requestOpenAISearchJson("knowledge-base discovery", prompt, 3200);
+      researched = await findSourceCandidates(prompt, brief, standard, needed);
     } catch (error) {
       discovery.notes.push(`Round ${round + 1} search failed: ${safeErrorMessage(error.message || error)}`);
       break;

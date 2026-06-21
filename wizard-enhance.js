@@ -1026,6 +1026,49 @@
     if (tracker && tracker.parentNode) tracker.parentNode.removeChild(tracker);
   }
 
+  // Read a response body as JSON without ever throwing. A server timeout (504)
+  // or platform error returns plain text ("An error o..."), and JSON.parse on
+  // that is exactly what used to crash the run into a hard "blocked" state.
+  async function readJsonSafe(response) {
+    var bodyText = "";
+    try { bodyText = await response.text(); } catch (e) { return null; }
+    try { return JSON.parse(bodyText); } catch (e) { return null; }
+  }
+
+  // A non-JSON / timeout response must NEVER dead-end the job. The factory's
+  // rule is that the human is the only off-switch, so surface choices instead
+  // of a wall: retry, build with what exists, or have Bernard find sources.
+  function presentGeneratorSnag(status) {
+    if (generatorTrackerTimer) window.clearInterval(generatorTrackerTimer);
+    generatorTrackerTimer = null;
+    var tracker = document.querySelector("[data-generator-tracker]");
+    if (tracker) {
+      tracker.classList.remove("failed");
+      var detail = tracker.querySelector("[data-tracker-detail]");
+      if (detail) detail.textContent = "Bernard's research run took too long on the server" + (status ? " (status " + status + ")" : "") + " and was stopped. Nothing is lost and nothing is blocked.";
+      var small = tracker.querySelector("[data-tracker-small]");
+      if (small) small.textContent = "Choose how to proceed below — the job is not blocked.";
+      var close = tracker.querySelector("[data-close-tracker]");
+      if (close) close.textContent = "Return to setup";
+    }
+    if (!validationBox) return;
+    validationBox.innerHTML =
+      "<div class=\"notice warn\">" +
+      "<p><strong>Bernard hit a snag, not a wall.</strong> The research step timed out on the server. Nothing is blocked — you decide how to proceed:</p>" +
+      "<div class=\"assist-actions\">" +
+      "<button type=\"button\" class=\"primary\" data-snag-retry>Try the generator again</button> " +
+      "<button type=\"button\" data-snag-sources>Have Bernard find sources</button> " +
+      "<button type=\"button\" data-snag-build>Build now with what exists</button>" +
+      "</div></div>";
+    var retry = validationBox.querySelector("[data-snag-retry]");
+    if (retry) retry.addEventListener("click", function () { runGenerator(); });
+    var src = validationBox.querySelector("[data-snag-sources]");
+    if (src) src.addEventListener("click", function () { remediateKnowledgeBase(src); });
+    var build = validationBox.querySelector("[data-snag-build]");
+    if (build) build.addEventListener("click", function () { runGeneratorWithApproval({ proceed_anyway: true }); });
+    setGenie("The research step timed out on the server. Nothing is blocked — you can retry, have me find sources, or build now with what exists.");
+  }
+
   async function runGenerator() {
     var approval = form.querySelector("[data-blueprint-approved]");
     if (approval && !approval.checked) {
@@ -1043,7 +1086,8 @@
       markTrackerStagePassed(0);
       setGeneratorTrackerStage(1, "Building the knowledge base and source-quality list.");
       var response = await fetch("/api/generate", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ brief: briefForGenerate(), publish: true }) });
-      var payload = await response.json();
+      var payload = await readJsonSafe(response);
+      if (!payload) { presentGeneratorSnag(response.status); return; }
       if (!response.ok || !payload.ok) {
         // The knowledge-base gate never dead-ends. A change order (scarce topic
         // or a met lower tier) or a precise human request is presented for a
@@ -1118,7 +1162,8 @@
       setGeneratorTrackerStage(1, "Building the knowledge base on the approved scope.");
       var body = Object.assign({ brief: briefForGenerate(), publish: true }, extra || {});
       var response = await fetch("/api/generate", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
-      var payload = await response.json();
+      var payload = await readJsonSafe(response);
+      if (!payload) { presentGeneratorSnag(response.status); return; }
       if (!response.ok || !payload.ok) {
         if (payload.status === "knowledge_base_review") { presentKnowledgeBaseReview(payload); return; }
         if (payload.status === "needs_decision" && payload.change_order) { presentChangeOrder(payload); return; }
