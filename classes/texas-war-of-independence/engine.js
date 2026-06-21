@@ -1,5 +1,5 @@
 /* ============================================================================
-   ENGINE — texas war of independence  ·  Master Class
+   ENGINE — Texas War of Independence  ·  Master Class
    ----------------------------------------------------------------------------
    Renders SLIDES from content.js, drives navigation (arrows/swipe/keys),
    builds the title QR client-side from the current URL, opens the parchment
@@ -32,7 +32,7 @@
   var POLLS = window.POLLS || {};
   var WORDS = window.WORDS || {};
   var CLASS_SLUG = (window.DECK_META && window.DECK_META.slug) ||
-    String(window.CLASS_TITLE || "texas war of independence").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"") ||
+    String(window.CLASS_TITLE || "Texas War of Independence").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"") ||
     "masterclass";
 
   /* ---------- COMPREHENSION LEVEL (1–5): scales quiz difficulty + AI grading ---------- */
@@ -833,7 +833,7 @@
     fetch("/api/feedback", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ class_title: window.CLASS_TITLE || "texas war of independence", class_slug: CLASS_SLUG, slide: s.id || "", slideNum: String(idx+1), context: _fbContext, text: text })
+      body: JSON.stringify({ class_title: window.CLASS_TITLE || "Texas War of Independence", class_slug: CLASS_SLUG, slide: s.id || "", slideNum: String(idx+1), context: _fbContext, text: text })
     }).then(function(r){ return r.json(); }).then(function(j){
       if(j && j.ok){
         trackParticipation("feedback");
@@ -952,7 +952,7 @@
     document.getElementById("chatModal").classList.add("open");
     document.getElementById("chatMuted").textContent="";
     if(!history.length){
-      addMsg("a", "Hello, I'm Bernard. Ask me anything about texas war of independence — the key ideas, source evidence, practice steps, and checks for understanding.");
+      addMsg("a", "Hello, I'm Bernard. Ask me anything about Texas War of Independence — the key ideas, source evidence, practice steps, and checks for understanding.");
     }
     var inp = document.getElementById("chatIn");
     if(prefill){ inp.value = prefill; }
@@ -1021,10 +1021,10 @@
         hideMenu();
         var sel = window.getSelection && window.getSelection(); if(sel) sel.removeAllRanges();
         var prompts = {
-          definition: "I'm in a class on texas war of independence. Define \u201c"+phrase+"\u201d in plain language.",
-          context:    "In the context of this class on texas war of independence, what does \u201c"+phrase+"\u201d mean here and how is it being used?",
-          relevance:  "Why does \u201c"+phrase+"\u201d matter in texas war of independence? Explain its relevance to this class.",
-          general:    "I have a question about \u201c"+phrase+"\u201d from this class on texas war of independence: "
+          definition: "I'm in a class on Texas War of Independence. Define \u201c"+phrase+"\u201d in plain language.",
+          context:    "In the context of this class on Texas War of Independence, what does \u201c"+phrase+"\u201d mean here and how is it being used?",
+          relevance:  "Why does \u201c"+phrase+"\u201d matter in Texas War of Independence? Explain its relevance to this class.",
+          general:    "I have a question about \u201c"+phrase+"\u201d from this class on Texas War of Independence: "
         };
         openChat(prompts[kind] || prompts.general);
       });
@@ -1033,7 +1033,7 @@
   window.askAboutTerm = function(term){
     if(window._hideTileHover) window._hideTileHover();
     var tip = document.getElementById("glosstip"); if(tip) tip.classList.remove("show");
-    openChat("In the context of this class on texas war of independence, explain \u201c" + term + "\u201d and why it matters.");
+    openChat("In the context of this class on Texas War of Independence, explain \u201c" + term + "\u201d and why it matters.");
   };
   document.getElementById("chatIn").addEventListener("keydown", function(e){ if(e.key==="Enter") sendChat(); });
   window.sendChat = function(){
@@ -1113,7 +1113,7 @@
   }
   function qualityPayload(){
     return {
-      class_title: window.CLASS_TITLE || "texas war of independence",
+      class_title: window.CLASS_TITLE || "Texas War of Independence",
       class_slug: CLASS_SLUG,
       slide_count: SLIDES.length,
       quiz_count: document.querySelectorAll("[data-quiz]").length,

@@ -1,7 +1,7 @@
 [
   {
     "kind": "terminal objective",
-    "claim": "Analyze the causes, key events, and outcomes of the Texas War of Independence, including its major battles, political developments, and aftermath.",
+    "claim": "Analyze the causes, key events, and outcomes of the Texas War of Independence, demonstrating an understanding of the political, social, and military factors that shaped the revolution and its aftermath.",
     "source_ids": [
       "s1",
       "s2",
@@ -16,38 +16,8 @@
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
-    "kind": "terminal objective",
-    "claim": "Evaluate the roles and perspectives of significant figures and factions involved in the Texas Revolution, considering Texan, Mexican, and indigenous viewpoints.",
-    "source_ids": [
-      "s2",
-      "s3",
-      "s4"
-    ],
-    "source_titles": [
-      "en.wikipedia.org",
-      "study.com",
-      "thc.texas.gov"
-    ],
-    "status": "mapped",
-    "finding": "Mapped to approved source-paper sections for source verification."
-  },
-  {
-    "kind": "terminal objective",
-    "claim": "Interpret primary source documents related to the Texas War of Independence to understand the historical context, political debates, and social impacts of the conflict.",
-    "source_ids": [
-      "s3",
-      "s4"
-    ],
-    "source_titles": [
-      "study.com",
-      "thc.texas.gov"
-    ],
-    "status": "mapped",
-    "finding": "Mapped to approved source-paper sections for source verification."
-  },
-  {
     "kind": "enabling objective",
-    "claim": "Describe the political and social conditions in Texas and Mexico leading up to the Texas War of Independence.",
+    "claim": "Describe the political context in Mexico leading up to the Texas Revolution, including the impact of Santa Anna's centralist policies and the 1824 Constitution.",
     "source_ids": [
       "s2",
       "s3",
@@ -63,7 +33,7 @@
   },
   {
     "kind": "enabling objective",
-    "claim": "Identify and explain the significance of major battles such as the Siege of the Alamo, Goliad Campaign, and Battle of San Jacinto.",
+    "claim": "Identify and explain the significance of major battles and campaigns during the Texas Revolution, such as the Battle of Gonzales, the Siege of the Alamo, the Goliad Campaign, and the Battle of San Jacinto.",
     "source_ids": [
       "s3",
       "s4"
@@ -77,7 +47,7 @@
   },
   {
     "kind": "enabling objective",
-    "claim": "Summarize the content and implications of the Texas Declaration of Independence and the establishment of the Republic of Texas.",
+    "claim": "Examine the roles and perspectives of different groups involved in the revolution, including Anglo-American settlers, Tejanos, enslaved African Americans, and Mexican residents.",
     "source_ids": [
       "s4"
     ],
@@ -89,7 +59,7 @@
   },
   {
     "kind": "enabling objective",
-    "claim": "Recognize key individuals involved in the conflict and their contributions or roles.",
+    "claim": "Interpret primary source documents related to the Texas Revolution from archives and historical commissions to understand contemporary viewpoints and government actions.",
     "source_ids": [
       "s1",
       "s2",
@@ -107,7 +77,7 @@
   },
   {
     "kind": "enabling objective",
-    "claim": "Analyze the role of slavery and other contentious political issues within the Texas Revolution.",
+    "claim": "Evaluate the political and social consequences of the Texas Declaration of Independence and the establishment of the provisional government under Sam Houston.",
     "source_ids": [
       "s1",
       "s2",
@@ -125,7 +95,7 @@
   },
   {
     "kind": "enabling objective",
-    "claim": "Examine primary source materials including government records, correspondence, and maps to gain firsthand insights into the war.",
+    "claim": "Discuss the internal divisions among Texans and the complexities of loyalty and identity during the revolution.",
     "source_ids": [
       "s1",
       "s2",
@@ -143,7 +113,7 @@
   },
   {
     "kind": "enabling objective",
-    "claim": "Discuss the social and cultural impact of the war on indigenous peoples and Tejanos, acknowledging gaps in historical records.",
+    "claim": "Assess the limitations and biases in secondary sources and the importance of corroborating contested historical interpretations with primary evidence.",
     "source_ids": [
       "s1",
       "s2",
@@ -161,7 +131,7 @@
   },
   {
     "kind": "enabling objective",
-    "claim": "Compare and contrast Texan and Mexican perspectives on the revolution, noting areas of historical disagreement.",
+    "claim": "Apply critical thinking to understand the broader implications of the Texas Revolution on regional politics and its legacy in American and Mexican history.",
     "source_ids": [
       "s1",
       "s2",
@@ -179,16 +149,18 @@
   },
   {
     "kind": "lesson section",
-    "claim": "Background and Causes of the Texas War of Independence",
+    "claim": "Political Context and Causes of the Texas Revolution",
     "source_ids": [
       "s2",
-      "s5",
-      "s12"
+      "s21",
+      "s22",
+      "s5"
     ],
     "source_titles": [
       "en.wikipedia.org",
-      "history.com",
-      "guides.loc.gov"
+      "tshaonline.org",
+      "education.texashistory.unt.edu",
+      "history.com"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
@@ -198,12 +170,26 @@
     "claim": "Key Battles and Military Campaigns",
     "source_ids": [
       "s2",
-      "s4",
-      "s5"
+      "s21"
     ],
     "source_titles": [
       "en.wikipedia.org",
-      "thc.texas.gov",
+      "tshaonline.org"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Diverse Perspectives and Internal Divisions",
+    "source_ids": [
+      "s22",
+      "s21",
+      "s5"
+    ],
+    "source_titles": [
+      "education.texashistory.unt.edu",
+      "tshaonline.org",
       "history.com"
     ],
     "status": "mapped",
@@ -211,61 +197,15 @@
   },
   {
     "kind": "lesson section",
-    "claim": "Political Developments and the Texas Declaration of Independence",
+    "claim": "Primary Sources and Historical Evidence",
     "source_ids": [
-      "s5",
-      "s11",
-      "s15"
-    ],
-    "source_titles": [
-      "history.com",
-      "tamuct.libguides.com",
-      "history.house.gov"
-    ],
-    "status": "mapped",
-    "finding": "Mapped to approved source-paper sections for source verification."
-  },
-  {
-    "kind": "lesson section",
-    "claim": "Prominent Figures and Perspectives",
-    "source_ids": [
-      "s2",
-      "s4",
-      "s12"
-    ],
-    "source_titles": [
-      "en.wikipedia.org",
-      "thc.texas.gov",
-      "guides.loc.gov"
-    ],
-    "status": "mapped",
-    "finding": "Mapped to approved source-paper sections for source verification."
-  },
-  {
-    "kind": "lesson section",
-    "claim": "Social and Cultural Impact of the Revolution",
-    "source_ids": [
-      "s5",
-      "s12"
-    ],
-    "source_titles": [
-      "history.com",
-      "guides.loc.gov"
-    ],
-    "status": "mapped",
-    "finding": "Mapped to approved source-paper sections for source verification."
-  },
-  {
-    "kind": "lesson section",
-    "claim": "Primary Source Analysis and Historical Interpretation",
-    "source_ids": [
-      "s4",
+      "s3",
       "s11",
       "s12",
       "s15"
     ],
     "source_titles": [
-      "thc.texas.gov",
+      "study.com",
       "tamuct.libguides.com",
       "guides.loc.gov",
       "history.house.gov"
@@ -275,14 +215,30 @@
   },
   {
     "kind": "lesson section",
-    "claim": "Aftermath and the Republic of Texas",
+    "claim": "The Texas Declaration of Independence and Provisional Government",
+    "source_ids": [
+      "s5",
+      "s21"
+    ],
+    "source_titles": [
+      "history.com",
+      "tshaonline.org"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Outcomes and Legacy of the Texas Revolution",
     "source_ids": [
       "s2",
-      "s4"
+      "s21",
+      "s22"
     ],
     "source_titles": [
       "en.wikipedia.org",
-      "thc.texas.gov"
+      "tshaonline.org",
+      "education.texashistory.unt.edu"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
@@ -307,7 +263,7 @@
   },
   {
     "kind": "out of scope",
-    "claim": "Detailed military tactics beyond major battles and campaigns.; Post-Revolution Texas history beyond the immediate establishment of the Republic of Texas.; In-depth biographies of individuals unrelated to the Texas War of Independence.; Modern political implications or controversies unrelated to the historical events of 1835-1836.",
+    "claim": "Detailed military tactics and weaponry beyond major battles and campaigns.; In-depth exploration of indigenous peoples' experiences outside their interaction with the revolution context.; Comprehensive analysis of international diplomatic relations post-independence beyond immediate Texas-Mexico relations.; Extensive multimedia content analysis not supported by extractable or summarized knowledge base content.; Detailed biographies of minor figures not central to the revolution's main events.",
     "source_ids": [
       "s1",
       "s2"

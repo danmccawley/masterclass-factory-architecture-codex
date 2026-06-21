@@ -1,4 +1,4 @@
-# Facilitator Guide: texas war of independence
+# Facilitator Guide: Texas War of Independence
 
 Quality score at build: 98 / 100 (excellent)
 Class tier: Standard class
