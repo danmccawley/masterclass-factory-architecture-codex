@@ -5,9 +5,14 @@
 // generator never re-litigates it (see the seal short-circuit in
 // resolveKnowledgeBase). The human is the only off-switch.
 //
-// Two modes:
+// Modes:
 //   mode: "review" (default) — run discovery + scoring and return the status,
 //     score, analysis, and options. Nothing is sealed; nothing is generated.
+//   mode: "rounds" — run ONE incremental discovery round and return a checkpoint
+//     (cumulative score, new-sources-this-round, recommendation, gaps) plus the
+//     round_state to send back for the next round. This powers the saturation-
+//     control panel: the human watches the curve and decides continue / accept.
+//     Nothing is sealed here either; "accept" calls seal mode below.
 //   mode: "seal" — apply the human's decision and return a SEALED brief the
 //     wizard carries forward into generation. Decisions:
 //       proceed_anyway            build as-is, evidence-limited if below floor
@@ -19,12 +24,20 @@
 // This endpoint generates and publishes NOTHING. It only resolves and seals.
 
 const generate = require("./generate.js");
+const { runKnowledgeBaseRound, buildCompositionLedger } = require("./kb-rounds.js");
 const {
   knowledgeBaseStandard,
   resolveKnowledgeBase,
   readBody,
   safeErrorMessage,
-  CLASS_TIERS
+  CLASS_TIERS,
+  // primitives used to run one discovery round (the REAL implementations):
+  findSourceCandidates,
+  normalizeDiscoveredSources,
+  fetchUrlText,
+  sourceCounts,
+  scoreKnowledgeBase,
+  classTierSpec
 } = generate._internal;
 
 function send(res, status, payload) {
@@ -75,6 +88,44 @@ module.exports = async function knowledgeBaseHandler(req, res) {
       return;
     }
     const mode = body && body.mode ? String(body.mode).toLowerCase() : "review";
+
+    // ----- ROUNDS MODE -----
+    // Run one discovery round and return a checkpoint + updated round_state.
+    // The wizard sends round_state back unchanged on the next round so the
+    // new-sources count is a true delta (deduped against everything already
+    // accepted or rejected). Nothing is sealed; the human decides via the panel.
+    if (mode === "rounds") {
+      const primitives = {
+        knowledgeBaseStandard,
+        scoreKnowledgeBase,
+        sourceCounts,
+        classTierSpec,
+        findSourceCandidates,
+        normalizeDiscoveredSources,
+        fetchUrlText
+      };
+      const result = await runKnowledgeBaseRound({
+        brief,
+        state: body.round_state || null,
+        primitives
+      });
+      const ledger = buildCompositionLedger(result.state, brief, primitives);
+      send(res, 200, {
+        ok: true,
+        status: "round",
+        checkpoint: result.checkpoint,
+        round_state: result.state,
+        // Line-by-line, auditable source ledger (tier 1: composition + verification).
+        ledger: ledger,
+        // Convenience for the wizard: the accepted sources so far, so an
+        // "accept" can seal the brief with them folded in via add_sources.
+        accepted_sources: result.state.accepted,
+        message: result.checkpoint.error
+          ? "This round hit a snag: " + result.checkpoint.error + ". Nothing is blocked — you can run another round, accept what exists, or add a source by hand."
+          : "Round " + result.checkpoint.round + " complete. Review the checkpoint and decide: run another round, or accept and seal."
+      });
+      return;
+    }
 
     // ----- SEAL MODE -----
     if (mode === "seal") {

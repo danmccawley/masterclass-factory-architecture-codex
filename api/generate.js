@@ -3682,6 +3682,11 @@ module.exports._internal = {
   knowledgeBaseStandard,
   discoverKnowledgeBaseSources,
   prepareKnowledgeBase,
+  // exported so api/kb-rounds.js can run ONE discovery round at a time using the
+  // real implementations (never mirrored), for the interactive round-based KB build:
+  findSourceCandidates,
+  normalizeDiscoveredSources,
+  fetchUrlText,
   sourceCounts,
   researchOwner,
   readBody,
