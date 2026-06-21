@@ -1,0 +1,101 @@
+{
+  "tier": "Professional masterclass",
+  "slide_target": 90,
+  "teaching_slide_target": 89,
+  "knowledge_standard": {
+    "ok": true,
+    "floor_met": true,
+    "evidence_limited": false,
+    "tier": {
+      "level": "professional",
+      "label": "Professional masterclass",
+      "source_floor": 12,
+      "primary_source_floor": 3,
+      "slide_floor": 60,
+      "standard": "Default quality bar for serious workplace learning and strong source discipline."
+    },
+    "counts": {
+      "total": 14,
+      "primary": 4,
+      "secondary": 10,
+      "unknown": 0
+    },
+    "score": {
+      "score": 89,
+      "band": "excellent",
+      "components": {
+        "coverage": 100,
+        "authority": 79,
+        "recency": 75
+      },
+      "weights": {
+        "coverage": 0.5,
+        "authority": 0.3,
+        "recency": 0.2
+      },
+      "detail": {
+        "total": 14,
+        "primary": 4,
+        "secondary": 10,
+        "required_total": 12,
+        "required_primary": 3,
+        "dated_sources": 0,
+        "recency_floor_year": 2024
+      },
+      "summary": "Knowledge-base score 89/100 (excellent): coverage 100, authority 79, recency 75. 14/12 sources, 4/3 primary."
+    },
+    "required_sources": 12,
+    "required_primary_sources": 3,
+    "source_gap": 0,
+    "primary_source_gap": 0,
+    "messages": [
+      "Knowledge base meets the selected Professional masterclass floor."
+    ]
+  },
+  "approved_before_generation": true,
+  "modules": [
+    {
+      "order": 1,
+      "title": "Orientation and learner baseline",
+      "slide_budget": 7,
+      "goal": "Set the purpose, audience floor, assumptions, and mastery target.",
+      "deep_dive_expectation": "substantive deep dives where required by tier and setting"
+    },
+    {
+      "order": 2,
+      "title": "Knowledge base and source boundary",
+      "slide_budget": 11,
+      "goal": "Show what the approved sources support, what is missing, and what must not be invented.",
+      "deep_dive_expectation": "substantive deep dives where required by tier and setting"
+    },
+    {
+      "order": 3,
+      "title": "Core concepts and vocabulary",
+      "slide_budget": 16,
+      "goal": "Teach the essential terms, mental models, and decision points.",
+      "deep_dive_expectation": "substantive deep dives where required by tier and setting"
+    },
+    {
+      "order": 4,
+      "title": "Guided practice and examples",
+      "slide_budget": 20,
+      "goal": "Work through realistic cases, common mistakes, checks, and facilitator prompts.",
+      "deep_dive_expectation": "substantive deep dives where required by tier and setting"
+    },
+    {
+      "order": 5,
+      "title": "Deep dives, edge cases, and quality risks",
+      "slide_budget": 20,
+      "goal": "Add expert detail, safety cautions, disagreements, and advanced transfer examples.",
+      "deep_dive_expectation": "substantive deep dives where required by tier and setting"
+    },
+    {
+      "order": 6,
+      "title": "Assessment, transfer, and works cited",
+      "slide_budget": 15,
+      "goal": "Prove mastery, capture participation, and close with source transparency.",
+      "deep_dive_expectation": "substantive deep dives where required by tier and setting"
+    }
+  ],
+  "lesson_sections": 10
+}

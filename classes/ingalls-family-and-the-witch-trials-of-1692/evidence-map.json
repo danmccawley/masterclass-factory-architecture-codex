@@ -1,0 +1,394 @@
+[
+  {
+    "kind": "terminal objective",
+    "claim": "Explain how the Ingalls family is presented in relation to the witch trials of 1692, using only evidence confirmed during later research.",
+    "source_ids": [
+      "s1",
+      "s2",
+      "s3"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "history.com",
+      "youtube.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "terminal objective",
+    "claim": "Compare different interpretations of the Ingalls family’s role, experience, or significance in the 1692 witch-trial context.",
+    "source_ids": [
+      "s2",
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "history.com",
+      "youtube.com",
+      "neh.gov"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "terminal objective",
+    "claim": "Build a cautious, evidence-based account of what can and cannot be concluded about the Ingalls family and the witch trials of 1692.",
+    "source_ids": [
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "youtube.com",
+      "neh.gov"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "terminal objective",
+    "claim": "Assess how source limits, bias, and historical uncertainty affect claims about the Ingalls family and this event.",
+    "source_ids": [
+      "s4"
+    ],
+    "source_titles": [
+      "neh.gov"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "terminal objective",
+    "claim": "Communicate a clear summary of the topic for a general audience without overstating uncertain details.",
+    "source_ids": [
+      "s1",
+      "s2",
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "history.com",
+      "youtube.com",
+      "neh.gov"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "enabling objective",
+    "claim": "Identify the basic historical setting of the witch trials of 1692 after source review confirms the needed context.",
+    "source_ids": [
+      "s2",
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "history.com",
+      "youtube.com",
+      "neh.gov"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "enabling objective",
+    "claim": "Define key terms, people, places, and records relevant to the topic once verified by research.",
+    "source_ids": [
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "youtube.com",
+      "neh.gov"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "enabling objective",
+    "claim": "Distinguish between primary sources, later retellings, and modern interpretations.",
+    "source_ids": [
+      "s4"
+    ],
+    "source_titles": [
+      "neh.gov"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "enabling objective",
+    "claim": "Check whether references to the Ingalls family point to the same people, family line, or time period.",
+    "source_ids": [
+      "s1",
+      "s2",
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "history.com",
+      "youtube.com",
+      "neh.gov"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "enabling objective",
+    "claim": "Trace claims back to supporting evidence and flag claims that lack support.",
+    "source_ids": [
+      "s1",
+      "s2",
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "history.com",
+      "youtube.com",
+      "neh.gov"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "enabling objective",
+    "claim": "Recognize common problems in historical research such as name confusion, missing records, and conflicting accounts.",
+    "source_ids": [
+      "s1",
+      "s2",
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "history.com",
+      "youtube.com",
+      "neh.gov"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "enabling objective",
+    "claim": "Separate documented facts from inference, legend, and dramatized storytelling.",
+    "source_ids": [
+      "s1",
+      "s2",
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "history.com",
+      "youtube.com",
+      "neh.gov"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "enabling objective",
+    "claim": "Read historical material with attention to bias, purpose, audience, and gaps in the record.",
+    "source_ids": [
+      "s1",
+      "s2",
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "history.com",
+      "youtube.com",
+      "neh.gov"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Historical Context of the Salem Witch Trials",
+    "source_ids": [
+      "s2",
+      "s4",
+      "s9",
+      "s15"
+    ],
+    "source_titles": [
+      "history.com",
+      "neh.gov",
+      "congregationallibrary.org",
+      "law.berkeley.edu"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "The Ingalls Family: Genealogical and Historical Overview",
+    "source_ids": [
+      "s7",
+      "s4",
+      "s9"
+    ],
+    "source_titles": [
+      "decortoadore.net",
+      "neh.gov",
+      "congregationallibrary.org"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Martha Ingalls Allen Carrier: A Case Study",
+    "source_ids": [
+      "s7",
+      "s4"
+    ],
+    "source_titles": [
+      "decortoadore.net",
+      "neh.gov"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Legal and Religious Framework of the Witch Trials",
+    "source_ids": [
+      "s9",
+      "s11",
+      "s15"
+    ],
+    "source_titles": [
+      "congregationallibrary.org",
+      "ecommons.cornell.edu",
+      "law.berkeley.edu"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Source Criticism and Historical Uncertainty",
+    "source_ids": [
+      "s9",
+      "s12",
+      "s4"
+    ],
+    "source_titles": [
+      "congregationallibrary.org",
+      "cpalms.org",
+      "neh.gov"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Interpretations and Mythologizing of the Ingalls Family",
+    "source_ids": [
+      "s2",
+      "s3",
+      "s7"
+    ],
+    "source_titles": [
+      "history.com",
+      "youtube.com",
+      "decortoadore.net"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Aftermath and Legacy: Government Actions and Historical Memory",
+    "source_ids": [
+      "s7",
+      "s4"
+    ],
+    "source_titles": [
+      "decortoadore.net",
+      "neh.gov"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Material Culture and Archival Resources",
+    "source_ids": [
+      "s8"
+    ],
+    "source_titles": [
+      "pem.org"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Communicating Historical Uncertainty and Evidence-Based Narratives",
+    "source_ids": [
+      "s12"
+    ],
+    "source_titles": [
+      "cpalms.org"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Review and Assessment",
+    "source_ids": [
+      "s2",
+      "s4",
+      "s7",
+      "s9"
+    ],
+    "source_titles": [
+      "history.com",
+      "neh.gov",
+      "decortoadore.net",
+      "congregationallibrary.org"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "safety / quality claims",
+    "claim": "Statistics, standards, safety procedures, contested points, and forward-looking claims require corroboration.",
+    "source_ids": [
+      "s1",
+      "s2",
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "history.com",
+      "youtube.com",
+      "neh.gov"
+    ],
+    "status": "corroboration-required",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "out of scope",
+    "claim": "Presenting unverified claims about the Ingalls family as settled fact.; Genealogy beyond what is directly needed to understand the class topic.; Broad coverage of all events and people connected to the witch trials of 1692.; Modern paranormal, supernatural, or occult explanations.; Legal, medical, or psychological diagnosis framed as certain without source support.",
+    "source_ids": [
+      "s1",
+      "s2"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "history.com"
+    ],
+    "status": "scope-boundary",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  }
+]
