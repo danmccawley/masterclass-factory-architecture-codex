@@ -593,6 +593,32 @@ test("qaGate: genuine structural problems still block", () => {
   assert.ok(out.issues.some((i) => /window\.SLIDES/.test(i)), "missing globals must still be flagged structurally");
 });
 
+group("Sealed-brief validation (seal metadata lives outside the strict contract)");
+test("a sealed brief FAILS raw validation (documents the bug)", () => {
+  const sealed = JSON.parse(JSON.stringify(validator.DEFAULT_TEMPLATE));
+  sealed.knowledge_base.sealed = true;
+  sealed.knowledge_base.seal = { at: "now", by: "human", note: "", floor_met: true };
+  sealed.knowledge_base._class_tier = { level: "professional" };
+  const raw = validator.validateBrief(sealed, validator.DEFAULT_TEMPLATE);
+  assert.strictEqual(raw.ok, false); // strict exactKeys rejects the seal fields
+});
+test("sanitizeBriefForValidation strips seal metadata so it validates", () => {
+  const sealed = JSON.parse(JSON.stringify(validator.DEFAULT_TEMPLATE));
+  sealed.knowledge_base.sealed = true;
+  sealed.knowledge_base.seal = { at: "now", by: "human" };
+  sealed.knowledge_base._class_tier = { level: "professional" };
+  sealed.budget_usd = 25;
+  const cleaned = I.sanitizeBriefForValidation(sealed);
+  const out = validator.validateBrief(cleaned, validator.DEFAULT_TEMPLATE);
+  assert.strictEqual(out.ok, true, out.errors && out.errors.join("; "));
+});
+test("sanitizer does not mutate the original sealed brief", () => {
+  const sealed = JSON.parse(JSON.stringify(validator.DEFAULT_TEMPLATE));
+  sealed.knowledge_base.sealed = true;
+  I.sanitizeBriefForValidation(sealed);
+  assert.strictEqual(sealed.knowledge_base.sealed, true); // original keeps sealed for the seal short-circuit
+});
+
 group("Slide budget (honor explicit low counts; floor is only a default)");
 
 function briefWithBudget(budget) {

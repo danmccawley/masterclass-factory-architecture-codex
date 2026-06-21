@@ -20,6 +20,24 @@ function recordTavilySpend(searches) {
   _costLedger.record({ kind: "tavily", searches: Number(searches) || 0 });
 }
 
+// The KB seal step (api/knowledge-base.js) stamps server-added metadata onto
+// knowledge_base — `sealed`, `seal`, and the wizard's `_class_tier` transport
+// field. These live OUTSIDE the strict brief contract (brief.template.json),
+// so validating the sealed brief against the template would wrongly reject it.
+// We validate a sanitized COPY (these fields removed) but generate from the full
+// brief — the seal short-circuit in resolveKnowledgeBase needs knowledge_base.sealed.
+function sanitizeBriefForValidation(brief) {
+  const clone = JSON.parse(JSON.stringify(brief || {}));
+  if (clone && clone.knowledge_base) {
+    delete clone.knowledge_base.sealed;
+    delete clone.knowledge_base.seal;
+    delete clone.knowledge_base._class_tier;
+  }
+  // budget_usd is an optional governor field, also outside the strict contract.
+  if (clone) delete clone.budget_usd;
+  return clone;
+}
+
 const DEFAULT_OPENAI_MODEL = "gpt-5.5";
 const FALLBACK_OPENAI_MODELS = ["gpt-5.4", "gpt-4.1-mini"];
 const DEFAULT_OPENAI_SEARCH_MODEL = "gpt-5-search-api";
@@ -3451,7 +3469,7 @@ module.exports = async function generateHandler(req, res) {
     _costLedger = createBudgetLedger(
       Number((body && body.budget_usd) || (brief && brief.budget_usd) || 0)
     );
-    const result = validateBrief(brief, template);
+    const result = validateBrief(sanitizeBriefForValidation(brief), template);
     if (!result.ok) {
       send(res, 422, { ok: false, errors: result.errors });
       return;
@@ -3728,6 +3746,7 @@ module.exports._internal = {
   scoreKnowledgeBase,
   resolveQaOutcome,
   qaGate,
+  sanitizeBriefForValidation,
   totalSlideTarget,
   slideBudgetFloor,
   requiredDeepDiveCount,
