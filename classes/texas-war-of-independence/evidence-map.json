@@ -1,0 +1,322 @@
+[
+  {
+    "kind": "terminal objective",
+    "claim": "Analyze the causes, key events, and outcomes of the Texas War of Independence, including its major battles, political developments, and aftermath.",
+    "source_ids": [
+      "s1",
+      "s2",
+      "s3"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "en.wikipedia.org",
+      "study.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "terminal objective",
+    "claim": "Evaluate the roles and perspectives of significant figures and factions involved in the Texas Revolution, considering Texan, Mexican, and indigenous viewpoints.",
+    "source_ids": [
+      "s2",
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "en.wikipedia.org",
+      "study.com",
+      "thc.texas.gov"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "terminal objective",
+    "claim": "Interpret primary source documents related to the Texas War of Independence to understand the historical context, political debates, and social impacts of the conflict.",
+    "source_ids": [
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "study.com",
+      "thc.texas.gov"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "enabling objective",
+    "claim": "Describe the political and social conditions in Texas and Mexico leading up to the Texas War of Independence.",
+    "source_ids": [
+      "s2",
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "en.wikipedia.org",
+      "study.com",
+      "thc.texas.gov"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "enabling objective",
+    "claim": "Identify and explain the significance of major battles such as the Siege of the Alamo, Goliad Campaign, and Battle of San Jacinto.",
+    "source_ids": [
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "study.com",
+      "thc.texas.gov"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "enabling objective",
+    "claim": "Summarize the content and implications of the Texas Declaration of Independence and the establishment of the Republic of Texas.",
+    "source_ids": [
+      "s4"
+    ],
+    "source_titles": [
+      "thc.texas.gov"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "enabling objective",
+    "claim": "Recognize key individuals involved in the conflict and their contributions or roles.",
+    "source_ids": [
+      "s1",
+      "s2",
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "en.wikipedia.org",
+      "study.com",
+      "thc.texas.gov"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "enabling objective",
+    "claim": "Analyze the role of slavery and other contentious political issues within the Texas Revolution.",
+    "source_ids": [
+      "s1",
+      "s2",
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "en.wikipedia.org",
+      "study.com",
+      "thc.texas.gov"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "enabling objective",
+    "claim": "Examine primary source materials including government records, correspondence, and maps to gain firsthand insights into the war.",
+    "source_ids": [
+      "s1",
+      "s2",
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "en.wikipedia.org",
+      "study.com",
+      "thc.texas.gov"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "enabling objective",
+    "claim": "Discuss the social and cultural impact of the war on indigenous peoples and Tejanos, acknowledging gaps in historical records.",
+    "source_ids": [
+      "s1",
+      "s2",
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "en.wikipedia.org",
+      "study.com",
+      "thc.texas.gov"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "enabling objective",
+    "claim": "Compare and contrast Texan and Mexican perspectives on the revolution, noting areas of historical disagreement.",
+    "source_ids": [
+      "s1",
+      "s2",
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "en.wikipedia.org",
+      "study.com",
+      "thc.texas.gov"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Background and Causes of the Texas War of Independence",
+    "source_ids": [
+      "s2",
+      "s5",
+      "s12"
+    ],
+    "source_titles": [
+      "en.wikipedia.org",
+      "history.com",
+      "guides.loc.gov"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Key Battles and Military Campaigns",
+    "source_ids": [
+      "s2",
+      "s4",
+      "s5"
+    ],
+    "source_titles": [
+      "en.wikipedia.org",
+      "thc.texas.gov",
+      "history.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Political Developments and the Texas Declaration of Independence",
+    "source_ids": [
+      "s5",
+      "s11",
+      "s15"
+    ],
+    "source_titles": [
+      "history.com",
+      "tamuct.libguides.com",
+      "history.house.gov"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Prominent Figures and Perspectives",
+    "source_ids": [
+      "s2",
+      "s4",
+      "s12"
+    ],
+    "source_titles": [
+      "en.wikipedia.org",
+      "thc.texas.gov",
+      "guides.loc.gov"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Social and Cultural Impact of the Revolution",
+    "source_ids": [
+      "s5",
+      "s12"
+    ],
+    "source_titles": [
+      "history.com",
+      "guides.loc.gov"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Primary Source Analysis and Historical Interpretation",
+    "source_ids": [
+      "s4",
+      "s11",
+      "s12",
+      "s15"
+    ],
+    "source_titles": [
+      "thc.texas.gov",
+      "tamuct.libguides.com",
+      "guides.loc.gov",
+      "history.house.gov"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Aftermath and the Republic of Texas",
+    "source_ids": [
+      "s2",
+      "s4"
+    ],
+    "source_titles": [
+      "en.wikipedia.org",
+      "thc.texas.gov"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "safety / quality claims",
+    "claim": "Statistics, standards, safety procedures, contested points, and forward-looking claims require corroboration.",
+    "source_ids": [
+      "s1",
+      "s2",
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "en.wikipedia.org",
+      "study.com",
+      "thc.texas.gov"
+    ],
+    "status": "corroboration-required",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "out of scope",
+    "claim": "Detailed military tactics beyond major battles and campaigns.; Post-Revolution Texas history beyond the immediate establishment of the Republic of Texas.; In-depth biographies of individuals unrelated to the Texas War of Independence.; Modern political implications or controversies unrelated to the historical events of 1835-1836.",
+    "source_ids": [
+      "s1",
+      "s2"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "en.wikipedia.org"
+    ],
+    "status": "scope-boundary",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  }
+]
