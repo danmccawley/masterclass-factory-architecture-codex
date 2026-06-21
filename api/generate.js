@@ -1037,8 +1037,79 @@ function buildResolutionOptions(brief, standard, metTier, canMeetBriefing, count
 //   { resolution: "ready" }                  → floor met (or consent given); build now
 //   { resolution: "knowledge_base_review" }  → floor not met; pause, present status +
 //                                               analysis + recommendations, default = build anyway
+// detectAdvancementOpportunity — the ONE controlled door that can reopen a
+// sealed knowledge base. It runs a non-blocking probe: it asks discovery whether
+// a genuinely stronger source (a new PRIMARY source not already sealed in) exists
+// that the build did not have at seal time. It never blocks, never mutates the
+// brief, and never folds anything in on its own. If it finds something, it
+// returns a structured notice the human can review, approve, and execute through
+// the proper channel. If anything goes wrong, it returns null and the build is
+// entirely unaffected — an advancement check must never be able to break a build.
+async function detectAdvancementOpportunity(brief) {
+  try {
+    if (!brief || !brief.knowledge_base) return null;
+    const webAllowed = brief.knowledge_base.research && brief.knowledge_base.research.allow_web !== false;
+    if (!webAllowed || !openAIKeyUsable()) return null;
+
+    // Probe on a copy. Force AI/web and ask for MORE than the sealed tier so
+    // discovery actually searches rather than early-returning as "already met".
+    const probe = JSON.parse(JSON.stringify(brief));
+    probe.knowledge_base.sealed = false;
+    probe.knowledge_base.research = probe.knowledge_base.research || {};
+    probe.knowledge_base.research.owner = "ai";
+    probe.knowledge_base.research.allow_web = true;
+
+    const sealedPaths = new Set((brief.knowledge_base.uploads || []).map((s) => s.path));
+    const probeStandard = knowledgeBaseStandard(probe);
+    // Nudge the floor up by one primary so discovery looks for something stronger
+    // than what is already sealed, even when the sealed set technically "passes".
+    const probeFloor = Object.assign({}, probeStandard, {
+      ok: false,
+      required_primary_sources: (probeStandard.required_primary_sources || 0) + 1
+    });
+
+    const discovery = await discoverKnowledgeBaseSources(probe, probeFloor);
+    const found = (discovery.added_sources || []).filter(
+      (s) => !sealedPaths.has(s.path) && s.trust === "primary"
+    );
+    if (!found.length) return null;
+
+    return {
+      kind: "knowledge_base_advancement",
+      headline: `A stronger primary source surfaced after the knowledge base was sealed (${found.length} candidate${found.length === 1 ? "" : "s"}).`,
+      detail: "This was found by a non-blocking background check. The class was built on the sealed knowledge base; nothing has changed. You may review and, if approved, fold this in to strengthen the class.",
+      candidates: found,
+      requires: "human_review_and_approval",
+      execute_via: "Re-open the knowledge base at step 2, add the approved source, re-seal, and regenerate.",
+      blocking: false
+    };
+  } catch (error) {
+    // Non-blocking by contract: a failed probe must not affect the build.
+    return null;
+  }
+}
+
 async function resolveKnowledgeBase(brief) {
   const working = JSON.parse(JSON.stringify(brief));
+
+  // SEAL SHORT-CIRCUIT. The knowledge base is resolved interactively at wizard
+  // step 2 and SEALED by the human there. Once sealed, it is never re-litigated
+  // downstream: we do not re-run discovery, we do not re-gate, we do not pause.
+  // The human already made the call (build as-is, evidence-limited, or after
+  // adding sources). The only thing that can ever reopen a sealed KB is a
+  // human-approved "advancement opportunity" (see detectAdvancementOpportunity),
+  // which arrives through its own door, never here.
+  if (working.knowledge_base && working.knowledge_base.sealed) {
+    const sealedStandard = knowledgeBaseStandard(working);
+    return {
+      resolution: "ready",
+      brief: working,
+      standard: sealedStandard,
+      discovery: null,
+      sealed: true,
+      ladder: ["knowledge-base-sealed-by-human"]
+    };
+  }
 
   // Rung 0: already meets the selected floor.
   let standard = knowledgeBaseStandard(working);
@@ -3348,6 +3419,18 @@ module.exports = async function generateHandler(req, res) {
 
     generated.source_discovery = sourceDiscovery;
     const presenterScript = makePresenterScript(effectiveBrief, generated, sourceBuild.sourcePaper, pipeline);
+
+    // The KB was sealed (or resolved) before this point and is NOT re-litigated.
+    // The single exception: a non-blocking advancement probe on a sealed KB. It
+    // never changed this build; it only surfaces a human-reviewable opportunity.
+    const knowledgeBaseSealed = Boolean(
+      (effectiveBrief.knowledge_base && effectiveBrief.knowledge_base.sealed) || recovery.sealed
+    );
+    let advancementOpportunity = null;
+    if (knowledgeBaseSealed) {
+      advancementOpportunity = await detectAdvancementOpportunity(effectiveBrief);
+    }
+
     const bundle = makeBundle(effectiveBrief, files, presenterScript, generated, sourceBuild.sourcePaper, pipeline, quality);
     const previewHtml = makePreviewHtml(bundle);
     let publish = { status: "skipped", message: "Auto-publish was not requested." };
@@ -3395,7 +3478,9 @@ module.exports = async function generateHandler(req, res) {
       exports: bundle.manifest.exports,
       preview_html: previewHtml,
       publish,
-      class_url: publish.status === "published" ? publish.expected_url : null
+      class_url: publish.status === "published" ? publish.expected_url : null,
+      knowledge_base_sealed: knowledgeBaseSealed,
+      advancement_opportunity: advancementOpportunity
     });
   } catch (error) {
     send(res, 400, { ok: false, errors: [safeErrorMessage(error.message || error)] });
@@ -3425,6 +3510,7 @@ module.exports._internal = {
   openAIKeyUsable,
   openAIKey,
   resolveKnowledgeBase,
+  detectAdvancementOpportunity,
   classTierKey,
   classTierSpec,
   slugify,

@@ -14,6 +14,9 @@
   var mobileMenuButton = document.getElementById("mobileMenuButton");
   var recommendation = null;
   var generation = null;
+  // The knowledge base, once resolved-and-sealed at step 2, lives here and is
+  // merged into every generate call so the server skips KB resolution entirely.
+  var sealedKnowledgeBase = null;
   var generatorTrackerTimer = null;
   var generatorTrackerIndex = 0;
   var generatorFailedIndex = -1;
@@ -259,6 +262,21 @@
     }
   }
 
+  // The brief sent to the generator. If the human sealed the knowledge base at
+  // step 2, that sealed knowledge_base is authoritative and is merged in here so
+  // the server short-circuits KB resolution (knowledge_base.sealed === true) and
+  // never re-litigates it. If nothing is sealed, the brief passes through as-is.
+  function briefForGenerate() {
+    var brief = parseBrief();
+    if (sealedKnowledgeBase) {
+      brief.knowledge_base = JSON.parse(JSON.stringify(sealedKnowledgeBase));
+      if (sealedKnowledgeBase._class_tier) {
+        brief.class_tier = Object.assign({}, brief.class_tier, sealedKnowledgeBase._class_tier);
+      }
+    }
+    return brief;
+  }
+
   function updateGenieContext() {
     if (!genieStep) return;
     var title = stepTitle.textContent || "this step";
@@ -293,12 +311,27 @@
     card.setAttribute("data-enhanced-analysis", "true");
     card.innerHTML =
       "<h3>Knowledge-base analysis</h3>" +
-      "<p class=\"hint\">Terminal and enabling objectives should be identified after sources are collected, researched, and analyzed. Bernard can prepare conservative objective candidates for the next step; the later AI pipeline must still verify them against the corpus.</p>" +
-      "<div class=\"analysis-flow\"><span>Sources</span><span>Research rules</span><span>KB analysis</span><span>TLO/ELO candidates</span></div>" +
-      "<div class=\"assist-actions\"><button type=\"button\" class=\"ghost\" data-genie-quick=\"knowledge-check\">Check knowledge base</button>" +
-      "<button type=\"button\" class=\"primary\" data-ai=\"fill\">Prepare objective candidates</button></div>";
+      "<p class=\"hint\">The knowledge base is resolved and <strong>sealed here</strong>. Review the sources Bernard can find, deal with any shortfall (add sources, accept a tier, or build anyway), then seal it. Once sealed, the knowledge base is locked and is never raised again downstream &mdash; the only exception is a human-approved advancement opportunity.</p>" +
+      "<div class=\"analysis-flow\"><span>Sources</span><span>Research rules</span><span>KB review &amp; score</span><span>Seal</span></div>" +
+      "<div class=\"assist-actions\">" +
+      "<button type=\"button\" class=\"primary\" data-kb-review>Review &amp; seal knowledge base</button>" +
+      "<button type=\"button\" class=\"ghost\" data-ai=\"fill\">Prepare objective candidates</button></div>" +
+      "<div class=\"kb-step-result\" data-kb-step-result></div>";
     var grid = form.querySelector(".form-grid") || form;
     grid.appendChild(card);
+
+    var reviewBtn = card.querySelector("[data-kb-review]");
+    if (reviewBtn) reviewBtn.addEventListener("click", function () { runKnowledgeBaseReview(reviewBtn); });
+
+    // If a seal already exists in this session, reflect it immediately.
+    if (sealedKnowledgeBase && sealedKnowledgeBase.seal) {
+      renderSealedState({
+        seal: sealedKnowledgeBase.seal,
+        score: sealedKnowledgeBase.seal.score,
+        tier: sealedKnowledgeBase.seal.tier,
+        floor_met: sealedKnowledgeBase.seal.floor_met
+      });
+    }
 
     var librarian = document.createElement("div");
     librarian.className = "summary-card full librarian-panel";
@@ -310,6 +343,138 @@
       "<div class=\"assist-actions\"><button type=\"button\" class=\"ghost\" data-librarian-check>Check reserve library</button></div>" +
       "<div class=\"notice\" data-librarian-result>Weekly checks can run on Vercel. Reports are saved when KV storage is configured.</div>";
     grid.appendChild(librarian);
+  }
+
+  // Run the interactive review against /api/knowledge-base (review mode) and
+  // render the result inline on the step.
+  async function runKnowledgeBaseReview(btn) {
+    var target = form.querySelector("[data-kb-step-result]");
+    if (!target) return;
+    if (btn) { btn.disabled = true; btn.textContent = "Reviewing the knowledge base..."; }
+    target.innerHTML = "<div class=\"notice\">Bernard is reviewing the knowledge base...</div>";
+    try {
+      var response = await fetch("/api/knowledge-base", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ mode: "review", brief: parseBrief() })
+      });
+      var payload = await response.json();
+      if (!response.ok || !payload.ok) { throw new Error((payload.errors || ["Could not review the knowledge base."]).join(" ")); }
+      renderKbStepReview(payload, target);
+    } catch (error) {
+      target.innerHTML = "<div class=\"notice kb-error\">" + esc(error.message || "Review failed.") + "</div>";
+    } finally {
+      if (btn) { btn.disabled = false; btn.innerHTML = "Review &amp; seal knowledge base"; }
+    }
+  }
+
+  // Render the review on the STEP. Unlike the generate-time review (which runs
+  // the generator), every actionable choice here SEALS the knowledge base.
+  function renderKbStepReview(payload, target) {
+    if (payload.status === "ready") {
+      target.innerHTML =
+        "<div class=\"notice kb-review\">" +
+        "<h3>Knowledge base meets the floor</h3>" +
+        scoreHtml(payload.score) +
+        "<p>Source floor is met for the <strong>" + esc(payload.tier || "selected") + "</strong> tier. Seal it to lock it in and move on.</p>" +
+        "<div class=\"assist-actions\"><button type=\"button\" class=\"primary\" data-kb-seal=\"as_is\">Seal knowledge base</button></div>" +
+        "</div>";
+      var sealBtn = target.querySelector("[data-kb-seal]");
+      if (sealBtn) sealBtn.addEventListener("click", function () { sealKnowledgeBaseDecision("as_is", null, target); });
+      return;
+    }
+
+    var co = payload.change_order || {};
+    var rec = co.recommendation || {};
+    var options = payload.options || co.options || [];
+    var challenges = (co.challenges || []).map(function (c) { return "<li>" + esc(c) + "</li>"; }).join("");
+    var box = document.createElement("div");
+    box.className = "notice change-order kb-review";
+    box.innerHTML =
+      "<h3>Knowledge base review &mdash; resolve and seal</h3>" +
+      "<p class=\"kb-review-lead\">Here's the status. Deal with it now, then seal. <strong>Sealing locks the knowledge base for the rest of the build.</strong></p>" +
+      scoreHtml(payload.score || co.score) +
+      (co.situation ? "<p><strong>Status.</strong> " + esc(co.situation) + "</p>" : "") +
+      (challenges ? "<details><summary>Analysis</summary><ul>" + challenges + "</ul></details>" : "") +
+      (rec.summary ? "<p><strong>Bernard's recommendation.</strong> " + esc(rec.summary) + "</p>" : "") +
+      "<p><strong>Resolve it:</strong></p>" +
+      optionsHtml(options) +
+      conversationalBoxHtml();
+    target.innerHTML = "";
+    target.appendChild(box);
+    wireKbStepOptions(box, target);
+    wireConversationalBox(box);
+  }
+
+  // On the STEP, option clicks SEAL the KB (they do not run the generator).
+  function wireKbStepOptions(box, target) {
+    box.querySelectorAll("[data-option-id]").forEach(function (btn) {
+      var id = btn.getAttribute("data-option-id");
+      var token = {};
+      try { token = JSON.parse(btn.getAttribute("data-option-token") || "{}"); } catch (e) { token = {}; }
+      btn.addEventListener("click", function () {
+        if (token && token.proceed_anyway) { sealKnowledgeBaseDecision("proceed_anyway", null, target); }
+        else if (token && token.accept_tier) { sealKnowledgeBaseDecision("accept_tier", { tier: token.accept_tier }, target); }
+        else if (id === "search_again") { remediateKnowledgeBase(btn); }
+        else if (id === "add_source") { goToKnowledgeBaseStep(); }
+        else if (id === "decline_build") { setGenie("Knowledge base left open. Add sources or adjust, then review and seal when ready."); }
+        else if (id === "ask_bernard") {
+          var input = box.querySelector("[data-bernard-input]");
+          if (input) { input.focus(); try { input.scrollIntoView({ behavior: "smooth", block: "center" }); } catch (e) {} }
+        } else if (token && Object.keys(token).length) {
+          // Any other build-style token → treat as a proceed-anyway seal.
+          sealKnowledgeBaseDecision("proceed_anyway", null, target);
+        }
+      });
+    });
+  }
+
+  // Seal the knowledge base via /api/knowledge-base (seal mode). On success the
+  // sealed knowledge_base becomes authoritative for every later generate call.
+  async function sealKnowledgeBaseDecision(decision, extra, target) {
+    target = target || form.querySelector("[data-kb-step-result]");
+    if (target) target.innerHTML = "<div class=\"notice\">Sealing the knowledge base...</div>";
+    try {
+      var body = Object.assign({ mode: "seal", decision: decision, brief: parseBrief() }, extra || {});
+      var response = await fetch("/api/knowledge-base", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(body)
+      });
+      var payload = await response.json();
+      if (!response.ok || !payload.ok || !payload.sealed) { throw new Error((payload.errors || ["Could not seal the knowledge base."]).join(" ")); }
+      // Store the sealed knowledge_base (carrying its seal snapshot) and any
+      // tier decision, so briefForGenerate() merges them into the build.
+      sealedKnowledgeBase = (payload.brief && payload.brief.knowledge_base) ? payload.brief.knowledge_base : { sealed: true, seal: payload.seal };
+      if (payload.brief && payload.brief.class_tier) sealedKnowledgeBase._class_tier = payload.brief.class_tier;
+      renderSealedState(payload, target);
+    } catch (error) {
+      if (target) target.innerHTML = "<div class=\"notice kb-error\">" + esc(error.message || "Seal failed.") + "</div>";
+    }
+  }
+
+  // Render the sealed state: a clear, locked summary with the option to re-open.
+  function renderSealedState(payload, target) {
+    target = target || form.querySelector("[data-kb-step-result]");
+    if (!target) return;
+    var seal = payload.seal || {};
+    target.innerHTML =
+      "<div class=\"notice kb-sealed\">" +
+      "<h3>&#128274; Knowledge base sealed</h3>" +
+      scoreHtml(payload.score && payload.score.components ? payload.score : null) +
+      "<p>" + esc(payload.message || "The knowledge base is sealed and will not be raised again during this build.") + "</p>" +
+      "<ul class=\"kb-sealed-meta\">" +
+      "<li>Floor met: <strong>" + (payload.floor_met ? "yes" : "no &mdash; evidence-limited") + "</strong></li>" +
+      (payload.tier ? "<li>Tier: <strong>" + esc(payload.tier) + "</strong></li>" : "") +
+      (seal.score != null ? "<li>Score at seal: <strong>" + esc(seal.score && seal.score.score != null ? seal.score.score : seal.score) + "</strong></li>" : "") +
+      "</ul>" +
+      "<div class=\"assist-actions\"><button type=\"button\" class=\"ghost\" data-kb-unseal>Re-open knowledge base</button></div>" +
+      "</div>";
+    var unseal = target.querySelector("[data-kb-unseal]");
+    if (unseal) unseal.addEventListener("click", function () {
+      sealedKnowledgeBase = null;
+      target.innerHTML = "<div class=\"notice\">Knowledge base re-opened. Review and seal again when ready.</div>";
+    });
   }
 
   function enhanceLengthStep() {
@@ -877,7 +1042,7 @@
       await fetch("/api/brief", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(parseBrief()) });
       markTrackerStagePassed(0);
       setGeneratorTrackerStage(1, "Building the knowledge base and source-quality list.");
-      var response = await fetch("/api/generate", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ brief: parseBrief(), publish: true }) });
+      var response = await fetch("/api/generate", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ brief: briefForGenerate(), publish: true }) });
       var payload = await response.json();
       if (!response.ok || !payload.ok) {
         // The knowledge-base gate never dead-ends. A change order (scarce topic
@@ -929,6 +1094,7 @@
         setGenie("Masterclass generated with " + (payload.qa || "QA status unknown") + ". Open the preview now. Auto-publish will turn on once the GitHub token env vars are added in Vercel.");
       }
       enhanceReviewStep();
+      maybeShowAdvancementOpportunity(payload);
       var card = form.querySelector("[data-enhanced-generator]");
       if (card) card.innerHTML = generatorHtml();
       if (validationBox) validationBox.innerHTML = "<div class=\"notice\">Generator complete. Preview, deploy bundle, and presenter script are shown in Review & Generate.</div>";
@@ -950,7 +1116,7 @@
       setGeneratorTrackerStage(0, "Re-checking the setup with your approved change order.");
       markTrackerStagePassed(0);
       setGeneratorTrackerStage(1, "Building the knowledge base on the approved scope.");
-      var body = Object.assign({ brief: parseBrief(), publish: true }, extra || {});
+      var body = Object.assign({ brief: briefForGenerate(), publish: true }, extra || {});
       var response = await fetch("/api/generate", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
       var payload = await response.json();
       if (!response.ok || !payload.ok) {
@@ -965,6 +1131,7 @@
       generation = payload; // <-- store it; without this the built class is discarded
       completeGeneratorTracker(payload);
       enhanceReviewStep();
+      maybeShowAdvancementOpportunity(payload);
       var card = form.querySelector("[data-enhanced-generator]");
       if (card) card.innerHTML = generatorHtml();
       var built = (payload.slide_count || "the requested") + " slide" + (payload.slide_count === 1 ? "" : "s");
@@ -1233,6 +1400,35 @@
   // KNOWLEDGE BASE REVIEW: the floor was not met, but nothing is blocked. Show
   // the status, score, analysis, and recommendations — with "Build it anyway"
   // as the prominent default. The human is the only off-switch.
+  // The ONE door that can reopen a sealed knowledge base. On a successful build,
+  // the server may report a non-blocking advancement opportunity (a stronger
+  // primary source found after seal). We surface it as an optional notice; it
+  // never changed the build, and folding it in requires the human to re-open,
+  // add the source, re-seal, and regenerate. Nothing is automatic.
+  function maybeShowAdvancementOpportunity(payload) {
+    var op = payload && payload.advancement_opportunity;
+    if (!op || !validationBox) return;
+    var candidates = (op.candidates || []).map(function (c) {
+      return "<li><a href=\"" + attr(c.path || c.url || "#") + "\" target=\"_blank\" rel=\"noopener noreferrer\">" + esc(c.title || c.path || "source") + "</a></li>";
+    }).join("");
+    var box = document.createElement("div");
+    box.className = "notice kb-advancement";
+    box.innerHTML =
+      "<h3>&#11014; Advancement opportunity</h3>" +
+      "<p>" + esc(op.headline || "A stronger source surfaced after the knowledge base was sealed.") + "</p>" +
+      (op.detail ? "<p class=\"hint\">" + esc(op.detail) + "</p>" : "") +
+      (candidates ? "<ul class=\"kb-advancement-list\">" + candidates + "</ul>" : "") +
+      (op.execute_via ? "<p class=\"hint\"><strong>To fold it in:</strong> " + esc(op.execute_via) + "</p>" : "") +
+      "<div class=\"assist-actions\"><button type=\"button\" class=\"ghost\" data-advance-reopen>Re-open knowledge base to add it</button></div>";
+    validationBox.appendChild(box);
+    var reopen = box.querySelector("[data-advance-reopen]");
+    if (reopen) reopen.addEventListener("click", function () {
+      sealedKnowledgeBase = null;
+      goToKnowledgeBaseStep();
+      setGenie("Knowledge base re-opened so you can add the stronger source, then review and seal again before regenerating.");
+    });
+  }
+
   function presentKnowledgeBaseReview(payload) {
     closeGeneratorTracker();
     var co = payload.change_order || {};

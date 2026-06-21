@@ -1770,3 +1770,20 @@ pre {
 .resolution-option.option-decline { border-left: 3px solid #999; opacity: 0.85; }
 .resolution-option[data-option-id="proceed_anyway"] { border-left-width: 4px; border-left-color: #2f8f5b; background: #f4faf6; }
 .resolution-option[data-option-id="proceed_anyway"] .option-label { color: #1c6b2e; }
+
+/* ── KB step: interactive review + seal (Phase 0.3 directive) ── */
+.kb-step-result { margin-top: 14px; }
+.kb-step-result:empty { display: none; }
+.kb-error { border-left: 4px solid #b4453a; background: #fbf2f0; }
+
+/* Sealed knowledge base — locked, calm, clearly settled. */
+.kb-sealed { border: 1px solid var(--line, #d8d2c4); border-left: 4px solid #2f8f5b; background: #f4faf6; border-radius: 12px; padding: 14px 16px; }
+.kb-sealed h3 { margin: 0 0 8px; }
+.kb-sealed-meta { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 0.9rem; }
+.kb-sealed-meta li { opacity: 0.9; }
+
+/* Advancement opportunity — the one human-approved door to reopen a seal. */
+.kb-advancement { border: 1px solid var(--line, #d8d2c4); border-left: 4px solid #1c557f; background: #f5f9fd; border-radius: 12px; padding: 14px 16px; margin-top: 14px; }
+.kb-advancement h3 { margin: 0 0 8px; color: #1c557f; }
+.kb-advancement-list { margin: 8px 0; padding-left: 20px; }
+.kb-advancement-list li { margin: 4px 0; }

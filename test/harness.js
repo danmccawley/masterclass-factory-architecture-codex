@@ -619,6 +619,57 @@ test("floor met resolves straight to ready", async () => {
 });
 
 // ---------------------------------------------------------------------------
+group("Knowledge base directive (interactive-and-sealed; never re-litigated)");
+
+test("a sealed KB short-circuits to ready and is never re-litigated", async () => {
+  const b = baseBrief(); // zero sources
+  b.knowledge_base.sealed = true;
+  const r = await I.resolveKnowledgeBase(b);
+  assert.strictEqual(r.resolution, "ready", "sealed KB must resolve ready, never review");
+  assert.strictEqual(r.sealed, true, "resolution carries the sealed flag");
+  assert.ok(r.ladder.indexOf("knowledge-base-sealed-by-human") !== -1, "ladder records the seal short-circuit");
+});
+
+test("a sealed KB builds even with ZERO sources (human already decided)", async () => {
+  const b = baseBrief();
+  b.knowledge_base.uploads = [];
+  b.knowledge_base.sealed = true;
+  const r = await I.resolveKnowledgeBase(b);
+  assert.strictEqual(r.resolution, "ready", "zero-source sealed KB still proceeds to build");
+  assert.ok(r.standard, "carries a standard snapshot");
+});
+
+test("sealed flag is preserved when the floor IS met", async () => {
+  const b = withSources(baseBrief(), 12, 3);
+  b.knowledge_base.sealed = true;
+  const r = await I.resolveKnowledgeBase(b);
+  assert.strictEqual(r.resolution, "ready");
+  assert.strictEqual(r.sealed, true);
+});
+
+test("detectAdvancementOpportunity is non-blocking: returns null without a key", async () => {
+  const had = process.env.OPENAI_API_KEY;
+  delete process.env.OPENAI_API_KEY;
+  try {
+    const b = baseBrief();
+    b.knowledge_base.sealed = true;
+    const op = await I.detectAdvancementOpportunity(b);
+    assert.strictEqual(op, null, "no key → no probe → null, never throws");
+  } finally {
+    if (had !== undefined) process.env.OPENAI_API_KEY = had;
+  }
+});
+
+test("detectAdvancementOpportunity returns null when web research is disabled", async () => {
+  const b = baseBrief();
+  b.knowledge_base.sealed = true;
+  b.knowledge_base.research = b.knowledge_base.research || {};
+  b.knowledge_base.research.allow_web = false;
+  const op = await I.detectAdvancementOpportunity(b);
+  assert.strictEqual(op, null, "web disabled → no probe → null");
+});
+
+// ---------------------------------------------------------------------------
 console.log("\n" + "=".repeat(60));
 console.log("RESULTS: " + passed + " passed, " + failed + " failed");
 if (failed) {
