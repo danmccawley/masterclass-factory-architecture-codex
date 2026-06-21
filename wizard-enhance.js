@@ -483,7 +483,7 @@
       renderRoundCheckpoint(payload, target);
     } catch (error) {
       target.innerHTML = "<div class=\"notice kb-error\">" + esc(error.message || "Round failed.") + "</div>" +
-        "<div class=\"assist-actions\"><button type=\"button\" data-kb-round-retry>Try the round again</button> " +
+        "<div class=\"assist-actions\"><button type=\"button\" class=\"ghost\" data-kb-round-retry>Try the round again</button> " +
         "<button type=\"button\" class=\"primary\" data-kb-accept>Accept what exists &amp; seal</button></div>";
       var retry = target.querySelector("[data-kb-round-retry]");
       if (retry) retry.addEventListener("click", function () { runKnowledgeBaseRounds(retry); });
@@ -588,7 +588,7 @@
       ledgerHtml(payload.ledger) +
       "<p><strong>Your call:</strong></p>" +
       "<div class=\"assist-actions\">" +
-      "<button type=\"button\" data-kb-another>Run another round</button> " +
+      "<button type=\"button\" class=\"ghost\" data-kb-another>Run another round</button> " +
       "<button type=\"button\" class=\"primary\" data-kb-accept>Accept &amp; seal</button>" +
       "</div>" +
       conversationalBoxHtml();
@@ -1242,8 +1242,8 @@
       "<p><strong>Bernard hit a snag, not a wall.</strong> The research step timed out on the server. Nothing is blocked — you decide how to proceed:</p>" +
       "<div class=\"assist-actions\">" +
       "<button type=\"button\" class=\"primary\" data-snag-retry>Try the generator again</button> " +
-      "<button type=\"button\" data-snag-sources>Have Bernard find sources</button> " +
-      "<button type=\"button\" data-snag-build>Build now with what exists</button>" +
+      "<button type=\"button\" class=\"ghost\" data-snag-sources>Have Bernard find sources</button> " +
+      "<button type=\"button\" class=\"ghost\" data-snag-build>Build now with what exists</button>" +
       "</div></div>";
     var retry = validationBox.querySelector("[data-snag-retry]");
     if (retry) retry.addEventListener("click", function () { runGenerator(); });
