@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Knowledge Base Builder — v2.0 review</title>
+  <link rel="stylesheet" href="knowledge-base-builder.css">
+  <style>
+    body { margin: 0; padding: 2rem 1rem; background: #faf9f5; font-family: ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    @media (prefers-color-scheme: dark) { body { background: #18181a; } }
+    .wrap { max-width: 920px; margin: 0 auto; }
+    .lede { color: #5f5e5a; font-size: 13px; margin: 0 0 1.25rem; }
+    @media (prefers-color-scheme: dark) { .lede { color: #b4b2a9; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p class="lede">Saturation-control demo. Runs the validated Juneteenth checkpoint cycle.
+      Click <strong>Continue full</strong> to advance increments and watch the spine sub-questions
+      hit L5 and gray out on their own at the final checkpoint. Research data and Bernard's replies
+      are scripted for this review; live wiring comes after sign-off.</p>
+    <div id="kb-root"></div>
+  </div>
+
+  <script src="knowledge-base-builder.js"></script>
+  <script>
+    mountKnowledgeBaseBuilder("#kb-root");
+  </script>
+</body>
+</html>

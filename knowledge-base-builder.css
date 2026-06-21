@@ -1,0 +1,136 @@
+/* knowledge-base-builder.css
+   Vanilla stylesheet for the Knowledge Base Builder saturation-control panel.
+   Every rule is scoped under .kb so it cannot collide with the repo's global
+   styles.css. No build step, no CSS modules. Load it with a normal <link>.
+   Dark mode follows the viewer's system setting via prefers-color-scheme.
+   To drive dark mode from a manual class instead, change the @media block to
+   a rule like  .dark .kb { ...vars... } */
+
+.kb {
+  --tp:#1a1a18; --ts:#5f5e5a; --t3:#8a8980; --b:rgba(0,0,0,0.14);
+  --bg:#ffffff; --surf:#f1efe8;
+  --teal:#0d9488; --teal-bg:#e1f5ee; --teal-tx:#085041;
+  --amber:#b2780f; --amber-bg:#faeeda; --amber-tx:#854f0b;
+  --green:#3b6d11; --green-bg:#eaf3de; --green-tx:#27500a;
+  --line:#14b8a6; --bar:#b4b2a9;
+  color: var(--tp);
+  font-family: ui-sans-serif, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.55;
+}
+@media (prefers-color-scheme: dark) {
+  .kb {
+    --tp:#e8e6dd; --ts:#b4b2a9; --t3:#8a8980; --b:rgba(255,255,255,0.16);
+    --bg:#1f1e1c; --surf:#2c2c2a;
+    --teal:#5dcaa5; --teal-bg:#085041; --teal-tx:#9fe1cb;
+    --amber:#ef9f27; --amber-bg:#633806; --amber-tx:#fac775;
+    --green:#97c459; --green-bg:#27500a; --green-tx:#c0dd97;
+    --line:#2dd4bf; --bar:#6f6e6a;
+  }
+}
+
+.kb *, .kb *::before, .kb *::after { box-sizing: border-box; }
+
+.kb .panel { border: 0.5px solid var(--b); border-radius: 16px; background: var(--bg); overflow: hidden; }
+.kb .cols { display: grid; grid-template-columns: 1fr; }
+@media (min-width: 880px) { .kb .cols { grid-template-columns: 2fr 1fr; } }
+.kb .left { padding: 1.25rem; }
+@media (min-width: 880px) { .kb .left { border-right: 0.5px solid var(--b); } }
+.kb .right { padding: 1.25rem; display: flex; flex-direction: column; min-height: 440px; }
+
+.kb .row { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.kb .kicker { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--t3); }
+.kb .title { font-size: 18px; font-weight: 500; margin: .1rem 0 0; }
+.kb .proto { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 999px; background: var(--amber-bg); color: var(--amber-tx); }
+
+.kb .pill { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 999px; }
+.kb .pillResearch { background: var(--amber-bg); color: var(--amber-tx); }
+.kb .pillCheckpoint { background: var(--teal-bg); color: var(--teal-tx); }
+.kb .pillComplete { background: var(--green-bg); color: var(--green-tx); }
+.kb .pillResearch .dot { background: var(--amber); }
+.kb .pillCheckpoint .dot { background: var(--teal); }
+.kb .pillComplete .dot { background: var(--green); }
+
+.kb .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; display: inline-block; }
+.kb .dotTeal { background: var(--teal); }
+.kb .dotAmber { background: var(--amber); }
+.kb .pulse { animation: kbpulse 1.4s infinite; }
+@keyframes kbpulse { 50% { opacity: .35; } }
+
+.kb .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 1rem; }
+@media (max-width: 520px) { .kb .metrics { grid-template-columns: repeat(2, 1fr); } }
+.kb .metric { background: var(--surf); border-radius: 8px; padding: .6rem .7rem; }
+.kb .mLabel { font-size: 11px; color: var(--t3); }
+.kb .mVal { font-size: 20px; font-weight: 500; line-height: 1.2; }
+
+.kb .sec { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--t3); margin: 1.4rem 0 .6rem; }
+
+.kb .sq { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: .45rem .7rem; border: 0.5px solid var(--b); border-radius: 9px; margin-bottom: 6px; }
+.kb .sqDone { opacity: .62; }
+.kb .sqName { font-size: 13.5px; }
+.kb .lvl { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 999px; background: var(--teal-bg); color: var(--teal-tx); white-space: nowrap; }
+.kb .lvlLow { background: var(--surf); color: var(--ts); }
+.kb .sat { font-size: 11px; color: var(--green-tx); background: var(--green-bg); padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+
+.kb .ladder { display: flex; align-items: flex-end; gap: 8px; height: 120px; }
+.kb .lad { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+.kb .ln { font-size: 11px; color: var(--t3); margin-bottom: 3px; }
+.kb .bar { width: 100%; border-radius: 5px; background: var(--surf); }
+.kb .ladOn .bar { background: var(--teal); }
+.kb .ladCur .bar { outline: 2px solid var(--teal); outline-offset: 1px; }
+.kb .nm { font-size: 10.5px; color: var(--t3); margin-top: 4px; text-align: center; }
+
+.kb .cap { font-size: 12.5px; color: var(--ts); margin: .5rem 0 0; }
+
+.kb .chart { display: block; width: 100%; }
+.kb .chart text { fill: var(--t3); font-size: 11px; font-family: inherit; }
+.kb .chart .axis { stroke: var(--b); stroke-width: 1; }
+.kb .chart .grid { stroke: var(--b); stroke-width: .5; opacity: .5; stroke-dasharray: 3 4; }
+.kb .line { stroke: var(--line); }
+.kb .lineDot { fill: var(--line); }
+.kb .lineRing { fill: none; stroke: var(--line); }
+.kb .claimBar { fill: var(--bar); opacity: .4; }
+
+.kb .thread { display: flex; align-items: center; justify-content: space-between; gap: 10px; border: 0.5px solid var(--b); border-radius: 9px; padding: .45rem .7rem; margin-bottom: 6px; }
+.kb .tg { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.kb .tgName { font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.kb .badges { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.kb .gain { font-size: 11px; font-weight: 500; color: var(--t3); }
+.kb .gainHigh { color: var(--teal-tx); }
+.kb .type { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 999px; }
+.kb .typeCloseable { background: var(--teal-bg); color: var(--teal-tx); }
+.kb .typeStructural { background: var(--amber-bg); color: var(--amber-tx); }
+.kb .legend { display: flex; gap: 16px; margin-top: 6px; font-size: 11px; color: var(--t3); flex-wrap: wrap; }
+.kb .legend span { display: flex; align-items: center; gap: 6px; }
+
+.kb .decide { border: 0.5px solid var(--b); border-radius: 12px; padding: .9rem; margin-top: 1.3rem; }
+.kb .recline { display: flex; gap: 8px; align-items: flex-start; margin-bottom: .7rem; }
+.kb .rec { font-size: 11px; font-weight: 500; padding: 2px 9px; border-radius: 999px; white-space: nowrap; margin-top: 1px; }
+.kb .recContinue { background: var(--teal-bg); color: var(--teal-tx); }
+.kb .recNarrow { background: var(--amber-bg); color: var(--amber-tx); }
+.kb .recStop { background: var(--surf); color: var(--ts); }
+.kb .rectext { font-size: 13px; color: var(--ts); }
+.kb .btns { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.kb .btn { font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; border-radius: 9px; padding: .5rem .8rem; border: 0.5px solid var(--b); background: transparent; color: var(--tp); transition: background .15s, opacity .15s; }
+.kb .btn:hover:not(:disabled) { background: var(--surf); }
+.kb .btn:disabled { opacity: .4; cursor: default; }
+.kb .btnPrimary { background: var(--teal); color: #fff; border-color: transparent; }
+.kb .btnPrimary:hover:not(:disabled) { opacity: .9; background: var(--teal); }
+.kb .btnAccept { border-color: var(--green); color: var(--green-tx); }
+
+.kb .working { display: flex; align-items: center; gap: 10px; border: 0.5px solid var(--b); border-radius: 12px; padding: .9rem; margin-top: 1.3rem; font-size: 13px; color: var(--ts); }
+.kb .complete { display: flex; align-items: center; gap: 10px; border: 0.5px solid var(--green); background: var(--green-bg); color: var(--green-tx); border-radius: 12px; padding: .9rem; margin-top: 1.3rem; font-size: 13px; }
+
+.kb .chatH { display: flex; align-items: center; gap: 9px; padding-bottom: .7rem; border-bottom: 0.5px solid var(--b); }
+.kb .ava { width: 28px; height: 28px; border-radius: 50%; background: var(--teal); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; }
+.kb .chatName { font-size: 13px; font-weight: 500; line-height: 1; }
+.kb .chatSub { font-size: 11px; color: var(--t3); }
+.kb .msgs { flex: 1; overflow-y: auto; padding: .8rem 0; display: flex; flex-direction: column; gap: 9px; }
+.kb .msg { max-width: 86%; font-size: 13px; border-radius: 14px; padding: .45rem .7rem; }
+.kb .msgBot { background: var(--surf); color: var(--tp); align-self: flex-start; border-bottom-left-radius: 4px; }
+.kb .msgMe { background: var(--teal); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
+.kb .chatIn { display: flex; gap: 8px; align-items: center; padding-top: .6rem; border-top: 0.5px solid var(--b); }
+.kb .chatIn input { flex: 1; font: inherit; font-size: 13px; background: transparent; border: none; outline: none; color: var(--tp); padding: .5rem .3rem; }
+.kb .chatIn input::placeholder { color: var(--t3); }
+.kb .send { width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; background: var(--teal); color: #fff; border-radius: 9px; border: none; cursor: pointer; }
+.kb .send:disabled { opacity: .4; cursor: default; }
