@@ -19,6 +19,12 @@ const MAX_DISCOVERY_URL_CHECKS = 16;
 const MAX_DISCOVERY_ROUNDS = 3;
 const MAX_GENERATED_SLIDES = 400;
 const MAX_OPENAI_AUTHORED_SLIDES = 60;
+// Slides are authored in small, fast batches instead of one giant call. A single
+// 60-slide call routinely exceeded the serverless time limit (504). Batching keeps
+// every OpenAI call short, and a wall-clock budget guarantees the function finishes
+// in time — any un-authored remainder is safely expanded to the requested budget.
+const AUTHOR_BATCH_SIZE = 12;
+const AUTHOR_TIME_BUDGET_MS = 170000;
 const MIN_MASTERCLASS_SLIDES = 30;
 const MIN_COMPLEX_MASTERCLASS_SLIDES = 50;
 const DEFAULT_MASTERCLASS_SLIDES = 90;
@@ -1610,6 +1616,7 @@ function compactBrief(brief) {
 }
 
 async function runOpenAIStages(brief, sourcePaper) {
+  const stageStart = Date.now();
   const reports = [];
   const corpus = sourceText(sourcePaper);
   const briefJson = JSON.stringify(compactBrief(brief), null, 2);
@@ -1675,40 +1682,74 @@ async function runOpenAIStages(brief, sourcePaper) {
   );
   reports.push({ stage: "curriculum", ok: true, model: curriculum.model });
 
-  const author = await requestOpenAIJson(
-    "author",
-    `You are the Masterclass Factory lesson author. ${rules}`,
-    JSON.stringify({
-      task: `Draft exactly ${authoredSlides} source-grounded teaching slides. Keep bullets concise but make the slide complete enough to teach. Cite only source ids that exist. Use a complete arc: orientation, source findings, concepts, examples, practice, checks, application, and transfer. If evidence is thin, create source-safe practice/checkpoint slides instead of inventing facts. Deep-dive setting is ${deepDiveMode(brief)}; when high, every slide needs a substantive deep_dive body.`,
-      source_ids: sourcePaper.sections.map((section) => section.id),
-      brief: compactBrief(brief),
-      curriculum: curriculum.data,
-      slide_budget_contract: {
-        requested_total_slide_count: requestedSlides,
-        teaching_slide_count_before_works_cited: teachingSlides,
-        author_slides_to_return_now: authoredSlides,
-        note: "The generator will add the final Knowledge Base / Works Cited slide and will safely expand any shortfall to meet the requested slide budget."
-      },
-      required_shape: {
-        slides: [{
-          id: "string",
-          eyebrow: "string",
-          title: "string",
-          bullets: ["string"],
-          explanation: "2-3 sentence source-grounded teaching explanation",
-          worked_example: "brief concrete example or application",
-          practice_prompt: "what learners should do or decide",
-          common_mistake: "mistake or caution to avoid",
-          speaker_notes: "presenter talk track with enough detail to teach the point",
-          deep_dive: { title: "string", body: "120-220 words of deeper explanation, source analysis, edge cases, and practice guidance", learner_prompts: ["string"] },
-          source_ids: ["s1"],
-          interaction: "none|poll|word|quiz"
-        }]
-      }
-    }, null, 2),
-    Math.min(24000, Math.max(6000, authoredSlides * 420))
-  );
-  reports.push({ stage: "author", ok: true, model: author.model });
+  // Author teaching slides in small, fast batches under a wall-clock budget.
+  // Each batch is a short OpenAI call; we stop when the deck is complete, when a
+  // batch fails, or when the time budget is nearly used — whichever comes first.
+  // Any shortfall is safely expanded downstream, so the run ALWAYS completes.
+  const authoredSlideList = [];
+  let authorModel = "";
+  let authorBatches = 0;
+  for (let produced = 0; produced < authoredSlides; produced += AUTHOR_BATCH_SIZE) {
+    if (Date.now() - stageStart > AUTHOR_TIME_BUDGET_MS) {
+      reports.push({ stage: "author", ok: true, note: `Time budget reached after ${authoredSlideList.length} authored slides; remaining slides will be safely expanded.` });
+      break;
+    }
+    const batchCount = Math.min(AUTHOR_BATCH_SIZE, authoredSlides - produced);
+    const fromIndex = produced + 1;
+    const toIndex = produced + batchCount;
+    let batch;
+    try {
+      batch = await requestOpenAIJson(
+        "author",
+        `You are the Masterclass Factory lesson author. ${rules}`,
+        JSON.stringify({
+          task: `Draft teaching slides ${fromIndex} through ${toIndex} of a ${authoredSlides}-slide teaching deck (return exactly ${batchCount} slides for this batch). Keep bullets concise but make each slide complete enough to teach. Cite only source ids that exist. Continue the lesson arc in order (orientation → source findings → concepts → examples → practice → checks → application → transfer) at the position these slide numbers imply. Do NOT repeat slides already written. If evidence is thin, create source-safe practice/checkpoint slides instead of inventing facts. Deep-dive setting is ${deepDiveMode(brief)}; when high, every slide needs a substantive deep_dive body.`,
+          source_ids: sourcePaper.sections.map((section) => section.id),
+          brief: compactBrief(brief),
+          curriculum: curriculum.data,
+          already_authored_titles: authoredSlideList.map((s) => s && s.title).filter(Boolean),
+          slide_budget_contract: {
+            requested_total_slide_count: requestedSlides,
+            teaching_slide_count_before_works_cited: teachingSlides,
+            authoring_batch: { from: fromIndex, to: toIndex, return_now: batchCount },
+            note: "Other batches cover the remaining slides; a final Knowledge Base / Works Cited slide is added automatically."
+          },
+          required_shape: {
+            slides: [{
+              id: "string",
+              eyebrow: "string",
+              title: "string",
+              bullets: ["string"],
+              explanation: "2-3 sentence source-grounded teaching explanation",
+              worked_example: "brief concrete example or application",
+              practice_prompt: "what learners should do or decide",
+              common_mistake: "mistake or caution to avoid",
+              speaker_notes: "presenter talk track with enough detail to teach the point",
+              deep_dive: { title: "string", body: "120-220 words of deeper explanation, source analysis, edge cases, and practice guidance", learner_prompts: ["string"] },
+              source_ids: ["s1"],
+              interaction: "none|poll|word|quiz"
+            }]
+          }
+        }, null, 2),
+        Math.min(9000, Math.max(3500, batchCount * 520))
+      );
+    } catch (error) {
+      // A failed/slow batch must never dead-end the build. Keep what we have and
+      // let downstream expansion fill the requested budget.
+      reports.push({ stage: "author", ok: true, note: `Authoring stopped early after ${authoredSlideList.length} slides (${safeErrorMessage(error.message || error)}); remaining slides will be safely expanded.` });
+      break;
+    }
+    authorModel = batch.model || authorModel;
+    const batchSlides = batch.data && Array.isArray(batch.data.slides) ? batch.data.slides : [];
+    if (!batchSlides.length) {
+      reports.push({ stage: "author", ok: true, note: `Batch ${authorBatches + 1} returned no slides; stopping authoring and expanding the remainder.` });
+      break;
+    }
+    batchSlides.forEach((s) => authoredSlideList.push(s));
+    authorBatches += 1;
+  }
+  const author = { model: authorModel, data: { slides: authoredSlideList } };
+  reports.push({ stage: "author", ok: true, model: author.model, authored_slides: authoredSlideList.length, batches: authorBatches });
 
   const glossary = await requestOpenAIJson(
     "glossary",
