@@ -11,8 +11,8 @@ const KEY_PATTERN = new RegExp("^" + KEY_PREFIX + "[A-Za-z0-9_-]+$");
 const PROJECT_KEY_PATTERN = new RegExp(KEY_PREFIX + "proj-[A-Za-z0-9_-]+", "g");
 const ANY_KEY_PATTERN = new RegExp(KEY_PREFIX + "[A-Za-z0-9_-]+", "g");
 const MAX_SOURCE_CHARS = 9000;
-const SOURCE_FETCH_TIMEOUT_MS = 4500;
-const OPENAI_SEARCH_TIMEOUT_MS = 28000;
+const SOURCE_FETCH_TIMEOUT_MS = 9000;
+const OPENAI_SEARCH_TIMEOUT_MS = 60000;
 const MAX_DISCOVERY_URL_CHECKS = 16;
 // Cap discovery rounds so the serverless function stays under its execution
 // timeout. Each round is one OpenAI web-search call plus up to MAX_DISCOVERY_URL_CHECKS fetches.
@@ -486,16 +486,40 @@ async function fetchUrlText(url) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), SOURCE_FETCH_TIMEOUT_MS);
   try {
-    await assertFetchableUrl(url);
+    await assertFetchableUrl(url); // SSRF guard — stays a hard reject.
     const response = await fetch(url, {
       signal: controller.signal,
       redirect: "follow",
-      headers: { "user-agent": "Masterclass Factory source fetcher" }
+      headers: {
+        // A realistic browser identity. Many legitimate publishers and .gov
+        // sites (Reuters, etc.) return 403 to obvious bot user-agents, which was
+        // causing valid, found sources to be thrown away at verification.
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36",
+        accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "accept-language": "en-US,en;q=0.9"
+      }
     });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+    // 404/410 = the resource genuinely is not there → reject (don't cite dead links).
+    // 5xx = server error → reject (can't confirm it exists right now).
+    if (response.status === 404 || response.status === 410 || response.status >= 500) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    // 401/403/406/429 = the server RESPONDED and the page exists; it just declined
+    // our scraper (bot protection / paywall / rate limit). A human or browser can
+    // reach it, so it is a valid citation. Accept it as reachable without full text.
+    if (!response.ok) {
+      return { ok: true, text: "", reachable_only: true, note: `Reachable (HTTP ${response.status}); full text not extractable by the verifier.` };
+    }
+
     const raw = await response.text();
     const cleaned = stripHtml(raw).slice(0, MAX_SOURCE_CHARS);
-    if (!cleaned) throw new Error("No readable text found.");
+    // 2xx but no extractable text (e.g. JS-rendered page) is still a reachable,
+    // citable source — accept it rather than discard a real page.
+    if (!cleaned) {
+      return { ok: true, text: "", reachable_only: true, note: "Reachable; page rendered no static text for the verifier." };
+    }
     return { ok: true, text: cleaned };
   } catch (error) {
     return { ok: false, error: safeErrorMessage(error.message || error) };
@@ -547,7 +571,7 @@ async function requestOpenAIResponsesSearchJson(stage, user, maxTokens) {
         },
         body: JSON.stringify({
           model,
-          tools: [{ type: "web_search", search_context_size: "high" }],
+          tools: [{ type: "web_search", search_context_size: "medium" }],
           max_output_tokens: maxTokens || 3200,
           instructions: "You are Bernard, the Masterclass Factory research librarian. Use web search. Return strict JSON only. Do not invent sources, URLs, dates, standards, or claims. Prefer official standards bodies, regulators, manufacturers, certification bodies, safety authorities, and reputable technical documentation.",
           input: user

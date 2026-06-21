@@ -1,4 +1,9 @@
 {
+  "functions": {
+    "api/generate.js": { "maxDuration": 180 },
+    "api/knowledge-base.js": { "maxDuration": 120 },
+    "api/remediate.js": { "maxDuration": 120 }
+  },
   "crons": [
     {
       "path": "/api/librarian",
