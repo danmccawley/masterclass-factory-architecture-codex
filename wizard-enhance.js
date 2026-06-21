@@ -457,10 +457,16 @@
 
     var box = document.createElement("div");
     box.className = "notice change-order kb-review kb-round";
+    // The checkpoint carries the score as sibling fields (overall_score is the
+    // NUMBER, with band/components alongside). scoreHtml expects the full score
+    // object, so assemble it here — passing the bare number renders an empty 0/100.
+    var scoreObj = (cp.overall_score != null)
+      ? { score: cp.overall_score, band: cp.band, components: cp.components, summary: cp.summary }
+      : payload.score;
     box.innerHTML =
       "<h3>Round " + (cp.round || "?") + " checkpoint</h3>" +
       "<p class=\"kb-review-lead\">" + esc(payload.message || "Round complete.") + "</p>" +
-      scoreHtml(cp.overall_score || payload.score) +
+      scoreHtml(scoreObj) +
       curveHtml(cp.new_per_round) +
       "<p><strong>" + esc(floorNote) + "</strong>" + (recText ? " " + recText : "") + "</p>" +
       objectiveBarsHtml(payload.objective_saturation) +
