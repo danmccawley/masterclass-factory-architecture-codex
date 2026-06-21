@@ -3,7 +3,7 @@
   "private": true,
   "type": "commonjs",
   "scripts": {
-    "test": "node test/harness.js && node test/kb-rounds.test.js"
+    "test": "node test/harness.js && node test/kb-rounds.test.js && node test/kb-objectives.test.js"
   },
   "dependencies": {
     "qrcode": "1.5.4"

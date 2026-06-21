@@ -110,6 +110,19 @@ the six-dimension read.
 
 ## 4. The conditional gates
 
+> **DECISIONS (locked with Dan, this session):**
+> - **Legitimacy rule (§4):** option **(c) with (a) as the default** — the engine
+>   detects and labels positions with sourcing and makes NO legitimacy call on
+>   its own; it *suggests* the expert-consensus framing (a) as the default, and
+>   the human can override what stays. Engine never silently decides what is
+>   legitimate.
+> - **Gate severity (dims. 5 & 6):** **warn, never block.** A contested-but-one-
+>   sided or foreign-but-English-only KB is flagged loudly in the ledger and the
+>   checkpoint, but it never blocks the seal. Human is the only off-switch.
+> - **First dimension built:** per-objective saturation (§3) — backbone shipped.
+> - **Budget governor:** see §9 (new).
+
+
 Three of the criteria do not apply universally and must be *detected*, with the
 detection visible and overridable:
 
@@ -205,14 +218,52 @@ add-on.
 
 ---
 
-## 8. Recommended sequencing
+## 9. Budget governor (new — decided this session)
+
+The human sets a spend budget for the class. The engine tracks real expense
+against it as the build runs and manages the work to finish *within* budget.
+
+**Behavior (locked):** the governor **notifies, never refuses.** When an action
+the human asks for (e.g. "run another research round") would risk exceeding the
+budget — especially in a way that would leave too little to *complete* the class
+— the engine surfaces the danger with an **estimated cost of the overage** and
+the human decides: raise the budget, spend anyway, or stop. It is a forced
+checkpoint, never a hard kill. This preserves "human is the only off-switch"
+while making spend visible and governed.
+
+**What it requires:**
+- A **cost model**: per-operation cost estimates (a discovery round ≈ N search
+  calls + M URL fetches; claim extraction ≈ 1 LLM call/source; slide authoring ≈
+  batched LLM calls). Tier-scaled depth (claim extraction only as deep as the
+  tier warrants), and extraction capped to the sources that bear on objectives.
+- A **budget ledger** threaded through the pipeline: running tally of estimated
+  + actual spend, remaining budget, and a forecast of "cost to complete from
+  here" so the governor can warn *before* an action strands the build.
+- **Overage estimate**: when an ask would exceed budget, show the projected $
+  over, not just a yes/no — so the human decides with the number in front of them.
+
+**Open dependency:** whether `generate.js` already captures token/API usage at
+the call sites (OpenAI, Tavily). The governor cannot manage spend it cannot
+measure; the cost model is built on whatever usage signal those calls return (or
+on estimated unit costs if they return none). This is its own build, and a
+practical prerequisite to option B, since B is what makes per-class cost spike.
+
+---
+
+## 10. Recommended sequencing
 
 1. **Done & verified:** round engine + tier-1 composition ledger, applied to the
    real repo with the full suite green (107 harness + 27 round-engine).
-2. **Approve this spec** (you + partner), especially §4 legitimacy bounds and §7.
-3. **Build option B** behind the same checkpoint UI: lift `buildEvidenceMap` into
-   the round loop → per-objective saturation (identity in the saturation layer,
-   no schema change) → claim extraction → conditional gates → tier-2 reliability
-   ledger.
-4. The saturation-control panel renders whichever signals are real at each stage;
+2. **Done & verified:** per-objective saturation backbone (§3) — data model,
+   weakest-gates rollup, injected relevance mapper with a labeled keyword-overlap
+   proxy default (12 tests). Real semantic mapping arrives with claim extraction.
+3. **Approve this spec** (you + partner) — §4 legitimacy rule and §7 overrides are
+   now decided (see §4 box); review for agreement.
+4. **Budget governor (§9):** cost model + budget ledger + notify-on-overage. A
+   practical prerequisite to the deeper option-B dimensions.
+5. **Option B dimensions** behind the same checkpoint UI: claim extraction (which
+   also upgrades per-objective mapping from proxy to real) → corroboration depth →
+   contested/representational (gate = warn) → language adequacy (gate = warn) →
+   tier-2 reliability ledger.
+6. The saturation-control panel renders whichever signals are real at each stage;
    it never displays a dimension the engine cannot yet honestly back.
