@@ -562,6 +562,37 @@ test("structural block takes precedence over quality shortfall", () => {
   assert.strictEqual(o.kind, "structural_block");
 });
 
+test("qaGate: thin slide/deep-dive is NOT a structural block (it's a quality judgment)", () => {
+  // A structurally VALID deck whose content is deliberately thin. Thinness must
+  // NOT make it structurally unshippable — quality scoring handles thinness.
+  const files = {
+    "content.js": "window.SLIDES=[];window.POLLS={};window.WORDS={};",
+    "glossary.js": "window.GLOSSARY={};",
+    "source.js": "window.SOURCE_PAPER={};"
+  };
+  const sourcePaper = { sections: [{ id: "s1", h: "S", body: "b" }] };
+  const generated = {
+    slides: [
+      { id: "slide-1", eyebrow: "E", num: "01", deck: "tiny.", // far under 70 words
+        paper: { secnum: "1", h: "H", body: "short deep dive." } }, // far under 120 words
+      { id: "knowledge-base-works-cited", eyebrow: "E", num: "02", deck: "cited" }
+    ],
+    polls: {}, words: {}, glossary: {}, quizzes: []
+  };
+  const brief = { mastery: { deep_dive_density: "low" }, length: {} };
+  const out = I.qaGate(files, generated, sourcePaper, brief);
+  // No structural issue should mention "thin": thinness left the structural gate.
+  assert.ok(!out.issues.some((i) => /thin/i.test(i)), "thinness must not appear as a structural issue");
+});
+
+test("qaGate: genuine structural problems still block", () => {
+  const files = { "content.js": "window.POLLS={};", "glossary.js": "x", "source.js": "y" }; // missing window.SLIDES, GLOSSARY, SOURCE_PAPER
+  const generated = { slides: [{ id: "", deck: "x" }], polls: {}, words: {}, glossary: {}, quizzes: [] };
+  const out = I.qaGate(files, { ...generated }, { sections: [] }, { mastery: {}, length: {} });
+  assert.strictEqual(out.ok, false);
+  assert.ok(out.issues.some((i) => /window\.SLIDES/.test(i)), "missing globals must still be flagged structurally");
+});
+
 group("Slide budget (honor explicit low counts; floor is only a default)");
 
 function briefWithBudget(budget) {

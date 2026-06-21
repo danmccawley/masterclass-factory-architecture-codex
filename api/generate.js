@@ -2961,12 +2961,13 @@ function qaGate(files, generated, sourcePaper, brief) {
     if (slide.poll && !generated.polls[slide.poll]) issues.push(`slide ${slide.id} references missing poll ${slide.poll}.`);
     if (slide.words && !generated.words[slide.words]) issues.push(`slide ${slide.id} references missing word cloud ${slide.words}.`);
     if (slide.paper && (!slide.paper.secnum || !slide.paper.h || !slide.paper.body)) issues.push(`slide ${slide.id} paper shape is invalid.`);
-    if (slide.id !== "knowledge-base-works-cited" && wordCount(slide.deck) < MIN_VISIBLE_SLIDE_WORDS) {
-      issues.push(`slide ${slide.id} is too thin for a masterclass slide.`);
-    }
-    if (slide.paper && wordCount(slide.paper.body) < MIN_DEEP_DIVE_WORDS) {
-      issues.push(`slide ${slide.id} deep dive is too thin.`);
-    }
+    // NOTE: thin-but-present content (a short slide deck or short deep-dive body)
+    // is a QUALITY judgment, not a structural failure — qualityAudit already
+    // scores it (content_density + deep_dive_depth) and routes it to a graded
+    // "ship anyway / auto-improve" decision. Flagging it here as structural made
+    // it a hard, unshippable wall, contradicting this gate's own contract
+    // (structural = broken shapes/globals/citations only). So thinness is NOT
+    // gated here; it surfaces through the quality score instead.
   });
   Object.keys(generated.glossary).forEach((term) => {
     const entry = generated.glossary[term];
@@ -3697,6 +3698,7 @@ module.exports._internal = {
   validateOpenAIKey,
   scoreKnowledgeBase,
   resolveQaOutcome,
+  qaGate,
   totalSlideTarget,
   slideBudgetFloor,
   requiredDeepDiveCount,
