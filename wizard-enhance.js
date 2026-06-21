@@ -311,17 +311,17 @@
     card.setAttribute("data-enhanced-analysis", "true");
     card.innerHTML =
       "<h3>Knowledge-base analysis</h3>" +
-      "<p class=\"hint\">The knowledge base is resolved and <strong>sealed here</strong>. Review the sources Bernard can find, deal with any shortfall (add sources, accept a tier, or build anyway), then seal it. Once sealed, the knowledge base is locked and is never raised again downstream &mdash; the only exception is a human-approved advancement opportunity.</p>" +
-      "<div class=\"analysis-flow\"><span>Sources</span><span>Research rules</span><span>KB review &amp; score</span><span>Seal</span></div>" +
+      "<p class=\"hint\">Bernard researches the knowledge base in <strong>rounds</strong>. After each round you see how many genuinely new sources it found, where the curve is heading, a line-by-line source ledger, and per-objective coverage. You decide each time: run another round, or accept and <strong>seal</strong>. Once sealed, the knowledge base is locked and never raised again downstream &mdash; the only exception is a human-approved advancement opportunity.</p>" +
+      "<div class=\"analysis-flow\"><span>Round</span><span>Checkpoint &amp; curve</span><span>Source ledger</span><span>Per-objective</span><span>Seal</span></div>" +
       "<div class=\"assist-actions\">" +
-      "<button type=\"button\" class=\"primary\" data-kb-review>Review &amp; seal knowledge base</button>" +
+      "<button type=\"button\" class=\"primary\" data-kb-round>Start knowledge-base research</button>" +
       "<button type=\"button\" class=\"ghost\" data-ai=\"fill\">Prepare objective candidates</button></div>" +
       "<div class=\"kb-step-result\" data-kb-step-result></div>";
     var grid = form.querySelector(".form-grid") || form;
     grid.appendChild(card);
 
-    var reviewBtn = card.querySelector("[data-kb-review]");
-    if (reviewBtn) reviewBtn.addEventListener("click", function () { runKnowledgeBaseReview(reviewBtn); });
+    var roundBtn = card.querySelector("[data-kb-round]");
+    if (roundBtn) roundBtn.addEventListener("click", function () { runKnowledgeBaseRounds(roundBtn); });
 
     // If a seal already exists in this session, reflect it immediately.
     if (sealedKnowledgeBase && sealedKnowledgeBase.seal) {
@@ -345,88 +345,148 @@
     grid.appendChild(librarian);
   }
 
-  // Run the interactive review against /api/knowledge-base (review mode) and
-  // render the result inline on the step.
-  async function runKnowledgeBaseReview(btn) {
+  // ---- ROUND-BASED KNOWLEDGE-BASE BUILD ---------------------------------
+  // The KB step runs discovery in rounds. round_state is carried forward so the
+  // new-source count is a true per-round delta. Nothing seals until the human
+  // chooses "Accept & seal". The human is the only off-switch.
+  var kbRoundState = null;
+
+  async function runKnowledgeBaseRounds(btn) {
     var target = form.querySelector("[data-kb-step-result]");
     if (!target) return;
-    if (btn) { btn.disabled = true; btn.textContent = "Reviewing the knowledge base..."; }
-    target.innerHTML = "<div class=\"notice\">Bernard is reviewing the knowledge base...</div>";
+    if (btn) { btn.disabled = true; btn.textContent = "Bernard is researching (round in progress)..."; }
+    // First click starts fresh; subsequent "Run another round" carries state.
     try {
       var response = await fetch("/api/knowledge-base", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ mode: "review", brief: parseBrief() })
+        body: JSON.stringify({ mode: "rounds", brief: parseBrief(), round_state: kbRoundState })
       });
       var payload = await response.json();
-      if (!response.ok || !payload.ok) { throw new Error((payload.errors || ["Could not review the knowledge base."]).join(" ")); }
-      renderKbStepReview(payload, target);
+      if (!response.ok || !payload.ok) { throw new Error((payload.errors || ["Could not run a research round."]).join(" ")); }
+      kbRoundState = payload.round_state || kbRoundState;
+      renderRoundCheckpoint(payload, target);
     } catch (error) {
-      target.innerHTML = "<div class=\"notice kb-error\">" + esc(error.message || "Review failed.") + "</div>";
+      target.innerHTML = "<div class=\"notice kb-error\">" + esc(error.message || "Round failed.") + "</div>" +
+        "<div class=\"assist-actions\"><button type=\"button\" data-kb-round-retry>Try the round again</button> " +
+        "<button type=\"button\" class=\"primary\" data-kb-accept>Accept what exists &amp; seal</button></div>";
+      var retry = target.querySelector("[data-kb-round-retry]");
+      if (retry) retry.addEventListener("click", function () { runKnowledgeBaseRounds(retry); });
+      var acc = target.querySelector("[data-kb-accept]");
+      if (acc) acc.addEventListener("click", function () { acceptAndSeal(target); });
     } finally {
-      if (btn) { btn.disabled = false; btn.innerHTML = "Review &amp; seal knowledge base"; }
+      if (btn) { btn.disabled = false; btn.innerHTML = "Start knowledge-base research"; }
     }
   }
 
-  // Render the review on the STEP. Unlike the generate-time review (which runs
-  // the generator), every actionable choice here SEALS the knowledge base.
-  function renderKbStepReview(payload, target) {
-    if (payload.status === "ready") {
-      target.innerHTML =
-        "<div class=\"notice kb-review\">" +
-        "<h3>Knowledge base meets the floor</h3>" +
-        scoreHtml(payload.score) +
-        "<p>Source floor is met for the <strong>" + esc(payload.tier || "selected") + "</strong> tier. Seal it to lock it in and move on.</p>" +
-        "<div class=\"assist-actions\"><button type=\"button\" class=\"primary\" data-kb-seal=\"as_is\">Seal knowledge base</button></div>" +
-        "</div>";
-      var sealBtn = target.querySelector("[data-kb-seal]");
-      if (sealBtn) sealBtn.addEventListener("click", function () { sealKnowledgeBaseDecision("as_is", null, target); });
-      return;
-    }
+  // The new-source-per-round curve as a tiny inline bar sparkline.
+  function curveHtml(newPerRound) {
+    var arr = (newPerRound || []).slice();
+    if (!arr.length) return "";
+    var max = Math.max.apply(null, arr.concat([1]));
+    var bars = arr.map(function (n, i) {
+      var h = Math.max(4, Math.round((n / max) * 48));
+      return "<span class=\"kb-curve-bar\" style=\"height:" + h + "px\" title=\"Round " + (i + 1) + ": " + n + " new\"></span>";
+    }).join("");
+    return "<div class=\"kb-curve\"><div class=\"kb-curve-bars\">" + bars + "</div>" +
+      "<p class=\"hint\">New sources per round: " + arr.join(" \u2192 ") + " (the curve flattening = diminishing returns).</p></div>";
+  }
 
-    var co = payload.change_order || {};
-    var rec = co.recommendation || {};
-    var options = payload.options || co.options || [];
-    var challenges = (co.challenges || []).map(function (c) { return "<li>" + esc(c) + "</li>"; }).join("");
+  // Tier-1 composition ledger: line-by-line table + rejected list + totals.
+  function ledgerHtml(ledger) {
+    if (!ledger) return "";
+    var rows = (ledger.sources || []).map(function (s) {
+      return "<tr><td>" + s.index + "</td>" +
+        "<td class=\"kb-led-path\"><a href=\"" + attr(s.path) + "\" target=\"_blank\" rel=\"noopener noreferrer\">" + esc(s.path) + "</a></td>" +
+        "<td>" + esc(s.type) + "</td>" +
+        "<td>" + esc(s.trust) + "</td>" +
+        "<td>" + esc(s.origin) + "</td>" +
+        "<td>" + esc(s.verification) + "</td></tr>";
+    }).join("");
+    var rejected = (ledger.rejected || []).map(function (r) {
+      return "<li><span class=\"kb-led-path\">" + esc(r.path) + "</span> &mdash; " + esc(r.reason) + "</li>";
+    }).join("");
+    var t = ledger.totals || {};
+    var v = ledger.verification_summary || {};
+    return "<details class=\"kb-ledger\" open><summary>Source ledger &mdash; " + (t.total || 0) + " accepted, " +
+      ((ledger.rejected || []).length) + " rejected</summary>" +
+      "<table class=\"kb-ledger-table\"><thead><tr><th>#</th><th>Source</th><th>Type</th><th>Trust</th><th>Origin</th><th>Verification</th></tr></thead>" +
+      "<tbody>" + rows + "</tbody></table>" +
+      "<p class=\"hint\">Totals: " + (t.total || 0) + " sources (" + (t.primary || 0) + " primary, " + (t.secondary || 0) + " secondary, " + (t.unknown || 0) + " unknown) against a floor of " + (t.required_total || 0) + "/" + (t.required_primary || 0) + ". " +
+      "Verification: " + (v.full_text || 0) + " full-text, " + (v.reachable_only || 0) + " reachable-only, " + (v.rejected || 0) + " rejected.</p>" +
+      (rejected ? "<details class=\"kb-rejected\"><summary>Rejected sources &amp; why</summary><ul>" + rejected + "</ul></details>" : "") +
+      "<p class=\"hint kb-caveat\">" + esc(ledger.caveat || "") + "</p>" +
+      "</details>";
+  }
+
+  // Per-objective coverage bars (weakest objective gates the class).
+  function objectiveBarsHtml(objSat) {
+    if (!objSat || !objSat.objectives || !objSat.objectives.length) return "";
+    var statusClass = { corroborated: "obj-corroborated", thin: "obj-thin", uncovered: "obj-uncovered" };
+    var rows = objSat.objectives.map(function (o) {
+      var cls = statusClass[o.status] || "obj-thin";
+      var gap = o.gap_kind ? " <span class=\"obj-gap obj-gap-" + esc(o.gap_kind) + "\">" + esc(o.gap_kind) + " gap</span>" : "";
+      return "<li class=\"kb-obj-row " + cls + "\">" +
+        "<span class=\"kb-obj-kind\">" + esc(o.kind) + "</span>" +
+        "<span class=\"kb-obj-text\">" + esc(o.text) + "</span>" +
+        "<span class=\"kb-obj-status\">" + esc(o.status) + " &middot; " + o.supporting_sources + " src / " + o.independent_domains + " domain" + (o.independent_domains === 1 ? "" : "s") + gap + "</span>" +
+        "</li>";
+    }).join("");
+    var roll = objSat.rollup || {};
+    var gated = roll.gated_by ? (" Weakest: <strong>" + esc(roll.gated_by.status) + "</strong> (\"" + esc(roll.gated_by.text) + "\").") : "";
+    return "<details class=\"kb-objectives\" open><summary>Per-objective coverage &mdash; class status: <strong>" + esc(roll.class_status || "n/a") + "</strong></summary>" +
+      "<p class=\"hint\">The <em>weakest</em> objective gates the class, not the average." + gated + "</p>" +
+      "<ul class=\"kb-obj-list\">" + rows + "</ul>" +
+      "<p class=\"hint kb-caveat\">" + esc(objSat.caveat || "") + "</p>" +
+      "</details>";
+  }
+
+  // The checkpoint panel after each round: score, curve, recommendation, ledger,
+  // per-objective coverage, and the human's choice (another round / accept+seal).
+  function renderRoundCheckpoint(payload, target) {
+    var cp = payload.checkpoint || {};
+    var rec = cp.recommendation || "";
+    var recText = {
+      continue: "Bernard recommends another round &mdash; it's still finding new material.",
+      narrow: "The floor is met and new sources are slowing. Another round may still add depth, or you can seal.",
+      stop: "Returns have flattened &mdash; Bernard recommends sealing. More rounds are unlikely to add much."
+    }[rec] || "";
+    var floorNote = cp.floor_met
+      ? "Source floor met."
+      : "Below the source floor &mdash; you can still accept and seal (evidence-limited), the human is the only off-switch.";
+
     var box = document.createElement("div");
-    box.className = "notice change-order kb-review";
+    box.className = "notice change-order kb-review kb-round";
     box.innerHTML =
-      "<h3>Knowledge base review &mdash; resolve and seal</h3>" +
-      "<p class=\"kb-review-lead\">Here's the status. Deal with it now, then seal. <strong>Sealing locks the knowledge base for the rest of the build.</strong></p>" +
-      scoreHtml(payload.score || co.score) +
-      (co.situation ? "<p><strong>Status.</strong> " + esc(co.situation) + "</p>" : "") +
-      (challenges ? "<details><summary>Analysis</summary><ul>" + challenges + "</ul></details>" : "") +
-      (rec.summary ? "<p><strong>Bernard's recommendation.</strong> " + esc(rec.summary) + "</p>" : "") +
-      "<p><strong>Resolve it:</strong></p>" +
-      optionsHtml(options) +
+      "<h3>Round " + (cp.round || "?") + " checkpoint</h3>" +
+      "<p class=\"kb-review-lead\">" + esc(payload.message || "Round complete.") + "</p>" +
+      scoreHtml(cp.overall_score || payload.score) +
+      curveHtml(cp.new_per_round) +
+      "<p><strong>" + esc(floorNote) + "</strong>" + (recText ? " " + recText : "") + "</p>" +
+      objectiveBarsHtml(payload.objective_saturation) +
+      ledgerHtml(payload.ledger) +
+      "<p><strong>Your call:</strong></p>" +
+      "<div class=\"assist-actions\">" +
+      "<button type=\"button\" data-kb-another>Run another round</button> " +
+      "<button type=\"button\" class=\"primary\" data-kb-accept>Accept &amp; seal</button>" +
+      "</div>" +
       conversationalBoxHtml();
     target.innerHTML = "";
     target.appendChild(box);
-    wireKbStepOptions(box, target);
+
+    var another = box.querySelector("[data-kb-another]");
+    if (another) another.addEventListener("click", function () { runKnowledgeBaseRounds(another); });
+    var accept = box.querySelector("[data-kb-accept]");
+    if (accept) accept.addEventListener("click", function () { acceptAndSeal(target); });
     wireConversationalBox(box);
   }
 
-  // On the STEP, option clicks SEAL the KB (they do not run the generator).
-  function wireKbStepOptions(box, target) {
-    box.querySelectorAll("[data-option-id]").forEach(function (btn) {
-      var id = btn.getAttribute("data-option-id");
-      var token = {};
-      try { token = JSON.parse(btn.getAttribute("data-option-token") || "{}"); } catch (e) { token = {}; }
-      btn.addEventListener("click", function () {
-        if (token && token.proceed_anyway) { sealKnowledgeBaseDecision("proceed_anyway", null, target); }
-        else if (token && token.accept_tier) { sealKnowledgeBaseDecision("accept_tier", { tier: token.accept_tier }, target); }
-        else if (id === "search_again") { remediateKnowledgeBase(btn); }
-        else if (id === "add_source") { goToKnowledgeBaseStep(); }
-        else if (id === "decline_build") { setGenie("Knowledge base left open. Add sources or adjust, then review and seal when ready."); }
-        else if (id === "ask_bernard") {
-          var input = box.querySelector("[data-bernard-input]");
-          if (input) { input.focus(); try { input.scrollIntoView({ behavior: "smooth", block: "center" }); } catch (e) {} }
-        } else if (token && Object.keys(token).length) {
-          // Any other build-style token → treat as a proceed-anyway seal.
-          sealKnowledgeBaseDecision("proceed_anyway", null, target);
-        }
-      });
-    });
+  // Accept the rounds result: fold the sources Bernard accepted into the brief
+  // and seal via the existing seal path (add_sources). If the floor is unmet the
+  // seal stamps evidence-limited; nothing is blocked.
+  function acceptAndSeal(target) {
+    var sources = (kbRoundState && kbRoundState.accepted) ? kbRoundState.accepted : [];
+    sealKnowledgeBaseDecision("add_sources", { sources: sources }, target);
   }
 
   // Seal the knowledge base via /api/knowledge-base (seal mode). On success the

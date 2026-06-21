@@ -25,6 +25,7 @@
 
 const generate = require("./generate.js");
 const { runKnowledgeBaseRound, buildCompositionLedger } = require("./kb-rounds.js");
+const { buildObjectiveSaturation } = require("./kb-objectives.js");
 const {
   knowledgeBaseStandard,
   resolveKnowledgeBase,
@@ -110,6 +111,15 @@ module.exports = async function knowledgeBaseHandler(req, res) {
         primitives
       });
       const ledger = buildCompositionLedger(result.state, brief, primitives);
+      // Per-objective saturation over the sources accepted so far. Uses the
+      // keyword-overlap PROXY mapper (labeled as such); the real semantic mapper
+      // arrives with claim extraction. "saturated" is passed so an objective with
+      // no closeable path is marked structural once the rounds dry up.
+      const objectiveSaturation = buildObjectiveSaturation(
+        brief.objectives || {},
+        result.state.accepted || [],
+        { saturated: result.checkpoint && result.checkpoint.recommendation === "stop" }
+      );
       send(res, 200, {
         ok: true,
         status: "round",
@@ -117,6 +127,8 @@ module.exports = async function knowledgeBaseHandler(req, res) {
         round_state: result.state,
         // Line-by-line, auditable source ledger (tier 1: composition + verification).
         ledger: ledger,
+        // Per-objective coverage (proxy mapping until claim extraction lands).
+        objective_saturation: objectiveSaturation,
         // Convenience for the wizard: the accepted sources so far, so an
         // "accept" can seal the brief with them folded in via add_sources.
         accepted_sources: result.state.accepted,

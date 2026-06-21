@@ -1787,3 +1787,32 @@ pre {
 .kb-advancement h3 { margin: 0 0 8px; color: #1c557f; }
 .kb-advancement-list { margin: 8px 0; padding-left: 20px; }
 .kb-advancement-list li { margin: 4px 0; }
+
+/* ---- Round-based KB build: curve, ledger, per-objective coverage ---- */
+.kb-round h3 { margin: 0 0 6px; }
+.kb-curve { margin: 12px 0; }
+.kb-curve-bars { display: flex; align-items: flex-end; gap: 6px; height: 56px; padding: 4px 0; }
+.kb-curve-bar { display: inline-block; width: 22px; background: var(--water); border-radius: 4px 4px 0 0; opacity: 0.85; }
+.kb-curve .hint { margin: 4px 0 0; }
+
+.kb-ledger, .kb-objectives { margin: 12px 0; border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 10px 12px; background: var(--paper-2); }
+.kb-ledger > summary, .kb-objectives > summary { cursor: pointer; font-weight: 600; }
+.kb-ledger-table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 0.86em; }
+.kb-ledger-table th, .kb-ledger-table td { text-align: left; padding: 5px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.kb-ledger-table th { color: var(--ink-soft); font-weight: 600; }
+.kb-led-path { word-break: break-all; }
+.kb-rejected { margin-top: 8px; }
+.kb-rejected ul { margin: 6px 0; padding-left: 18px; }
+.kb-caveat { font-style: italic; color: var(--ink-soft); }
+
+.kb-obj-list { list-style: none; margin: 8px 0; padding: 0; }
+.kb-obj-row { display: grid; grid-template-columns: 84px 1fr auto; gap: 10px; align-items: baseline; padding: 7px 8px; border-radius: 6px; margin: 4px 0; border-left: 4px solid var(--line); background: var(--paper); }
+.kb-obj-row.obj-corroborated { border-left-color: #2e8b57; }
+.kb-obj-row.obj-thin { border-left-color: var(--sandstone); }
+.kb-obj-row.obj-uncovered { border-left-color: var(--clay); }
+.kb-obj-kind { font-size: 0.74em; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-soft); }
+.kb-obj-text { font-weight: 500; }
+.kb-obj-status { font-size: 0.82em; color: var(--ink-soft); white-space: nowrap; }
+.obj-gap { font-weight: 600; }
+.obj-gap-structural { color: var(--clay); }
+.obj-gap-closeable { color: var(--water-deep); }
