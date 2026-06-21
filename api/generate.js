@@ -692,7 +692,7 @@ async function discoverKnowledgeBaseSources(brief, standard) {
   };
 
   if (owner !== "ai") return discovery;
-  if (!brief.knowledge_base.research.allow_web) {
+  if (brief.knowledge_base.research.allow_web === false) {
     discovery.notes.push("AI-owned research was selected, but verified web research is turned off.");
     return discovery;
   }
@@ -3274,6 +3274,26 @@ module.exports = async function generateHandler(req, res) {
     const sourceDiscovery = recovery.discovery || {
       owner: researchOwner(brief), attempted: false, model: "", added_sources: [], rejected_sources: [], gaps: [], notes: []
     };
+
+    // TEMP DIAGNOSTIC (KBDIAG): records exactly why discovery yields the sources
+    // it does, so the root cause of an empty knowledge base is readable from the
+    // runtime logs. No key material is logged. Removed once the cause is confirmed.
+    try {
+      console.log("KBDIAG " + JSON.stringify({
+        ladder: recovery.ladder,
+        resolution: recovery.resolution,
+        owner: sourceDiscovery.owner,
+        attempted: Boolean(sourceDiscovery.attempted),
+        rounds: sourceDiscovery.rounds || 0,
+        added: (sourceDiscovery.added_sources || []).length,
+        rejected: (sourceDiscovery.rejected_sources || []).length,
+        webAllowed: Boolean(brief.knowledge_base && brief.knowledge_base.research && brief.knowledge_base.research.allow_web !== false),
+        keyUsable: openAIKeyUsable(),
+        model: sourceDiscovery.model || "",
+        notes: (sourceDiscovery.notes || []).slice(0, 8),
+        rejected_reasons: (sourceDiscovery.rejected_sources || []).slice(0, 5).map(function (r) { return r && r.reason; })
+      }));
+    } catch (e) {}
 
     if (recovery.resolution === "knowledge_base_review") {
       // Apply whatever consent the human gave, in priority order.
