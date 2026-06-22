@@ -513,6 +513,13 @@
       ["assisted", "Help me research", "Bernard suggests search prompts, missing source types, and gaps while the class creator approves what goes into the knowledge base."],
       ["ai", "Assign to Bernard", "Bernard is responsible for finding enough verified sources during generation, then source verification and QA still gate the class."]
     ];
+    var owner = brief.knowledge_base.research.owner;
+    var actionRow = "";
+    if (owner === "ai") {
+      actionRow = "<div class=\"assist-actions\"><button type=\"button\" class=\"primary\" data-research-action=\"assign\">Assign research to Bernard</button></div>";
+    } else if (owner === "assisted") {
+      actionRow = "<div class=\"assist-actions\"><button type=\"button\" class=\"primary\" data-research-action=\"plan\">Ask Bernard for research help</button></div>";
+    }
     return card("Who owns knowledge-base research?",
       "<p class=\"hint\">Choose the responsibility model before objectives are finalized. Final TLOs and ELOs should come after this research path is complete.</p>" +
       "<div class=\"mode-grid research-owner-grid\">" + modes.map(function (mode) {
@@ -520,8 +527,7 @@
           (brief.knowledge_base.research.owner === mode[0] ? " checked" : "") + "> <span><strong>" + esc(mode[1]) +
           "</strong><small>" + esc(mode[2]) + "</small></span></label>";
       }).join("") + "</div>" +
-      "<div class=\"assist-actions\"><button type=\"button\" class=\"ghost\" data-research-action=\"plan\">Ask Bernard for research help</button>" +
-      "<button type=\"button\" class=\"primary\" data-research-action=\"assign\">Assign research to Bernard</button></div>" +
+      actionRow +
       researchNotice(),
       "full research-owner-card assist-panel");
   }
