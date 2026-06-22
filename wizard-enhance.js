@@ -17,6 +17,10 @@
   // The knowledge base, once resolved-and-sealed at step 2, lives here and is
   // merged into every generate call so the server skips KB resolution entirely.
   var sealedKnowledgeBase = null;
+  // Chosen class theme: null (default look), { mode:"named", named } or
+  // { mode:"described", tokens, description } (LLM-resolved palette).
+  var selectedTheme = null;
+  var themeCatalogCache = null;
   var generatorTrackerTimer = null;
   var generatorTrackerIndex = 0;
   var generatorFailedIndex = -1;
@@ -269,6 +273,7 @@
     enhanceKnowledgeStep();
     enhanceLengthStep();
     enhanceReviewStep();
+    enhanceThemePicker();
   }
 
   function currentStep() {
@@ -295,6 +300,9 @@
         brief.class_tier = Object.assign({}, brief.class_tier, sealedKnowledgeBase._class_tier);
       }
     }
+    // The chosen class theme (named or LLM-described). Optional and outside the
+    // strict brief contract; the generator sanitizes it before validation.
+    if (selectedTheme) brief.theme = selectedTheme;
     return brief;
   }
 
@@ -692,6 +700,132 @@
     var grid = form.querySelector(".form-grid") || form;
     grid.insertBefore(help, grid.firstChild);
     grid.insertBefore(planner, help);
+  }
+
+  // ---- THEME PICKER (review & generate step) ----
+  // Two ways to theme the class: pick a curated named theme, or describe a vibe
+  // and let Bernard generate a palette (POST /api/theme). Both resolve to the
+  // same token set; the server enforces legibility. Choosing nothing keeps the
+  // built-in look. The choice rides on brief.theme via briefForGenerate().
+  var THEME_FALLBACK = [
+    { key: "", label: "Default (Tech Noir)", swatch: { bg: "#070809", accent: "#e6a042", accent2: "#46c8c0", ink: "#eef2f7" } },
+    { key: "cyberpunk", label: "Cyberpunk", swatch: { bg: "#0a0612", accent: "#ff2e88", accent2: "#22e6ff", ink: "#f4eaff" } },
+    { key: "post-apocalyptic", label: "Post-Apocalyptic", swatch: { bg: "#100d0a", accent: "#c2622d", accent2: "#7d8a6a", ink: "#ece3d6" } },
+    { key: "heavenly", label: "Heavenly", swatch: { bg: "#f7f9fc", accent: "#a58520", accent2: "#6c8fd6", ink: "#1c2433" } },
+    { key: "serenity", label: "Serenity", swatch: { bg: "#0e1820", accent: "#7fd1c4", accent2: "#9db8d8", ink: "#e7f1f4" } },
+    { key: "oasis", label: "Oasis", swatch: { bg: "#0c1410", accent: "#e0b04a", accent2: "#3fb98a", ink: "#eaf3ea" } },
+    { key: "dune", label: "Dune", swatch: { bg: "#1a120a", accent: "#e0922e", accent2: "#9c6b3f", ink: "#f3e7d2" } },
+    { key: "winter", label: "Winter", swatch: { bg: "#0d1620", accent: "#6fb7e8", accent2: "#c9d6e4", ink: "#eaf2fb" } },
+    { key: "summer", label: "Summer", swatch: { bg: "#fff8ec", accent: "#c55530", accent2: "#198f7e", ink: "#3a2a14" } },
+    { key: "pacific-northwest", label: "Pacific Northwest", swatch: { bg: "#0f1714", accent: "#5a9e7a", accent2: "#7ea8b8", ink: "#e6efe9" } },
+    { key: "ocean", label: "Ocean", swatch: { bg: "#061620", accent: "#2fb6d6", accent2: "#3f7fb5", ink: "#e3f2f7" } }
+  ];
+
+  function swatchDots(sw) {
+    if (!sw) return "";
+    return "<span class=\"theme-dots\">" +
+      "<i style=\"background:" + esc(sw.bg) + "\"></i>" +
+      "<i style=\"background:" + esc(sw.accent) + "\"></i>" +
+      "<i style=\"background:" + esc(sw.accent2) + "\"></i>" +
+      "<i style=\"background:" + esc(sw.ink) + "\"></i></span>";
+  }
+
+  function renderThemeGrid(card, themes) {
+    var grid = card.querySelector("[data-theme-grid]");
+    if (!grid) return;
+    grid.innerHTML = themes.map(function (t) {
+      var sel = ((selectedTheme && selectedTheme.named) || "") === t.key && (!selectedTheme || selectedTheme.mode !== "described");
+      return "<button type=\"button\" class=\"theme-chip" + (sel ? " sel" : "") + "\" data-theme-key=\"" + esc(t.key) + "\">" +
+        swatchDots(t.swatch) + "<span class=\"theme-chip-label\">" + esc(t.label) + "</span></button>";
+    }).join("");
+    Array.prototype.forEach.call(grid.querySelectorAll("[data-theme-key]"), function (btn) {
+      btn.addEventListener("click", function () {
+        var key = btn.getAttribute("data-theme-key");
+        selectedTheme = key ? { mode: "named", named: key } : null;
+        var cp = card.querySelector("[data-theme-custom-preview]"); if (cp) cp.innerHTML = "";
+        renderThemeGrid(card, themes);
+        setThemeStatus(card, key ? ("Theme set: " + (btn.textContent || key).trim()) : "Using the default look.");
+      });
+    });
+  }
+
+  function setThemeStatus(card, msg, warnings) {
+    var s = card.querySelector("[data-theme-status]");
+    if (!s) return;
+    var w = (warnings && warnings.length) ? " <span class=\"theme-warn\">(" + esc(warnings.join("; ")) + ")</span>" : "";
+    s.innerHTML = esc(msg) + w;
+  }
+
+  function loadThemeCatalog(card) {
+    if (themeCatalogCache) { renderThemeGrid(card, themeCatalogCache); return; }
+    fetch("/api/theme", { method: "GET" })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) {
+        var list = (j && j.themes && j.themes.length)
+          ? [{ key: "", label: "Default (Tech Noir)", swatch: THEME_FALLBACK[0].swatch }].concat(j.themes)
+          : THEME_FALLBACK;
+        themeCatalogCache = list;
+        renderThemeGrid(card, list);
+      })
+      .catch(function () { themeCatalogCache = THEME_FALLBACK; renderThemeGrid(card, THEME_FALLBACK); });
+  }
+
+  function showDescribedSwatch(card, p) {
+    var box = card.querySelector("[data-theme-custom-preview]");
+    if (!box) return;
+    box.innerHTML = "<span class=\"theme-chip sel\" style=\"pointer-events:none\">" +
+      swatchDots({ bg: p.bg, accent: p.accent, accent2: p.accent2, ink: p.ink }) +
+      "<span class=\"theme-chip-label\">Your described theme</span></span>";
+  }
+
+  function describeTheme(card) {
+    var input = card.querySelector("[data-theme-describe]");
+    var btn = card.querySelector("[data-theme-describe-go]");
+    if (!input || !btn) return;
+    var desc = (input.value || "").trim();
+    if (!desc) { setThemeStatus(card, "Type a vibe first \u2014 e.g. \u201Cfoggy Pacific Northwest morning\u201D."); return; }
+    btn.disabled = true; var label = btn.textContent; btn.textContent = "Bernard is designing\u2026";
+    fetch("/api/theme", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ description: desc }) })
+      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+      .then(function (res) {
+        if (res.ok && res.j && res.j.ok && res.j.palette) {
+          selectedTheme = { mode: "described", description: desc, tokens: res.j.palette };
+          renderThemeGrid(card, themeCatalogCache || THEME_FALLBACK);
+          setThemeStatus(card, "Custom theme ready from your description.", res.j.warnings);
+          showDescribedSwatch(card, res.j.palette);
+        } else {
+          var err = (res.j && res.j.error) || "couldn't generate a theme";
+          setThemeStatus(card, "Theme AI: " + err + ". Pick a named theme instead, or try another description.");
+        }
+      })
+      .catch(function () { setThemeStatus(card, "Couldn't reach the theme service \u2014 pick a named theme instead."); })
+      .finally(function () { btn.disabled = false; btn.textContent = label; });
+  }
+
+  function enhanceThemePicker() {
+    if (currentStep().indexOf("review") === -1 && currentStep().indexOf("generate") === -1) return;
+    if (form.querySelector("[data-enhanced-theme]")) return;
+    var card = document.createElement("div");
+    card.className = "summary-card full assist-panel";
+    card.setAttribute("data-enhanced-theme", "true");
+    card.innerHTML =
+      "<h3>Class theme <span class=\"hint-inline\">optional</span></h3>" +
+      "<p class=\"hint\">Pick a look for the published class, or describe a vibe and Bernard will design a palette. Leave it untouched for the default. Text stays readable either way.</p>" +
+      "<div class=\"theme-grid\" data-theme-grid></div>" +
+      "<div class=\"theme-describe-row\">" +
+        "<input type=\"text\" data-theme-describe placeholder=\"Describe a theme \u2014 e.g. 'neon rain on wet asphalt', 'sunlit desert at dawn'\" />" +
+        "<button type=\"button\" class=\"ghost\" data-theme-describe-go>Design it with Bernard</button>" +
+      "</div>" +
+      "<div class=\"theme-custom-preview\" data-theme-custom-preview></div>" +
+      "<div class=\"notice\" data-theme-status>Using the default look.</div>";
+    var grid = form.querySelector(".form-grid") || form;
+    grid.insertBefore(card, grid.firstChild);
+    loadThemeCatalog(card);
+    var go = card.querySelector("[data-theme-describe-go]");
+    if (go) go.addEventListener("click", function () { describeTheme(card); });
+    var inp = card.querySelector("[data-theme-describe]");
+    if (inp) inp.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); describeTheme(card); } });
+    if (selectedTheme && selectedTheme.mode === "described" && selectedTheme.tokens) showDescribedSwatch(card, selectedTheme.tokens);
   }
 
   function budgetControl(label, path, value, min, max, unit) {

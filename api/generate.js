@@ -3,6 +3,7 @@ const path = require("path");
 const { validateBrief } = require("../brief-validator.js");
 const template = require("../brief.template.json");
 const { readOpenAIUsage, createBudgetLedger } = require("./kb-budget.js");
+const { resolveThemeCss } = require("./theme.js")._internal;
 
 // Per-build cost ledger. Set at the start of each generate request and recorded
 // into at every OpenAI/Tavily call site, so the build's real spend is tracked.
@@ -45,7 +46,8 @@ function sanitizeBriefForValidation(brief) {
     }
   }
   // budget_usd is an optional governor field, also outside the strict contract.
-  if (clone) delete clone.budget_usd;
+  // budget_usd and theme are optional fields outside the strict contract.
+  if (clone) { delete clone.budget_usd; delete clone.theme; }
   return clone;
 }
 
@@ -3274,7 +3276,10 @@ function replacementMap(brief) {
     "{{AUDIENCE_LEVEL}}": brief.audience.tone || "plain-language",
     "{{TOPIC_SCOPE}}": `Stay within the approved source paper and avoid: ${scope}.`,
     "{{TOPIC_HONESTY}}": "Do not invent facts. If the source paper does not support an answer, say the class needs more source review.",
-    "{{AUDIENCE_NOUN}}": audience
+    "{{AUDIENCE_NOUN}}": audience,
+    // Theme override: a <style> override of the template's CSS-variable defaults,
+    // or "" when no theme is chosen (the built-in look is left untouched).
+    "{{THEME_OVERRIDE}}": resolveThemeCss(brief.theme)
   };
 }
 

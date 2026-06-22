@@ -353,7 +353,7 @@ test("genie returns 503 when no OpenAI key is set", async () => {
 group("All endpoints load without throwing");
 
 ["admin", "brief", "generate", "genie", "librarian", "objectives", "qr", "remediate",
- "chat", "feedback", "grade", "poll", "quality", "tts", "words"].forEach((name) => {
+ "chat", "feedback", "grade", "poll", "quality", "tts", "words", "theme"].forEach((name) => {
   test("require api/" + name + ".js", () => {
     const mod = require("../api/" + name + ".js");
     assert.strictEqual(typeof mod, "function");
@@ -632,6 +632,15 @@ test("sanitizer whitelists round-engine upload metadata (fetched/reachable_only)
   assert.strictEqual(out.ok, true, out.errors && out.errors.join("; "));
   // and the cleaned upload kept exactly the contract keys
   assert.deepStrictEqual(Object.keys(cleaned.knowledge_base.uploads[0]).sort(), ["path", "trust", "type"]);
+});
+test("sanitizer strips optional theme + budget_usd so a themed brief validates", () => {
+  const b = JSON.parse(JSON.stringify(validator.DEFAULT_TEMPLATE));
+  b.theme = { mode: "named", named: "dune" };
+  b.budget_usd = 12;
+  assert.strictEqual(validator.validateBrief(b, validator.DEFAULT_TEMPLATE).ok, false); // strict contract rejects them
+  const cleaned = I.sanitizeBriefForValidation(b);
+  assert.strictEqual(validator.validateBrief(cleaned, validator.DEFAULT_TEMPLATE).ok, true);
+  assert.strictEqual(b.theme.named, "dune"); // original untouched (generator still reads it)
 });
 
 group("Slide budget (honor explicit low counts; floor is only a default)");
