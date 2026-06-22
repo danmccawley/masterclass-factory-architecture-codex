@@ -109,6 +109,17 @@
       el.className = "slide" + (i===0 ? " active" : "");
       el.setAttribute("data-id", s.id);
       el.innerHTML = s.deck;
+      // Deep-dive trigger: every slide carrying a deep-dive paper gets a button to
+      // open it. Without this the parchment layer is unreachable, because the deck
+      // HTML itself emits no [data-deep] control. Skip if the deck already has one.
+      if (s.paper && !el.querySelector("[data-deep]")) {
+        var ddOpen = document.createElement("button");
+        ddOpen.className = "deepbtn deepdive-open";
+        ddOpen.setAttribute("type", "button");
+        ddOpen.setAttribute("data-deep", s.id);
+        ddOpen.innerHTML = "\uD83D\uDCD6 Read the deep dive \u2192";
+        el.appendChild(ddOpen);
+      }
       el.addEventListener("scroll", function(){ updateScrollCue(); }, {passive:true});
       deck.appendChild(el);
     });
