@@ -133,8 +133,8 @@ function normalizeRecommendation(value, brief) {
   const recommendedMinutes = clampNumber(value && value.minutes, currentMinutes, 10, 480, true);
   const recommendedSlides = clampNumber(value && value.slide_budget, currentSlides, 30, 400, true);
   return {
-    minutes: Math.max(currentMinutes, recommendedMinutes),
-    slide_budget: Math.max(currentSlides, recommendedSlides),
+    minutes: recommendedMinutes,
+    slide_budget: recommendedSlides,
     polls: clampNumber(value && value.polls, budget.polls || 2, 0, 50, false),
     word_clouds: clampNumber(value && value.word_clouds, budget.word_clouds || 4, 0, 50, false),
     quizzes: clampNumber(value && value.quizzes, budget.quizzes || 1, 0, 50, false),
