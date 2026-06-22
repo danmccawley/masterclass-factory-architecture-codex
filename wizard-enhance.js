@@ -25,6 +25,8 @@
   var generatorTrackerIndex = 0;
   var generatorFailedIndex = -1;
   var generatorProgress = [];
+  var generatorStart = 0;
+  var generatorReassureIndex = 0;
   var generatorStages = [
     {
       label: "Order received",
@@ -477,7 +479,7 @@
   async function runKnowledgeBaseRounds(btn) {
     var target = form.querySelector("[data-kb-step-result]");
     if (!target) return;
-    if (btn) { btn.disabled = true; btn.textContent = "Bernard is researching (round in progress)..."; }
+    if (btn) { btn.disabled = true; btn.classList.add("bernard-busy"); btn.textContent = "Bernard is researching (round in progress)"; }
     // First click starts fresh; subsequent "Run another round" carries state.
     try {
       var response = await fetch("/api/knowledge-base", {
@@ -498,7 +500,7 @@
       var acc = target.querySelector("[data-kb-accept]");
       if (acc) acc.addEventListener("click", function () { acceptAndSeal(target); });
     } finally {
-      if (btn) { btn.disabled = false; btn.innerHTML = "Start knowledge-base research"; }
+      if (btn) { btn.disabled = false; btn.classList.remove("bernard-busy"); btn.innerHTML = "Start knowledge-base research"; }
     }
   }
 
@@ -784,7 +786,7 @@
     if (!input || !btn) return;
     var desc = (input.value || "").trim();
     if (!desc) { setThemeStatus(card, "Type a vibe first \u2014 e.g. \u201Cfoggy Pacific Northwest morning\u201D."); return; }
-    btn.disabled = true; var label = btn.textContent; btn.textContent = "Bernard is designing\u2026";
+    btn.disabled = true; btn.classList.add("bernard-busy"); var label = btn.textContent; btn.textContent = "Bernard is designing";
     fetch("/api/theme", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ description: desc }) })
       .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
       .then(function (res) {
@@ -799,7 +801,7 @@
         }
       })
       .catch(function () { setThemeStatus(card, "Couldn't reach the theme service \u2014 pick a named theme instead."); })
-      .finally(function () { btn.disabled = false; btn.textContent = label; });
+      .finally(function () { btn.disabled = false; btn.classList.remove("bernard-busy"); btn.textContent = label; });
   }
 
   function enhanceThemePicker() {
@@ -1090,8 +1092,10 @@
     return "<section class=\"tracker-card\" aria-live=\"polite\">" +
       "<p class=\"kicker\">Masterclass Factory</p>" +
       "<h2>Generator tracker</h2>" +
-      "<div class=\"tracker-now\"><span>Current stage</span><strong data-tracker-now-stage>Starting</strong></div>" +
+      "<div class=\"tracker-now\"><span>Current stage</span><strong data-tracker-now-stage>Starting</strong>" +
+        "<span class=\"tracker-live\" data-tracker-live><i class=\"tracker-pulse\"></i>Working<em data-tracker-elapsed>0:00</em></span></div>" +
       "<p class=\"tracker-detail\" data-tracker-detail>Starting the generator.</p>" +
+      "<div class=\"tracker-action-zone\" data-tracker-action-zone hidden></div>" +
       "<div class=\"tracker-road\">" + steps + "</div>" +
       "<div class=\"tracker-progress\"><span data-tracker-progress></span></div>" +
       "<p class=\"tracker-small\" data-tracker-small>This stays on screen until the masterclass package is ready. Bernard is coordinating source analysis, lesson writing, source verification, QA, quality scoring, and launch packaging.</p>" +
@@ -1105,6 +1109,8 @@
     generatorTrackerIndex = 0;
     generatorFailedIndex = -1;
     generatorProgress = generatorStages.map(function () { return 0; });
+    generatorStart = Date.now();
+    generatorReassureIndex = 0;
     var tracker = document.createElement("div");
     tracker.className = "generator-tracker-screen";
     tracker.setAttribute("data-generator-tracker", "true");
@@ -1121,9 +1127,55 @@
     if (!generatorProgress.length) return;
     var current = generatorProgress[generatorTrackerIndex] || 0;
     if (generatorTrackerIndex < generatorStages.length - 1) {
-      generatorProgress[generatorTrackerIndex] = Math.min(94, current + (current < 45 ? 5 : current < 75 ? 3 : 1));
+      // Asymptotic creep: the in-progress stage keeps inching forward so it
+      // never flatlines and looks frozen, but it never reaches 100 until the
+      // stage is actually confirmed passed (markTrackerStagePassed / complete).
+      var step = current < 45 ? 4 : current < 75 ? 2.5 : current < 92 ? 1 : 0.3;
+      generatorProgress[generatorTrackerIndex] = Math.min(98.5, current + step);
     }
     updateTrackerOdometers();
+    updateTrackerLiveness();
+  }
+
+  var generatorReassurance = [
+    "Still working \u2014 a full run usually takes 2 to 4 minutes.",
+    "Bernard is reading sources and writing slides. Hang tight.",
+    "No timeout \u2014 the server is still building your class.",
+    "This screen stays live until the package is ready. Nothing is stuck."
+  ];
+
+  // Keep the tracker visibly alive: tick the elapsed clock every interval and
+  // rotate the reassurance line so a long single request never reads as a hang.
+  function updateTrackerLiveness() {
+    var tracker = document.querySelector("[data-generator-tracker]");
+    if (!tracker) return;
+    if (tracker.classList.contains("failed") || tracker.classList.contains("complete")) return;
+    var elapsed = tracker.querySelector("[data-tracker-elapsed]");
+    if (elapsed && generatorStart) {
+      var secs = Math.floor((Date.now() - generatorStart) / 1000);
+      elapsed.textContent = Math.floor(secs / 60) + ":" + String(secs % 60).padStart(2, "0");
+    }
+    generatorReassureIndex += 1;
+    if (generatorReassureIndex % 6 === 0) {
+      var small = tracker.querySelector("[data-tracker-small]");
+      if (small) small.textContent = generatorReassurance[(generatorReassureIndex / 6) % generatorReassurance.length];
+    }
+  }
+
+  // Universal "Bernard is working" treatment so no async action ever looks
+  // frozen: animated trailing dots + disabled state, with a clean restore.
+  function setBusy(el, label) {
+    if (!el) return function () {};
+    var prevText = el.textContent;
+    var prevDisabled = el.disabled;
+    el.classList.add("bernard-busy");
+    el.disabled = true;
+    if (label) el.textContent = label;
+    return function restore(newText) {
+      el.classList.remove("bernard-busy");
+      el.disabled = prevDisabled;
+      el.textContent = typeof newText === "string" ? newText : prevText;
+    };
   }
 
   function markTrackerStagePassed(index) {
@@ -1242,15 +1294,17 @@
       /knowledge-base-standard|source-floor|primary-source/.test(String(error && (error.failed_stage || error.stage) || "").toLowerCase()) ||
       /usable sources|primary sources|source floor/.test(String(error && error.message || "").toLowerCase());
     if (isKbGate) {
-      var actions = tracker.querySelector(".tracker-actions");
-      if (actions && !actions.querySelector("[data-remediate]")) {
+      var zone = tracker.querySelector("[data-tracker-action-zone]");
+      if (zone && !zone.querySelector("[data-remediate]")) {
+        zone.hidden = false;
+        zone.innerHTML = "<p class=\"tracker-action-lead\">This stage is blocked. You decide how to proceed:</p>";
         var fix = document.createElement("button");
         fix.type = "button";
         fix.className = "primary";
         fix.setAttribute("data-remediate", "true");
         fix.textContent = "Have Bernard find the missing sources";
         fix.addEventListener("click", function () { remediateKnowledgeBase(fix); });
-        actions.insertBefore(fix, actions.firstChild);
+        zone.appendChild(fix);
       }
     }
   }
@@ -1259,7 +1313,7 @@
     var tracker = document.querySelector("[data-generator-tracker]");
     var detail = tracker && tracker.querySelector("[data-tracker-detail]");
     var small = tracker && tracker.querySelector("[data-tracker-small]");
-    if (button) { button.disabled = true; button.textContent = "Bernard is searching for sources..."; }
+    if (button) { button.disabled = true; button.classList.add("bernard-busy"); button.textContent = "Bernard is searching for sources"; }
     if (small) small.textContent = "Bernard is running source discovery and checking each URL. This can take a little time.";
     try {
       var response = await fetch("/api/remediate", {
@@ -1275,7 +1329,7 @@
       if (!added.length) {
         if (detail) detail.textContent = "Bernard could not verify any new sources. " + (payload.remaining_message || "");
         if (small) small.textContent = (payload.notes || []).join(" ") || "Try adding sources manually, then start the generator again.";
-        if (button) { button.disabled = false; button.textContent = "Try Bernard again"; }
+        if (button) { button.disabled = false; button.classList.remove("bernard-busy"); button.textContent = "Try Bernard again"; }
         return;
       }
 
@@ -1311,7 +1365,7 @@
       try { box.scrollIntoView({ behavior: "smooth", block: "center" }); } catch (scrollError) {}
     } catch (remediationError) {
       if (detail) detail.textContent = "Source discovery failed: " + (remediationError && remediationError.message ? remediationError.message : "unknown error");
-      if (button) { button.disabled = false; button.textContent = "Try Bernard again"; }
+      if (button) { button.disabled = false; button.classList.remove("bernard-busy"); button.textContent = "Try Bernard again"; }
     }
   }
 
@@ -1369,6 +1423,20 @@
       if (small) small.textContent = "Choose how to proceed below — the job is not blocked.";
       var close = tracker.querySelector("[data-close-tracker]");
       if (close) close.textContent = "Return to setup";
+      var zone = tracker.querySelector("[data-tracker-action-zone]");
+      if (zone) {
+        zone.hidden = false;
+        zone.innerHTML = "<p class=\"tracker-action-lead\">Bernard hit a snag, not a wall. Choose how to proceed:</p>" +
+          "<button type=\"button\" class=\"primary\" data-zone-retry>Try the generator again</button> " +
+          "<button type=\"button\" class=\"ghost\" data-zone-sources>Have Bernard find sources</button> " +
+          "<button type=\"button\" class=\"ghost\" data-zone-build>Build now with what exists</button>";
+        var zr = zone.querySelector("[data-zone-retry]");
+        if (zr) zr.addEventListener("click", function () { runGenerator(); });
+        var zs = zone.querySelector("[data-zone-sources]");
+        if (zs) zs.addEventListener("click", function () { remediateKnowledgeBase(zs); });
+        var zb = zone.querySelector("[data-zone-build]");
+        if (zb) zb.addEventListener("click", function () { runGeneratorWithApproval({ proceed_anyway: true }); });
+      }
     }
     if (!validationBox) return;
     validationBox.innerHTML =
@@ -1508,9 +1576,7 @@
       }
       if (validationBox) {
         validationBox.innerHTML = "<div class=\"notice\">" + esc(noteBits.join(" ")) +
-          " <button type=\"button\" class=\"link-btn\" data-open-built-preview>Open the preview</button> or see the full package in Review &amp; Generate.</div>";
-        var openBtn = validationBox.querySelector("[data-open-built-preview]");
-        if (openBtn) openBtn.addEventListener("click", openGeneratedPreview);
+          " <button type=\"button\" class=\"link-btn\" data-open-preview>Open preview</button> or see the full package in Review &amp; Generate.</div>";
       }
     } catch (error) {
       failGeneratorTracker(error);
@@ -1607,7 +1673,7 @@
       if (!q) { input.focus(); return; }
       thread.innerHTML += "<div class=\"chat-turn chat-you\"><strong>You:</strong> " + esc(q) + "</div>";
       input.value = "";
-      sendBtn.disabled = true; sendBtn.textContent = "Bernard is thinking...";
+      sendBtn.disabled = true; sendBtn.classList.add("bernard-busy"); sendBtn.textContent = "Bernard is thinking";
       try {
         var response = await fetch("/api/genie", {
           method: "POST",
@@ -1637,7 +1703,7 @@
       } catch (error) {
         thread.innerHTML += "<div class=\"chat-turn chat-bernard chat-error\"><strong>Bernard:</strong> " + esc(error.message || "Could not respond.") + "</div>";
       } finally {
-        sendBtn.disabled = false; sendBtn.textContent = "Ask Bernard";
+        sendBtn.disabled = false; sendBtn.classList.remove("bernard-busy"); sendBtn.textContent = "Ask Bernard";
       }
     });
   }

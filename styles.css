@@ -1853,3 +1853,91 @@ pre {
 .theme-custom-preview{margin:4px 0;}
 .theme-custom-preview .theme-chip{display:inline-flex;}
 .theme-warn{color:#b06a00;font-size:12px;}
+
+/* ===== #3 Generator liveness + universal "Bernard is working" indicator ===== */
+
+/* Live "Working" pill with pulsing dot + elapsed clock, beside current stage */
+.tracker-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 12px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--water-soft);
+  color: var(--water-deep);
+  font-size: 0.82rem;
+  font-weight: 600;
+  vertical-align: middle;
+}
+.tracker-live em {
+  font-style: normal;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  margin-left: 2px;
+}
+.tracker-pulse {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--water);
+  animation: tracker-pulse 1.5s ease-out infinite;
+}
+@keyframes tracker-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(29, 159, 194, 0.55); }
+  70%  { box-shadow: 0 0 0 9px rgba(29, 159, 194, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(29, 159, 194, 0); }
+}
+/* The "Working" pulse is meaningless once the run has stopped */
+.generator-tracker-screen.failed .tracker-live,
+.generator-tracker-screen.complete .tracker-live { display: none; }
+
+/* Action zone surfaced at the TOP, directly under the current-stage line,
+   so a blocked/snag action sits next to the badge instead of far below. */
+.tracker-action-zone {
+  margin: 14px 0 4px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--clay);
+  border-radius: var(--radius-md);
+  background: rgba(154, 92, 69, 0.06);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+.tracker-action-zone[hidden] { display: none; }
+.tracker-action-lead {
+  flex: 1 1 100%;
+  margin: 0 0 4px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* Sticky safety net: bottom action bar stays reachable without scrolling */
+.generator-tracker-screen .tracker-actions {
+  position: sticky;
+  bottom: 0;
+  background: linear-gradient(to top, var(--paper) 72%, rgba(251, 248, 240, 0));
+  padding-top: 12px;
+}
+
+/* Universal treatment: any element given .bernard-busy shows animated trailing
+   dots so an in-flight async action never looks stuck. */
+.bernard-busy {
+  cursor: progress !important;
+  opacity: 0.92;
+}
+.bernard-busy::after {
+  content: "";
+  display: inline-block;
+  width: 1.2em;
+  text-align: left;
+  animation: bernard-dots 1.2s steps(1, end) infinite;
+}
+@keyframes bernard-dots {
+  0%   { content: ""; }
+  25%  { content: "."; }
+  50%  { content: ".."; }
+  75%  { content: "..."; }
+}

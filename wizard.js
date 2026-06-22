@@ -413,8 +413,6 @@
         errorList(result.errors)) +
       card("Readiness notes", readinessNotes()) +
       "<div class=\"review-actions\"><button type=\"button\" class=\"ghost\" data-copy-launch>Copy launch link</button>" +
-      "<button type=\"button\" class=\"ghost\" data-copy-review>Copy setup data</button>" +
-      "<button type=\"button\" class=\"ghost\" data-download-review>Download setup file</button>" +
       "<button type=\"button\" class=\"primary\" data-post-review>Start generator</button></div>" +
       "<div id=\"postResult\" class=\"validation-box\"></div></div>"
     );
@@ -926,8 +924,6 @@
       return;
     }
     if (event.target.closest("[data-copy-launch]")) return copyLaunchLink();
-    if (event.target.closest("[data-copy-review]")) return copyBrief();
-    if (event.target.closest("[data-download-review]")) return downloadBrief();
     if (event.target.closest("[data-post-review]")) return postBrief();
   }
 
