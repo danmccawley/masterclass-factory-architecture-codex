@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Curriculum Planner · Masterclass Factory</title>
+<style>
+  :root{
+    --bg:#070809; --bg2:#0c0f14; --ink:#eef2f7; --dim:#8b96a6; --faint:#4a5360;
+    --amber:#e6a042; --teal:#46c8c0; --line:#1c232e; --card:#10141b; --card2:#151a23;
+    --serif:"Fraunces",Georgia,serif; --sans:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",monospace;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.5;}
+  .wrap{max-width:960px;margin:0 auto;padding:32px 20px 80px;}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);}
+  h1{font-family:var(--serif);font-size:40px;margin:6px 0 6px;line-height:1.05;}
+  .sub{color:var(--dim);max-width:60ch;}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin-top:22px;}
+  label{display:block;font-size:13px;color:var(--dim);margin:12px 0 5px;font-family:var(--mono);letter-spacing:.04em;}
+  input,textarea,select{width:100%;background:var(--bg2);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:11px 12px;font:inherit;}
+  textarea{min-height:64px;resize:vertical;}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .row3{display:grid;grid-template-columns:2fr 1fr 1fr;gap:14px;}
+  button{font:inherit;cursor:pointer;border:0;border-radius:9px;}
+  button:disabled{cursor:default;opacity:.55;}
+  .primary{background:var(--amber);color:#1a1206;font-weight:700;padding:13px 22px;letter-spacing:.02em;margin-top:18px;}
+  .primary:hover:not(:disabled){background:#ffc977;}
+  .ghost{background:transparent;color:var(--amber);border:1px solid var(--amber);padding:8px 14px;font-size:13px;}
+  .status{margin-top:14px;color:var(--dim);font-family:var(--mono);font-size:13px;min-height:18px;}
+  .status .warn{color:#e6b86a;}
+  .arc{color:var(--dim);font-style:italic;margin:6px 0 14px;}
+  .class-card{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0;}
+  .class-card h3{margin:0 0 4px;font-family:var(--serif);font-size:21px;}
+  .class-num{font-family:var(--mono);color:var(--amber);font-size:13px;}
+  .class-sum{color:var(--dim);margin:2px 0 10px;}
+  .obj-h{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin:8px 0 3px;}
+  .obj-h.t{color:var(--teal);}
+  ul{margin:2px 0 6px;padding-left:18px;}
+  li{margin:2px 0;}
+  .meta{font-family:var(--mono);font-size:12px;color:var(--faint);margin-top:8px;}
+  .toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px;}
+  .hint{color:var(--faint);font-size:12px;}
+  .count-pill{font-family:var(--mono);font-size:12px;color:var(--amber);border:1px solid var(--line);border-radius:999px;padding:3px 10px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Masterclass Factory</div>
+  <h1>Curriculum Planner</h1>
+  <p class="sub">Describe a subject and Bernard proposes a sequenced syllabus — an ordered set of right-sized classes you can review and edit. Each class is built through the normal pipeline.</p>
+
+  <div class="panel">
+    <label for="subject">Subject</label>
+    <input id="subject" placeholder="e.g. The Texas War of Independence, Intro to Organic Chemistry, Personal Finance for new grads" />
+    <div class="row3">
+      <div><label for="audience">Audience</label><input id="audience" placeholder="e.g. high-school students" /></div>
+      <div><label for="level">Level</label>
+        <select id="level"><option>introductory</option><option>intermediate</option><option>advanced</option><option>mixed</option></select></div>
+      <div><label for="count">How many classes</label>
+        <select id="count"><option value="">Let Bernard decide</option><option>5</option><option>6</option><option>8</option><option>10</option><option>12</option><option>15</option></select></div>
+    </div>
+    <label for="scope">Scope, emphasis, or constraints <span class="hint">(optional)</span></label>
+    <textarea id="scope" placeholder="e.g. focus on causes and consequences, skip military tactics, align to a specific standard…"></textarea>
+    <button class="primary" id="go">Plan the curriculum</button>
+    <div class="status" id="status"></div>
+  </div>
+
+  <div id="result"></div>
+</div>
+
+<script>
+(function(){
+  var $ = function(id){ return document.getElementById(id); };
+  function esc(s){ var d=document.createElement("div"); d.textContent=(s==null?"":String(s)); return d.innerHTML; }
+  function setStatus(msg, warn){ $("status").innerHTML = warn ? "<span class='warn'>"+esc(msg)+"</span>" : esc(msg); }
+
+  function liList(items){
+    if(!items || !items.length) return "<p class='hint'>—</p>";
+    return "<ul>" + items.map(function(x){ return "<li>"+esc(x)+"</li>"; }).join("") + "</ul>";
+  }
+
+  function renderPlan(plan){
+    var html = "";
+    html += "<div class='panel'>";
+    html += "<div class='toolbar'><span class='count-pill'>"+plan.classes.length+" classes</span>";
+    html += "<span class='hint'>"+esc(plan.subject)+" · "+esc(plan.level)+"</span></div>";
+    if(plan.notes) html += "<p class='arc'>"+esc(plan.notes)+"</p>";
+    plan.classes.forEach(function(c){
+      html += "<div class='class-card'>";
+      html += "<div class='class-num'>Class "+c.order+"</div>";
+      html += "<h3>"+esc(c.title)+"</h3>";
+      if(c.summary) html += "<div class='class-sum'>"+esc(c.summary)+"</div>";
+      html += "<div class='obj-h t'>Terminal objectives</div>"+liList(c.objectives.terminal);
+      html += "<div class='obj-h'>Enabling objectives</div>"+liList(c.objectives.enabling);
+      html += "<div class='meta'>~"+c.suggested_minutes+" min</div>";
+      html += "</div>";
+    });
+    html += "<div class='toolbar' style='margin-top:16px'>";
+    html += "<button class='ghost' id='copyPlan'>Copy plan as JSON</button>";
+    html += "<span class='hint'>Building every class from this plan is the next step (orchestration). For now, review and refine the breakdown.</span>";
+    html += "</div></div>";
+    $("result").innerHTML = html;
+    var copy = $("copyPlan");
+    if(copy) copy.addEventListener("click", function(){
+      try { navigator.clipboard.writeText(JSON.stringify(plan, null, 2)); setStatus("Plan copied to clipboard."); }
+      catch(e){ setStatus("Couldn't copy — your browser blocked clipboard access.", true); }
+    });
+  }
+
+  $("go").addEventListener("click", function(){
+    var subject = ($("subject").value||"").trim();
+    if(!subject){ setStatus("Enter a subject first.", true); return; }
+    var body = {
+      subject: subject,
+      audience: ($("audience").value||"").trim(),
+      level: $("level").value,
+      scope: ($("scope").value||"").trim(),
+      count: $("count").value ? Number($("count").value) : 0
+    };
+    var btn = $("go"); btn.disabled = true; var label = btn.textContent; btn.textContent = "Bernard is planning…";
+    setStatus("Designing the syllabus — this can take a moment for a big subject.");
+    $("result").innerHTML = "";
+    fetch("/api/curriculum", { method:"POST", headers:{"content-type":"application/json"}, body: JSON.stringify(body) })
+      .then(function(r){ return r.json().then(function(j){ return { ok:r.ok, j:j }; }); })
+      .then(function(res){
+        if(res.ok && res.j && res.j.ok && res.j.plan){
+          setStatus("Planned "+res.j.class_count+" classes."+(res.j.cost_usd!=null?(" (~$"+res.j.cost_usd.toFixed(4)+")"):""));
+          renderPlan(res.j.plan);
+        } else {
+          var err = (res.j && res.j.error) || "couldn't plan the curriculum";
+          setStatus("Planner: "+err+(res.j && res.j.details ? (" — "+res.j.details.join("; ")) : ""), true);
+        }
+      })
+      .catch(function(){ setStatus("Couldn't reach the planner service.", true); })
+      .finally(function(){ btn.disabled = false; btn.textContent = label; });
+  });
+
+  $("subject").addEventListener("keydown", function(e){ if(e.key==="Enter"){ e.preventDefault(); $("go").click(); } });
+})();
+</script>
+</body>
+</html>
