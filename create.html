@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta
+      name="description"
+      content="Create a Masterclass Factory class brief from a guided eight-step wizard."
+    >
+    <title>Masterclass Factory - Class Creator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,800&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    >
+    <link rel="stylesheet" href="styles.css?v=aqua-blue">
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="hero-band" aria-labelledby="pageTitle">
+        <div>
+          <p class="kicker">Masterclass Factory</p>
+          <h1 id="pageTitle">Class Creator</h1>
+          <p>
+            Build a class setup package, shape it with Bernard, then send it into the
+            generator pipeline in the right order: knowledge base, objectives, deck,
+            QA, and launch.
+          </p>
+        </div>
+        <div class="hero-actions">
+          <div class="contract-pill" id="contractStatus">Loading setup</div>
+          <button
+            class="mobile-menu-toggle"
+            type="button"
+            id="mobileMenuButton"
+            aria-controls="stepList"
+            aria-expanded="false"
+          >
+            ☰ Menu
+          </button>
+        </div>
+      </section>
+
+      <section class="workspace" aria-label="Class Creator wizard">
+        <aside class="step-rail" aria-label="Wizard steps">
+          <ol id="stepList"></ol>
+        </aside>
+
+        <section class="creator-panel" aria-live="polite">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow" id="stepEyebrow">Step 1 of 8</p>
+              <h2 id="stepTitle">Create</h2>
+            </div>
+            <div class="progress-meter" aria-hidden="true">
+              <span id="progressFill"></span>
+            </div>
+          </div>
+
+          <form id="wizardForm" autocomplete="off"></form>
+
+          <nav class="wizard-nav" aria-label="Wizard navigation">
+            <button class="ghost" type="button" id="backButton">Back</button>
+            <button class="primary" type="button" id="nextButton">Next</button>
+          </nav>
+        </section>
+
+        <aside class="side-stack" aria-label="Bernard and live setup output">
+          <section class="genie-panel" aria-label="Bernard AI helper">
+            <div class="genie-head">
+              <div>
+                <p class="eyebrow">Always on</p>
+                <h2>Bernard</h2>
+              </div>
+              <span class="badge ok">Ready</span>
+            </div>
+            <p class="hint" id="genieStep">Bernard watches the current step and helps with decisions.</p>
+            <div class="genie-orbit" aria-label="Factory path">
+              <span>Sources</span>
+              <span>Objectives</span>
+              <span>Deck</span>
+              <span>QA</span>
+            </div>
+            <div class="genie-response" id="genieResponse">
+              Ask for help on the step you are using, or ask Bernard to recommend length and slide budget.
+            </div>
+            <textarea id="genieInput" rows="3" placeholder="Ask Bernard what to do next..."></textarea>
+            <div class="genie-actions">
+              <button class="ghost" type="button" data-genie-quick="check-step">Check this step</button>
+              <button class="primary" type="button" id="genieAskButton">Ask Bernard</button>
+            </div>
+          </section>
+
+          <section class="brief-drawer" aria-label="Live setup package">
+            <div class="drawer-head">
+              <div>
+                <p class="eyebrow">Live output</p>
+                <h2>Setup package</h2>
+              </div>
+              <span id="validationBadge" class="badge">Checking</span>
+            </div>
+            <div class="launch-card">
+              <span class="mini-label">Factory setup link</span>
+              <a id="launchLink" href="/" target="_blank" rel="noreferrer">Preparing link</a>
+              <img id="drawerQr" class="qr-image" alt="QR code for the factory setup link">
+              <p class="hint">This opens the setup tool, not the finished masterclass. The generated class link appears after the deck pipeline runs.</p>
+            </div>
+            <details class="advanced-json">
+              <summary>Advanced setup data</summary>
+              <pre id="briefView" tabindex="0">{}</pre>
+            </details>
+            <div class="drawer-actions">
+              <button class="ghost" type="button" id="copyButton">Copy setup data</button>
+              <button class="primary" type="button" id="downloadButton">Download setup file</button>
+            </div>
+            <div class="validation-box" id="validationBox"></div>
+          </section>
+        </aside>
+      </section>
+    </main>
+
+    <script src="brief-validator.js"></script>
+    <script src="wizard.js"></script>
+    <script src="wizard-enhance.js"></script>
+  </body>
+</html>

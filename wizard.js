@@ -1206,8 +1206,8 @@
   }
 
   function getLaunchUrl() {
-    if (window.location && window.location.origin && window.location.origin !== "null") return window.location.origin + "/";
-    return "https://your-vercel-project.vercel.app/";
+    if (window.location && window.location.origin && window.location.origin !== "null") return window.location.origin + "/create.html";
+    return "https://your-vercel-project.vercel.app/create.html";
   }
 
   function qrUrl(value) {

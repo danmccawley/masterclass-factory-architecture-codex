@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta
       name="description"
-      content="Create a Masterclass Factory class brief from a guided eight-step wizard."
+      content="Start with Masterclass Factory: build a single class, a class series to support a curriculum, or a full curriculum and the classes that support it."
     >
-    <title>Masterclass Factory - Class Creator</title>
+    <title>Masterclass Factory - Start</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -15,113 +15,119 @@
       rel="stylesheet"
     >
     <link rel="stylesheet" href="styles.css?v=aqua-blue">
+    <style>
+      /* Front-door chooser. Reuses the brand tokens defined in styles.css. */
+      .start-intro { max-width: 64ch; }
+      .start-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+        margin-top: 6px;
+      }
+      .start-card {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        min-height: 236px;
+        padding: 22px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-md);
+        background: var(--paper-2);
+        color: var(--ink);
+        text-decoration: none;
+        box-shadow: 0 1px 0 rgba(34, 48, 47, 0.03);
+        transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
+      }
+      .start-card:hover,
+      .start-card:focus-visible {
+        transform: translateY(-3px);
+        border-color: rgba(29, 159, 194, 0.5);
+        box-shadow: var(--shadow);
+        outline: none;
+      }
+      .start-card .num {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.72rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--water-deep);
+      }
+      .start-card h2 {
+        font-family: "Fraunces", Georgia, serif;
+        font-size: 1.5rem;
+        line-height: 1.08;
+        margin: 0;
+      }
+      .start-card p {
+        margin: 0;
+        flex: 1;
+        color: var(--ink-soft);
+        line-height: 1.45;
+      }
+      .start-card .go {
+        font-family: "IBM Plex Mono", monospace;
+        font-weight: 600;
+        color: var(--water-deep);
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .start-card .go::after {
+        content: "\2192";
+        transition: transform 140ms ease;
+      }
+      .start-card:hover .go::after { transform: translateX(4px); }
+      @media (max-width: 880px) {
+        .start-grid { grid-template-columns: 1fr; }
+      }
+    </style>
   </head>
   <body>
     <main class="app-shell">
       <section class="hero-band" aria-labelledby="pageTitle">
         <div>
           <p class="kicker">Masterclass Factory</p>
-          <h1 id="pageTitle">Class Creator</h1>
-          <p>
-            Build a class setup package, shape it with Bernard, then send it into the
-            generator pipeline in the right order: knowledge base, objectives, deck,
-            QA, and launch.
+          <h1 id="pageTitle">What do you want to build?</h1>
+          <p class="start-intro">
+            Pick a starting point. You can always come back here to start something new.
           </p>
         </div>
         <div class="hero-actions">
-          <div class="contract-pill" id="contractStatus">Loading setup</div>
-          <button
-            class="mobile-menu-toggle"
-            type="button"
-            id="mobileMenuButton"
-            aria-controls="stepList"
-            aria-expanded="false"
-          >
-            ☰ Menu
-          </button>
+          <div class="contract-pill">Start</div>
         </div>
       </section>
 
-      <section class="workspace" aria-label="Class Creator wizard">
-        <aside class="step-rail" aria-label="Wizard steps">
-          <ol id="stepList"></ol>
-        </aside>
+      <section class="start-grid" aria-label="Choose what to build">
+        <a class="start-card" href="create.html">
+          <span class="num">01</span>
+          <h2>Create a class</h2>
+          <p>
+            Build one masterclass end to end &mdash; knowledge base, objectives, deck, QA,
+            and launch. The full eight-step Class Creator.
+          </p>
+          <span class="go">Start a class</span>
+        </a>
 
-        <section class="creator-panel" aria-live="polite">
-          <div class="panel-head">
-            <div>
-              <p class="eyebrow" id="stepEyebrow">Step 1 of 8</p>
-              <h2 id="stepTitle">Create</h2>
-            </div>
-            <div class="progress-meter" aria-hidden="true">
-              <span id="progressFill"></span>
-            </div>
-          </div>
+        <a class="start-card" href="curriculum.html?intent=series">
+          <span class="num">02</span>
+          <h2>Class series to support a curriculum</h2>
+          <p>
+            Already have a curriculum or syllabus? Plan the supporting sequence of
+            right-sized classes that ladder up to it, then build them.
+          </p>
+          <span class="go">Plan the series</span>
+        </a>
 
-          <form id="wizardForm" autocomplete="off"></form>
-
-          <nav class="wizard-nav" aria-label="Wizard navigation">
-            <button class="ghost" type="button" id="backButton">Back</button>
-            <button class="primary" type="button" id="nextButton">Next</button>
-          </nav>
-        </section>
-
-        <aside class="side-stack" aria-label="Bernard and live setup output">
-          <section class="genie-panel" aria-label="Bernard AI helper">
-            <div class="genie-head">
-              <div>
-                <p class="eyebrow">Always on</p>
-                <h2>Bernard</h2>
-              </div>
-              <span class="badge ok">Ready</span>
-            </div>
-            <p class="hint" id="genieStep">Bernard watches the current step and helps with decisions.</p>
-            <div class="genie-orbit" aria-label="Factory path">
-              <span>Sources</span>
-              <span>Objectives</span>
-              <span>Deck</span>
-              <span>QA</span>
-            </div>
-            <div class="genie-response" id="genieResponse">
-              Ask for help on the step you are using, or ask Bernard to recommend length and slide budget.
-            </div>
-            <textarea id="genieInput" rows="3" placeholder="Ask Bernard what to do next..."></textarea>
-            <div class="genie-actions">
-              <button class="ghost" type="button" data-genie-quick="check-step">Check this step</button>
-              <button class="primary" type="button" id="genieAskButton">Ask Bernard</button>
-            </div>
-          </section>
-
-          <section class="brief-drawer" aria-label="Live setup package">
-            <div class="drawer-head">
-              <div>
-                <p class="eyebrow">Live output</p>
-                <h2>Setup package</h2>
-              </div>
-              <span id="validationBadge" class="badge">Checking</span>
-            </div>
-            <div class="launch-card">
-              <span class="mini-label">Factory setup link</span>
-              <a id="launchLink" href="/" target="_blank" rel="noreferrer">Preparing link</a>
-              <img id="drawerQr" class="qr-image" alt="QR code for the factory setup link">
-              <p class="hint">This opens the setup tool, not the finished masterclass. The generated class link appears after the deck pipeline runs.</p>
-            </div>
-            <details class="advanced-json">
-              <summary>Advanced setup data</summary>
-              <pre id="briefView" tabindex="0">{}</pre>
-            </details>
-            <div class="drawer-actions">
-              <button class="ghost" type="button" id="copyButton">Copy setup data</button>
-              <button class="primary" type="button" id="downloadButton">Download setup file</button>
-            </div>
-            <div class="validation-box" id="validationBox"></div>
-          </section>
-        </aside>
+        <a class="start-card" href="curriculum.html?intent=full">
+          <span class="num">03</span>
+          <h2>Create a curriculum and its classes</h2>
+          <p>
+            Start from a subject. Bernard plans a sequenced, semester-long curriculum
+            and the classes that support it.
+          </p>
+          <span class="go">Plan the curriculum</span>
+        </a>
       </section>
     </main>
-
-    <script src="brief-validator.js"></script>
-    <script src="wizard.js"></script>
-    <script src="wizard-enhance.js"></script>
   </body>
 </html>
