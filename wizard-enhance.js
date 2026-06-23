@@ -1349,7 +1349,17 @@
         "<div class=\"assist-actions\">" +
         "<button type=\"button\" class=\"primary\" data-accept-sources>Add these sources to the setup</button>" +
         "<button type=\"button\" class=\"ghost\" data-dismiss-sources>Not now</button></div>";
-      if (validationBox) {
+      // Mount the Accept / Not-now panel INSIDE the tracker overlay's visible
+      // action zone. validationBox lives behind the full-screen tracker, so
+      // appending there left the decision unreachable -- it looked like a hang.
+      var zone = tracker && tracker.querySelector("[data-tracker-action-zone]");
+      if (zone) {
+        if (button && button.parentNode === zone) zone.removeChild(button);
+        var priorResult = zone.querySelector("[data-remediation-result]");
+        if (priorResult) zone.removeChild(priorResult);
+        zone.hidden = false;
+        zone.appendChild(box);
+      } else if (validationBox) {
         validationBox.innerHTML = "";
         validationBox.appendChild(box);
       }
@@ -1360,8 +1370,18 @@
       });
       box.querySelector("[data-dismiss-sources]").addEventListener("click", function () {
         if (box.parentNode) box.parentNode.removeChild(box);
+        // Never dead-end: restore the retry path so the user can run Bernard again.
+        if (zone && !zone.querySelector("[data-remediate]")) {
+          var againBtn = document.createElement("button");
+          againBtn.type = "button";
+          againBtn.className = "primary";
+          againBtn.setAttribute("data-remediate", "true");
+          againBtn.textContent = "Have Bernard find the missing sources";
+          againBtn.addEventListener("click", function () { remediateKnowledgeBase(againBtn); });
+          zone.appendChild(againBtn);
+        }
       });
-      if (detail) detail.textContent = "Bernard proposed sources. Review and accept them below the tracker.";
+      if (detail) detail.textContent = "Bernard proposed sources. Review and accept them in the panel below.";
       try { box.scrollIntoView({ behavior: "smooth", block: "center" }); } catch (scrollError) {}
     } catch (remediationError) {
       if (detail) detail.textContent = "Source discovery failed: " + (remediationError && remediationError.message ? remediationError.message : "unknown error");
