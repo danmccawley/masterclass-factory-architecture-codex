@@ -1,0 +1,330 @@
+[
+  {
+    "kind": "terminal objective",
+    "claim": "Safely prepare to change a vehicle tire using the vehicle guidance, the work area, and basic safety checks.",
+    "source_ids": [
+      "s1",
+      "s2",
+      "s3"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "continental-tires.com",
+      "bridgestoneamericas.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "terminal objective",
+    "claim": "Remove a damaged or flat wheel and install the spare or replacement wheel using the correct basic sequence.",
+    "source_ids": [
+      "s2",
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "continental-tires.com",
+      "bridgestoneamericas.com",
+      "homedepot.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "terminal objective",
+    "claim": "Tighten wheel fasteners in the correct pattern and complete the immediate post-change safety checks before driving.",
+    "source_ids": [
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "bridgestoneamericas.com",
+      "homedepot.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "terminal objective",
+    "claim": "Decide when a tire change is not appropriate and when roadside help or professional service is the safer choice.",
+    "source_ids": [
+      "s4"
+    ],
+    "source_titles": [
+      "homedepot.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "enabling objective",
+    "claim": "Identify common tools and items used in a basic tire change, such as the jack, lug wrench, spare, and warning devices.",
+    "source_ids": [
+      "s2",
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "continental-tires.com",
+      "bridgestoneamericas.com",
+      "homedepot.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "enabling objective",
+    "claim": "Locate and follow the vehicle-specific instructions for jack points, spare-tire limits, and wheel-fastener guidance.",
+    "source_ids": [
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "bridgestoneamericas.com",
+      "homedepot.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "enabling objective",
+    "claim": "Set up the scene to reduce risk, including stopping location, visibility, vehicle stability, and occupant safety.",
+    "source_ids": [
+      "s4"
+    ],
+    "source_titles": [
+      "homedepot.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "enabling objective",
+    "claim": "Recognize key hazards during a tire change, including traffic, unstable ground, slipping, pinching, and incorrect lifting points.",
+    "source_ids": [
+      "s1",
+      "s2",
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "continental-tires.com",
+      "bridgestoneamericas.com",
+      "homedepot.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "enabling objective",
+    "claim": "Use simple personal safety measures appropriate to the task and conditions.",
+    "source_ids": [
+      "s1",
+      "s2",
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "continental-tires.com",
+      "bridgestoneamericas.com",
+      "homedepot.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "enabling objective",
+    "claim": "Perform basic pre-lift checks, such as parking position, brake setting, transmission position, and wheel blocking if applicable.",
+    "source_ids": [
+      "s1",
+      "s2",
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "continental-tires.com",
+      "bridgestoneamericas.com",
+      "homedepot.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "enabling objective",
+    "claim": "Loosen wheel fasteners at the correct stage of the process without forcing or damaging them.",
+    "source_ids": [
+      "s1",
+      "s2",
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "continental-tires.com",
+      "bridgestoneamericas.com",
+      "homedepot.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "enabling objective",
+    "claim": "Raise and support the vehicle only as directed for a temporary wheel change.",
+    "source_ids": [
+      "s1",
+      "s2",
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "continental-tires.com",
+      "bridgestoneamericas.com",
+      "homedepot.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Introduction and Preparation for Tire Changing",
+    "source_ids": [
+      "s2",
+      "s6",
+      "s7"
+    ],
+    "source_titles": [
+      "continental-tires.com",
+      "bobbyrahalhondaofstatecollege.com",
+      "tireindustry.org"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Vehicle-Specific Instructions and Safety Setup",
+    "source_ids": [
+      "s6",
+      "s10",
+      "s11"
+    ],
+    "source_titles": [
+      "bobbyrahalhondaofstatecollege.com",
+      "epa.gov",
+      "osha.gov"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Loosening Fasteners and Lifting the Vehicle",
+    "source_ids": [
+      "s6",
+      "s17"
+    ],
+    "source_titles": [
+      "bobbyrahalhondaofstatecollege.com",
+      "federalregister.gov"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Removing the Damaged Tire and Mounting the Spare",
+    "source_ids": [
+      "s6",
+      "s2"
+    ],
+    "source_titles": [
+      "bobbyrahalhondaofstatecollege.com",
+      "continental-tires.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Tightening Fasteners and Lowering the Vehicle",
+    "source_ids": [
+      "s6",
+      "s14"
+    ],
+    "source_titles": [
+      "bobbyrahalhondaofstatecollege.com",
+      "ustires.org"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Post-Change Safety Checks and Next Steps",
+    "source_ids": [
+      "s2",
+      "s6"
+    ],
+    "source_titles": [
+      "continental-tires.com",
+      "bobbyrahalhondaofstatecollege.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Regulatory Standards and When Not to Change a Tire Yourself",
+    "source_ids": [
+      "s10",
+      "s11",
+      "s15",
+      "s16"
+    ],
+    "source_titles": [
+      "epa.gov",
+      "osha.gov",
+      "ecfr.gov",
+      "csa.fmcsa.dot.gov"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "safety / quality claims",
+    "claim": "Statistics, standards, safety procedures, contested points, and forward-looking claims require corroboration.",
+    "source_ids": [
+      "s1",
+      "s2",
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "continental-tires.com",
+      "bridgestoneamericas.com",
+      "homedepot.com"
+    ],
+    "status": "corroboration-required",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "out of scope",
+    "claim": "Full tire repair methods beyond a basic wheel swap.; Tire mounting and balancing on shop equipment.; Advanced suspension, brake, hub, or wheel-bearing repair.; Heavy-vehicle, commercial fleet, or specialty off-road tire service.; Detailed tire design science, manufacturing, or materials engineering.",
+    "source_ids": [
+      "s1",
+      "s2"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "continental-tires.com"
+    ],
+    "status": "scope-boundary",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  }
+]

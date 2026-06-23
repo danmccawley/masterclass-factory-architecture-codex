@@ -1,0 +1,650 @@
+{
+  "title": "change a tire",
+  "slug": "change-a-tire",
+  "generated_at": "2026-06-23T15:13:34.866Z",
+  "class_tier": {
+    "level": "standard",
+    "label": "Standard class",
+    "source_floor": 8,
+    "primary_source_floor": 2,
+    "slide_floor": 40,
+    "standard": "Solid internal training with enough evidence for reliable instruction."
+  },
+  "research_owner": "ai",
+  "source_discovery": {
+    "owner": "ai",
+    "attempted": false,
+    "model": "",
+    "added_sources": [],
+    "rejected_sources": [],
+    "gaps": [],
+    "notes": []
+  },
+  "knowledge_standard": {
+    "ok": true,
+    "floor_met": true,
+    "evidence_limited": false,
+    "tier": {
+      "level": "standard",
+      "label": "Standard class",
+      "source_floor": 8,
+      "primary_source_floor": 2,
+      "slide_floor": 40,
+      "standard": "Solid internal training with enough evidence for reliable instruction."
+    },
+    "counts": {
+      "total": 16,
+      "primary": 7,
+      "secondary": 9,
+      "unknown": 0
+    },
+    "score": {
+      "score": 91,
+      "band": "excellent",
+      "components": {
+        "coverage": 100,
+        "authority": 85,
+        "recency": 75
+      },
+      "weights": {
+        "coverage": 0.5,
+        "authority": 0.3,
+        "recency": 0.2
+      },
+      "detail": {
+        "total": 16,
+        "primary": 7,
+        "secondary": 9,
+        "required_total": 8,
+        "required_primary": 2,
+        "dated_sources": 0,
+        "recency_floor_year": 2024
+      },
+      "summary": "Knowledge-base score 91/100 (excellent): coverage 100, authority 85, recency 75. 16/8 sources, 7/2 primary."
+    },
+    "required_sources": 8,
+    "required_primary_sources": 2,
+    "source_gap": 0,
+    "primary_source_gap": 0,
+    "messages": [
+      "Knowledge base meets the selected Standard class floor."
+    ]
+  },
+  "slide_count": 90,
+  "teaching_slide_count": 89,
+  "deep_dive_count": 89,
+  "required_deep_dive_count": 41,
+  "quality": {
+    "score": 98,
+    "status": "excellent",
+    "scores": {
+      "slide_budget": 100,
+      "research_rigor": 100,
+      "source_grounding": 100,
+      "evidence_map": 100,
+      "blueprint": 100,
+      "objective_alignment": 100,
+      "content_density": 100,
+      "deep_dive_depth": 100,
+      "participation_design": 74,
+      "assessment": 90,
+      "transparency": 100,
+      "schema_qa": 100
+    },
+    "rubric": [
+      "slide budget fidelity",
+      "research rigor",
+      "source grounding",
+      "evidence-map coverage",
+      "course blueprint completeness",
+      "objective alignment",
+      "content density",
+      "deep-dive coverage",
+      "participation design",
+      "assessment coverage",
+      "works-cited transparency",
+      "schema QA"
+    ]
+  },
+  "pipeline_mode": "openai",
+  "bernard": {
+    "embedded": true,
+    "wake_word": "Bernard",
+    "voice_note": "English accent when supported by the browser and configured TTS."
+  },
+  "exports": [
+    "student-handout.md",
+    "facilitator-guide.md",
+    "quiz-answer-key.md",
+    "evidence-map.json",
+    "class-blueprint.json",
+    "class-record.json"
+  ],
+  "source_paper": {
+    "title": "Student Reader - change a tire",
+    "section_count": 18,
+    "sections": [
+      {
+        "id": "s1",
+        "num": "1",
+        "title": "Class setup, learner profile, and research rules"
+      },
+      {
+        "id": "s2",
+        "num": "2",
+        "title": "continental-tires.com"
+      },
+      {
+        "id": "s3",
+        "num": "3",
+        "title": "bridgestoneamericas.com"
+      },
+      {
+        "id": "s4",
+        "num": "4",
+        "title": "homedepot.com"
+      },
+      {
+        "id": "s5",
+        "num": "5",
+        "title": "goodyear.com"
+      },
+      {
+        "id": "s6",
+        "num": "6",
+        "title": "bobbyrahalhondaofstatecollege.com"
+      },
+      {
+        "id": "s7",
+        "num": "7",
+        "title": "tireindustry.org"
+      },
+      {
+        "id": "s8",
+        "num": "8",
+        "title": "allstate.com"
+      },
+      {
+        "id": "s9",
+        "num": "9",
+        "title": "youtube.com"
+      },
+      {
+        "id": "s10",
+        "num": "10",
+        "title": "epa.gov"
+      },
+      {
+        "id": "s11",
+        "num": "11",
+        "title": "osha.gov"
+      },
+      {
+        "id": "s12",
+        "num": "12",
+        "title": "regulations.gov"
+      },
+      {
+        "id": "s13",
+        "num": "13",
+        "title": "federalregister.gov"
+      },
+      {
+        "id": "s14",
+        "num": "14",
+        "title": "ustires.org"
+      },
+      {
+        "id": "s15",
+        "num": "15",
+        "title": "ecfr.gov"
+      },
+      {
+        "id": "s16",
+        "num": "16",
+        "title": "csa.fmcsa.dot.gov"
+      },
+      {
+        "id": "s17",
+        "num": "17",
+        "title": "federalregister.gov"
+      },
+      {
+        "id": "s18",
+        "num": "18",
+        "title": "Research prompts and knowledge-base questions"
+      }
+    ]
+  },
+  "course_blueprint": {
+    "tier": "Standard class",
+    "slide_target": 90,
+    "teaching_slide_target": 89,
+    "knowledge_standard": {
+      "ok": true,
+      "floor_met": true,
+      "evidence_limited": false,
+      "tier": {
+        "level": "standard",
+        "label": "Standard class",
+        "source_floor": 8,
+        "primary_source_floor": 2,
+        "slide_floor": 40,
+        "standard": "Solid internal training with enough evidence for reliable instruction."
+      },
+      "counts": {
+        "total": 16,
+        "primary": 7,
+        "secondary": 9,
+        "unknown": 0
+      },
+      "score": {
+        "score": 91,
+        "band": "excellent",
+        "components": {
+          "coverage": 100,
+          "authority": 85,
+          "recency": 75
+        },
+        "weights": {
+          "coverage": 0.5,
+          "authority": 0.3,
+          "recency": 0.2
+        },
+        "detail": {
+          "total": 16,
+          "primary": 7,
+          "secondary": 9,
+          "required_total": 8,
+          "required_primary": 2,
+          "dated_sources": 0,
+          "recency_floor_year": 2024
+        },
+        "summary": "Knowledge-base score 91/100 (excellent): coverage 100, authority 85, recency 75. 16/8 sources, 7/2 primary."
+      },
+      "required_sources": 8,
+      "required_primary_sources": 2,
+      "source_gap": 0,
+      "primary_source_gap": 0,
+      "messages": [
+        "Knowledge base meets the selected Standard class floor."
+      ]
+    },
+    "approved_before_generation": true,
+    "modules": [
+      {
+        "order": 1,
+        "title": "Orientation and learner baseline",
+        "slide_budget": 7,
+        "goal": "Set the purpose, audience floor, assumptions, and mastery target.",
+        "deep_dive_expectation": "substantive deep dives where required by tier and setting"
+      },
+      {
+        "order": 2,
+        "title": "Knowledge base and source boundary",
+        "slide_budget": 11,
+        "goal": "Show what the approved sources support, what is missing, and what must not be invented.",
+        "deep_dive_expectation": "substantive deep dives where required by tier and setting"
+      },
+      {
+        "order": 3,
+        "title": "Core concepts and vocabulary",
+        "slide_budget": 16,
+        "goal": "Teach the essential terms, mental models, and decision points.",
+        "deep_dive_expectation": "substantive deep dives where required by tier and setting"
+      },
+      {
+        "order": 4,
+        "title": "Guided practice and examples",
+        "slide_budget": 20,
+        "goal": "Work through realistic cases, common mistakes, checks, and facilitator prompts.",
+        "deep_dive_expectation": "substantive deep dives where required by tier and setting"
+      },
+      {
+        "order": 5,
+        "title": "Deep dives, edge cases, and quality risks",
+        "slide_budget": 20,
+        "goal": "Add expert detail, safety cautions, disagreements, and advanced transfer examples.",
+        "deep_dive_expectation": "substantive deep dives where required by tier and setting"
+      },
+      {
+        "order": 6,
+        "title": "Assessment, transfer, and works cited",
+        "slide_budget": 15,
+        "goal": "Prove mastery, capture participation, and close with source transparency.",
+        "deep_dive_expectation": "substantive deep dives where required by tier and setting"
+      }
+    ],
+    "lesson_sections": 7
+  },
+  "evidence_map": [
+    {
+      "kind": "terminal objective",
+      "claim": "Safely prepare to change a vehicle tire using the vehicle guidance, the work area, and basic safety checks.",
+      "source_ids": [
+        "s1",
+        "s2",
+        "s3"
+      ],
+      "source_titles": [
+        "Class setup, learner profile, and research rules",
+        "continental-tires.com",
+        "bridgestoneamericas.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "terminal objective",
+      "claim": "Remove a damaged or flat wheel and install the spare or replacement wheel using the correct basic sequence.",
+      "source_ids": [
+        "s2",
+        "s3",
+        "s4"
+      ],
+      "source_titles": [
+        "continental-tires.com",
+        "bridgestoneamericas.com",
+        "homedepot.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "terminal objective",
+      "claim": "Tighten wheel fasteners in the correct pattern and complete the immediate post-change safety checks before driving.",
+      "source_ids": [
+        "s3",
+        "s4"
+      ],
+      "source_titles": [
+        "bridgestoneamericas.com",
+        "homedepot.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "terminal objective",
+      "claim": "Decide when a tire change is not appropriate and when roadside help or professional service is the safer choice.",
+      "source_ids": [
+        "s4"
+      ],
+      "source_titles": [
+        "homedepot.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "enabling objective",
+      "claim": "Identify common tools and items used in a basic tire change, such as the jack, lug wrench, spare, and warning devices.",
+      "source_ids": [
+        "s2",
+        "s3",
+        "s4"
+      ],
+      "source_titles": [
+        "continental-tires.com",
+        "bridgestoneamericas.com",
+        "homedepot.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "enabling objective",
+      "claim": "Locate and follow the vehicle-specific instructions for jack points, spare-tire limits, and wheel-fastener guidance.",
+      "source_ids": [
+        "s3",
+        "s4"
+      ],
+      "source_titles": [
+        "bridgestoneamericas.com",
+        "homedepot.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "enabling objective",
+      "claim": "Set up the scene to reduce risk, including stopping location, visibility, vehicle stability, and occupant safety.",
+      "source_ids": [
+        "s4"
+      ],
+      "source_titles": [
+        "homedepot.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "enabling objective",
+      "claim": "Recognize key hazards during a tire change, including traffic, unstable ground, slipping, pinching, and incorrect lifting points.",
+      "source_ids": [
+        "s1",
+        "s2",
+        "s3",
+        "s4"
+      ],
+      "source_titles": [
+        "Class setup, learner profile, and research rules",
+        "continental-tires.com",
+        "bridgestoneamericas.com",
+        "homedepot.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "enabling objective",
+      "claim": "Use simple personal safety measures appropriate to the task and conditions.",
+      "source_ids": [
+        "s1",
+        "s2",
+        "s3",
+        "s4"
+      ],
+      "source_titles": [
+        "Class setup, learner profile, and research rules",
+        "continental-tires.com",
+        "bridgestoneamericas.com",
+        "homedepot.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "enabling objective",
+      "claim": "Perform basic pre-lift checks, such as parking position, brake setting, transmission position, and wheel blocking if applicable.",
+      "source_ids": [
+        "s1",
+        "s2",
+        "s3",
+        "s4"
+      ],
+      "source_titles": [
+        "Class setup, learner profile, and research rules",
+        "continental-tires.com",
+        "bridgestoneamericas.com",
+        "homedepot.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "enabling objective",
+      "claim": "Loosen wheel fasteners at the correct stage of the process without forcing or damaging them.",
+      "source_ids": [
+        "s1",
+        "s2",
+        "s3",
+        "s4"
+      ],
+      "source_titles": [
+        "Class setup, learner profile, and research rules",
+        "continental-tires.com",
+        "bridgestoneamericas.com",
+        "homedepot.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "enabling objective",
+      "claim": "Raise and support the vehicle only as directed for a temporary wheel change.",
+      "source_ids": [
+        "s1",
+        "s2",
+        "s3",
+        "s4"
+      ],
+      "source_titles": [
+        "Class setup, learner profile, and research rules",
+        "continental-tires.com",
+        "bridgestoneamericas.com",
+        "homedepot.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Introduction and Preparation for Tire Changing",
+      "source_ids": [
+        "s2",
+        "s6",
+        "s7"
+      ],
+      "source_titles": [
+        "continental-tires.com",
+        "bobbyrahalhondaofstatecollege.com",
+        "tireindustry.org"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Vehicle-Specific Instructions and Safety Setup",
+      "source_ids": [
+        "s6",
+        "s10",
+        "s11"
+      ],
+      "source_titles": [
+        "bobbyrahalhondaofstatecollege.com",
+        "epa.gov",
+        "osha.gov"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Loosening Fasteners and Lifting the Vehicle",
+      "source_ids": [
+        "s6",
+        "s17"
+      ],
+      "source_titles": [
+        "bobbyrahalhondaofstatecollege.com",
+        "federalregister.gov"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Removing the Damaged Tire and Mounting the Spare",
+      "source_ids": [
+        "s6",
+        "s2"
+      ],
+      "source_titles": [
+        "bobbyrahalhondaofstatecollege.com",
+        "continental-tires.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Tightening Fasteners and Lowering the Vehicle",
+      "source_ids": [
+        "s6",
+        "s14"
+      ],
+      "source_titles": [
+        "bobbyrahalhondaofstatecollege.com",
+        "ustires.org"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Post-Change Safety Checks and Next Steps",
+      "source_ids": [
+        "s2",
+        "s6"
+      ],
+      "source_titles": [
+        "continental-tires.com",
+        "bobbyrahalhondaofstatecollege.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Regulatory Standards and When Not to Change a Tire Yourself",
+      "source_ids": [
+        "s10",
+        "s11",
+        "s15",
+        "s16"
+      ],
+      "source_titles": [
+        "epa.gov",
+        "osha.gov",
+        "ecfr.gov",
+        "csa.fmcsa.dot.gov"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "safety / quality claims",
+      "claim": "Statistics, standards, safety procedures, contested points, and forward-looking claims require corroboration.",
+      "source_ids": [
+        "s1",
+        "s2",
+        "s3",
+        "s4"
+      ],
+      "source_titles": [
+        "Class setup, learner profile, and research rules",
+        "continental-tires.com",
+        "bridgestoneamericas.com",
+        "homedepot.com"
+      ],
+      "status": "corroboration-required",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "out of scope",
+      "claim": "Full tire repair methods beyond a basic wheel swap.; Tire mounting and balancing on shop equipment.; Advanced suspension, brake, hub, or wheel-bearing repair.; Heavy-vehicle, commercial fleet, or specialty off-road tire service.; Detailed tire design science, manufacturing, or materials engineering.",
+      "source_ids": [
+        "s1",
+        "s2"
+      ],
+      "source_titles": [
+        "Class setup, learner profile, and research rules",
+        "continental-tires.com"
+      ],
+      "status": "scope-boundary",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    }
+  ]
+}
