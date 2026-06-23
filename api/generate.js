@@ -2010,13 +2010,18 @@ function wantsDeepDives(brief) {
 function requiredDeepDiveCount(brief, teachingSlides) {
   const count = Math.max(0, Number(teachingSlides) || 0);
   const mode = deepDiveMode(brief);
-  if (!wantsDeepDives(brief) || !count) return 0;
+  // Only an explicit "low" choice (or a deck with no teaching slides) yields zero.
+  if (mode === "low" || !count) return 0;
   if (mode === "high") return count;
-  // Never require more deep dives than there are teaching slides. For normal
-  // decks this is the usual ~45% (min 4); for very small decks (the human chose
-  // a low slide budget) it scales down so a 1-3 slide class is still buildable.
-  const target = Math.max(4, Math.ceil(count * 0.45));
-  return Math.min(count, target);
+  // "med": substantial decks get the usual ~45% (min 4). Short/quick decks used
+  // to fall through wantsDeepDives() and silently get ZERO deep dives -- the
+  // "deep dive not working" bug. A non-low class must never render with none,
+  // so short decks still get at least one (~20%, min 1).
+  if (wantsDeepDives(brief)) {
+    const target = Math.max(4, Math.ceil(count * 0.45));
+    return Math.min(count, target);
+  }
+  return Math.min(count, Math.max(1, Math.ceil(count * 0.2)));
 }
 
 function wordCount(value) {
@@ -2724,7 +2729,10 @@ function finalizeSlides(slideDrafts, sourcePaper, brief) {
       num: slide.num,
       deck: slide.customDeck || slideHtml(slide, sourcePaper)
     };
-    if (slide.paper && wantsDeepDives(brief)) out.paper = slide.paper;
+    // Pass through any authored deep dive unless the human explicitly chose "low".
+    // (Previously gated on wantsDeepDives(), which silently stripped papers off
+    // short med-density classes even after they were authored.)
+    if (slide.paper && deepDiveMode(brief) !== "low") out.paper = slide.paper;
     if (slide.poll) out.poll = slide.poll;
     if (slide.words) out.words = slide.words;
     return out;
