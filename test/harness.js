@@ -353,7 +353,7 @@ test("genie returns 503 when no OpenAI key is set", async () => {
 group("All endpoints load without throwing");
 
 ["admin", "brief", "generate", "genie", "librarian", "objectives", "qr", "remediate",
- "chat", "feedback", "grade", "poll", "quality", "tts", "words", "theme", "curriculum", "providers"].forEach((name) => {
+ "chat", "feedback", "grade", "poll", "quality", "tts", "words", "theme", "curriculum", "providers", "curriculum-build"].forEach((name) => {
   test("require api/" + name + ".js", () => {
     const mod = require("../api/" + name + ".js");
     assert.strictEqual(typeof mod, "function");

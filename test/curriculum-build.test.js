@@ -1,0 +1,92 @@
+/* eslint-disable no-console */
+// test/curriculum-build.test.js — fan-out orchestration (api/curriculum-build.js). Deterministic.
+const assert = require("assert");
+const B = require("../api/curriculum-build.js")._internal;
+const S = require("../api/curriculum-store.js")._internal;
+
+let passed = 0, failed = 0; const failures = [];
+function test(name, fn) {
+  try { fn(); passed += 1; console.log("  ok   " + name); }
+  catch (e) { failed += 1; failures.push({ name, message: e.message }); console.log("  FAIL " + name + "\n         " + e.message); }
+}
+function group(t) { console.log("\n# " + t); }
+
+function setStatus(m, slug, status) { return S.setClassStatus(m, slug, status); }
+
+group("buildOrder (dependency-respecting)");
+test("prerequisites are ordered before dependents even against array order", function () {
+  // Declared so that the dependent appears first by order, but depends on a later class.
+  const m = S.makeManifest({ classes: [
+    { title: "Advanced", order: 1, terminal: ["adv"], prerequisites: ["foundations"] },
+    { title: "Foundations", order: 2, terminal: ["found"], prerequisites: [] }
+  ] });
+  const order = B.buildOrder(m);
+  assert.ok(order.indexOf("foundations") < order.indexOf("advanced"));
+});
+test("independent classes keep their order", function () {
+  const m = S.makeManifest({ classes: [
+    { title: "One", order: 1, terminal: ["a"], prerequisites: [] },
+    { title: "Two", order: 2, terminal: ["b"], prerequisites: [] },
+    { title: "Three", order: 3, terminal: ["c"], prerequisites: [] }
+  ] });
+  assert.deepStrictEqual(B.buildOrder(m), ["one", "two", "three"]);
+});
+test("a cycle still yields a complete order (no dead-end, no throw)", function () {
+  const m = S.makeManifest({ classes: [
+    { title: "A", order: 1, terminal: ["a"], prerequisites: ["b"] },
+    { title: "B", order: 2, terminal: ["b"], prerequisites: ["a"] }
+  ] });
+  const order = B.buildOrder(m);
+  assert.strictEqual(order.length, 2);
+  assert.ok(order.indexOf("a") >= 0 && order.indexOf("b") >= 0);
+});
+
+group("nextBuildable");
+test("returns the first planned class with all prerequisites built", function () {
+  let m = S.makeManifest({ classes: [
+    { title: "Foundations", order: 1, terminal: ["f"], prerequisites: [] },
+    { title: "Advanced", order: 2, terminal: ["a"], prerequisites: ["foundations"] }
+  ] });
+  assert.strictEqual(B.nextBuildable(m), "foundations");
+  m = setStatus(m, "foundations", "built");
+  assert.strictEqual(B.nextBuildable(m), "advanced");
+});
+test("skips a class whose prerequisite isn't built yet (returns null if it's the only option)", function () {
+  let m = S.makeManifest({ classes: [
+    { title: "Foundations", order: 1, terminal: ["f"], prerequisites: [] },
+    { title: "Advanced", order: 2, terminal: ["a"], prerequisites: ["foundations"] }
+  ] });
+  m = setStatus(m, "foundations", "building"); // not built yet
+  // foundations is no longer planned/failed; advanced is blocked -> nothing buildable
+  assert.strictEqual(B.nextBuildable(m), null);
+});
+test("returns null when every class is built", function () {
+  let m = S.makeManifest({ classes: [
+    { title: "One", order: 1, terminal: ["a"], prerequisites: [] },
+    { title: "Two", order: 2, terminal: ["b"], prerequisites: [] }
+  ] });
+  m = setStatus(m, "one", "built");
+  m = setStatus(m, "two", "built");
+  assert.strictEqual(B.nextBuildable(m), null);
+});
+test("a failed class is buildable again (retry)", function () {
+  let m = S.makeManifest({ classes: [
+    { title: "One", order: 1, terminal: ["a"], prerequisites: [] }
+  ] });
+  m = setStatus(m, "one", "failed");
+  assert.strictEqual(B.nextBuildable(m), "one");
+});
+test("a dependent stays blocked while its prerequisite is failed", function () {
+  let m = S.makeManifest({ classes: [
+    { title: "Foundations", order: 1, terminal: ["f"], prerequisites: [] },
+    { title: "Advanced", order: 2, terminal: ["a"], prerequisites: ["foundations"] }
+  ] });
+  m = setStatus(m, "foundations", "failed");
+  // foundations (failed) is itself buildable first; it's returned before advanced
+  assert.strictEqual(B.nextBuildable(m), "foundations");
+});
+
+console.log("\n" + "=".repeat(60));
+console.log("CURRICULUM-BUILD RESULTS: " + passed + " passed, " + failed + " failed");
+if (failed) { console.log("\nFAILURES:"); failures.forEach(function (f) { console.log("  - " + f.name + ": " + f.message); }); process.exit(1); }
+else { console.log("ALL GREEN"); process.exit(0); }
