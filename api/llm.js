@@ -174,7 +174,8 @@ const PROVIDERS = {
   }
 };
 
-const DEFAULT_PROVIDER = "openai";
+// Commercial build default. (The work/internal fork sets this to "openai".)
+const DEFAULT_PROVIDER = "anthropic";
 
 function providerKey(id) {
   const p = PROVIDERS[id];

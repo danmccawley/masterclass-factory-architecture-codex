@@ -80,6 +80,73 @@
       @media (max-width: 880px) {
         .start-grid { grid-template-columns: 1fr; }
       }
+      .provider-section { margin-top: 28px; }
+      .provider-section .settings-label {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.72rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--water-deep);
+      }
+      .provider-tiles {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin: 10px 0 0;
+      }
+      .provider-tile {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        text-align: left;
+        padding: 14px 16px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-md);
+        background: var(--paper-2);
+        color: var(--ink);
+        font: inherit;
+        cursor: pointer;
+        transition: transform 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+      }
+      .provider-tile:hover:not([disabled]),
+      .provider-tile:focus-visible:not([disabled]) {
+        transform: translateY(-2px);
+        border-color: rgba(29, 159, 194, 0.5);
+        outline: none;
+      }
+      .provider-tile[aria-pressed="true"] {
+        border-color: var(--water-deep);
+        box-shadow: inset 0 0 0 1px var(--water-deep);
+        background: #fff;
+      }
+      .provider-tile[disabled] { opacity: 0.5; cursor: not-allowed; }
+      .provider-tile .pt-name {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 600;
+        font-size: 1.02rem;
+      }
+      .provider-tile .pt-badge {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.58rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--water-deep);
+        border: 1px solid var(--water-deep);
+        border-radius: 999px;
+        padding: 1px 7px;
+      }
+      .provider-tile .pt-sub { font-size: 0.8rem; color: var(--ink-soft); }
+      .provider-section .settings-hint {
+        margin: 12px 0 0;
+        color: var(--ink-soft);
+        font-size: 0.86rem;
+        line-height: 1.45;
+      }
+      @media (max-width: 880px) {
+        .provider-tiles { grid-template-columns: 1fr 1fr; }
+      }
     </style>
   </head>
   <body>
@@ -128,6 +195,59 @@
           <span class="go">Plan the curriculum</span>
         </a>
       </section>
+
+      <section class="provider-section" aria-label="AI provider">
+        <span class="settings-label">Which AI builds your classes</span>
+        <div class="provider-tiles" id="providerTiles" role="group" aria-label="Choose AI provider"></div>
+        <p class="settings-hint">
+          Your default for new classes &mdash; change it per class in the Create step. Providers without a key configured appear dimmed.
+        </p>
+      </section>
     </main>
+    <script>
+      (function () {
+        var host = document.getElementById("providerTiles");
+        if (!host) return;
+        var ORDER = ["anthropic", "openai", "gemini", "xai"];
+        var saved = "";
+        try { saved = window.localStorage ? (window.localStorage.getItem("mf-provider") || "") : ""; } catch (e) { saved = ""; }
+
+        function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+
+        function tileHtml(p, isDefault, selected) {
+          var sub = !p.available ? "No key set" : (isDefault ? "Recommended" : "Ready");
+          var badge = isDefault ? '<span class="pt-badge">Default</span>' : "";
+          return '<button type="button" class="provider-tile" data-id="' + esc(p.id) + '"' +
+            ' aria-pressed="' + (selected ? "true" : "false") + '"' + (p.available ? "" : " disabled") + '>' +
+            '<span class="pt-name">' + esc(p.label) + badge + '</span>' +
+            '<span class="pt-sub">' + sub + '</span></button>';
+        }
+
+        function render(catalog) {
+          var def = (catalog && catalog.default) || "anthropic";
+          var byId = {};
+          ((catalog && catalog.providers) || []).forEach(function (p) { byId[p.id] = p; });
+          var list = ORDER.map(function (id) { return byId[id]; }).filter(Boolean);
+          ((catalog && catalog.providers) || []).forEach(function (p) { if (ORDER.indexOf(p.id) < 0) list.push(p); });
+          var savedAvailable = list.some(function (p) { return p.id === saved && p.available; });
+          var selected = (saved && savedAvailable) ? saved : def;
+          host.innerHTML = list.map(function (p) { return tileHtml(p, p.id === def, p.id === selected); }).join("");
+        }
+
+        fetch("api/providers", { cache: "no-store" })
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .then(function (data) { render(data || {}); })
+          .catch(function () { render({}); });
+
+        host.addEventListener("click", function (e) {
+          var btn = e.target.closest(".provider-tile");
+          if (!btn || btn.disabled) return;
+          Array.prototype.forEach.call(host.querySelectorAll(".provider-tile"), function (b) {
+            b.setAttribute("aria-pressed", b === btn ? "true" : "false");
+          });
+          try { if (window.localStorage) window.localStorage.setItem("mf-provider", btn.getAttribute("data-id") || ""); } catch (e2) {}
+        });
+      })();
+    </script>
   </body>
 </html>
