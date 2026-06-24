@@ -39,6 +39,7 @@
 
   var template = window.BriefValidator.DEFAULT_TEMPLATE;
   var brief = makeBrief();
+  var providerCatalog = null;
   var els = {
     stepList: byId("stepList"),
     stepEyebrow: byId("stepEyebrow"),
@@ -58,6 +59,7 @@
   };
 
   loadTemplate();
+  loadProviders();
   bindEvents();
   render();
 
@@ -73,6 +75,7 @@
         created: new Date().toISOString(),
         engine_contract: "v-texas"
       },
+      engine: { provider: "", model: "" },
       class_tier: {
         level: "professional"
       },
@@ -153,6 +156,48 @@
     syncOutput();
   }
 
+  async function loadProviders() {
+    try {
+      var response = await fetch("api/providers", { cache: "no-store" });
+      if (response.ok) {
+        var data = await response.json();
+        if (data && data.providers) providerCatalog = data;
+      }
+    } catch (error) {
+      providerCatalog = null;
+    }
+    // Seed the per-class choice from a saved global default, if set and not overridden.
+    try {
+      var saved = window.localStorage ? window.localStorage.getItem("mf-provider") : "";
+      if (saved && brief.engine && !brief.engine.provider) brief.engine.provider = saved;
+    } catch (error) { /* localStorage unavailable; ignore */ }
+    render();
+  }
+
+  function providerLabelById(id) {
+    if (!providerCatalog || !providerCatalog.providers) return id;
+    var match = providerCatalog.providers.filter(function (p) { return p.id === id; })[0];
+    return match ? match.label : id;
+  }
+
+  function engineField() {
+    var current = (brief.engine && brief.engine.provider) || "";
+    var defaultLabel = providerCatalog ? providerLabelById(providerCatalog.default) : "OpenAI";
+    var opts = "<option value=\"\"" + (current === "" ? " selected" : "") + ">Use default (" + esc(defaultLabel) + ")</option>";
+    if (providerCatalog && providerCatalog.providers) {
+      opts += providerCatalog.providers.map(function (p) {
+        return "<option value=\"" + attr(p.id) + "\"" +
+          (current === p.id ? " selected" : "") +
+          (p.available ? "" : " disabled") + ">" +
+          esc(p.label) + (p.available ? "" : " \u2014 no key set") + "</option>";
+      }).join("");
+    }
+    return card("AI model provider",
+      "<p class=\"hint\">Choose which AI authors this class. Defaults to the server's standard provider. Providers without an API key configured on the server are shown but disabled.</p>" +
+      field("Provider", "<select id=\"engineProvider\" data-path=\"engine.provider\">" + opts + "</select>"),
+      "full");
+  }
+
   function bindEvents() {
     els.stepList.addEventListener("click", function (event) {
       var button = event.target.closest("[data-step]");
@@ -218,7 +263,8 @@
       inputField("Class title", "meta.title", "Example: AI Strategy for Healthcare Leaders") +
       inputField("Short link name", "meta.slug", "ai-strategy-healthcare-leaders") +
       inputField("Created", "meta.created", "", "datetime-local") +
-      classTierPlanner()
+      classTierPlanner() +
+      engineField()
     );
   }
 
@@ -1061,7 +1107,14 @@
   }
 
   function validate() {
-    return window.BriefValidator.validateBrief(brief, template);
+    // Validate a sanitized copy: engine/theme/budget_usd are optional fields
+    // outside the strict contract (mirrors the server's sanitizeBriefForValidation).
+    // The full brief — including these — is still what gets serialized/sent.
+    var clone = JSON.parse(JSON.stringify(brief));
+    delete clone.engine;
+    delete clone.theme;
+    delete clone.budget_usd;
+    return window.BriefValidator.validateBrief(clone, template);
   }
 
   function errorList(errors) {
