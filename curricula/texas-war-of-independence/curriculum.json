@@ -1,0 +1,125 @@
+{
+  "schema": "curriculum/v1",
+  "id": "texas-war-of-independence",
+  "slug": "texas-war-of-independence",
+  "title": "Texas War of Independence",
+  "subject": "Texas War of Independence",
+  "audience": "high school",
+  "level": "introductory",
+  "program_outcome": "This syllabus explores the Texas War of Independence, from its causes to its impact on modern times.",
+  "created": "2026-06-24T18:58:57.059Z",
+  "updated": "2026-06-24T18:58:57.062Z",
+  "knowledge_core": {
+    "shared": true,
+    "sealed": false,
+    "sources": [],
+    "compiled_at": ""
+  },
+  "classes": [
+    {
+      "id": "the-roots-of-conflict",
+      "slug": "the-roots-of-conflict",
+      "order": 1,
+      "title": "The Roots of Conflict",
+      "summary": "This class covers the political and social factors leading to the Texas War of Independence.",
+      "terminal": [
+        "Explain the key factors that led to tensions between Texas settlers and the Mexican government"
+      ],
+      "enabling": [
+        "Identify the role of the Mexican Constitution of 1824 in Texan discontent",
+        "Describe the impact of immigration policies on Texas settlers",
+        "Discuss the cultural and political differences between Texas settlers and the Mexican government"
+      ],
+      "prerequisites": [],
+      "assessment": "",
+      "suggested_minutes": 45,
+      "status": "planned",
+      "class_url": "",
+      "sources": []
+    },
+    {
+      "id": "the-early-stages-of-rebellion",
+      "slug": "the-early-stages-of-rebellion",
+      "order": 2,
+      "title": "The Early Stages of Rebellion",
+      "summary": "This class examines the initial conflicts and events that marked the beginning of the Texas War of Independence.",
+      "terminal": [
+        "Describe the events that marked the start of the Texas War of Independence"
+      ],
+      "enabling": [
+        "Identify key events like the Battle of Gonzales",
+        "Explain the significance of the Consultation of 1835",
+        "Discuss the role of figures such as Stephen F. Austin in the early rebellion"
+      ],
+      "prerequisites": [],
+      "assessment": "",
+      "suggested_minutes": 45,
+      "status": "planned",
+      "class_url": "",
+      "sources": []
+    },
+    {
+      "id": "major-battles-and-turning-points",
+      "slug": "major-battles-and-turning-points",
+      "order": 3,
+      "title": "Major Battles and Turning Points",
+      "summary": "This class focuses on significant battles and turning points during the Texas War of Independence.",
+      "terminal": [
+        "Analyze the impact of major battles on the outcome of the Texas War of Independence"
+      ],
+      "enabling": [
+        "Describe the significance of the Battle of the Alamo",
+        "Explain the outcomes of the Battle of San Jacinto",
+        "Discuss the strategic decisions made by Texan and Mexican leaders"
+      ],
+      "prerequisites": [],
+      "assessment": "",
+      "suggested_minutes": 45,
+      "status": "planned",
+      "class_url": "",
+      "sources": []
+    },
+    {
+      "id": "the-birth-of-the-republic-of-texas",
+      "slug": "the-birth-of-the-republic-of-texas",
+      "order": 4,
+      "title": "The Birth of the Republic of Texas",
+      "summary": "This class explores the formation of the Republic of Texas and its initial challenges.",
+      "terminal": [
+        "Describe the establishment of the Republic of Texas and its early governance"
+      ],
+      "enabling": [
+        "Discuss the drafting and significance of the Texas Declaration of Independence",
+        "Identify the first leaders of the Republic of Texas and their roles",
+        "Explain the challenges faced by the new republic, such as recognition and border disputes"
+      ],
+      "prerequisites": [],
+      "assessment": "",
+      "suggested_minutes": 45,
+      "status": "planned",
+      "class_url": "",
+      "sources": []
+    },
+    {
+      "id": "legacy-and-modern-implications",
+      "slug": "legacy-and-modern-implications",
+      "order": 5,
+      "title": "Legacy and Modern Implications",
+      "summary": "This class examines the long-term effects of the Texas War of Independence on Texas and the United States.",
+      "terminal": [
+        "Evaluate the lasting impacts of the Texas War of Independence on modern Texas and US relations"
+      ],
+      "enabling": [
+        "Discuss how the war influenced Texas's annexation to the United States",
+        "Analyze the cultural legacy of the war in modern Texan identity",
+        "Explore the historical memory and commemoration of the war in Texas today"
+      ],
+      "prerequisites": [],
+      "assessment": "",
+      "suggested_minutes": 45,
+      "status": "planned",
+      "class_url": "",
+      "sources": []
+    }
+  ]
+}
