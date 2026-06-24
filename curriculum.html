@@ -71,6 +71,18 @@
   .f-tag{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;margin-right:8px;color:var(--faint);}
   .f-error .f-tag{color:var(--warn);} .f-warning .f-tag{color:var(--amber);}
   .intent-note{font-size:13px;color:var(--amber);font-family:var(--mono);margin-top:10px;}
+  /* Build loop */
+  .build{margin-top:18px;border-top:1px solid var(--line);padding-top:14px;}
+  .build-head{font-family:var(--mono);font-size:13px;margin-bottom:10px;}
+  .build-rows{margin:8px 0;}
+  .brow{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);flex-wrap:wrap;}
+  .brow:last-child{border-bottom:0;}
+  .brow .bt{flex:1;min-width:160px;}
+  .brow .cu{font-size:13px;color:var(--primary);text-decoration:none;}
+  .brow .cu:hover{text-decoration:underline;}
+  .brow .mini{font-size:12px;padding:5px 11px;}
+  .spin{display:inline-block;width:11px;height:11px;border:2px solid var(--line);border-top-color:var(--teal);border-radius:50%;animation:sp .7s linear infinite;vertical-align:-1px;margin-right:5px;}
+  @keyframes sp{to{transform:rotate(360deg);}}
   @media (max-width:760px){
     .row,.row3{grid-template-columns:1fr;}
     h1{font-size:30px;}
@@ -166,6 +178,7 @@
     html += "<button class='ghost' id='copyPlan'>Copy as JSON</button>";
     html += "</div>";
     html += "<div id='coherence'></div>";
+    html += "<div id='build'></div>";
     html += "</div>";
     $("result").innerHTML = html;
 
@@ -239,6 +252,7 @@
           state.manifest = res.j.manifest;
           setStatus("Saved as \u201C"+res.j.manifest.slug+"\u201D. Coherence checked below.");
           renderCoherence(res.j.coherence);
+          renderBuild(res.j.manifest, res.j.coherence);
         } else {
           var err = (res.j && res.j.errors && res.j.errors.join("; ")) || (res.j && res.j.error) || "save failed";
           setStatus("Save: "+err, true);
@@ -246,6 +260,123 @@
       })
       .catch(function(){ setStatus("Couldn't reach the curriculum service.", true); })
       .finally(function(){ btn.disabled = false; btn.textContent = label; });
+  }
+
+  // ---- Build loop -------------------------------------------------------
+  var building = false;
+
+  function renderBuild(manifest, coh){
+    var rows = manifest.classes.map(function(c){
+      return "<div class='brow' data-slug='"+esc(c.slug)+"'>"+
+        "<span class='badge' data-state='"+esc(c.status)+"'>"+esc(c.status)+"</span>"+
+        "<span class='bt'>"+esc(c.title)+"</span>"+
+        (c.class_url?("<a class='cu' href='"+esc(c.class_url)+"' target='_blank' rel='noopener'>view \u2192</a>"):"")+
+      "</div>";
+    }).join("");
+    var html = "<div class='build'><div class='build-head'>Build classes <span class='hint'>\u00B7 in dependency order, one at a time</span></div>";
+    html += "<div class='build-rows' id='buildRows'>"+rows+"</div>";
+    if(coh.ok){
+      html += "<button class='primary' id='buildAll' style='margin-top:8px'>Build all classes</button>";
+    } else {
+      html += "<p class='hint'>Fix the issue(s) above before building \u2014 structure and prerequisites must be sound first.</p>";
+    }
+    html += "<div class='status' id='buildNote'></div></div>";
+    $("build").innerHTML = html;
+    var ba = $("buildAll"); if(ba) ba.addEventListener("click", function(){ buildAll(manifest.slug); });
+  }
+
+  function rowFor(slug){ return document.querySelector(".brow[data-slug=\""+slug+"\"]"); }
+
+  function setRow(slug, st, opts){
+    opts = opts || {};
+    var row = rowFor(slug); if(!row) return;
+    var badge = row.querySelector(".badge");
+    badge.setAttribute("data-state", (st==="review"?"failed":st));
+    badge.innerHTML = st==="building" ? "<span class='spin'></span>building" : (st==="review" ? "needs review" : esc(st));
+    Array.prototype.slice.call(row.querySelectorAll(".mini,.cu.added")).forEach(function(e){ e.remove(); });
+    if(st==="built" && opts.url){
+      var a=document.createElement("a"); a.className="cu added"; a.href=opts.url; a.target="_blank"; a.rel="noopener"; a.textContent="view \u2192"; row.appendChild(a);
+    }
+    if(st==="review"){
+      var go=document.createElement("button"); go.className="ghost mini"; go.textContent="Build anyway"; go.onclick=opts.onProceed; row.appendChild(go);
+      var stop=document.createElement("button"); stop.className="ghost mini"; stop.textContent="Stop"; stop.onclick=opts.onStop; row.appendChild(stop);
+    }
+    if(st==="failed" && opts.onRetry){
+      var rt=document.createElement("button"); rt.className="ghost mini"; rt.textContent="Retry"; rt.onclick=opts.onRetry; row.appendChild(rt);
+    }
+  }
+
+  function getView(slug){
+    return fetch("/api/curriculum-build?slug="+encodeURIComponent(slug), {cache:"no-store"})
+      .then(function(r){ return r.json(); }).catch(function(){ return null; });
+  }
+  function postStatus(curSlug, classSlug, st, url){
+    return fetch("/api/curriculum-build", {method:"POST",headers:{"content-type":"application/json"},
+      body: JSON.stringify({ action:"status", slug:curSlug, class:classSlug, status:st, class_url:url||"" })})
+      .then(function(r){ return r.json(); }).catch(function(){ return null; });
+  }
+  function generateClass(brief, force){
+    var b = JSON.parse(JSON.stringify(brief));
+    try { var prov = window.localStorage ? window.localStorage.getItem("mf-provider") : ""; if(prov){ b.engine = { provider: prov, model: "" }; } } catch(e){}
+    var body = { brief: b, publish: true };
+    if(force){ body.proceed_anyway = true; body.accept_quality = true; }
+    return fetch("/api/generate", {method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(body)})
+      .then(function(r){ return r.json().then(function(j){ return j; }); })
+      .then(function(j){
+        j = j || {};
+        if(j.status==="published" || j.status==="not_configured") return { kind:"built", url:j.expected_url||"" };
+        if(j.resolution) return { kind:"review", msg:(j.message || j.resolution) };
+        return { kind:"error", msg:(j.errors?j.errors.join("; "):(j.error||"generation failed")) };
+      })
+      .catch(function(){ return { kind:"error", msg:"couldn't reach the generator (it may have timed out)" }; });
+  }
+
+  function finishBuild(msg, warn){
+    building = false;
+    var ba=$("buildAll"); if(ba){ ba.disabled=false; ba.textContent="Build remaining classes"; }
+    if(msg) $("buildNote").innerHTML = warn ? ("<span class='warn'>"+esc(msg)+"</span>") : esc(msg);
+  }
+
+  function buildAll(slug){
+    if(building) return;
+    building = true;
+    var ba=$("buildAll"); if(ba){ ba.disabled=true; ba.textContent="Building\u2026"; }
+    $("buildNote").textContent = "Building in dependency order \u2014 a few minutes per class. Keep this tab open.";
+    step(slug);
+  }
+
+  function step(slug){
+    getView(slug).then(function(v){
+      if(!v || !v.ok){ finishBuild("Couldn't read the curriculum state.", true); return; }
+      v.manifest.classes.forEach(function(c){ if(c.status!=="building") setRow(c.slug, c.status, {url:c.class_url}); });
+      if(!v.next){
+        if(v.progress.done) finishBuild("All "+v.progress.total+" classes built. \uD83C\uDF89");
+        else finishBuild("No more classes can build automatically \u2014 some are blocked by a failed prerequisite.", true);
+        return;
+      }
+      setRow(v.next, "building");
+      runOne(slug, v.next, v.next_brief, false);
+    });
+  }
+
+  function runOne(slug, classSlug, brief, force){
+    generateClass(brief, force).then(function(out){
+      if(out.kind==="built"){
+        postStatus(slug, classSlug, "built", out.url).then(function(){ setRow(classSlug, "built", {url:out.url}); step(slug); });
+      } else if(out.kind==="review"){
+        setRow(classSlug, "review", {
+          onProceed:function(){ setRow(classSlug,"building"); runOne(slug, classSlug, brief, true); },
+          onStop:function(){ finishBuild("Paused at \u201C"+classSlug+"\u201D \u2014 "+out.msg, true); }
+        });
+        $("buildNote").innerHTML = "<span class='warn'>\u201C"+esc(classSlug)+"\u201D needs a decision \u2014 "+esc(out.msg)+". Build anyway, or stop.</span>";
+        // loop stays paused until the row's Build anyway / Stop is used
+      } else {
+        postStatus(slug, classSlug, "failed").then(function(){
+          setRow(classSlug, "failed", { onRetry:function(){ setRow(classSlug,"building"); runOne(slug, classSlug, brief, false); } });
+          finishBuild("\u201C"+classSlug+"\u201D failed \u2014 "+out.msg, true);
+        });
+      }
+    });
   }
 
   $("go").addEventListener("click", function(){

@@ -16,6 +16,7 @@
 
 const store = require("./curriculum-store.js");
 const coherence = require("./curriculum-coherence.js");
+const briefTemplate = require("../brief.template.json");
 
 /* --------------------------------------------------------------------------
    Pure: dependency-ordered build sequence (Kahn topological sort).
@@ -80,9 +81,36 @@ function nextBuildable(manifest) {
   return null;
 }
 
-/* --------------------------------------------------------------------------
-   Endpoint
--------------------------------------------------------------------------- */
+/* Pure: synthesize a FULL, contract-valid brief for one class by merging the
+   brief template defaults with curriculum-level and class-level data. This is
+   what the build loop sends to /api/generate. Template is injectable for tests. */
+function briefForClass(manifest, classSlug, template) {
+  template = template || briefTemplate;
+  var classes = (manifest && manifest.classes) || [];
+  var cls = classes.filter(function (c) { return c.slug === classSlug || c.id === classSlug; })[0];
+  if (!cls) return null;
+
+  var b = JSON.parse(JSON.stringify(template));
+  b.meta = { title: cls.title, slug: cls.slug, created: new Date().toISOString(), engine_contract: "v-texas" };
+  b.objectives = { terminal: (cls.terminal || []).slice(), enabling: (cls.enabling || []).slice(), out_of_scope: [] };
+  b.length = Object.assign({}, template.length, {
+    minutes: cls.suggested_minutes,
+    slide_budget: Math.max(10, Math.min(400, Math.round(cls.suggested_minutes * 1.5)))
+  });
+
+  // Curriculum "level" (introductory..advanced) loosely maps onto the class tier.
+  var tierMap = { introductory: "standard", intermediate: "standard", advanced: "professional", mixed: "standard" };
+  b.class_tier = { level: tierMap[String(manifest.level || "").toLowerCase()] || template.class_tier.level };
+
+  // Preserve the curriculum audience as free text without breaking the structured contract.
+  if (manifest.audience) {
+    b.audience = JSON.parse(JSON.stringify(template.audience));
+    b.audience.average = Object.assign({}, b.audience.average, { background: manifest.audience });
+  }
+  return b;
+}
+
+
 
 function send(res, status, payload) {
   res.statusCode = status;
@@ -105,11 +133,13 @@ function readBody(req) {
 }
 
 function view(manifest) {
+  var next = nextBuildable(manifest);
   return {
     manifest: manifest,
     progress: store.buildProgress(manifest),
     coherence: coherence.analyzeCoherence(manifest),
-    next: nextBuildable(manifest)
+    next: next,
+    next_brief: next ? briefForClass(manifest, next) : null
   };
 }
 
@@ -163,4 +193,5 @@ module.exports = async function curriculumBuildHandler(req, res) {
 
 module.exports.buildOrder = buildOrder;
 module.exports.nextBuildable = nextBuildable;
-module.exports._internal = { buildOrder: buildOrder, nextBuildable: nextBuildable };
+module.exports.briefForClass = briefForClass;
+module.exports._internal = { buildOrder: buildOrder, nextBuildable: nextBuildable, briefForClass: briefForClass };

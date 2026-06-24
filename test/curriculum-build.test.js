@@ -86,6 +86,26 @@ test("a dependent stays blocked while its prerequisite is failed", function () {
   assert.strictEqual(B.nextBuildable(m), "foundations");
 });
 
+group("briefForClass (full brief synthesis)");
+test("synthesizes a contract-valid brief from a class", function () {
+  var BV = require("../brief-validator.js");
+  var template = require("../brief.template.json");
+  var m = S.makeManifest({ subject:"Org Chem", audience:"undergrads", level:"advanced", classes:[
+    { title:"Topic One", terminal:["Explain one"], enabling:["Define a"], suggested_minutes:60 }
+  ] });
+  var brief = B.briefForClass(m, m.classes[0].slug);
+  assert.strictEqual(BV.validateBrief(brief, template).ok, true);
+  assert.strictEqual(brief.meta.title, "Topic One");
+  assert.deepStrictEqual(brief.objectives.terminal, ["Explain one"]);
+  assert.strictEqual(brief.length.minutes, 60);
+  assert.strictEqual(brief.class_tier.level, "professional"); // advanced -> professional
+  assert.strictEqual(brief.audience.average.background, "undergrads");
+});
+test("returns null for an unknown class slug", function () {
+  var m = S.makeManifest({ classes:[ { title:"A", terminal:["x"] } ] });
+  assert.strictEqual(B.briefForClass(m, "nope"), null);
+});
+
 console.log("\n" + "=".repeat(60));
 console.log("CURRICULUM-BUILD RESULTS: " + passed + " passed, " + failed + " failed");
 if (failed) { console.log("\nFAILURES:"); failures.forEach(function (f) { console.log("  - " + f.name + ": " + f.message); }); process.exit(1); }
