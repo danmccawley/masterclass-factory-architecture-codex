@@ -146,7 +146,8 @@
   function classCard(c, i, all){
     var prereqBoxes = all.map(function(o, j){
       if(j === i) return "";
-      return "<label class='chk'><input type='checkbox' class='prereq' value='"+j+"' /> "+esc(o.title)+"</label>";
+      var checked = (c.prerequisites||[]).indexOf(slugify(o.title)) >= 0 ? " checked" : "";
+      return "<label class='chk'><input type='checkbox' class='prereq' value='"+j+"'"+checked+" /> "+esc(o.title)+"</label>";
     }).join("");
     var html = "<div class='class-card' data-index='"+i+"'>";
     html += "<div class='class-num'>Class "+(i+1)+"</div>";
@@ -396,7 +397,7 @@
       .then(function(r){ return r.json().then(function(j){ return { ok:r.ok, j:j }; }); })
       .then(function(res){
         if(res.ok && res.j && res.j.ok && res.j.plan){
-          setStatus("Planned "+res.j.class_count+" classes."+(res.j.cost_usd!=null?(" (~$"+res.j.cost_usd.toFixed(4)+")"):"")+" Review, set prerequisites, then save.");
+          setStatus("Planned "+res.j.class_count+" classes."+(res.j.cost_usd!=null?(" (~$"+res.j.cost_usd.toFixed(4)+")"):"")+" Bernard proposed the sequence and prerequisites \u2014 review, adjust if needed, then save.");
           renderCanvas(res.j.plan, input);
         } else {
           var err = (res.j && res.j.error) || "couldn't plan the curriculum";

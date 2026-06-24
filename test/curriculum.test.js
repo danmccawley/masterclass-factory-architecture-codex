@@ -103,6 +103,41 @@ test("planToBriefs on an empty plan yields no briefs", function () {
   assert.deepStrictEqual(C.planToBriefs(C.emptyPlan({})), []);
 });
 
+group("Prerequisite resolution");
+test("resolves earlier-class titles to slugs", function () {
+  const plan = C.normalizePlan({ classes: [
+    { title: "The Roots of Conflict", terminal: ["t"] },
+    { title: "The Early Stages of Rebellion", terminal: ["t"], prerequisites: ["The Roots of Conflict"] }
+  ] }, {});
+  assert.deepStrictEqual(plan.classes[0].prerequisites, []);
+  assert.deepStrictEqual(plan.classes[1].prerequisites, ["the-roots-of-conflict"]);
+});
+test("drops forward references (cannot depend on a later class)", function () {
+  const plan = C.normalizePlan({ classes: [
+    { title: "First", terminal: ["t"], prerequisites: ["Second"] },   // forward ref -> dropped
+    { title: "Second", terminal: ["t"] }
+  ] }, {});
+  assert.deepStrictEqual(plan.classes[0].prerequisites, []);
+});
+test("drops self and unknown references, and de-dupes", function () {
+  const plan = C.normalizePlan({ classes: [
+    { title: "Alpha", terminal: ["t"] },
+    { title: "Beta", terminal: ["t"], prerequisites: ["Alpha", "Alpha", "Beta", "Nonexistent"] }
+  ] }, {});
+  assert.deepStrictEqual(plan.classes[1].prerequisites, ["alpha"]);
+});
+test("accepts prerequisites already given as slugs", function () {
+  const plan = C.normalizePlan({ classes: [
+    { title: "Foundations", terminal: ["t"] },
+    { title: "Next", terminal: ["t"], prerequisites: ["foundations"] }
+  ] }, {});
+  assert.deepStrictEqual(plan.classes[1].prerequisites, ["foundations"]);
+});
+test("each class carries a slug matching slugify(title)", function () {
+  const plan = C.normalizePlan({ classes: [{ title: "Major Battles & Turning Points", terminal: ["t"] }] }, {});
+  assert.strictEqual(plan.classes[0].slug, "major-battles-turning-points");
+});
+
 console.log("\n" + "=".repeat(60));
 console.log("CURRICULUM-PLANNER RESULTS: " + passed + " passed, " + failed + " failed");
 if (failed) { console.log("\nFAILURES:"); failures.forEach(function (f) { console.log("  - " + f.name + ": " + f.message); }); process.exit(1); }

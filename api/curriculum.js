@@ -37,6 +37,12 @@ function asStringArray(v, max) {
   return out;
 }
 function cleanText(v, max) { return String(v == null ? "" : v).replace(/\s+/g, " ").trim().slice(0, max || 160); }
+// Mirror the store/canvas slugify so planner-proposed prerequisite links line up
+// with the slugs assigned on save and the checkboxes drawn in the canvas.
+function slugify(t) {
+  return String(t == null ? "" : t).toLowerCase().replace(/['"]/g, "").replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "").replace(/\.+/g, "").slice(0, 80) || "class";
+}
 
 // The plan the wizard renders and the orchestrator consumes.
 // { subject, audience, level, notes, classes:[ { order, title, summary,
@@ -68,7 +74,8 @@ function buildCurriculumPrompt(input) {
       "You are a curriculum designer. Given a subject, design a sequenced syllabus as an ordered list of individual CLASSES that build on each other. " +
       countLine + " " +
       "Each class must be narrow enough to teach well in one sitting. Return ONLY a JSON object (no prose, no code fences) of the form: " +
-      "{\"level\":\"...\",\"notes\":\"one or two sentences on the overall arc\",\"classes\":[{\"title\":\"...\",\"summary\":\"one sentence on what this class covers\",\"terminal\":[\"1-3 terminal objectives, what the learner can DO after\"],\"enabling\":[\"2-5 enabling objectives, the steps to get there\"],\"suggested_minutes\":45}]}. " +
+      "{\"level\":\"...\",\"notes\":\"one or two sentences on the overall arc\",\"classes\":[{\"title\":\"...\",\"summary\":\"one sentence on what this class covers\",\"terminal\":[\"1-3 terminal objectives, what the learner can DO after\"],\"enabling\":[\"2-5 enabling objectives, the steps to get there\"],\"prerequisites\":[\"exact titles of the EARLIER classes this one directly builds on\"],\"suggested_minutes\":45}]}. " +
+      "For each class, set prerequisites to the exact titles of the earlier classes it directly depends on — reference ONLY classes that appear before it in the list; the first class has none, and most classes build on the one or two immediately before them. " +
       "Objectives must be concrete and measurable. Order classes from foundational to advanced." },
     { role: "user", content:
       "Subject: " + subject + "\nAudience: " + audience + "\nLevel: " + level +
@@ -98,11 +105,23 @@ function normalizePlan(raw, input) {
       if (!title) return; // a class with no title is not a class
       const terminal = asStringArray(c.terminal || (c.objectives && c.objectives.terminal), 3);
       const enabling = asStringArray(c.enabling || (c.objectives && c.objectives.enabling), 6);
+      // Resolve prerequisites against EARLIER classes only. Because we process in
+      // order, classes after this one aren't in plan.classes yet, so a forward
+      // reference simply can't resolve — the sequence stays acyclic by design.
+      const earlierSlugs = {};
+      plan.classes.forEach(function (pc) { earlierSlugs[slugify(pc.title)] = true; });
+      const prerequisites = [];
+      asStringArray(c.prerequisites || c.prereqs || c.builds_on || c.depends_on, 12).forEach(function (p) {
+        const s = slugify(p);
+        if (earlierSlugs[s] && prerequisites.indexOf(s) < 0) prerequisites.push(s);
+      });
       plan.classes.push({
         order: plan.classes.length + 1,
         title: title,
+        slug: slugify(title),
         summary: cleanText(c.summary || c.scope || c.description, 240),
         objectives: { terminal: terminal, enabling: enabling },
+        prerequisites: prerequisites,
         suggested_minutes: clampInt(c.suggested_minutes || c.minutes, 10, 240, 45)
       });
     });
