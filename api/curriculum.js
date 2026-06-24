@@ -10,6 +10,16 @@
 "use strict";
 
 let budget = null;
+const llm = require("./llm.js");
+function asSystemUser(messages) {
+  let system = "", user = "";
+  (messages || []).forEach(function (m) {
+    if (!m) return;
+    if (m.role === "system") system += (system ? "\n" : "") + (m.content || "");
+    else user += (user ? "\n" : "") + (m.content || "");
+  });
+  return { system: system, user: user };
+}
 try { budget = require("./kb-budget.js"); } catch (e) { budget = null; }
 
 function clampInt(v, lo, hi, dflt) {
@@ -153,27 +163,26 @@ module.exports = async function curriculumHandler(req, res) {
   const subject = cleanText(parsed.subject, 200);
   if (!subject) { send(422, { ok: false, error: "subject required" }); return; }
 
-  const key = process.env.OPENAI_API_KEY;
-  if (!key) { send(503, { ok: false, error: "curriculum planner needs OPENAI_API_KEY on the server" }); return; }
-
-  const model = process.env.OPENAI_CURRICULUM_MODEL || "gpt-4o";
+  const engine = (parsed.engine && typeof parsed.engine === "object") ? parsed.engine : {};
+  const provider = llm.resolveProvider(engine.provider);
+  if (!llm.isAvailable(provider)) {
+    send(503, { ok: false, error: provider === "openai"
+      ? "curriculum planner needs OPENAI_API_KEY on the server"
+      : "curriculum planner needs an API key for the selected provider on the server" });
+    return;
+  }
+  const model = provider === "openai" ? (process.env.OPENAI_CURRICULUM_MODEL || "gpt-4o") : (engine.model || undefined);
   try {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 45000);
-    const r = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: { "content-type": "application/json", "authorization": "Bearer " + key },
-      body: JSON.stringify({ model: model, messages: buildCurriculumPrompt(parsed), temperature: 0.5 }),
-      signal: controller.signal
+    const su = asSystemUser(buildCurriculumPrompt(parsed));
+    const result = await llm.completeText({
+      provider: provider, model: model, stage: "curriculum",
+      system: su.system, user: su.user, temperature: 0.5, timeoutMs: 45000
     });
-    clearTimeout(timer);
-    const payload = await r.json().catch(() => ({}));
     let usd = null;
-    if (budget && budget.readOpenAIUsage) {
-      try { const u = budget.readOpenAIUsage(payload); usd = budget.tokenCostUsd(u.input_tokens, u.output_tokens, model); } catch (e) {}
+    if (budget && budget.tokenCostUsd && result.usage) {
+      try { usd = budget.tokenCostUsd(result.usage.input_tokens, result.usage.output_tokens, result.model); } catch (e) {}
     }
-    const content = payload && payload.choices && payload.choices[0] && payload.choices[0].message && payload.choices[0].message.content;
-    const plan = normalizePlan(parsePlanFromLLM(content), parsed);
+    const plan = normalizePlan(parsePlanFromLLM(result.text), parsed);
     const check = validatePlan(plan);
     if (!check.ok) { send(502, { ok: false, error: "the planner returned an unusable plan", details: check.errors }); return; }
     send(200, {

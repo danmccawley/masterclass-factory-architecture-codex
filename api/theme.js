@@ -12,6 +12,16 @@
 "use strict";
 
 let budget = null;
+const llm = require("./llm.js");
+function asSystemUser(messages) {
+  let system = "", user = "";
+  (messages || []).forEach(function (m) {
+    if (!m) return;
+    if (m.role === "system") system += (system ? "\n" : "") + (m.content || "");
+    else user += (user ? "\n" : "") + (m.content || "");
+  });
+  return { system: system, user: user };
+}
 try { budget = require("./kb-budget.js"); } catch (e) { budget = null; }
 
 // The themeable token contract. Maps our palette keys -> the template's CSS vars.
@@ -256,33 +266,32 @@ module.exports = async function themeHandler(req, res) {
   const description = String(parsed.description || "").trim();
   if (!description) { send(422, { ok: false, error: "description required" }); return; }
 
-  const key = process.env.OPENAI_API_KEY;
-  if (!key) { send(503, { ok: false, error: "theme AI needs OPENAI_API_KEY on the server" }); return; }
-
-  const model = process.env.OPENAI_THEME_MODEL || "gpt-4o-mini";
+  const engine = (parsed.engine && typeof parsed.engine === "object") ? parsed.engine : {};
+  const provider = llm.resolveProvider(engine.provider);
+  if (!llm.isAvailable(provider)) {
+    send(503, { ok: false, error: provider === "openai"
+      ? "theme AI needs OPENAI_API_KEY on the server"
+      : "theme AI needs an API key for the selected provider on the server" });
+    return;
+  }
+  const model = provider === "openai" ? (process.env.OPENAI_THEME_MODEL || "gpt-4o-mini") : (engine.model || undefined);
   try {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 20000);
-    const r = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: { "content-type": "application/json", "authorization": "Bearer " + key },
-      body: JSON.stringify({ model: model, messages: themePromptMessages(description), temperature: 0.7 }),
-      signal: controller.signal
+    const su = asSystemUser(themePromptMessages(description));
+    const result = await llm.completeText({
+      provider: provider, model: model, stage: "theme",
+      system: su.system, user: su.user, temperature: 0.7, timeoutMs: 20000
     });
-    clearTimeout(timer);
-    const payload = await r.json().catch(() => ({}));
-    if (budget && budget.readOpenAIUsage) {
-      // best-effort spend note (no shared ledger here; informational)
-      try { var u = budget.readOpenAIUsage(payload); var usd = budget.tokenCostUsd(u.input_tokens, u.output_tokens, model); } catch (e) {}
+    let usd = null;
+    if (budget && budget.tokenCostUsd && result.usage) {
+      try { usd = budget.tokenCostUsd(result.usage.input_tokens, result.usage.output_tokens, result.model); } catch (e) {}
     }
-    const content = payload && payload.choices && payload.choices[0] && payload.choices[0].message && payload.choices[0].message.content;
-    const raw = paletteFromLLMJson(content);
+    const raw = paletteFromLLMJson(result.text);
     if (!raw) { send(502, { ok: false, error: "could not parse a palette from the model" }); return; }
     const legible = ensureLegible(raw);
     send(200, {
       ok: true,
       source: "llm",
-      model: model,
+      model: result.model,
       palette: legible.palette,
       css: themeCssOverride(legible.palette),
       warnings: legible.warnings,

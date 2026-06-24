@@ -1,5 +1,6 @@
 const { validateBrief } = require("../brief-validator.js");
 const template = require("../brief.template.json");
+const llm = require("./llm.js");
 
 const DEFAULT_OPENAI_MODEL = "gpt-5.5";
 const FALLBACK_OPENAI_MODELS = ["gpt-5.4", "gpt-4.1-mini"];
@@ -142,50 +143,30 @@ function safeErrorMessage(message) {
     .replace(/Bearer\s+[^"'`]+/g, "Bearer [redacted]");
 }
 
-async function requestObjectiveDraft(payload, model) {
-  const key = openAIKey();
-  const openaiResponse = await fetch("https://api.openai.com/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      authorization: `Bearer ${key}`,
-      "content-type": "application/json"
-    },
-    body: JSON.stringify({
-      model,
-      temperature: 0.2,
-      response_format: { type: "json_object" },
-      messages: [
-        {
-          role: "system",
-          content:
-            "You are Bernard, the Masterclass Factory curriculum specialist. Output only valid JSON with terminal, enabling, and out_of_scope arrays. Treat them as provisional learning-target ideas until source research and knowledge-base analysis are complete. Never invent unverifiable facts."
-        },
-        { role: "user", content: buildPrompt(payload) }
-      ]
-    })
-  });
+function engineFromPayload(payload) {
+  const e = payload && payload.brief && payload.brief.engine;
+  return (e && typeof e === "object") ? { provider: e.provider, model: e.model } : { provider: "openai" };
+}
 
-  const openaiPayload = await openaiResponse.json().catch(() => ({}));
-  if (!openaiResponse.ok) {
-    return {
-      ok: false,
-      status: openaiResponse.status,
-      message: openAIError(openaiPayload),
-      model
-    };
-  }
+async function requestObjectiveDraft(payload) {
+  const engine = engineFromPayload(payload);
+  const provider = llm.resolveProvider(engine.provider);
+  const opts = {
+    provider: provider,
+    stage: "objectives",
+    temperature: 0.2,
+    jsonMode: true,
+    system: "You are Bernard, the Masterclass Factory curriculum specialist. Output only valid JSON with terminal, enabling, and out_of_scope arrays. Treat them as provisional learning-target ideas until source research and knowledge-base analysis are complete. Never invent unverifiable facts.",
+    user: buildPrompt(payload)
+  };
+  if (provider === "openai") opts.models = configuredModels();
+  else if (engine.model) opts.model = engine.model;
 
-  const content =
-    openaiPayload &&
-    openaiPayload.choices &&
-    openaiPayload.choices[0] &&
-    openaiPayload.choices[0].message &&
-    openaiPayload.choices[0].message.content;
-
+  const result = await llm.completeJson(opts);
   return {
-    ok: true,
-    model,
-    objectives: normalizeObjectives(JSON.parse(content || "{}"))
+    provider: result.provider,
+    model: result.model,
+    objectives: normalizeObjectives(result.data || {})
   };
 }
 
@@ -205,45 +186,40 @@ module.exports = async function objectivesHandler(req, res) {
     return;
   }
 
-  const keyError = validateOpenAIKey(openAIKey());
-  if (keyError) {
-    send(res, 503, {
-      ok: false,
-      errors: [keyError]
-    });
-    return;
-  }
-
   try {
-    const payload = await readBody(req);
-    const result = validateBrief(payload.brief, template);
-    if (!result.ok) {
-      send(res, 422, { ok: false, errors: result.errors });
+    let payload;
+    try {
+      payload = await readBody(req);
+    } catch (bodyError) {
+      send(res, 400, { ok: false, errors: [safeErrorMessage(bodyError.message)] });
       return;
     }
 
-    let failedDraft;
-    for (const model of configuredModels()) {
-      const draft = await requestObjectiveDraft(payload, model);
-      if (draft.ok) {
-        send(res, 200, {
-          ok: true,
-          message: "Bernard drafted provisional learning-target ideas. Final TLOs and ELOs should be confirmed after research.",
-          model: draft.model,
-          objectives: draft.objectives
-        });
-        return;
-      }
-
-      failedDraft = draft;
-      if (!shouldTryNextModel(draft.status, draft.message)) break;
+    const valid = validateBrief(payload.brief, template);
+    if (!valid.ok) {
+      send(res, 422, { ok: false, errors: valid.errors });
+      return;
     }
 
-    send(res, failedDraft.status || 502, {
-      ok: false,
-      errors: [`OpenAI API error using ${failedDraft.model}: ${safeErrorMessage(failedDraft.message)}`]
+    // Provider-aware gate: 503 only if the CHOSEN provider isn't configured.
+    const engine = engineFromPayload(payload);
+    const provider = llm.resolveProvider(engine.provider);
+    if (!llm.isAvailable(provider)) {
+      const msg = provider === "openai"
+        ? validateOpenAIKey(openAIKey())
+        : "AI assistance is not connected for the selected provider. Set its API key in Vercel, then redeploy.";
+      send(res, 503, { ok: false, errors: [msg || "The selected AI provider is not configured."] });
+      return;
+    }
+
+    const draft = await requestObjectiveDraft(payload);
+    send(res, 200, {
+      ok: true,
+      message: "Bernard drafted provisional learning-target ideas. Final TLOs and ELOs should be confirmed after research.",
+      model: draft.model,
+      objectives: draft.objectives
     });
   } catch (error) {
-    send(res, 400, { ok: false, errors: [safeErrorMessage(error.message)] });
+    send(res, 502, { ok: false, errors: [safeErrorMessage(error.message)] });
   }
 };
