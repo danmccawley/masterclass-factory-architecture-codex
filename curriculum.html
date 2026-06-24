@@ -9,14 +9,14 @@
     /* Light is the default skin, matching the rest of the tool (styles.css). */
     --bg:#fbf8f0; --bg2:#fffdf7; --ink:#22302f; --dim:#5c6864; --faint:#8a948f;
     --amber:#c4a06b; --teal:#1d9fc2; --line:rgba(34,48,47,0.14); --card:#fffdf7; --card2:#f4efe4;
-    --primary:#0b6387; --primary-ink:#ffffff; --primary-hover:#1d9fc2; --warn:#9a5c45;
+    --primary:#0b6387; --primary-ink:#ffffff; --primary-hover:#1d9fc2; --warn:#9a5c45; --good:#2e7d52;
     --serif:"Fraunces",Georgia,serif; --sans:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",monospace;
   }
   /* Opt-in dark skin (the page's original palette). Applied only when chosen. */
   html[data-theme="dark"]{
     --bg:#070809; --bg2:#0c0f14; --ink:#eef2f7; --dim:#8b96a6; --faint:#4a5360;
     --amber:#e6a042; --teal:#46c8c0; --line:#1c232e; --card:#10141b; --card2:#151a23;
-    --primary:#e6a042; --primary-ink:#1a1206; --primary-hover:#ffc977; --warn:#e6b86a;
+    --primary:#e6a042; --primary-ink:#1a1206; --primary-hover:#ffc977; --warn:#e6b86a; --good:#5fc98a;
   }
   *{box-sizing:border-box;}
   body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.5;}
@@ -40,16 +40,37 @@
   .arc{color:var(--dim);font-style:italic;margin:6px 0 14px;}
   .class-card{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0;}
   .class-card h3{margin:0 0 4px;font-family:var(--serif);font-size:21px;}
-  .class-num{font-family:var(--mono);color:var(--amber);font-size:13px;}
+  .class-num{font-family:var(--mono);color:var(--amber);font-size:13px;margin-bottom:6px;}
   .class-sum{color:var(--dim);margin:2px 0 10px;}
-  .obj-h{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin:8px 0 3px;}
+  .obj-h{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin:10px 0 3px;}
   .obj-h.t{color:var(--teal);}
   ul{margin:2px 0 6px;padding-left:18px;}
   li{margin:2px 0;}
-  .meta{font-family:var(--mono);font-size:12px;color:var(--faint);margin-top:8px;}
+  .meta{font-family:var(--mono);font-size:12px;color:var(--faint);margin-top:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
   .toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px;}
   .hint{color:var(--faint);font-size:12px;}
   .count-pill{font-family:var(--mono);font-size:12px;color:var(--amber);border:1px solid var(--line);border-radius:999px;padding:3px 10px;}
+  /* Canvas: editable fields + prerequisites + coherence + status */
+  .c-title{font-family:var(--serif);font-size:20px;font-weight:600;margin-bottom:6px;}
+  .c-sum{min-height:46px;margin-bottom:4px;}
+  .c-min{width:72px !important;display:inline-block !important;padding:5px 8px !important;}
+  .prereqs{display:flex;flex-wrap:wrap;gap:8px 16px;margin:4px 0 4px;}
+  .chk{display:inline-flex;align-items:center;gap:6px;font-family:var(--sans);font-size:13px;color:var(--ink);margin:0;}
+  .chk input{width:auto;}
+  .badge{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:var(--dim);}
+  .badge[data-state="built"]{color:var(--good);border-color:var(--good);}
+  .badge[data-state="building"]{color:var(--teal);border-color:var(--teal);}
+  .badge[data-state="failed"]{color:var(--warn);border-color:var(--warn);}
+  .coh{margin-top:16px;border-top:1px solid var(--line);padding-top:14px;}
+  .coh-head{font-family:var(--mono);font-size:13px;margin-bottom:8px;}
+  .coh-head .ok{color:var(--good);} .coh-head .err{color:var(--warn);} .coh-head .warnc{color:var(--amber);}
+  .findings{list-style:none;padding:0;margin:0;}
+  .findings li{padding:8px 10px;border-radius:8px;margin:6px 0;font-size:14px;border:1px solid var(--line);}
+  .findings .f-error{border-color:var(--warn);background:rgba(154,92,69,0.08);}
+  .findings .f-warning{border-color:var(--amber);background:rgba(196,160,107,0.10);}
+  .f-tag{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;margin-right:8px;color:var(--faint);}
+  .f-error .f-tag{color:var(--warn);} .f-warning .f-tag{color:var(--amber);}
+  .intent-note{font-size:13px;color:var(--amber);font-family:var(--mono);margin-top:10px;}
   @media (max-width:760px){
     .row,.row3{grid-template-columns:1fr;}
     h1{font-size:30px;}
@@ -61,7 +82,8 @@
 <div class="wrap">
   <div class="eyebrow">Masterclass Factory</div>
   <h1>Curriculum Planner</h1>
-  <p class="sub">Describe a subject and Bernard proposes a sequenced syllabus — an ordered set of right-sized classes you can review and edit. Each class is built through the normal pipeline.</p>
+  <p class="sub">Describe a subject and Bernard proposes a sequenced syllabus — an ordered set of right-sized classes you can review, edit, and check for coherence before building.</p>
+  <div class="intent-note" id="intentNote"></div>
 
   <div class="panel">
     <label for="subject">Subject</label>
@@ -88,43 +110,148 @@
   function esc(s){ var d=document.createElement("div"); d.textContent=(s==null?"":String(s)); return d.innerHTML; }
   function setStatus(msg, warn){ $("status").innerHTML = warn ? "<span class='warn'>"+esc(msg)+"</span>" : esc(msg); }
 
+  // Mirror api/curriculum-store.js slugify so client-side prerequisite links
+  // line up with the slugs the server assigns on save.
+  function slugify(t){
+    return String(t==null?"":t).toLowerCase().replace(/['"]/g,"").replace(/[^a-z0-9]+/g,"-")
+      .replace(/^-+|-+$/g,"").replace(/\.+/g,"").slice(0,80) || "class";
+  }
+
+  var state = { plan:null, input:null, manifest:null };
+
+  // Front-door intent: "full" (plan + build) is what this page does today.
+  // "series" implies ingesting an existing curriculum — not built yet.
+  var intent = (new URLSearchParams(location.search)).get("intent") || "full";
+  if(intent === "series"){
+    $("intentNote").textContent = "Bringing an existing curriculum to support isn't wired up yet — for now, plan one here and build its classes.";
+  }
+
   function liList(items){
     if(!items || !items.length) return "<p class='hint'>—</p>";
     return "<ul>" + items.map(function(x){ return "<li>"+esc(x)+"</li>"; }).join("") + "</ul>";
   }
 
-  function renderPlan(plan){
-    var html = "";
-    html += "<div class='panel'>";
+  function classCard(c, i, all){
+    var prereqBoxes = all.map(function(o, j){
+      if(j === i) return "";
+      return "<label class='chk'><input type='checkbox' class='prereq' value='"+j+"' /> "+esc(o.title)+"</label>";
+    }).join("");
+    var html = "<div class='class-card' data-index='"+i+"'>";
+    html += "<div class='class-num'>Class "+(i+1)+"</div>";
+    html += "<input class='c-title' value='"+esc(c.title)+"' />";
+    html += "<textarea class='c-sum' placeholder='Short summary'>"+esc(c.summary||"")+"</textarea>";
+    html += "<div class='obj-h t'>Terminal objectives</div>"+liList(c.objectives.terminal);
+    html += "<div class='obj-h'>Enabling objectives</div>"+liList(c.objectives.enabling);
+    html += "<div class='obj-h'>Prerequisites <span class='hint'>(earlier classes this one builds on)</span></div>";
+    html += prereqBoxes ? "<div class='prereqs'>"+prereqBoxes+"</div>" : "<p class='hint'>No other classes to depend on yet.</p>";
+    html += "<div class='meta'>~ <input class='c-min' type='number' min='5' max='240' value='"+(c.suggested_minutes||50)+"' /> min";
+    html += " · <span class='badge' data-state='planned'>planned</span></div>";
+    html += "</div>";
+    return html;
+  }
+
+  function renderCanvas(plan, input){
+    state.plan = plan; state.input = input;
+    var html = "<div class='panel'>";
     html += "<div class='toolbar'><span class='count-pill'>"+plan.classes.length+" classes</span>";
     html += "<span class='hint'>"+esc(plan.subject)+" · "+esc(plan.level)+"</span></div>";
     if(plan.notes) html += "<p class='arc'>"+esc(plan.notes)+"</p>";
-    plan.classes.forEach(function(c){
-      html += "<div class='class-card'>";
-      html += "<div class='class-num'>Class "+c.order+"</div>";
-      html += "<h3>"+esc(c.title)+"</h3>";
-      if(c.summary) html += "<div class='class-sum'>"+esc(c.summary)+"</div>";
-      html += "<div class='obj-h t'>Terminal objectives</div>"+liList(c.objectives.terminal);
-      html += "<div class='obj-h'>Enabling objectives</div>"+liList(c.objectives.enabling);
-      html += "<div class='meta'>~"+c.suggested_minutes+" min</div>";
-      html += "</div>";
-    });
+    html += "<label for='programOutcome'>Program outcome <span class='hint'>(what the whole curriculum builds toward — checked against the class objectives)</span></label>";
+    html += "<textarea id='programOutcome' placeholder='By the end, learners can…'>"+esc(plan.notes||"")+"</textarea>";
+    html += "<div id='cards'>";
+    plan.classes.forEach(function(c, i){ html += classCard(c, i, plan.classes); });
+    html += "</div>";
     html += "<div class='toolbar' style='margin-top:16px'>";
-    html += "<button class='ghost' id='copyPlan'>Copy plan as JSON</button>";
-    html += "<span class='hint'>Building every class from this plan is the next step (orchestration). For now, review and refine the breakdown.</span>";
-    html += "</div></div>";
+    html += "<button class='primary' id='saveCur' style='margin-top:0'>Save &amp; check coherence</button>";
+    html += "<button class='ghost' id='copyPlan'>Copy as JSON</button>";
+    html += "</div>";
+    html += "<div id='coherence'></div>";
+    html += "</div>";
     $("result").innerHTML = html;
-    var copy = $("copyPlan");
-    if(copy) copy.addEventListener("click", function(){
-      try { navigator.clipboard.writeText(JSON.stringify(plan, null, 2)); setStatus("Plan copied to clipboard."); }
+
+    var save = $("saveCur"); if(save) save.addEventListener("click", saveCurriculum);
+    var copy = $("copyPlan"); if(copy) copy.addEventListener("click", function(){
+      try { navigator.clipboard.writeText(JSON.stringify(buildManifest(), null, 2)); setStatus("Copied to clipboard."); }
       catch(e){ setStatus("Couldn't copy — your browser blocked clipboard access.", true); }
     });
+  }
+
+  function buildManifest(){
+    var cards = Array.prototype.slice.call(document.querySelectorAll(".class-card"));
+    var titles = cards.map(function(card){ return (card.querySelector(".c-title").value || "").trim(); });
+    var classes = cards.map(function(card, i){
+      var prereqIdx = Array.prototype.slice.call(card.querySelectorAll(".prereq:checked")).map(function(cb){ return Number(cb.value); });
+      var prereqSlugs = prereqIdx.map(function(idx){ return slugify(titles[idx]); });
+      return {
+        title: titles[i],
+        summary: card.querySelector(".c-sum").value,
+        terminal: state.plan.classes[i].objectives.terminal,
+        enabling: state.plan.classes[i].objectives.enabling,
+        prerequisites: prereqSlugs,
+        suggested_minutes: Number(card.querySelector(".c-min").value) || 50,
+        order: i + 1
+      };
+    });
+    return {
+      title: state.input.subject,
+      subject: state.input.subject,
+      audience: state.input.audience,
+      level: state.input.level,
+      program_outcome: ($("programOutcome").value || "").trim(),
+      classes: classes
+    };
+  }
+
+  function renderCoherence(coh){
+    if(!coh){ $("coherence").innerHTML = ""; return; }
+    var s = coh.summary;
+    var head = coh.ok
+      ? "<span class='ok'>structurally sound</span>"
+      : "<span class='err'>"+s.errors+" issue"+(s.errors===1?"":"s")+" to fix</span>";
+    if(s.warnings) head += " · <span class='warnc'>"+s.warnings+" note"+(s.warnings===1?"":"s")+"</span>";
+    var html = "<div class='coh'><div class='coh-head'>Coherence: "+head+"</div>";
+    if(coh.findings && coh.findings.length){
+      var rank = { error:0, warning:1, info:2 };
+      var sorted = coh.findings.slice().sort(function(a,b){ return rank[a.severity]-rank[b.severity]; });
+      html += "<ul class='findings'>";
+      sorted.forEach(function(f){
+        html += "<li class='f-"+f.severity+"'><span class='f-tag'>"+f.severity+"</span>"+esc(f.message)+"</li>";
+      });
+      html += "</ul>";
+    } else {
+      html += "<p class='hint'>No issues found — prerequisites resolve, no cycles, objectives cover the outcome.</p>";
+    }
+    html += "</div>";
+    $("coherence").innerHTML = html;
+  }
+
+  function saveCurriculum(){
+    var manifest = buildManifest();
+    var btn = $("saveCur"); btn.disabled = true; var label = btn.textContent; btn.textContent = "Saving…";
+    setStatus("Saving curriculum and checking coherence…");
+    fetch("/api/curriculum-build", {
+      method:"POST", headers:{"content-type":"application/json"},
+      body: JSON.stringify({ action:"save", manifest:manifest, input:state.input })
+    })
+      .then(function(r){ return r.json().then(function(j){ return { ok:r.ok, j:j }; }); })
+      .then(function(res){
+        if(res.ok && res.j && res.j.ok){
+          state.manifest = res.j.manifest;
+          setStatus("Saved as \u201C"+res.j.manifest.slug+"\u201D. Coherence checked below.");
+          renderCoherence(res.j.coherence);
+        } else {
+          var err = (res.j && res.j.errors && res.j.errors.join("; ")) || (res.j && res.j.error) || "save failed";
+          setStatus("Save: "+err, true);
+        }
+      })
+      .catch(function(){ setStatus("Couldn't reach the curriculum service.", true); })
+      .finally(function(){ btn.disabled = false; btn.textContent = label; });
   }
 
   $("go").addEventListener("click", function(){
     var subject = ($("subject").value||"").trim();
     if(!subject){ setStatus("Enter a subject first.", true); return; }
-    var body = {
+    var input = {
       subject: subject,
       audience: ($("audience").value||"").trim(),
       level: $("level").value,
@@ -134,12 +261,12 @@
     var btn = $("go"); btn.disabled = true; var label = btn.textContent; btn.textContent = "Bernard is planning…";
     setStatus("Designing the syllabus — this can take a moment for a big subject.");
     $("result").innerHTML = "";
-    fetch("/api/curriculum", { method:"POST", headers:{"content-type":"application/json"}, body: JSON.stringify(body) })
+    fetch("/api/curriculum", { method:"POST", headers:{"content-type":"application/json"}, body: JSON.stringify(input) })
       .then(function(r){ return r.json().then(function(j){ return { ok:r.ok, j:j }; }); })
       .then(function(res){
         if(res.ok && res.j && res.j.ok && res.j.plan){
-          setStatus("Planned "+res.j.class_count+" classes."+(res.j.cost_usd!=null?(" (~$"+res.j.cost_usd.toFixed(4)+")"):""));
-          renderPlan(res.j.plan);
+          setStatus("Planned "+res.j.class_count+" classes."+(res.j.cost_usd!=null?(" (~$"+res.j.cost_usd.toFixed(4)+")"):"")+" Review, set prerequisites, then save.");
+          renderCanvas(res.j.plan, input);
         } else {
           var err = (res.j && res.j.error) || "couldn't plan the curriculum";
           setStatus("Planner: "+err+(res.j && res.j.details ? (" — "+res.j.details.join("; ")) : ""), true);
