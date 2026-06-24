@@ -100,6 +100,8 @@ test("synthesizes a contract-valid brief from a class", function () {
   assert.strictEqual(brief.length.minutes, 60);
   assert.strictEqual(brief.class_tier.level, "professional"); // advanced -> professional
   assert.strictEqual(brief.audience.average.background, "undergrads");
+  assert.strictEqual(brief.knowledge_base.research.owner, "ai"); // AI builds the KB as a first-class step
+  assert.strictEqual(brief.knowledge_base.research.allow_web, true);
 });
 test("returns null for an unknown class slug", function () {
   var m = S.makeManifest({ classes:[ { title:"A", terminal:["x"] } ] });

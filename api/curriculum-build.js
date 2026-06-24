@@ -108,6 +108,15 @@ function briefForClass(manifest, classSlug, template) {
     b.audience = JSON.parse(JSON.stringify(template.audience));
     b.audience.average = Object.assign({}, b.audience.average, { background: manifest.audience });
   }
+
+  // Curriculum classes are AI-researched by default: Bernard builds each class's
+  // knowledge base as a first-class step instead of forcing the generator's
+  // mid-build recovery path (which adds a research round and makes builds flakier).
+  // This is the intended "the AI builds the knowledge base."
+  b.knowledge_base = b.knowledge_base || JSON.parse(JSON.stringify(template.knowledge_base || {}));
+  b.knowledge_base.research = b.knowledge_base.research || {};
+  b.knowledge_base.research.owner = "ai";
+  b.knowledge_base.research.allow_web = true;
   return b;
 }
 

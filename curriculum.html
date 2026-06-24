@@ -265,6 +265,12 @@
 
   // ---- Build loop -------------------------------------------------------
   var building = false;
+  // Resilience: each class gets a few automatic attempts before it ever
+  // escalates to the human, and a single failure never dead-ends the whole
+  // build — Bernard presses on and surfaces stragglers at the end.
+  var MAX_RETRIES = 2;        // 3 attempts total per class
+  var attempts = {};          // slug -> attempts so far this run
+  var failures = [];          // { slug, msg } collected this run
 
   function renderBuild(manifest, coh){
     var rows = manifest.classes.map(function(c){
@@ -338,9 +344,35 @@
     if(msg) $("buildNote").innerHTML = warn ? ("<span class='warn'>"+esc(msg)+"</span>") : esc(msg);
   }
 
+  // Genuine edge case: a class exhausted its automatic attempts. Everything that
+  // could build, did. Tell the human exactly what's left and what went wrong,
+  // and offer one click to try the stragglers again — never a silent dead-end.
+  function escalateFailures(slug, v){
+    building = false;
+    var ba=$("buildAll"); if(ba){ ba.disabled=false; ba.textContent="Build remaining classes"; }
+    var built = (v && v.progress) ? v.progress.built : null;
+    var total = (v && v.progress) ? v.progress.total : null;
+    var last = failures[failures.length-1];
+    var msg = "Bernard built everything it could"+(built!=null?(" ("+built+" of "+total+")"):"")+". "+
+      failures.length+" class"+(failures.length===1?"":"es")+" couldn't finish after "+(MAX_RETRIES+1)+" attempts each"+
+      (last && last.msg ? (" \u2014 last issue: "+last.msg) : "")+".";
+    var box = $("buildNote");
+    box.innerHTML = "<span class='warn'>"+esc(msg)+"</span> ";
+    var rb = document.createElement("button");
+    rb.className = "primary mini";
+    rb.textContent = "Try the "+failures.length+" again";
+    rb.onclick = function(){
+      failures.forEach(function(f){ attempts[f.slug] = 0; });
+      failures = [];
+      buildAll(slug);
+    };
+    box.appendChild(rb);
+  }
+
   function buildAll(slug){
     if(building) return;
     building = true;
+    attempts = {}; failures = [];
     var ba=$("buildAll"); if(ba){ ba.disabled=true; ba.textContent="Building\u2026"; }
     $("buildNote").textContent = "Building in dependency order \u2014 a few minutes per class. Keep this tab open.";
     step(slug);
@@ -352,6 +384,7 @@
       v.manifest.classes.forEach(function(c){ if(c.status!=="building") setRow(c.slug, c.status, {url:c.class_url}); });
       if(!v.next){
         if(v.progress.done) finishBuild("All "+v.progress.total+" classes built. \uD83C\uDF89");
+        else if(failures.length) escalateFailures(slug, v);
         else finishBuild("No more classes can build automatically \u2014 some are blocked by a failed prerequisite.", true);
         return;
       }
@@ -372,9 +405,22 @@
         $("buildNote").innerHTML = "<span class='warn'>\u201C"+esc(classSlug)+"\u201D needs a decision \u2014 "+esc(out.msg)+". Build anyway, or stop.</span>";
         // loop stays paused until the row's Build anyway / Stop is used
       } else {
+        // A stumble is almost always infra, not knowledge. Auto-retry a few
+        // times with backoff before it ever asks for you; the human is the
+        // off-switch, not the first responder.
+        var n = (attempts[classSlug] = (attempts[classSlug] || 0) + 1);
+        if(n <= MAX_RETRIES){
+          setRow(classSlug, "building");
+          $("buildNote").textContent = "\u201C"+classSlug+"\u201D hit a snag \u2014 Bernard is retrying (attempt "+(n+1)+" of "+(MAX_RETRIES+1)+")\u2026";
+          setTimeout(function(){ runOne(slug, classSlug, brief, force); }, 1500 * n);
+          return;
+        }
+        // Out of automatic attempts: record it, but keep building everything
+        // else. Stragglers are surfaced together at the end.
+        failures.push({ slug: classSlug, msg: out.msg });
         postStatus(slug, classSlug, "failed").then(function(){
-          setRow(classSlug, "failed", { onRetry:function(){ setRow(classSlug,"building"); runOne(slug, classSlug, brief, false); } });
-          finishBuild("\u201C"+classSlug+"\u201D failed \u2014 "+out.msg, true);
+          setRow(classSlug, "failed");
+          step(slug);
         });
       }
     });
