@@ -103,6 +103,26 @@ test("synthesizes a contract-valid brief from a class", function () {
   assert.strictEqual(brief.knowledge_base.research.owner, "ai"); // AI builds the KB as a first-class step
   assert.strictEqual(brief.knowledge_base.research.allow_web, true);
 });
+test("applies shared setup (tier, KB ownership, demographics) and stays contract-valid", function () {
+  var BV = require("../brief-validator.js");
+  var template = require("../brief.template.json");
+  var m = S.makeManifest({ subject: "Org Chem", audience: "undergrads", level: "introductory", classes: [
+    { title: "Topic One", terminal: ["Explain one"], enabling: ["Define a"], suggested_minutes: 60 }
+  ] });
+  m.setup = S.normalizeSetup({
+    tier: "professional",
+    research_owner: "assisted",
+    audience: { education: "graduate", technical: "technical", role: "research chemists", tone: "academic", reading_grade_cap: 14 }
+  });
+  var brief = B.briefForClass(m, m.classes[0].slug);
+  assert.strictEqual(BV.validateBrief(brief, template).ok, true);
+  assert.strictEqual(brief.class_tier.level, "professional");           // shared tier wins over level mapping
+  assert.strictEqual(brief.knowledge_base.research.owner, "assisted");  // human+AI ownership
+  assert.strictEqual(brief.audience.average.technical, "technical");
+  assert.strictEqual(brief.audience.average.role, "research chemists");
+  assert.strictEqual(brief.audience.tone, "academic");
+  assert.strictEqual(brief.audience.accessibility.reading_grade_cap, 14);
+});
 test("returns null for an unknown class slug", function () {
   var m = S.makeManifest({ classes:[ { title:"A", terminal:["x"] } ] });
   assert.strictEqual(B.briefForClass(m, "nope"), null);

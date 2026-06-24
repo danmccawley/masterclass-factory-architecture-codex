@@ -74,6 +74,37 @@ function normalizeSourceArray(v) {
   return v.map(normalizeStoredSource).filter(Boolean).slice(0, 200);
 }
 
+/* Shared, curriculum-level setup that every class inherits via briefForClass:
+   one audience/demographics pass, one class tier, one knowledge-base ownership
+   choice. Values are clamped to the brief contract's enums so the synthesized
+   briefs stay valid. Returns null when no setup was provided (briefForClass then
+   falls back to its prior defaults). */
+var SETUP_TIERS = ["briefing", "standard", "professional", "expert"];
+var SETUP_OWNERS = ["creator", "assisted", "ai"]; // human / human+AI / AI
+var SETUP_TECH = ["non", "mixed", "technical"];
+var SETUP_TONES = ["plain", "warm", "executive", "academic", "workshop"];
+
+function oneOf(v, allowed, dflt) {
+  var s = String(v == null ? "" : v).toLowerCase().trim();
+  return allowed.indexOf(s) >= 0 ? s : dflt;
+}
+
+function normalizeSetup(raw) {
+  if (!raw || typeof raw !== "object") return null;
+  var a = (raw.audience && typeof raw.audience === "object") ? raw.audience : {};
+  return {
+    tier: oneOf(raw.tier || raw.class_tier, SETUP_TIERS, "standard"),
+    research_owner: oneOf(raw.research_owner || raw.owner, SETUP_OWNERS, "ai"),
+    audience: {
+      education: cleanText(a.education, 120),
+      technical: oneOf(a.technical, SETUP_TECH, "mixed"),
+      role: cleanText(a.role, 120),
+      tone: oneOf(a.tone, SETUP_TONES, "plain"),
+      reading_grade_cap: clampInt(a.reading_grade_cap, 3, 16, 9)
+    }
+  };
+}
+
 /* --------------------------------------------------------------------------
    Manifest construction + normalization
 -------------------------------------------------------------------------- */
@@ -118,7 +149,8 @@ function normalizeManifest(raw, input) {
   classes.forEach(function (c, i) { c.order = i + 1; });
 
   var core = raw.knowledge_core && typeof raw.knowledge_core === "object" ? raw.knowledge_core : {};
-  return {
+  var setup = normalizeSetup(raw.setup);
+  var manifest = {
     schema: "curriculum/v1",
     id: slug,
     slug: slug,
@@ -137,6 +169,10 @@ function normalizeManifest(raw, input) {
     },
     classes: classes
   };
+  // Optional: only present once a setup pass has been done, so existing
+  // curricula and the prior behavior are untouched until setup is chosen.
+  if (setup) manifest.setup = setup;
+  return manifest;
 }
 
 function makeManifest(input) {
@@ -322,6 +358,7 @@ module.exports = {
   slugify: slugify,
   makeManifest: makeManifest,
   normalizeManifest: normalizeManifest,
+  normalizeSetup: normalizeSetup,
   planToManifest: planToManifest,
   validateManifest: validateManifest,
   setClassStatus: setClassStatus,
@@ -332,6 +369,7 @@ module.exports = {
   writeManifest: writeManifest,
   _internal: {
     slugify: slugify, makeManifest: makeManifest, normalizeManifest: normalizeManifest,
+    normalizeSetup: normalizeSetup,
     planToManifest: planToManifest, validateManifest: validateManifest,
     setClassStatus: setClassStatus, buildProgress: buildProgress, manifestToBriefs: manifestToBriefs
   }

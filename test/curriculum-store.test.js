@@ -126,6 +126,30 @@ test("manifestToBriefs yields contract-shaped partial briefs with curriculumId",
   assert.strictEqual(briefs[0].curriculumId, m.slug);
 });
 
+group("normalizeSetup (shared curriculum setup)");
+test("clamps to contract enums and survives a manifest round-trip", function () {
+  var m = S.makeManifest({ subject: "X", classes: [{ title: "A", terminal: ["t"] }] });
+  m.setup = S.normalizeSetup({ tier: "EXPERT", research_owner: "assisted", audience: { technical: "Technical", tone: "academic", reading_grade_cap: 99, role: "engineers" } });
+  assert.strictEqual(m.setup.tier, "expert");
+  assert.strictEqual(m.setup.research_owner, "assisted");
+  assert.strictEqual(m.setup.audience.technical, "technical");
+  assert.strictEqual(m.setup.audience.reading_grade_cap, 16); // clamped to max
+  var round = S.normalizeManifest(JSON.parse(JSON.stringify(m)));
+  assert.deepStrictEqual(round.setup, m.setup);
+});
+test("invalid values fall back to safe defaults", function () {
+  var s = S.normalizeSetup({ tier: "nonsense", research_owner: "nobody", audience: { technical: "?", tone: "?" } });
+  assert.strictEqual(s.tier, "standard");
+  assert.strictEqual(s.research_owner, "ai");
+  assert.strictEqual(s.audience.technical, "mixed");
+  assert.strictEqual(s.audience.tone, "plain");
+});
+test("absent setup yields null (manifest stays setup-free)", function () {
+  assert.strictEqual(S.normalizeSetup(undefined), null);
+  var m = S.makeManifest({ subject: "X", classes: [{ title: "A", terminal: ["t"] }] });
+  assert.ok(!("setup" in m));
+});
+
 console.log("\n" + "=".repeat(60));
 console.log("CURRICULUM-STORE RESULTS: " + passed + " passed, " + failed + " failed");
 if (failed) { console.log("\nFAILURES:"); failures.forEach(function (f) { console.log("  - " + f.name + ": " + f.message); }); process.exit(1); }

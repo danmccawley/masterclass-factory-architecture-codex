@@ -99,23 +99,39 @@ function briefForClass(manifest, classSlug, template) {
     slide_budget: Math.max(10, Math.min(400, Math.round(cls.suggested_minutes * 1.5)))
   });
 
-  // Curriculum "level" (introductory..advanced) loosely maps onto the class tier.
-  var tierMap = { introductory: "standard", intermediate: "standard", advanced: "professional", mixed: "standard" };
-  b.class_tier = { level: tierMap[String(manifest.level || "").toLowerCase()] || template.class_tier.level };
+  // Shared, curriculum-level setup (audience/demographics + tier + KB ownership)
+  // that every class inherits. Absent => prior behavior (tier from level, AI owns
+  // research, free-text audience only).
+  var setup = (manifest && manifest.setup && typeof manifest.setup === "object") ? manifest.setup : null;
 
-  // Preserve the curriculum audience as free text without breaking the structured contract.
-  if (manifest.audience) {
+  // Curriculum "level" (introductory..advanced) loosely maps onto the class tier;
+  // an explicit shared tier wins.
+  var tierMap = { introductory: "standard", intermediate: "standard", advanced: "professional", mixed: "standard" };
+  b.class_tier = { level: (setup && setup.tier) || tierMap[String(manifest.level || "").toLowerCase()] || template.class_tier.level };
+
+  // Audience: keep the free-text curriculum audience as background; layer the
+  // shared structured demographics on top when a setup pass has been done.
+  if (manifest.audience || setup) {
     b.audience = JSON.parse(JSON.stringify(template.audience));
-    b.audience.average = Object.assign({}, b.audience.average, { background: manifest.audience });
+    if (manifest.audience) b.audience.average = Object.assign({}, b.audience.average, { background: manifest.audience });
+    if (setup && setup.audience) {
+      var sa = setup.audience;
+      b.audience.average = Object.assign({}, b.audience.average, {
+        education: sa.education || b.audience.average.education,
+        technical: sa.technical || b.audience.average.technical,
+        role: sa.role || b.audience.average.role
+      });
+      b.audience.tone = sa.tone || b.audience.tone;
+      b.audience.accessibility = Object.assign({}, b.audience.accessibility, { reading_grade_cap: sa.reading_grade_cap });
+    }
   }
 
-  // Curriculum classes are AI-researched by default: Bernard builds each class's
-  // knowledge base as a first-class step instead of forcing the generator's
-  // mid-build recovery path (which adds a research round and makes builds flakier).
-  // This is the intended "the AI builds the knowledge base."
+  // Knowledge-base ownership: the shared choice (creator / assisted / ai), else
+  // AI by default — Bernard builds each class's KB as a first-class step rather
+  // than forcing the generator's slower mid-build recovery path.
   b.knowledge_base = b.knowledge_base || JSON.parse(JSON.stringify(template.knowledge_base || {}));
   b.knowledge_base.research = b.knowledge_base.research || {};
-  b.knowledge_base.research.owner = "ai";
+  b.knowledge_base.research.owner = (setup && setup.research_owner) || "ai";
   b.knowledge_base.research.allow_web = true;
   return b;
 }
