@@ -13,6 +13,7 @@ const llm = require("./llm.js");
 // concurrency is enabled, thread the ledger through call args instead.
 let _costLedger = null;
 let _engine = null; // { provider, model } for this build; null => OpenAI default
+let _engineKey = ""; // optional bring-your-own API key for this build; "" => env key
 function recordOpenAISpend(payload, model) {
   if (!_costLedger) return;
   const u = readOpenAIUsage(payload);
@@ -1609,7 +1610,13 @@ async function requestOpenAIJson(stage, system, user, maxTokens) {
   // Authoring now goes through the provider abstraction (api/llm.js). Default is
   // OpenAI, so behavior is unchanged unless the brief selects another provider.
   const providerWanted = _engine && _engine.provider ? _engine.provider : "openai";
-  const provider = llm.resolveProvider(providerWanted);
+  // With a bring-your-own key, honor the explicitly chosen provider even when the
+  // server has no env key for it. Without a key, resolve against configured
+  // providers exactly as before. This prevents a user key from being routed to a
+  // provider they did not choose (resolveProvider would otherwise fall back).
+  const provider = _engineKey
+    ? String(providerWanted || "").trim().toLowerCase()
+    : llm.resolveProvider(providerWanted);
   const opts = {
     provider: provider,
     stage: stage,
@@ -1623,6 +1630,7 @@ async function requestOpenAIJson(stage, system, user, maxTokens) {
   // otherwise use the chosen/default model for the selected provider.
   if (provider === "openai") opts.models = configuredModels();
   else if (_engine && _engine.model) opts.model = _engine.model;
+  if (_engineKey) opts.apiKey = _engineKey;
 
   const result = await llm.completeJson(opts);
 
@@ -3485,6 +3493,11 @@ module.exports = async function generateHandler(req, res) {
     _engine = (brief && brief.engine && typeof brief.engine === "object")
       ? { provider: brief.engine.provider, model: brief.engine.model }
       : null;
+    // Optional bring-your-own-key, passed OUT-OF-BAND as top-level body.api_key —
+    // never on the brief, so it cannot reach the repo datastore via any persisted
+    // manifest/class file. Reset every request so a key never leaks across
+    // serverless invocations. Used in-memory by the provider call; never logged.
+    _engineKey = (body && typeof body.api_key === "string") ? body.api_key.trim() : "";
     const result = validateBrief(sanitizeBriefForValidation(brief), template);
     if (!result.ok) {
       send(res, 422, { ok: false, errors: result.errors });
@@ -3732,6 +3745,28 @@ module.exports = async function generateHandler(req, res) {
       publish,
       class_url: publish.status === "published" ? publish.expected_url : null,
       knowledge_base_sealed: knowledgeBaseSealed,
+      // The sealed source list this class is grounded in, projected for the
+      // curriculum build loop to harvest into the shared knowledge_core
+      // bibliography (api/curriculum-bibliography.js). Honest projection: the
+      // title falls back to the URL when the discovery layer captured none.
+      // Downstream de-dupes, so concatenating added_sources is harmless.
+      knowledge_base_sources: (function () {
+        var kb = effectiveBrief && effectiveBrief.knowledge_base;
+        var uploads = (kb && Array.isArray(kb.uploads)) ? kb.uploads : [];
+        var added = (sourceDiscovery && Array.isArray(sourceDiscovery.added_sources)) ? sourceDiscovery.added_sources : [];
+        return uploads.concat(added).map(function (u) {
+          var path = (u && (u.path || u.url)) || "";
+          var trust = String((u && u.trust) || "").toLowerCase();
+          if (["primary", "secondary", "unknown"].indexOf(trust) < 0) trust = "unknown";
+          return {
+            path: path,
+            title: (u && (u.title || u.label || u.name)) || "",
+            trust: trust,
+            primary: trust === "primary",
+            published: (u && (u.published || u.date || u.year)) || ""
+          };
+        }).filter(function (s) { return s.path; });
+      })(),
       advancement_opportunity: advancementOpportunity
     });
   } catch (error) {

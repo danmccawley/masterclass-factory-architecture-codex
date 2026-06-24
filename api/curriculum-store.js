@@ -46,6 +46,34 @@ function clampInt(v, lo, hi, dflt) {
 
 function nowIso() { return new Date().toISOString(); }
 
+/* A class's harvested sources live on the manifest and must survive GitHub
+   read/write round-trips intact. The store owns its own light sanitizer (shape
+   + length clamps) so it has no dependency on the bibliography engine; records
+   the engine produces already satisfy this shape and pass through unchanged. */
+function normalizeStoredSource(raw) {
+  raw = raw && typeof raw === "object" ? raw : {};
+  var path = cleanText(raw.path || raw.url || "", 600);
+  var title = cleanText(raw.title || "", 300);
+  if (!path && !title) return null;
+  var trust = ["primary", "secondary", "unknown"].indexOf(String(raw.trust || "").toLowerCase()) >= 0
+    ? String(raw.trust).toLowerCase() : "unknown";
+  var primary = raw.primary === true || trust === "primary";
+  if (primary) trust = "primary";
+  return {
+    path: path,
+    title: title || path,
+    trust: trust,
+    primary: primary,
+    published: cleanText(raw.published || raw.date || raw.year || "", 40),
+    cited_by: asStringArray(raw.cited_by, 60)
+  };
+}
+
+function normalizeSourceArray(v) {
+  if (!Array.isArray(v)) return [];
+  return v.map(normalizeStoredSource).filter(Boolean).slice(0, 200);
+}
+
 /* --------------------------------------------------------------------------
    Manifest construction + normalization
 -------------------------------------------------------------------------- */
@@ -72,7 +100,8 @@ function normalizeClass(raw, index, seenSlugs) {
     assessment: cleanText(raw.assessment, 600),
     suggested_minutes: clampInt(raw.suggested_minutes, 5, 240, 50),
     status: status,
-    class_url: cleanText(raw.class_url, 400)
+    class_url: cleanText(raw.class_url, 400),
+    sources: normalizeSourceArray(raw.sources)
   };
 }
 
@@ -103,7 +132,8 @@ function normalizeManifest(raw, input) {
     knowledge_core: {
       shared: core.shared !== false,
       sealed: core.sealed === true,
-      sources: Array.isArray(core.sources) ? core.sources : []
+      sources: Array.isArray(core.sources) ? core.sources : [],
+      compiled_at: cleanText(core.compiled_at, 40)
     },
     classes: classes
   };

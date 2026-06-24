@@ -16,6 +16,7 @@
 
 const store = require("./curriculum-store.js");
 const coherence = require("./curriculum-coherence.js");
+const bib = require("./curriculum-bibliography.js");
 const briefTemplate = require("../brief.template.json");
 
 /* --------------------------------------------------------------------------
@@ -134,10 +135,13 @@ function readBody(req) {
 
 function view(manifest) {
   var next = nextBuildable(manifest);
+  var biblio = bib.bibliography(manifest);
   return {
     manifest: manifest,
     progress: store.buildProgress(manifest),
     coherence: coherence.analyzeCoherence(manifest),
+    bibliography: biblio,
+    bibliography_summary: bib.summarize(biblio),
     next: next,
     next_brief: next ? briefForClass(manifest, next) : null
   };
@@ -180,6 +184,13 @@ module.exports = async function curriculumBuildHandler(req, res) {
       var current = await store.readManifest(body.slug);
       if (!current) { send(res, 404, { ok: false, errors: ["No curriculum with that slug."] }); return; }
       var updated = store.setClassStatus(current.manifest, body.class, body.status, { class_url: body.class_url });
+      // Harvest the class's cited sources into the shared knowledge_core as it
+      // completes. Only on a successful build, and only when sources arrived —
+      // never wipe a prior harvest on a status flip with no payload.
+      if (body.status === "built" && Array.isArray(body.sources) && body.sources.length) {
+        updated = bib.recordClassSources(updated, body.class, body.sources);
+        updated = bib.rollUpKnowledgeCore(updated);
+      }
       await store.writeManifest(updated, current.sha);
       send(res, 200, Object.assign({ ok: true }, view(updated)));
       return;

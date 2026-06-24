@@ -310,9 +310,9 @@
     return fetch("/api/curriculum-build?slug="+encodeURIComponent(slug), {cache:"no-store"})
       .then(function(r){ return r.json(); }).catch(function(){ return null; });
   }
-  function postStatus(curSlug, classSlug, st, url){
+  function postStatus(curSlug, classSlug, st, url, sources){
     return fetch("/api/curriculum-build", {method:"POST",headers:{"content-type":"application/json"},
-      body: JSON.stringify({ action:"status", slug:curSlug, class:classSlug, status:st, class_url:url||"" })})
+      body: JSON.stringify({ action:"status", slug:curSlug, class:classSlug, status:st, class_url:url||"", sources:(sources||[]) })})
       .then(function(r){ return r.json(); }).catch(function(){ return null; });
   }
   function generateClass(brief, force){
@@ -324,7 +324,7 @@
       .then(function(r){ return r.json().then(function(j){ return j; }); })
       .then(function(j){
         j = j || {};
-        if(j.status==="published" || j.status==="not_configured") return { kind:"built", url:j.expected_url||"" };
+        if(j.status==="published" || j.status==="not_configured") return { kind:"built", url:j.expected_url||"", sources:(j.knowledge_base_sources||[]) };
         if(j.resolution) return { kind:"review", msg:(j.message || j.resolution) };
         return { kind:"error", msg:(j.errors?j.errors.join("; "):(j.error||"generation failed")) };
       })
@@ -362,7 +362,7 @@
   function runOne(slug, classSlug, brief, force){
     generateClass(brief, force).then(function(out){
       if(out.kind==="built"){
-        postStatus(slug, classSlug, "built", out.url).then(function(){ setRow(classSlug, "built", {url:out.url}); step(slug); });
+        postStatus(slug, classSlug, "built", out.url, out.sources).then(function(){ setRow(classSlug, "built", {url:out.url}); step(slug); });
       } else if(out.kind==="review"){
         setRow(classSlug, "review", {
           onProceed:function(){ setRow(classSlug,"building"); runOne(slug, classSlug, brief, true); },

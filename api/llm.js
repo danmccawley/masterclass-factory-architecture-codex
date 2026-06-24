@@ -218,18 +218,33 @@ function shouldRetry(status, message) {
     (/model/i.test(message || "") && /not found|does not exist|unsupported|invalid|access/i.test(message || ""));
 }
 
+/* Decide which provider authors the call and which key it uses. Bring-your-own-
+   key (req.apiKey) is honored ONLY for an explicitly requested, KNOWN provider,
+   so a user-supplied key is never sent to a provider they did not choose. With
+   no apiKey, resolution and keys are env-based, exactly as before. The key is
+   used in-memory only — never persisted, never logged. */
+function resolveCall(req) {
+  req = req || {};
+  const wanted = String(req.provider || "").trim().toLowerCase();
+  const byok = req.apiKey ? String(req.apiKey).trim() : "";
+  const useByok = Boolean(byok && PROVIDERS[wanted]);
+  const providerId = useByok ? wanted : resolveProvider(req.provider);
+  return { providerId: providerId, key: useByok ? byok : providerKey(providerId), useByok: useByok };
+}
+
 /* Core call. Behavior-preserving for OpenAI JSON authoring (temp/json/usage). */
 async function completeJson(req) {
   req = req || {};
   const jsonMode = req.jsonMode !== false; // default true
-  const providerId = resolveProvider(req.provider);
+  const decided = resolveCall(req);
+  const providerId = decided.providerId;
   const provider = PROVIDERS[providerId];
-  const key = providerKey(providerId);
+  const key = decided.key;
   const stage = req.stage || "model call";
 
   if (!provider) throw stageError(stage, "Unknown provider \"" + req.provider + "\".");
   if (!key) {
-    throw stageError(stage, provider.label + " is not configured. Set " + provider.keyEnv.join(" or ") + " in the environment.");
+    throw stageError(stage, provider.label + " is not configured. Set " + provider.keyEnv.join(" or ") + " in the environment, or supply your own API key.");
   }
 
   const models = (Array.isArray(req.models) && req.models.length)
@@ -318,5 +333,5 @@ module.exports = {
   resolveProvider: resolveProvider,
   isAvailable: isAvailable,
   DEFAULT_PROVIDER: DEFAULT_PROVIDER,
-  _internal: { PROVIDERS: PROVIDERS, parseJson: parseJson, stripFences: stripFences, providerKey: providerKey }
+  _internal: { PROVIDERS: PROVIDERS, parseJson: parseJson, stripFences: stripFences, providerKey: providerKey, resolveCall: resolveCall }
 };
