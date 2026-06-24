@@ -1,3 +1,4 @@
+const llm = require("./llm.js");
 const DEFAULT_OPENAI_MODEL = "gpt-5.5";
 const FALLBACK_OPENAI_MODELS = ["gpt-5.4", "gpt-4.1-mini"];
 const KEY_PREFIX = ["s", "k"].join("") + "-";
@@ -150,47 +151,31 @@ function clampNumber(value, fallback, min, max, roundToTen) {
   return Math.max(min, Math.min(max, rounded));
 }
 
-async function requestGenie(body, model) {
-  const response = await fetch("https://api.openai.com/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      authorization: `Bearer ${openAIKey()}`,
-      "content-type": "application/json"
-    },
-    body: JSON.stringify({
-      model,
-      temperature: 0.2,
-      response_format: { type: "json_object" },
-      messages: [
-        {
-          role: "system",
-          content: "You are Bernard for the Masterclass Factory. Output only valid JSON with answer and recommendation keys. Use OpenAI only. Keep advice practical for nontechnical users. Never recommend shortening a class because learners are technical or familiar; add depth instead."
-        },
-        { role: "user", content: buildPrompt(body) }
-      ]
-    })
-  });
+function engineFromBody(body) {
+  const e = body && body.brief && body.brief.engine;
+  return (e && typeof e === "object") ? { provider: e.provider, model: e.model } : { provider: "openai" };
+}
 
-  const openaiPayload = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    return {
-      ok: false,
-      status: response.status,
-      message: openAIError(openaiPayload),
-      model
-    };
-  }
+async function requestGenie(body) {
+  const engine = engineFromBody(body);
+  const provider = llm.resolveProvider(engine.provider);
+  const opts = {
+    provider: provider,
+    stage: "Bernard",
+    temperature: 0.2,
+    jsonMode: true,
+    system: "You are Bernard for the Masterclass Factory. Output only valid JSON with answer and recommendation keys. Keep advice practical for nontechnical users. Never recommend shortening a class because learners are technical or familiar; add depth instead.",
+    user: buildPrompt(body)
+  };
+  // Preserve the OpenAI model ladder; other providers use their chosen/default model.
+  if (provider === "openai") opts.models = configuredModels();
+  else if (engine.model) opts.model = engine.model;
 
-  const content = openaiPayload &&
-    openaiPayload.choices &&
-    openaiPayload.choices[0] &&
-    openaiPayload.choices[0].message &&
-    openaiPayload.choices[0].message.content;
-  const parsed = JSON.parse(content || "{}");
-
+  const result = await llm.completeJson(opts);
+  const parsed = result.data || {};
   return {
-    ok: true,
-    model,
+    provider: result.provider,
+    model: result.model,
     answer: String(parsed.answer || "Bernard reviewed this step.").trim(),
     recommendation: normalizeRecommendation(parsed.recommendation || {}, body.brief || {})
   };
@@ -212,34 +197,35 @@ module.exports = async function genieHandler(req, res) {
     return;
   }
 
-  const keyError = validateOpenAIKey(openAIKey());
-  if (keyError) {
-    send(res, 503, { ok: false, errors: [keyError] });
-    return;
-  }
-
   try {
-    const body = await readBody(req);
-    let failed;
-    for (const model of configuredModels()) {
-      const result = await requestGenie(body, model);
-      if (result.ok) {
-        send(res, 200, {
-          ok: true,
-          model: result.model,
-          answer: result.answer,
-          recommendation: result.recommendation
-        });
-        return;
-      }
-      failed = result;
-      if (!shouldTryNextModel(result.status, result.message)) break;
+    let body;
+    try {
+      body = await readBody(req);
+    } catch (bodyError) {
+      send(res, 400, { ok: false, errors: [safeErrorMessage(bodyError.message)] });
+      return;
     }
-    send(res, failed.status || 502, {
-      ok: false,
-      errors: [`OpenAI API error using ${failed.model}: ${safeErrorMessage(failed.message)}`]
+
+    // Provider-aware gate: 503 only if the CHOSEN provider isn't configured.
+    // Default is OpenAI, so the original behavior and message are preserved.
+    const engine = engineFromBody(body);
+    const provider = llm.resolveProvider(engine.provider);
+    if (!llm.isAvailable(provider)) {
+      const msg = provider === "openai"
+        ? validateOpenAIKey(openAIKey())
+        : "AI assistance is not connected for the selected provider. Set its API key in Vercel, then redeploy.";
+      send(res, 503, { ok: false, errors: [msg || "The selected AI provider is not configured."] });
+      return;
+    }
+
+    const result = await requestGenie(body);
+    send(res, 200, {
+      ok: true,
+      model: result.model,
+      answer: result.answer,
+      recommendation: result.recommendation
     });
   } catch (error) {
-    send(res, 400, { ok: false, errors: [safeErrorMessage(error.message)] });
+    send(res, 502, { ok: false, errors: [safeErrorMessage(error.message)] });
   }
 };
