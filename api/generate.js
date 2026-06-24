@@ -4,6 +4,7 @@ const { validateBrief } = require("../brief-validator.js");
 const template = require("../brief.template.json");
 const { readOpenAIUsage, createBudgetLedger } = require("./kb-budget.js");
 const { resolveThemeCss } = require("./theme.js")._internal;
+const llm = require("./llm.js");
 
 // Per-build cost ledger. Set at the start of each generate request and recorded
 // into at every OpenAI/Tavily call site, so the build's real spend is tracked.
@@ -11,6 +12,7 @@ const { resolveThemeCss } = require("./theme.js")._internal;
 // generate per instance (the standard Node serverless model). If request-level
 // concurrency is enabled, thread the ledger through call args instead.
 let _costLedger = null;
+let _engine = null; // { provider, model } for this build; null => OpenAI default
 function recordOpenAISpend(payload, model) {
   if (!_costLedger) return;
   const u = readOpenAIUsage(payload);
@@ -46,8 +48,8 @@ function sanitizeBriefForValidation(brief) {
     }
   }
   // budget_usd is an optional governor field, also outside the strict contract.
-  // budget_usd and theme are optional fields outside the strict contract.
-  if (clone) { delete clone.budget_usd; delete clone.theme; }
+  // budget_usd, theme, and engine are optional fields outside the strict contract.
+  if (clone) { delete clone.budget_usd; delete clone.theme; delete clone.engine; }
   return clone;
 }
 
@@ -1604,54 +1606,40 @@ function parseJsonPayload(content) {
 }
 
 async function requestOpenAIJson(stage, system, user, maxTokens) {
-  const key = openAIKey();
-  const keyError = validateOpenAIKey(key);
-  if (keyError) {
-    const error = new Error(keyError);
+  // Authoring now goes through the provider abstraction (api/llm.js). Default is
+  // OpenAI, so behavior is unchanged unless the brief selects another provider.
+  const providerWanted = _engine && _engine.provider ? _engine.provider : "openai";
+  const provider = llm.resolveProvider(providerWanted);
+  const opts = {
+    provider: provider,
+    stage: stage,
+    system: system,
+    user: user,
+    maxTokens: maxTokens || 1800,
+    temperature: 0.18,
+    jsonMode: true
+  };
+  // Preserve the exact OpenAI model-fallback ladder when authoring on OpenAI;
+  // otherwise use the chosen/default model for the selected provider.
+  if (provider === "openai") opts.models = configuredModels();
+  else if (_engine && _engine.model) opts.model = _engine.model;
+
+  const result = await llm.completeJson(opts);
+
+  if (result.usage && _costLedger && result.usage.total_tokens > 0) {
+    _costLedger.record({
+      kind: result.provider,
+      model: result.model,
+      input_tokens: result.usage.input_tokens,
+      output_tokens: result.usage.output_tokens
+    });
+  }
+  if (result.data == null) {
+    const error = new Error(`${stage} failed: model returned unparseable JSON.`);
     error.stage = stage;
     throw error;
   }
-
-  let failed;
-  for (const model of configuredModels()) {
-    try {
-      const response = await fetch("https://api.openai.com/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          authorization: `Bearer ${key}`,
-          "content-type": "application/json"
-        },
-        body: JSON.stringify({
-          model,
-          temperature: 0.18,
-          max_tokens: maxTokens || 1800,
-          response_format: { type: "json_object" },
-          messages: [
-            { role: "system", content: system },
-            { role: "user", content: user }
-          ]
-        })
-      });
-      const payload = await response.json().catch(() => ({}));
-      if (!response.ok) {
-        const message = openAIError(payload);
-        failed = { status: response.status, message, model };
-        if (shouldTryNextModel(response.status, message)) continue;
-        throw new Error(message);
-      }
-      const content = payload && payload.choices && payload.choices[0] && payload.choices[0].message && payload.choices[0].message.content;
-      recordOpenAISpend(payload, model);
-      return { model, data: parseJsonPayload(content) };
-    } catch (error) {
-      failed = { status: 0, message: safeErrorMessage(error.message || error), model };
-      if (!shouldTryNextModel(0, failed.message)) break;
-    }
-  }
-
-  const message = failed ? failed.message : "OpenAI API request failed.";
-  const error = new Error(`${stage} failed: ${message}`);
-  error.stage = stage;
-  throw error;
+  return { model: result.model, data: result.data };
 }
 
 function compactBrief(brief) {
@@ -3493,6 +3481,10 @@ module.exports = async function generateHandler(req, res) {
     _costLedger = createBudgetLedger(
       Number((body && body.budget_usd) || (brief && brief.budget_usd) || 0)
     );
+    // Which model provider authors this build. Optional; absent => OpenAI default.
+    _engine = (brief && brief.engine && typeof brief.engine === "object")
+      ? { provider: brief.engine.provider, model: brief.engine.model }
+      : null;
     const result = validateBrief(sanitizeBriefForValidation(brief), template);
     if (!result.ok) {
       send(res, 422, { ok: false, errors: result.errors });

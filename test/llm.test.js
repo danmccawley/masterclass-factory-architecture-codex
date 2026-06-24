@@ -78,6 +78,19 @@ function clearKeys() {
   ok("returns raw text", r.text === "hello world");
   ok("data null in text mode", r.data === null);
 
+  console.log("# Model-ladder fallback (unavailable model -> next)");
+  clearKeys(); process.env.OPENAI_API_KEY = "sk-test";
+  let calls = 0;
+  global.fetch = async function (url, opts) {
+    lastReq = { url: url, headers: opts.headers, body: JSON.parse(opts.body || "{}") };
+    calls++;
+    if (calls === 1) return { ok: false, status: 404, json: async function () { return { error: { message: "The model `gpt-x` does not exist" } }; } };
+    return { ok: true, status: 200, json: async function () { return { choices: [{ message: { content: '{"ok":true}' } }], usage: {} }; } };
+  };
+  r = await llm.completeJson({ provider: "openai", models: ["gpt-x", "gpt-fallback"], user: "U", stage: "t" });
+  eq("falls through to second model on 404", r.model, "gpt-fallback");
+  ok("two fetch attempts made", calls === 2);
+
   console.log("# Missing key surfaces a clear error");
   clearKeys();
   let threw = false;

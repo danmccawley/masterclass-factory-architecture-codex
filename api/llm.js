@@ -209,8 +209,12 @@ function resolveProvider(requested) {
   return want && PROVIDERS[want] ? want : DEFAULT_PROVIDER; // let the call surface a clear key error
 }
 
-function shouldRetry(status) {
-  return status === 429 || (status >= 500 && status < 600) || status === 0;
+function shouldRetry(status, message) {
+  if (status === 401) return false; // auth failure — the next model won't help
+  if (status === 429 || (status >= 500 && status < 600) || status === 0) return true; // transient
+  // Model-availability: traverse the ladder when a model is missing/unsupported.
+  return status === 400 || status === 403 || status === 404 ||
+    (/model/i.test(message || "") && /not found|does not exist|unsupported|invalid|access/i.test(message || ""));
 }
 
 /* Core call. Behavior-preserving for OpenAI JSON authoring (temp/json/usage). */
@@ -255,7 +259,7 @@ async function completeJson(req) {
       if (!response.ok) {
         const message = errorMessage(payload, response.status);
         failed = { status: response.status, message: message, model: model };
-        if (shouldRetry(response.status) && i < models.length - 1) continue;
+        if (shouldRetry(response.status, message) && i < models.length - 1) continue;
         throw stageError(stage, message);
       }
       const text = provider.extract(payload) || "";
