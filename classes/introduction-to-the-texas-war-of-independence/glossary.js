@@ -1,44 +1,64 @@
 /* Generated glossary. term -> {d, r}. */
 window.GLOSSARY = {
   "texas war of independence": {
-    "d": "A conflict from October 1835 to April 1836 in which Texian settlers fought to gain independence from Mexican rule.",
-    "r": "It marks the creation of the Republic of Texas and shaped the territorial and political landscape of the United States."
+    "d": "A conflict from October 1835 to April 1836 where Texian settlers rebelled against Mexican rule to establish the Republic of Texas.",
+    "r": "It marks a key moment in American history that led to the creation of Texas as an independent republic and influenced U.S. territorial expansion."
   },
   "texian": {
-    "d": "A term used to describe Anglo-American settlers and residents of Texas during the revolution period.",
-    "r": "Understanding who the Texians were helps explain the cultural and political tensions leading to the revolution."
-  },
-  "republic of texas": {
-    "d": "The independent nation established by Texians after winning the war, existing from 1836 to 1845.",
-    "r": "Its constitution and policies influenced regional politics and the eventual annexation of Texas by the U.S."
-  },
-  "texas declaration of independence": {
-    "d": "The formal document adopted on March 2, 1836, declaring Texas independent from Mexico.",
-    "r": "It provides primary evidence of the reasons for revolution and the legal basis for Texas’s independence."
-  },
-  "sam houston": {
-    "d": "Leader of Texian forces and commander at the decisive Battle of San Jacinto.",
-    "r": "His leadership was crucial to Texian victory and the establishment of the Republic of Texas."
-  },
-  "battle of san jacinto": {
-    "d": "The final and decisive battle of the Texas Revolution where Texian forces defeated the Mexican army.",
-    "r": "It effectively ended the war and secured Texas independence."
+    "d": "A term used to describe settlers of Texas, mostly American-born, who participated in the Texas Revolution.",
+    "r": "Understanding who the Texians were helps explain the cultural and political tensions that fueled the revolution."
   },
   "coahuila y tejas": {
-    "d": "The Mexican state that included Texas during the early 19th century.",
-    "r": "Its political structure and laws affected settlers and contributed to tensions leading to the revolution."
+    "d": "The Mexican state that included Texas during the early 19th century, bordering the United States and the Gulf of Mexico.",
+    "r": "Knowing this political region clarifies Texas's status under Mexican governance before independence."
   },
-  "anglo-american settlers": {
-    "d": "Immigrants from the United States who settled in Texas under Mexican rule.",
-    "r": "Their cultural differences and resistance to Mexican laws were central causes of the conflict."
+  "texas declaration of independence": {
+    "d": "The document adopted on March 2, 1836, declaring Texas a free and independent republic from Mexico.",
+    "r": "It legally formalized Texas’s break from Mexico and set the foundation for the Republic of Texas."
   },
-  "mexican centralist policies": {
-    "d": "Government actions that centralized power in Mexico City, reducing autonomy for states like Texas.",
-    "r": "These policies angered settlers and fueled demands for independence."
+  "battle of gonzales": {
+    "d": "The first military engagement of the Texas Revolution, where Texians resisted Mexican troops attempting to retrieve a cannon.",
+    "r": "This battle symbolizes the start of armed conflict and Texian resistance against Mexican authority."
+  },
+  "siege of the alamo": {
+    "d": "A pivotal 1836 battle where Mexican forces besieged Texian defenders at the Alamo mission in San Antonio.",
+    "r": "The Alamo became a powerful symbol of Texian sacrifice and resolve during the revolution."
+  },
+  "battle of san jacinto": {
+    "d": "The decisive 1836 battle where Texian forces under Sam Houston defeated Mexican troops, securing Texas independence.",
+    "r": "This victory ended major hostilities and ensured the success of the Texas Revolution."
+  },
+  "sam houston": {
+    "d": "Commander of Texian forces during the revolution and the first president of the Republic of Texas.",
+    "r": "His leadership was crucial to the military and political success of Texas independence."
+  },
+  "antonio lópez de santa anna": {
+    "d": "President and general of Mexico who led Mexican forces against Texian rebels during the Texas Revolution.",
+    "r": "His centralist policies and military actions escalated the conflict and shaped its course."
+  },
+  "republic of texas": {
+    "d": "The independent nation established after Texas declared independence from Mexico in 1836.",
+    "r": "It represents the political outcome of the revolution and a unique chapter in U.S. and Mexican history."
+  },
+  "centralist policies": {
+    "d": "Mexican government policies that concentrated power in the central government, reducing regional autonomy.",
+    "r": "These policies caused tensions with Texian settlers who favored more local control, contributing to the revolution."
   },
   "tejanos": {
-    "d": "Mexican residents of Texas who often had complex loyalties during the revolution.",
-    "r": "Their experiences highlight the diverse perspectives and contested narratives of the conflict."
+    "d": "Mexican Texans who lived in Texas before and during the revolution, some of whom supported independence.",
+    "r": "Their perspectives add complexity to the revolution beyond the Anglo-American settler narrative."
+  },
+  "slavery issue": {
+    "d": "The conflict over the legality and practice of slavery in Texas under Mexican law and Texian settlers’ interests.",
+    "r": "Slavery was a major point of contention influencing settler loyalty and Mexican government policies."
+  },
+  "anglo-american immigration": {
+    "d": "The movement of American settlers into Mexican Texas encouraged by Mexico to develop the frontier.",
+    "r": "This immigration changed Texas’s demographics and fueled cultural and political conflicts leading to revolution."
+  },
+  "gulf of mexico": {
+    "d": "The large body of water bordering Texas to the southeast.",
+    "r": "Its location influenced Texas’s trade, settlement patterns, and strategic importance."
   },
   "terminal learning objective": {
     "d": "The main capability learners should demonstrate by the end of the class.",

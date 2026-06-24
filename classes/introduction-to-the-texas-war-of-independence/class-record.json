@@ -1,7 +1,7 @@
 {
   "title": "Introduction to the Texas War of Independence",
   "slug": "introduction-to-the-texas-war-of-independence",
-  "generated_at": "2026-06-24T19:21:38.390Z",
+  "generated_at": "2026-06-24T19:26:48.198Z",
   "class_tier": {
     "level": "standard",
     "label": "Standard class",
@@ -22,6 +22,11 @@
         "trust": "secondary"
       },
       {
+        "path": "https://www.britannica.com/topic/Texas-Revolution",
+        "type": "url",
+        "trust": "secondary"
+      },
+      {
         "path": "https://thc.texas.gov/learn/military-history/texas-revolution-and-republic",
         "type": "standard",
         "trust": "primary"
@@ -32,17 +37,12 @@
         "trust": "secondary"
       },
       {
+        "path": "https://www.tshaonline.org/handbook/entries/texas-revolution",
+        "type": "url",
+        "trust": "secondary"
+      },
+      {
         "path": "https://alamopecan.com/blog/9-amazing-facts-you-might-not-know-about-texas-independence",
-        "type": "url",
-        "trust": "secondary"
-      },
-      {
-        "path": "https://www.britannica.com/topic/Texas-Revolution",
-        "type": "url",
-        "trust": "secondary"
-      },
-      {
-        "path": "https://billofrightsinstitute.org/essays/sam-houston-and-texas-independence",
         "type": "url",
         "trust": "secondary"
       },
@@ -52,7 +52,7 @@
         "trust": "secondary"
       },
       {
-        "path": "https://www.reddit.com/r/history/comments/37effb/what_were_the_reasons_that_texas_declared",
+        "path": "https://billofrightsinstitute.org/essays/sam-houston-and-texas-independence",
         "type": "url",
         "trust": "secondary"
       },
@@ -77,11 +77,6 @@
         "trust": "secondary"
       },
       {
-        "path": "https://www.tshaonline.org/handbook/entries/texas-revolution",
-        "type": "url",
-        "trust": "secondary"
-      },
-      {
         "path": "http://www.tsl.texas.gov/exhibits/texas175/declaration",
         "type": "standard",
         "trust": "primary"
@@ -95,7 +90,7 @@
     "rejected_sources": [],
     "gaps": [],
     "notes": [
-      "Round 1: Bernard found 15 new candidates and checked 15 URLs for readability."
+      "Round 1: Bernard found 14 new candidates and checked 14 URLs for readability."
     ],
     "rounds": 1
   },
@@ -112,9 +107,9 @@
       "standard": "Solid internal training with enough evidence for reliable instruction."
     },
     "counts": {
-      "total": 15,
+      "total": 14,
       "primary": 2,
-      "secondary": 13,
+      "secondary": 12,
       "unknown": 0
     },
     "score": {
@@ -122,7 +117,7 @@
       "band": "excellent",
       "components": {
         "coverage": 100,
-        "authority": 65,
+        "authority": 66,
         "recency": 75
       },
       "weights": {
@@ -131,15 +126,15 @@
         "recency": 0.2
       },
       "detail": {
-        "total": 15,
+        "total": 14,
         "primary": 2,
-        "secondary": 13,
+        "secondary": 12,
         "required_total": 8,
         "required_primary": 2,
         "dated_sources": 0,
         "recency_floor_year": 2024
       },
-      "summary": "Knowledge-base score 85/100 (excellent): coverage 100, authority 65, recency 75. 15/8 sources, 2/2 primary."
+      "summary": "Knowledge-base score 85/100 (excellent): coverage 100, authority 66, recency 75. 14/8 sources, 2/2 primary."
     },
     "required_sources": 8,
     "required_primary_sources": 2,
@@ -154,7 +149,7 @@
   "deep_dive_count": 67,
   "required_deep_dive_count": 67,
   "quality": {
-    "score": 97,
+    "score": 96,
     "status": "excellent",
     "scores": {
       "slide_budget": 100,
@@ -162,10 +157,10 @@
       "source_grounding": 100,
       "evidence_map": 100,
       "blueprint": 100,
-      "objective_alignment": 100,
+      "objective_alignment": 77,
       "content_density": 100,
       "deep_dive_depth": 100,
-      "participation_design": 69,
+      "participation_design": 76,
       "assessment": 90,
       "transparency": 100,
       "schema_qa": 100
@@ -201,7 +196,7 @@
   ],
   "source_paper": {
     "title": "Student Reader - Introduction to the Texas War of Independence",
-    "section_count": 16,
+    "section_count": 15,
     "sections": [
       {
         "id": "s1",
@@ -216,27 +211,27 @@
       {
         "id": "s3",
         "num": "3",
-        "title": "thc.texas.gov"
+        "title": "britannica.com"
       },
       {
         "id": "s4",
         "num": "4",
-        "title": "history.com"
+        "title": "thc.texas.gov"
       },
       {
         "id": "s5",
         "num": "5",
-        "title": "alamopecan.com"
+        "title": "history.com"
       },
       {
         "id": "s6",
         "num": "6",
-        "title": "britannica.com"
+        "title": "tshaonline.org"
       },
       {
         "id": "s7",
         "num": "7",
-        "title": "billofrightsinstitute.org"
+        "title": "alamopecan.com"
       },
       {
         "id": "s8",
@@ -246,7 +241,7 @@
       {
         "id": "s9",
         "num": "9",
-        "title": "reddit.com"
+        "title": "billofrightsinstitute.org"
       },
       {
         "id": "s10",
@@ -271,16 +266,11 @@
       {
         "id": "s14",
         "num": "14",
-        "title": "tshaonline.org"
+        "title": "tsl.texas.gov"
       },
       {
         "id": "s15",
         "num": "15",
-        "title": "tsl.texas.gov"
-      },
-      {
-        "id": "s16",
-        "num": "16",
         "title": "briscoecenter.org"
       }
     ]
@@ -302,9 +292,9 @@
         "standard": "Solid internal training with enough evidence for reliable instruction."
       },
       "counts": {
-        "total": 15,
+        "total": 14,
         "primary": 2,
-        "secondary": 13,
+        "secondary": 12,
         "unknown": 0
       },
       "score": {
@@ -312,7 +302,7 @@
         "band": "excellent",
         "components": {
           "coverage": 100,
-          "authority": 65,
+          "authority": 66,
           "recency": 75
         },
         "weights": {
@@ -321,15 +311,15 @@
           "recency": 0.2
         },
         "detail": {
-          "total": 15,
+          "total": 14,
           "primary": 2,
-          "secondary": 13,
+          "secondary": 12,
           "required_total": 8,
           "required_primary": 2,
           "dated_sources": 0,
           "recency_floor_year": 2024
         },
-        "summary": "Knowledge-base score 85/100 (excellent): coverage 100, authority 65, recency 75. 15/8 sources, 2/2 primary."
+        "summary": "Knowledge-base score 85/100 (excellent): coverage 100, authority 66, recency 75. 14/8 sources, 2/2 primary."
       },
       "required_sources": 8,
       "required_primary_sources": 2,
@@ -389,7 +379,7 @@
   "evidence_map": [
     {
       "kind": "terminal objective",
-      "claim": "Describe the significance of the Texas War of Independence in American history, including its causes, key events, and outcomes.",
+      "claim": "Describe the significance of the Texas War of Independence in American history",
       "source_ids": [
         "s1",
         "s2",
@@ -398,6 +388,22 @@
       "source_titles": [
         "Class setup, learner profile, and research rules",
         "en.wikipedia.org",
+        "britannica.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "enabling objective",
+      "claim": "Identify the geographical region of Texas and its neighboring territories in the early 19th century",
+      "source_ids": [
+        "s2",
+        "s3",
+        "s4"
+      ],
+      "source_titles": [
+        "en.wikipedia.org",
+        "britannica.com",
         "thc.texas.gov"
       ],
       "status": "mapped",
@@ -405,114 +411,14 @@
     },
     {
       "kind": "enabling objective",
-      "claim": "Identify the geographical region of Texas and its neighboring territories in the early 19th century, including demographic and political context.",
-      "source_ids": [
-        "s2",
-        "s3",
-        "s4"
-      ],
-      "source_titles": [
-        "en.wikipedia.org",
-        "thc.texas.gov",
-        "history.com"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "enabling objective",
-      "claim": "Summarize the initial conditions in Texas under Mexican rule, focusing on political, social, and cultural tensions leading to the revolution.",
+      "claim": "Summarize the initial conditions in Texas under Mexican rule",
       "source_ids": [
         "s3",
         "s4"
       ],
       "source_titles": [
-        "thc.texas.gov",
-        "history.com"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "enabling objective",
-      "claim": "Explain the key causes and motivations behind the Texas War of Independence, highlighting differing perspectives of Anglo settlers and Mexican authorities.",
-      "source_ids": [
-        "s4"
-      ],
-      "source_titles": [
-        "history.com"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "enabling objective",
-      "claim": "Analyze the major battles and leadership during the Texas Revolution, emphasizing the role of Sam Houston and the Battle of San Jacinto.",
-      "source_ids": [
-        "s1",
-        "s2",
-        "s3",
-        "s4"
-      ],
-      "source_titles": [
-        "Class setup, learner profile, and research rules",
-        "en.wikipedia.org",
-        "thc.texas.gov",
-        "history.com"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "enabling objective",
-      "claim": "Interpret the Texas Declaration of Independence and its significance as a primary source document.",
-      "source_ids": [
-        "s1",
-        "s2",
-        "s3",
-        "s4"
-      ],
-      "source_titles": [
-        "Class setup, learner profile, and research rules",
-        "en.wikipedia.org",
-        "thc.texas.gov",
-        "history.com"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "enabling objective",
-      "claim": "Describe the formation and characteristics of the Republic of Texas, including its constitution and policies on slavery and rights.",
-      "source_ids": [
-        "s1",
-        "s2",
-        "s3",
-        "s4"
-      ],
-      "source_titles": [
-        "Class setup, learner profile, and research rules",
-        "en.wikipedia.org",
-        "thc.texas.gov",
-        "history.com"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "enabling objective",
-      "claim": "Evaluate the contested historical interpretations and field disagreements regarding the Texas Revolution, including the role of slavery and political motivations.",
-      "source_ids": [
-        "s1",
-        "s2",
-        "s3",
-        "s4"
-      ],
-      "source_titles": [
-        "Class setup, learner profile, and research rules",
-        "en.wikipedia.org",
-        "thc.texas.gov",
-        "history.com"
+        "britannica.com",
+        "thc.texas.gov"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
@@ -521,60 +427,46 @@
       "kind": "lesson section",
       "claim": "Geographical and Political Context of Early 19th Century Texas",
       "source_ids": [
-        "s14",
-        "s2"
-      ],
-      "source_titles": [
-        "tshaonline.org",
-        "en.wikipedia.org"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "lesson section",
-      "claim": "Initial Conditions Under Mexican Rule",
-      "source_ids": [
-        "s14",
         "s2",
-        "s7"
-      ],
-      "source_titles": [
-        "tshaonline.org",
-        "en.wikipedia.org",
-        "billofrightsinstitute.org"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "lesson section",
-      "claim": "Causes and Motivations of the Texas War of Independence",
-      "source_ids": [
-        "s2",
-        "s14",
-        "s4",
-        "s7"
-      ],
-      "source_titles": [
-        "en.wikipedia.org",
-        "tshaonline.org",
-        "history.com",
-        "billofrightsinstitute.org"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "lesson section",
-      "claim": "Key Events and Battles of the Texas Revolution",
-      "source_ids": [
-        "s2",
-        "s7",
+        "s6",
         "s11"
       ],
       "source_titles": [
         "en.wikipedia.org",
+        "tshaonline.org",
+        "dp.la"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Initial Conditions and Tensions Under Mexican Rule",
+      "source_ids": [
+        "s2",
+        "s6",
+        "s11"
+      ],
+      "source_titles": [
+        "en.wikipedia.org",
+        "tshaonline.org",
+        "dp.la"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Outbreak and Key Battles of the Texas Revolution",
+      "source_ids": [
+        "s2",
+        "s6",
+        "s9",
+        "s11"
+      ],
+      "source_titles": [
+        "en.wikipedia.org",
+        "tshaonline.org",
         "billofrightsinstitute.org",
         "dp.la"
       ],
@@ -583,50 +475,62 @@
     },
     {
       "kind": "lesson section",
-      "claim": "The Texas Declaration of Independence",
+      "claim": "Declaration of Independence and Formation of the Republic of Texas",
       "source_ids": [
-        "s15",
-        "s4",
-        "s3"
-      ],
-      "source_titles": [
-        "tsl.texas.gov",
-        "history.com",
-        "thc.texas.gov"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "lesson section",
-      "claim": "Formation and Characteristics of the Republic of Texas",
-      "source_ids": [
+        "s5",
         "s11",
-        "s7",
-        "s2"
+        "s14"
       ],
       "source_titles": [
+        "history.com",
         "dp.la",
-        "billofrightsinstitute.org",
-        "en.wikipedia.org"
+        "tsl.texas.gov"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "lesson section",
-      "claim": "Contested Interpretations and Historical Debates",
+      "claim": "Key Figures and Their Roles in the Texas Revolution",
+      "source_ids": [
+        "s9",
+        "s11"
+      ],
+      "source_titles": [
+        "billofrightsinstitute.org",
+        "dp.la"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Complexities and Contested Perspectives of the Texas Revolution",
       "source_ids": [
         "s2",
-        "s7",
-        "s14",
-        "s4"
+        "s6",
+        "s11"
       ],
       "source_titles": [
         "en.wikipedia.org",
-        "billofrightsinstitute.org",
         "tshaonline.org",
-        "history.com"
+        "dp.la"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Legacy and Significance of the Texas War of Independence",
+      "source_ids": [
+        "s2",
+        "s6",
+        "s11"
+      ],
+      "source_titles": [
+        "en.wikipedia.org",
+        "tshaonline.org",
+        "dp.la"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
@@ -643,8 +547,8 @@
       "source_titles": [
         "Class setup, learner profile, and research rules",
         "en.wikipedia.org",
-        "thc.texas.gov",
-        "history.com"
+        "britannica.com",
+        "thc.texas.gov"
       ],
       "status": "corroboration-required",
       "finding": "Mapped to approved source-paper sections for source verification."

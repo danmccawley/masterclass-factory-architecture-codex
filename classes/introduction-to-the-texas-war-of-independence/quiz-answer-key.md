@@ -2,11 +2,11 @@
 
 ## Question 1
 Which of the following best describes the political status of Texas before the revolution?
-Answer: A Mexican territory with increasing Anglo-American settlers
-Why: Texas was a Mexican territory experiencing demographic changes due to Anglo-American immigration, which contributed to tensions leading to the revolution.
+Answer: A Mexican state within the province of Coahuila y Tejas
+Why: Texas was part of the Mexican state of Coahuila y Tejas before declaring independence.
 
 ## Question 2
-Describe the significance of Sam Houston's leadership during the Texas War of Independence.
+Describe the significance of the Texas War of Independence in American history.
 Answer: undefined
-Rubric: Response should explain Houston's role in uniting Texian forces, his strategic leadership at key battles such as San Jacinto, and how his actions contributed to Texas gaining independence.
-Sample: Sam Houston was the commander of Texian forces and led them to a decisive victory at the Battle of San Jacinto, which effectively ended the war and secured Texas independence.
+Rubric: Response should include the impact on U.S. territorial expansion, the establishment of the Republic of Texas, and the conflict's role in U.S.-Mexico relations.
+Sample: The Texas War of Independence was significant because it led to the creation of the Republic of Texas, which later joined the United States, contributing to U.S. territorial expansion and increasing tensions with Mexico that eventually led to the Mexican-American War.
