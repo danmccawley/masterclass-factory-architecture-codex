@@ -92,9 +92,20 @@ function oneOf(v, allowed, dflt) {
 function normalizeSetup(raw) {
   if (!raw || typeof raw !== "object") return null;
   var a = (raw.audience && typeof raw.audience === "object") ? raw.audience : {};
+  // Human-entered seed sources need a URL to be usable; dedupe by URL.
+  var seeds = [];
+  var seen = {};
+  normalizeSourceArray(raw.sources).forEach(function (s) {
+    if (!s.path) return;
+    var k = s.path.toLowerCase();
+    if (seen[k]) return;
+    seen[k] = 1;
+    seeds.push(s);
+  });
   return {
     tier: oneOf(raw.tier || raw.class_tier, SETUP_TIERS, "standard"),
     research_owner: oneOf(raw.research_owner || raw.owner, SETUP_OWNERS, "ai"),
+    sources: seeds,
     audience: {
       education: cleanText(a.education, 120),
       technical: oneOf(a.technical, SETUP_TECH, "mixed"),

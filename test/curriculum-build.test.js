@@ -123,6 +123,26 @@ test("applies shared setup (tier, KB ownership, demographics) and stays contract
   assert.strictEqual(brief.audience.tone, "academic");
   assert.strictEqual(brief.audience.accessibility.reading_grade_cap, 14);
 });
+test("creator ownership seeds the human sources and turns off auto web research", function () {
+  var BV = require("../brief-validator.js");
+  var template = require("../brief.template.json");
+  var m = S.makeManifest({ subject: "X", classes: [{ title: "A", terminal: ["t"], enabling: ["e"], suggested_minutes: 45 }] });
+  m.setup = S.normalizeSetup({ research_owner: "creator", sources: [{ url: "https://a.org/1", title: "One" }, { url: "https://a.org/2" }] });
+  var brief = B.briefForClass(m, m.classes[0].slug);
+  assert.strictEqual(BV.validateBrief(brief, template).ok, true);
+  assert.strictEqual(brief.knowledge_base.research.owner, "creator");
+  assert.strictEqual(brief.knowledge_base.research.allow_web, false);   // build only on provided sources
+  assert.strictEqual(brief.knowledge_base.uploads.length, 2);
+  assert.strictEqual(brief.knowledge_base.uploads[0].path, "https://a.org/1");
+});
+test("assisted ownership seeds sources but keeps web research on", function () {
+  var m = S.makeManifest({ subject: "X", classes: [{ title: "A", terminal: ["t"], enabling: ["e"], suggested_minutes: 45 }] });
+  m.setup = S.normalizeSetup({ research_owner: "assisted", sources: [{ url: "https://a.org/1" }] });
+  var brief = B.briefForClass(m, m.classes[0].slug);
+  assert.strictEqual(brief.knowledge_base.research.owner, "assisted");
+  assert.strictEqual(brief.knowledge_base.research.allow_web, true);
+  assert.strictEqual(brief.knowledge_base.uploads.length, 1);
+});
 test("returns null for an unknown class slug", function () {
   var m = S.makeManifest({ classes:[ { title:"A", terminal:["x"] } ] });
   assert.strictEqual(B.briefForClass(m, "nope"), null);

@@ -149,6 +149,19 @@ test("absent setup yields null (manifest stays setup-free)", function () {
   var m = S.makeManifest({ subject: "X", classes: [{ title: "A", terminal: ["t"] }] });
   assert.ok(!("setup" in m));
 });
+test("setup carries human-entered seed sources, normalized + round-tripped", function () {
+  var s = S.normalizeSetup({ research_owner: "creator", sources: [
+    { url: "https://nist.gov/x", title: "NIST X" },
+    { url: "https://nist.gov/x" },           // dup collapses
+    { title: "no url" }                        // dropped
+  ] });
+  assert.strictEqual(s.sources.length, 1);
+  assert.strictEqual(s.sources[0].path, "https://nist.gov/x");
+  var m = S.makeManifest({ subject: "X", classes: [{ title: "A", terminal: ["t"] }] });
+  m.setup = s;
+  var round = S.normalizeManifest(JSON.parse(JSON.stringify(m)));
+  assert.deepStrictEqual(round.setup.sources, s.sources);
+});
 
 console.log("\n" + "=".repeat(60));
 console.log("CURRICULUM-STORE RESULTS: " + passed + " passed, " + failed + " failed");

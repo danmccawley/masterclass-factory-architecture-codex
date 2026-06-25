@@ -126,13 +126,23 @@ function briefForClass(manifest, classSlug, template) {
     }
   }
 
-  // Knowledge-base ownership: the shared choice (creator / assisted / ai), else
-  // AI by default — Bernard builds each class's KB as a first-class step rather
-  // than forcing the generator's slower mid-build recovery path.
+  // Knowledge-base ownership: the shared choice (creator / assisted / ai).
+  //   ai       — Bernard researches & verifies (default; first-class step).
+  //   assisted — seed with the human's sources, Bernard fills the gaps.
+  //   creator  — use ONLY the human's sources; no automatic web research.
+  var owner = (setup && setup.research_owner) || "ai";
+  var seeds = (setup && Array.isArray(setup.sources)) ? setup.sources : [];
   b.knowledge_base = b.knowledge_base || JSON.parse(JSON.stringify(template.knowledge_base || {}));
   b.knowledge_base.research = b.knowledge_base.research || {};
-  b.knowledge_base.research.owner = (setup && setup.research_owner) || "ai";
-  b.knowledge_base.research.allow_web = true;
+  b.knowledge_base.research.owner = owner;
+  b.knowledge_base.research.allow_web = (owner !== "creator");
+  if (seeds.length) {
+    var existing = Array.isArray(b.knowledge_base.uploads) ? b.knowledge_base.uploads : [];
+    var mapped = seeds
+      .map(function (s) { return { path: s.path, type: "url", trust: s.trust || "unknown" }; })
+      .filter(function (u) { return u.path; });
+    b.knowledge_base.uploads = existing.concat(mapped);
+  }
   return b;
 }
 

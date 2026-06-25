@@ -204,8 +204,12 @@
     html += "<div class='obj-h'>Knowledge base \u2014 who assembles each class\u2019s sources</div>";
     html += "<div class='kb-owner'>";
     html += "<label class='kb-opt'><span><input type='radio' name='setupOwner' value='ai' checked /><strong>Bernard builds it</strong></span><small>AI researches &amp; verifies sources \u00b7 recommended for accuracy</small></label>";
-    html += "<label class='kb-opt'><span><input type='radio' name='setupOwner' value='assisted' /><strong>You + Bernard</strong></span><small>You add sources, Bernard fills the gaps</small></label>";
-    html += "<label class='kb-opt'><span><input type='radio' name='setupOwner' value='creator' /><strong>You build it</strong></span><small>No auto-research (source entry coming soon)</small></label>";
+    html += "<label class='kb-opt'><span><input type='radio' name='setupOwner' value='assisted' /><strong>You + Bernard</strong></span><small>You add the sources below, Bernard fills the gaps</small></label>";
+    html += "<label class='kb-opt'><span><input type='radio' name='setupOwner' value='creator' /><strong>You build it</strong></span><small>Build only on the sources you add below \u2014 no auto-research</small></label>";
+    html += "</div>";
+    html += "<div id='sourcesWrap' style='display:none;margin-top:12px'>";
+    html += "<label for='setupSources'>Your sources <span class='hint'>(one per line \u2014 a URL, or \u201cTitle | https://\u2026\u201d)</span></label>";
+    html += "<textarea id='setupSources' placeholder='https://example.org/standard\nKey report | https://example.org/report'></textarea>";
     html += "</div>";
     html += "</details>";
     html += "<div id='cards'>";
@@ -222,6 +226,14 @@
     $("result").innerHTML = html;
 
     var save = $("saveCur"); if(save) save.addEventListener("click", saveCurriculum);
+    var sw = $("sourcesWrap");
+    function syncSources(){
+      var o = document.querySelector("input[name=setupOwner]:checked");
+      var show = o && (o.value === "creator" || o.value === "assisted");
+      if(sw) sw.style.display = show ? "block" : "none";
+    }
+    Array.prototype.forEach.call(document.querySelectorAll("input[name=setupOwner]"), function(r){ r.addEventListener("change", syncSources); });
+    syncSources();
     var copy = $("copyPlan"); if(copy) copy.addEventListener("click", function(){
       try { navigator.clipboard.writeText(JSON.stringify(buildManifest(), null, 2)); setStatus("Copied to clipboard."); }
       catch(e){ setStatus("Couldn't copy — your browser blocked clipboard access.", true); }
@@ -255,6 +267,16 @@
       setup: {
         tier: fv("setupTier", "standard"),
         research_owner: ownerEl ? ownerEl.value : "ai",
+        sources: (function(){
+          var raw = fv("setupSources", "");
+          if(!raw) return [];
+          return raw.split("\n").map(function(line){
+            line = line.trim(); if(!line) return null;
+            var bar = line.indexOf("|");
+            if(bar >= 0) return { title: line.slice(0, bar).trim(), url: line.slice(bar+1).trim() };
+            return { url: line };
+          }).filter(function(s){ return s && s.url; });
+        })(),
         audience: {
           education: fv("setupEdu", ""),
           technical: fv("setupTech", "mixed"),
