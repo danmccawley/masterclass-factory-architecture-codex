@@ -1,12 +1,12 @@
 # Quiz Answer Key
 
 ## Question 1
-Which of the following best explains the origins of the term 'Texican'?
-Answer: It originated as a Spanish colonial term for settlers in Texas blending Mexican and indigenous cultures
-Why: Historical evidence shows 'Texican' emerged during the Spanish colonial and Mexican periods to describe a cultural identity blending multiple influences.
+Which of the following best describes the origins of the term 'Texican'?
+Answer: It originated from a blend of Mexican and Texan cultural identities during early Texas history
+Why: The term 'Texican' historically refers to people of mixed Mexican and Texan heritage, reflecting cultural blending in early Texas.
 
 ## Question 2
-Explain how the Texicans contributed to the Texas Revolution and early political developments in Texas.
+Explain the role of the Texicans in the Texas Revolution and their interactions with Anglo settlers and Mexican authorities.
 Answer: undefined
-Rubric: Response should describe Texican participation in the revolution, including their military and political roles, and acknowledge contested interpretations of their allegiances.
-Sample: Texicans actively participated in the Texas Revolution by fighting alongside Anglo settlers and influencing early Texas politics. Their loyalties were complex, with some supporting independence and others remaining loyal to Mexico, reflecting contested historical views.
+Rubric: A complete answer should describe Texicans' active participation in the Texas Revolution, their complex loyalties, and how they navigated relationships with both Anglo settlers and Mexican authorities. Partial credit for mentioning involvement in key events or cultural mediation.
+Sample: Texicans played a significant role in the Texas Revolution by supporting independence efforts while maintaining cultural ties to Mexico. They often acted as intermediaries between Anglo settlers and Mexican authorities, reflecting their unique position in early Texas society.
