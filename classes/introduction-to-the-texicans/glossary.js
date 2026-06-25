@@ -1,44 +1,36 @@
 /* Generated glossary. term -> {d, r}. */
 window.GLOSSARY = {
   "texican": {
-    "d": "An Anglo-American settler living in Mexican Texas between 1820 and 1836, invited by the Mexican government to settle the region, pledge loyalty to Mexico, and act as a buffer against Native American tribes.",
-    "r": "Understanding 'Texican' clarifies the early settler identity and political context before Texas independence."
+    "d": "An Anglo-American settler in Mexican Texas between 1820 and 1836 who received land grants from the Mexican government under conditions of loyalty to Mexico and Christian faith, often Catholicism. The term reflects a cultural identity caught between Mexican and Anglo-American influences during a turbulent historical period.",
+    "r": "Understanding 'Texican' clarifies the origins of early Texas settlers and their complex loyalties, which shaped the political and cultural landscape leading to Texas independence."
   },
   "texian": {
-    "d": "A term used during the Texas Revolution (1835-1836) to describe residents of Texas who supported independence from Mexico, including former Texicans and other settlers.",
-    "r": "Distinguishing 'Texian' helps track the shift in political allegiance during Texas’s fight for independence."
+    "d": "A term that emerged after the Texas Revolution to describe residents of the Republic of Texas, reflecting a shift in political status from Mexican territory to an independent republic.",
+    "r": "Recognizing 'Texian' helps trace the evolution of Texican identity as Texas moved from Mexican control to independence."
   },
   "texan": {
-    "d": "A resident of Texas after it became an independent republic in 1836 and later a U.S. state, reflecting a broader and more permanent identity than 'Texican' or 'Texian'.",
-    "r": "Recognizing 'Texan' situates the evolution of regional identity post-independence and statehood."
+    "d": "The modern term for residents of Texas, used especially after Texas joined the United States, representing a broader and more inclusive identity beyond the original Texicans and Texians.",
+    "r": "Knowing 'Texan' situates the historical progression of identity from early settlers to present-day inhabitants."
   },
-  "coahuila y texas": {
-    "d": "The Mexican province that included Texas from 1824 to 1836, under which Texicans settled and lived before Texas declared independence.",
-    "r": "Knowing this province contextualizes the political jurisdiction governing Texicans."
+  "land grant policy": {
+    "d": "Mexican government programs that allocated land to settlers, often through empresarios like Stephen F. Austin, who facilitated Anglo-American immigration to Texas under conditions of loyalty and cultural assimilation.",
+    "r": "Land grants were central to Texican settlement patterns and economic development, influencing demographic and political dynamics."
   },
-  "land grants": {
-    "d": "Parcels of land given by the Mexican government to Texican settlers as incentives to populate and develop Texas, often requiring loyalty and Christian faith.",
-    "r": "Land grants explain how settlement was encouraged and shaped Texican communities."
-  },
-  "comanche": {
-    "d": "A nomadic Native American tribe in Texas known for their fierce resistance and influence on frontier settlement patterns during the Texican period.",
-    "r": "Understanding the Comanche is key to grasping the challenges Texicans faced on the frontier."
-  },
-  "caddo": {
-    "d": "An agricultural Native American tribe living in stable villages in East Texas, whose culture influenced the region and the name 'Texas' itself.",
-    "r": "Recognizing the Caddo highlights indigenous contributions to Texican cultural and geographic identity."
-  },
-  "decree of 1830": {
-    "d": "A Mexican government policy that restricted immigration to Texas, suspended land contracts, and prohibited slavery, causing tensions with Texican settlers.",
-    "r": "This decree is crucial for understanding the political causes of Texican unrest leading to the Texas Revolution."
+  "empresario": {
+    "d": "A land agent or contractor authorized by the Mexican government to bring settlers to Texas and manage land grants, with Stephen F. Austin being the most notable example.",
+    "r": "Empresarios shaped the settlement and growth of Texican communities, acting as intermediaries between settlers and Mexican authorities."
   },
   "texas revolution": {
-    "d": "The armed conflict from 1835 to 1836 in which Texians and other settlers fought for independence from Mexico, resulting in the creation of the Republic of Texas.",
-    "r": "Knowing the revolution explains the transition from Texican to Texian identity and Texas’s political transformation."
+    "d": "The armed conflict (1835-1836) between Texican settlers and the Mexican government that resulted in Texas gaining independence and forming the Republic of Texas.",
+    "r": "The revolution was a pivotal event involving Texicans that redefined political boundaries and identities in the region."
+  },
+  "native american tribes in texas": {
+    "d": "Indigenous groups such as the Caddo and Comanche who inhabited Texas and influenced settlement patterns, conflicts, and alliances with Texicans and Mexican authorities.",
+    "r": "Understanding these tribes is essential to grasp the complex social and political environment Texicans navigated."
   },
   "primary sources": {
-    "d": "Original documents such as land grants, letters, treaties, and government records from the Spanish, Mexican, and Republic of Texas periods used to study Texican history.",
-    "r": "Primary sources provide direct evidence for understanding Texican life and historical events."
+    "d": "Original documents and records from the period, including land grants, letters, government records, and military documents that provide firsthand evidence of Texican life and historical events.",
+    "r": "Primary sources enable accurate and nuanced study of Texican history, supporting critical analysis and deeper understanding."
   },
   "terminal learning objective": {
     "d": "The main capability learners should demonstrate by the end of the class.",
