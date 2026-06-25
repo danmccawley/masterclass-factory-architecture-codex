@@ -1,7 +1,7 @@
 [
   {
     "kind": "terminal objective",
-    "claim": "Identify who the Texicans were and describe their cultural background",
+    "claim": "Identify who the Texicans were and describe their cultural background, settlement patterns, and historical role in early Texas history.",
     "source_ids": [
       "s1",
       "s2",
@@ -17,7 +17,7 @@
   },
   {
     "kind": "enabling objective",
-    "claim": "Define the term 'Texican' and its origins",
+    "claim": "Define the term 'Texican' and explain its origins and historical context during Mexican Texas (1820-1836).",
     "source_ids": [
       "s2",
       "s3",
@@ -33,7 +33,7 @@
   },
   {
     "kind": "enabling objective",
-    "claim": "Discuss the settlement patterns and lifestyle of the Texicans",
+    "claim": "Discuss the settlement patterns, lifestyle, and frontier conditions experienced by the Texicans, including interactions with Native American tribes.",
     "source_ids": [
       "s3",
       "s4"
@@ -47,7 +47,7 @@
   },
   {
     "kind": "enabling objective",
-    "claim": "Explain the role of the Texicans in early Texas history",
+    "claim": "Explain the role of the Texicans in early Texas history, including their political affiliations, participation in the Texas Revolution, and cultural identity distinctions from Mexicans and later Anglo-American settlers.",
     "source_ids": [
       "s4"
     ],
@@ -59,16 +59,16 @@
   },
   {
     "kind": "lesson section",
-    "claim": "Understanding the Term 'Texican'",
+    "claim": "Understanding the Term 'Texican' and Its Origins",
     "source_ids": [
-      "s7",
       "s2",
-      "s6"
+      "s6",
+      "s7"
     ],
     "source_titles": [
-      "lauriemooremoore.com",
       "jinxschwartz.com",
-      "everything-everywhere.com"
+      "everything-everywhere.com",
+      "lauriemooremoore.com"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
@@ -78,47 +78,31 @@
     "claim": "Settlement Patterns and Lifestyle of the Texicans",
     "source_ids": [
       "s7",
-      "s2",
       "s8",
-      "s9"
+      "s10",
+      "s11"
     ],
     "source_titles": [
       "lauriemooremoore.com",
-      "jinxschwartz.com",
       "tshaonline.org",
-      "thestoryoftexas.com"
+      "libguides.fau.edu",
+      "kwlibguides.lonestar.edu"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
     "kind": "lesson section",
-    "claim": "Texicans in Early Texas History",
+    "claim": "Cultural Identity and Social Dynamics of the Texicans",
     "source_ids": [
       "s2",
       "s7",
-      "s8"
-    ],
-    "source_titles": [
-      "jinxschwartz.com",
-      "lauriemooremoore.com",
-      "tshaonline.org"
-    ],
-    "status": "mapped",
-    "finding": "Mapped to approved source-paper sections for source verification."
-  },
-  {
-    "kind": "lesson section",
-    "claim": "Primary Sources and Historical Evidence on Texicans",
-    "source_ids": [
-      "s10",
-      "s11",
       "s12",
       "s13"
     ],
     "source_titles": [
-      "libguides.fau.edu",
-      "kwlibguides.lonestar.edu",
+      "jinxschwartz.com",
+      "lauriemooremoore.com",
       "legacy.education.texashistory.unt.edu",
       "shsulibraryguides.org"
     ],
@@ -127,14 +111,52 @@
   },
   {
     "kind": "lesson section",
-    "claim": "Cultural and Multicultural Context of the Texicans",
+    "claim": "The Role of Texicans in Early Texas History and the Texas Revolution",
     "source_ids": [
+      "s2",
+      "s7",
+      "s17",
+      "s14"
+    ],
+    "source_titles": [
+      "jinxschwartz.com",
+      "lauriemooremoore.com",
+      "tsl.texas.gov",
+      "libguides.tamusa.edu"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Etymology and Indigenous Influence on Texican Identity",
+    "source_ids": [
+      "s6",
       "s8",
       "s9"
     ],
     "source_titles": [
+      "everything-everywhere.com",
       "tshaonline.org",
       "thestoryoftexas.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Critical Evaluation of Sources and Historical Biases",
+    "source_ids": [
+      "s2",
+      "s7",
+      "s10",
+      "s16"
+    ],
+    "source_titles": [
+      "jinxschwartz.com",
+      "lauriemooremoore.com",
+      "libguides.fau.edu",
+      "guides.lib.berkeley.edu"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
