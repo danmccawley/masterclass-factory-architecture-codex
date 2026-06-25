@@ -1,12 +1,12 @@
 # Quiz Answer Key
 
 ## Question 1
-Which of the following best defines the term 'Texican'?
-Answer: A Texan of Mexican heritage with cultural ties to Native American and Spanish influences.
-Why: The term 'Texican' specifically refers to Texans of Mexican heritage, reflecting a blend of cultural influences distinct from general Texans or other groups.
+What is the origin of the term 'Texican'?
+Answer: A blend of Anglo-American and Tejano cultural identities
+Why: The term 'Texican' reflects the cultural blending of Anglo-American settlers and Tejanos in early Texas.
 
 ## Question 2
-Explain the significance of the Treaty of Guadalupe Hidalgo for the Texicans and how it affected their political status.
+Explain how the settlement patterns of the Texicans were influenced by geography and cultural exchange.
 Answer: undefined
-Rubric: Answer should describe how the treaty ended the Mexican-American War, redefined political boundaries, and changed citizenship status for Texicans, highlighting its impact on their identity and rights.
-Sample: The Treaty of Guadalupe Hidalgo ended the Mexican-American War and transferred large territories, including Texas, to the United States. It granted U.S. citizenship to Mexicans living in these areas, including Texicans, which affected their political rights and identity.
+Rubric: A strong answer describes the role of Spanish missions, Mexican governance, geographic features like rivers and plains, and cultural blending in shaping where and how Texicans lived.
+Sample: Texicans settled near Spanish missions and fertile lands influenced by Mexican rule, blending Anglo and Tejano cultures, and adapting to Texas geography such as rivers and plains.
