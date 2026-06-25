@@ -2,11 +2,11 @@
 
 ## Question 1
 Which of the following best defines the term 'Texican'?
-Answer: A term derived from a Native American word meaning 'friend' or 'ally', referring to early Texas settlers blending multiple cultures
-Why: The term 'Texican' originates from a Native American root meaning 'friend' or 'ally' and refers to the culturally blended early settlers of Texas.
+Answer: A Texan of Mexican heritage with cultural ties to Native American and Spanish influences.
+Why: The term 'Texican' specifically refers to Texans of Mexican heritage, reflecting a blend of cultural influences distinct from general Texans or other groups.
 
 ## Question 2
-Explain how the geography of Texas influenced the settlement patterns and lifestyle of the Texicans.
+Explain the significance of the Treaty of Guadalupe Hidalgo for the Texicans and how it affected their political status.
 Answer: undefined
-Rubric: A strong answer should mention specific geographic features such as rivers, plains, and climate, and explain how these influenced economic activities, settlement locations, and social interactions of the Texicans.
-Sample: Texas's diverse geography, including rivers like the Rio Grande and fertile plains, provided water sources and arable land that attracted Texican settlements. The climate and terrain influenced their farming, ranching, and trade practices, shaping their lifestyle.
+Rubric: Answer should describe how the treaty ended the Mexican-American War, redefined political boundaries, and changed citizenship status for Texicans, highlighting its impact on their identity and rights.
+Sample: The Treaty of Guadalupe Hidalgo ended the Mexican-American War and transferred large territories, including Texas, to the United States. It granted U.S. citizenship to Mexicans living in these areas, including Texicans, which affected their political rights and identity.

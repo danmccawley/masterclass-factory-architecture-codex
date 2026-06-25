@@ -4,15 +4,14 @@ Class tier: Standard class
 Bernard support: ask Bernard for clarification, examples, translation, quiz help, or a deeper explanation. Bernard must stay inside the approved source boundary.
 
 ## Learning Objectives
-- TLO: Identify who the Texicans were and describe their cultural background, settlement patterns, and their role in early Texas history.
-- ELO: Define the term 'Texican' and explain its linguistic and cultural origins.
-- ELO: Describe the settlement patterns and geographic influences on the lifestyle of the Texicans.
-- ELO: Analyze the cultural background of Texicans, highlighting the blend of Native American, Spanish, Mexican, and Anglo-American influences.
-- ELO: Explain the role of the Texicans in the Texas Revolution and the establishment of the Republic of Texas.
-- ELO: Interpret primary source documents such as the Texas Essential Knowledge and Skills (TEKS) and the Treaty of Guadalupe Hidalgo to understand Texican identity and territorial changes.
-- ELO: Discuss the evolution of Texican identity into the broader Texan identity and its legacy in Texas history.
-- ELO: Evaluate educational resources emphasizing geography and immigration patterns shaping Texican culture and settlement.
-- ELO: Critically assess contested historical interpretations of Texican identity and their political motivations using multiple credible sources.
+- TLO: Identify who the Texicans were and describe their cultural background, historical significance, and contributions to early Texas history.
+- ELO: Define the term 'Texican' and explain its origins and evolution over time.
+- ELO: Discuss the settlement patterns, lifestyle, and economic activities of the Texicans in early Texas.
+- ELO: Explain the cultural influences shaping Texican identity, including Native American, Spanish, and Mexican elements.
+- ELO: Analyze the role of the Texicans in the Texas Revolution and the establishment of the Republic of Texas.
+- ELO: Describe the impact of the Treaty of Guadalupe Hidalgo on the Texicans and their political status.
+- ELO: Recognize the regional pride and identity associated with Texicans within the broader Texan cultural narrative.
+- ELO: Evaluate contested historical interpretations and field disagreements regarding Texican identity and roles.
 
 ## Course Blueprint
 - 1. Orientation and learner baseline (5 slides): Set the purpose, audience floor, assumptions, and mastery target.
@@ -23,14 +22,14 @@ Bernard support: ask Bernard for clarification, examples, translation, quiz help
 - 6. Assessment, transfer, and works cited (12 slides): Prove mastery, capture participation, and close with source transparency.
 
 ## Key Terms
-- texican: A term originating from the Caddo word meaning 'friend' or 'ally,' used to describe early settlers of Texas who were a cultural blend of Native American, Spanish, Mexican, and Anglo-American peoples. Why it matters: Understanding 'Texican' reveals the multicultural roots of Texas and highlights the blending of identities that shaped early Texas society.
-- tejano: A Mexican Texan, often one of the original Hispanic settlers or their descendants in Texas before and during the Texas Revolution. Why it matters: Recognizing Tejanos is essential to understanding the Hispanic influence within Texican culture and Texas history.
-- texas revolution: The 1835-1836 conflict in which Texicans and other settlers fought for independence from Mexico, leading to the creation of the Republic of Texas. Why it matters: This event marks a pivotal moment where Texicans asserted political and military agency, shaping Texas's future.
-- republic of texas: The independent nation established in 1836 after Texas gained independence from Mexico, existing until its annexation by the United States in 1845. Why it matters: The Republic period reflects Texican political aspirations and governance before becoming part of the U.S.
-- treaty of guadalupe hidalgo: The 1848 treaty that ended the Mexican-American War, defining territorial boundaries and affecting Texican land and identity. Why it matters: This treaty legally shaped Texas's borders and influenced the cultural and political status of Texicans.
-- texas essential knowledge and skills (teks): The official Texas state curriculum standards that include historical and cultural education about Texicans and Texas history. Why it matters: TEKS provides authoritative guidance for understanding Texican identity and historical context in education.
-- settlement patterns: The ways in which Texicans established communities influenced by Texas’s diverse geography, including coastal plains and interior lowlands. Why it matters: Settlement patterns explain how geography shaped Texican lifestyles, economies, and interactions with indigenous groups.
-- cultural blending: The merging of Native American, Spanish, Mexican, and Anglo-American customs, languages, and traditions within Texican society. Why it matters: This blending is key to understanding the unique identity and heritage of Texicans in early Texas.
+- texican: A term blending 'Texan' and 'Mexican' that refers to early settlers in Texas of Mexican descent who maintained distinct cultural practices and identities during Texas's transition from Mexican governance to independence. Why it matters: Understanding 'Texican' clarifies the unique cultural and historical identity of a key group in early Texas history, distinct from Anglo settlers and other Texan groups.
+- texas revolution: The armed conflict (1835–1836) between Texican settlers and the Mexican government that led to Texas gaining independence and forming the Republic of Texas. Why it matters: The Texas Revolution was pivotal in shaping Texican political roles and the eventual establishment of Texas as an independent republic.
+- republic of texas: The independent nation established in 1836 after Texas won independence from Mexico, existing until Texas joined the United States in 1845. Why it matters: The Republic of Texas period highlights Texican participation in governance and nation-building separate from both Mexico and the U.S.
+- treaty of guadalupe hidalgo: The 1848 treaty that ended the Mexican-American War, ceding Texas and other territories to the United States and redefining citizenship and political boundaries for Texicans. Why it matters: This treaty significantly impacted Texicans by changing their national affiliation and legal status, influencing their cultural and political identity.
+- tejano: A term for Texans of Mexican heritage, often used interchangeably with Texican but with nuanced differences in cultural and historical context. Why it matters: Distinguishing 'Tejano' from 'Texican' helps avoid confusion and deepens understanding of Texas's diverse cultural groups.
+- settlement patterns: The geographic locations and community structures where Texicans established homes, often near rivers and fertile lands conducive to farming and ranching. Why it matters: Studying settlement patterns reveals how environment shaped Texican lifestyle, economy, and social organization.
+- cultural influences: The blend of Native American, Spanish colonial, and Mexican elements that formed the unique identity and traditions of the Texicans. Why it matters: Recognizing these influences explains the complexity of Texican identity beyond simple ethnic labels.
+- regional pride: The strong sense of identity and cultural pride among Texicans and Texans, reflected in symbols like the Lone Star flag and historical commemorations. Why it matters: Regional pride connects historical Texican identity to contemporary cultural narratives and community cohesion.
 - terminal learning objective: The main capability learners should demonstrate by the end of the class. Why it matters: It anchors the lesson around outcomes instead of loose topic coverage.
 - enabling learning objective: A supporting skill or idea learners need before they can meet the terminal objective. Why it matters: It turns a big outcome into teachable steps.
 - source verification: An independent check that claims and citations are supported by the approved corpus. Why it matters: It keeps fabricated or unsupported material out of the class.

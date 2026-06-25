@@ -2,7 +2,7 @@
 window.CLASS_TITLE = "Introduction to the Texicans";
 window.DECK_META = {
   "slug": "introduction-to-the-texicans",
-  "generated": "2026-06-25T17:08:07.330Z",
+  "generated": "2026-06-25T17:10:39.835Z",
   "language": "en",
   "class_tier": "Standard class"
 };
@@ -160,7 +160,7 @@ window.CLASS_BLUEPRINT = {
 window.EVIDENCE_MAP = [
   {
     "kind": "terminal objective",
-    "claim": "Identify who the Texicans were and describe their cultural background, settlement patterns, and their role in early Texas history.",
+    "claim": "Identify who the Texicans were and describe their cultural background, historical significance, and contributions to early Texas history.",
     "source_ids": [
       "s1",
       "s2",
@@ -176,7 +176,7 @@ window.EVIDENCE_MAP = [
   },
   {
     "kind": "enabling objective",
-    "claim": "Define the term 'Texican' and explain its linguistic and cultural origins.",
+    "claim": "Define the term 'Texican' and explain its origins and evolution over time.",
     "source_ids": [
       "s2",
       "s3",
@@ -192,7 +192,7 @@ window.EVIDENCE_MAP = [
   },
   {
     "kind": "enabling objective",
-    "claim": "Describe the settlement patterns and geographic influences on the lifestyle of the Texicans.",
+    "claim": "Discuss the settlement patterns, lifestyle, and economic activities of the Texicans in early Texas.",
     "source_ids": [
       "s3",
       "s4"
@@ -206,7 +206,7 @@ window.EVIDENCE_MAP = [
   },
   {
     "kind": "enabling objective",
-    "claim": "Analyze the cultural background of Texicans, highlighting the blend of Native American, Spanish, Mexican, and Anglo-American influences.",
+    "claim": "Explain the cultural influences shaping Texican identity, including Native American, Spanish, and Mexican elements.",
     "source_ids": [
       "s4"
     ],
@@ -218,7 +218,7 @@ window.EVIDENCE_MAP = [
   },
   {
     "kind": "enabling objective",
-    "claim": "Explain the role of the Texicans in the Texas Revolution and the establishment of the Republic of Texas.",
+    "claim": "Analyze the role of the Texicans in the Texas Revolution and the establishment of the Republic of Texas.",
     "source_ids": [
       "s1",
       "s2",
@@ -236,7 +236,7 @@ window.EVIDENCE_MAP = [
   },
   {
     "kind": "enabling objective",
-    "claim": "Interpret primary source documents such as the Texas Essential Knowledge and Skills (TEKS) and the Treaty of Guadalupe Hidalgo to understand Texican identity and territorial changes.",
+    "claim": "Describe the impact of the Treaty of Guadalupe Hidalgo on the Texicans and their political status.",
     "source_ids": [
       "s1",
       "s2",
@@ -254,7 +254,7 @@ window.EVIDENCE_MAP = [
   },
   {
     "kind": "enabling objective",
-    "claim": "Discuss the evolution of Texican identity into the broader Texan identity and its legacy in Texas history.",
+    "claim": "Recognize the regional pride and identity associated with Texicans within the broader Texan cultural narrative.",
     "source_ids": [
       "s1",
       "s2",
@@ -272,25 +272,7 @@ window.EVIDENCE_MAP = [
   },
   {
     "kind": "enabling objective",
-    "claim": "Evaluate educational resources emphasizing geography and immigration patterns shaping Texican culture and settlement.",
-    "source_ids": [
-      "s1",
-      "s2",
-      "s3",
-      "s4"
-    ],
-    "source_titles": [
-      "Class setup, learner profile, and research rules",
-      "facebook.com",
-      "en.wikipedia.org",
-      "quizlet.com"
-    ],
-    "status": "mapped",
-    "finding": "Mapped to approved source-paper sections for source verification."
-  },
-  {
-    "kind": "enabling objective",
-    "claim": "Critically assess contested historical interpretations of Texican identity and their political motivations using multiple credible sources.",
+    "claim": "Evaluate contested historical interpretations and field disagreements regarding Texican identity and roles.",
     "source_ids": [
       "s1",
       "s2",
@@ -308,7 +290,41 @@ window.EVIDENCE_MAP = [
   },
   {
     "kind": "lesson section",
-    "claim": "Introduction to the Term 'Texican'",
+    "claim": "Understanding the Term 'Texican'",
+    "source_ids": [
+      "s2",
+      "s5",
+      "s7",
+      "s8"
+    ],
+    "source_titles": [
+      "facebook.com",
+      "thestoryoftexas.com",
+      "kids.nationalgeographic.com",
+      "everything-everywhere.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Settlement Patterns and Lifestyle of the Texicans",
+    "source_ids": [
+      "s5",
+      "s8",
+      "s11"
+    ],
+    "source_titles": [
+      "thestoryoftexas.com",
+      "everything-everywhere.com",
+      "texaspsp.org"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Cultural Background and Influences",
     "source_ids": [
       "s5",
       "s7",
@@ -324,61 +340,29 @@ window.EVIDENCE_MAP = [
   },
   {
     "kind": "lesson section",
-    "claim": "Settlement Patterns and Geography of Texicans",
+    "claim": "Texicans in Early Texas History",
     "source_ids": [
       "s7",
-      "s11",
-      "s8"
+      "s8",
+      "s13",
+      "s15"
     ],
     "source_titles": [
       "kids.nationalgeographic.com",
-      "texaspsp.org",
-      "everything-everywhere.com"
+      "everything-everywhere.com",
+      "gilderlehrman.org",
+      "tshaonline.org"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
     "kind": "lesson section",
-    "claim": "Cultural Background of the Texicans",
+    "claim": "Impact of the Treaty of Guadalupe Hidalgo",
     "source_ids": [
-      "s2",
-      "s15",
-      "s8"
-    ],
-    "source_titles": [
-      "facebook.com",
-      "tshaonline.org",
-      "everything-everywhere.com"
-    ],
-    "status": "mapped",
-    "finding": "Mapped to approved source-paper sections for source verification."
-  },
-  {
-    "kind": "lesson section",
-    "claim": "Texicans in Early Texas History and the Texas Revolution",
-    "source_ids": [
-      "s9",
-      "s15",
-      "s13"
-    ],
-    "source_titles": [
-      "britannica.com",
-      "tshaonline.org",
-      "gilderlehrman.org"
-    ],
-    "status": "mapped",
-    "finding": "Mapped to approved source-paper sections for source verification."
-  },
-  {
-    "kind": "lesson section",
-    "claim": "Primary Sources on Texican Identity and Territorial Changes",
-    "source_ids": [
-      "s14",
       "s16"
     ],
     "source_titles": [
-      "tea.texas.gov",
       "archives.gov"
     ],
     "status": "mapped",
@@ -386,46 +370,44 @@ window.EVIDENCE_MAP = [
   },
   {
     "kind": "lesson section",
-    "claim": "Evolution and Legacy of Texican Identity",
+    "claim": "Texican Identity and Regional Pride",
     "source_ids": [
-      "s2",
-      "s8",
-      "s15"
+      "s5",
+      "s7",
+      "s8"
     ],
     "source_titles": [
-      "facebook.com",
-      "everything-everywhere.com",
-      "tshaonline.org"
+      "thestoryoftexas.com",
+      "kids.nationalgeographic.com",
+      "everything-everywhere.com"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
     "kind": "lesson section",
-    "claim": "Geography, Immigration, and Cultural Shaping of Texicans",
-    "source_ids": [
-      "s11"
-    ],
-    "source_titles": [
-      "texaspsp.org"
-    ],
-    "status": "mapped",
-    "finding": "Mapped to approved source-paper sections for source verification."
-  },
-  {
-    "kind": "lesson section",
-    "claim": "Contested Perspectives on Texican Identity and Role",
+    "claim": "Contested Interpretations and Historical Debates",
     "source_ids": [
       "s2",
       "s7",
-      "s8",
-      "s15"
+      "s8"
     ],
     "source_titles": [
       "facebook.com",
       "kids.nationalgeographic.com",
-      "everything-everywhere.com",
-      "tshaonline.org"
+      "everything-everywhere.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Review and Knowledge Check",
+    "source_ids": [
+      "s14"
+    ],
+    "source_titles": [
+      "tea.texas.gov"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
@@ -502,7 +484,7 @@ window.SLIDES = [
       "h": "Deep dive: Design for the floor learner",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Design for the floor learner connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from Class setup, learner profile, and research rules. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Typical learner: not specified.</li><li>Floor learner: new learners.</li><li>Tone: plain; reading grade cap: 9.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Design for the floor learner\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Design for the floor learner\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> Class setup, learner profile, and research rules <sup class=\"cite\" data-src=\"s1\">[1]</sup></p>"
     },
-    "words": "wordcloud1-geography-impact"
+    "words": "wordcloud1-cultural-elements"
   },
   {
     "id": "terminal-objectives",
@@ -514,7 +496,7 @@ window.SLIDES = [
       "h": "Deep dive: Terminal learning objectives",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Terminal learning objectives connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from Class setup, learner profile, and research rules. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Identify who the Texicans were and describe their cultural background</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Terminal learning objectives\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Terminal learning objectives\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> Class setup, learner profile, and research rules <sup class=\"cite\" data-src=\"s1\">[1]</sup></p>"
     },
-    "poll": "poll2-texican-role-revolution"
+    "poll": "poll2-texican-role-history"
   },
   {
     "id": "enabling-objectives",
@@ -537,7 +519,7 @@ window.SLIDES = [
       "h": "Deep dive: Practice path",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Practice path connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from Class setup, learner profile, and research rules. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Name the decision or action learners must perform.</li><li>Show a clean example with the key vocabulary.</li><li>Ask learners to apply the same pattern to a realistic scenario.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Practice path\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Practice path\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> Class setup, learner profile, and research rules <sup class=\"cite\" data-src=\"s1\">[1]</sup></p>"
     },
-    "poll": "poll1-origin-of-texican"
+    "poll": "poll1-prior-knowledge-texican"
   },
   {
     "id": "guardrails",
@@ -549,14 +531,14 @@ window.SLIDES = [
       "h": "Deep dive: Guardrails for quality",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Guardrails for quality connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from Class setup, learner profile, and research rules. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>No fabricated sources, URLs, dates, or statistics.</li><li>No out-of-scope side trips.</li><li>No final claim unless the source paper supports it.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Guardrails for quality\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Guardrails for quality\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> Class setup, learner profile, and research rules <sup class=\"cite\" data-src=\"s1\">[1]</sup></p>"
     },
-    "poll": "poll2-texican-role-revolution",
-    "words": "wordcloud3-modern-texan-identity"
+    "poll": "poll2-texican-role-history",
+    "words": "wordcloud3-settlement-lifestyle"
   },
   {
     "id": "knowledge-check",
     "eyebrow": "Knowledge Check",
     "num": "08",
-    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">08</span><span class=\"bar\"></span>Knowledge Check</div><h2 class=\"head anim\">Check understanding</h2><ul><li>Answer the questions below before moving to final practice.</li></ul><p class=\"lede anim\">Check understanding connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Check understanding\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Check understanding\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-final-check\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which of the following best defines the term &#39;Texican&#39;?&quot;,&quot;options&quot;:[&quot;A term derived from a Native American word meaning &#39;friend&#39; or &#39;ally&#39;, referring to early Texas settlers blending multiple cultures&quot;,&quot;A Spanish word for Mexican citizens living in Texas&quot;,&quot;An Anglo-American term for settlers who arrived after Texas independence&quot;,&quot;A nickname for soldiers in the Texas Revolution&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;The term &#39;Texican&#39; originates from a Native American root meaning &#39;friend&#39; or &#39;ally&#39; and refers to the culturally blended early settlers of Texas.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Explain how the geography of Texas influenced the settlement patterns and lifestyle of the Texicans.&quot;,&quot;rubric&quot;:&quot;A strong answer should mention specific geographic features such as rivers, plains, and climate, and explain how these influenced economic activities, settlement locations, and social interactions of the Texicans.&quot;,&quot;sample&quot;:&quot;Texas&#39;s diverse geography, including rivers like the Rio Grande and fertile plains, provided water sources and arable land that attracted Texican settlements. The climate and terrain influenced their farming, ranching, and trade practices, shaping their lifestyle.&quot;,&quot;accept&quot;:[&quot;Texas&#39;s rivers and plains influenced where Texicans settled and how they lived&quot;,&quot;Geographic features like the Rio Grande and fertile land shaped Texican economic activities&quot;,&quot;The climate and terrain of Texas affected Texican lifestyle and settlement patterns&quot;]}]\" data-pop=\"1\"></div></div>",
+    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">08</span><span class=\"bar\"></span>Knowledge Check</div><h2 class=\"head anim\">Check understanding</h2><ul><li>Answer the questions below before moving to final practice.</li></ul><p class=\"lede anim\">Check understanding connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Check understanding\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Check understanding\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-final-check\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which of the following best defines the term &#39;Texican&#39;?&quot;,&quot;options&quot;:[&quot;A Texan of Mexican heritage with cultural ties to Native American and Spanish influences.&quot;,&quot;Any resident of Texas regardless of background.&quot;,&quot;A Native American tribe in Texas.&quot;,&quot;A term used only after Texas became a U.S. state.&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;The term &#39;Texican&#39; specifically refers to Texans of Mexican heritage, reflecting a blend of cultural influences distinct from general Texans or other groups.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Explain the significance of the Treaty of Guadalupe Hidalgo for the Texicans and how it affected their political status.&quot;,&quot;rubric&quot;:&quot;Answer should describe how the treaty ended the Mexican-American War, redefined political boundaries, and changed citizenship status for Texicans, highlighting its impact on their identity and rights.&quot;,&quot;sample&quot;:&quot;The Treaty of Guadalupe Hidalgo ended the Mexican-American War and transferred large territories, including Texas, to the United States. It granted U.S. citizenship to Mexicans living in these areas, including Texicans, which affected their political rights and identity.&quot;,&quot;accept&quot;:[&quot;The treaty ended the war and changed borders, making Texicans U.S. citizens.&quot;,&quot;It redefined political boundaries and citizenship for Texicans after the war.&quot;,&quot;Texicans became U.S. citizens under the treaty, impacting their political status.&quot;]}]\" data-pop=\"1\"></div></div>",
     "paper": {
       "secnum": "Deep Dive 08",
       "h": "Deep dive: Check understanding",
@@ -567,7 +549,7 @@ window.SLIDES = [
     "id": "facilitator-script",
     "eyebrow": "Presenter",
     "num": "09",
-    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">09</span><span class=\"bar\"></span>Presenter</div><h2 class=\"head anim\">What the facilitator should say</h2><ul><li>Explain why the knowledge base comes before final objectives.</li><li>Tell learners which claims are supported and which need more evidence.</li><li>Use the practice path to keep the class active.</li></ul><p class=\"lede anim\">What the facilitator should say connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"What the facilitator should say\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"What the facilitator should say\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-facilitator-script\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which of the following best defines the term &#39;Texican&#39;?&quot;,&quot;options&quot;:[&quot;A term derived from a Native American word meaning &#39;friend&#39; or &#39;ally&#39;, referring to early Texas settlers blending multiple cultures&quot;,&quot;A Spanish word for Mexican citizens living in Texas&quot;,&quot;An Anglo-American term for settlers who arrived after Texas independence&quot;,&quot;A nickname for soldiers in the Texas Revolution&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;The term &#39;Texican&#39; originates from a Native American root meaning &#39;friend&#39; or &#39;ally&#39; and refers to the culturally blended early settlers of Texas.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Explain how the geography of Texas influenced the settlement patterns and lifestyle of the Texicans.&quot;,&quot;rubric&quot;:&quot;A strong answer should mention specific geographic features such as rivers, plains, and climate, and explain how these influenced economic activities, settlement locations, and social interactions of the Texicans.&quot;,&quot;sample&quot;:&quot;Texas&#39;s diverse geography, including rivers like the Rio Grande and fertile plains, provided water sources and arable land that attracted Texican settlements. The climate and terrain influenced their farming, ranching, and trade practices, shaping their lifestyle.&quot;,&quot;accept&quot;:[&quot;Texas&#39;s rivers and plains influenced where Texicans settled and how they lived&quot;,&quot;Geographic features like the Rio Grande and fertile land shaped Texican economic activities&quot;,&quot;The climate and terrain of Texas affected Texican lifestyle and settlement patterns&quot;]}]\" data-pop=\"1\"></div></div>",
+    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">09</span><span class=\"bar\"></span>Presenter</div><h2 class=\"head anim\">What the facilitator should say</h2><ul><li>Explain why the knowledge base comes before final objectives.</li><li>Tell learners which claims are supported and which need more evidence.</li><li>Use the practice path to keep the class active.</li></ul><p class=\"lede anim\">What the facilitator should say connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"What the facilitator should say\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"What the facilitator should say\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-facilitator-script\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which of the following best defines the term &#39;Texican&#39;?&quot;,&quot;options&quot;:[&quot;A Texan of Mexican heritage with cultural ties to Native American and Spanish influences.&quot;,&quot;Any resident of Texas regardless of background.&quot;,&quot;A Native American tribe in Texas.&quot;,&quot;A term used only after Texas became a U.S. state.&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;The term &#39;Texican&#39; specifically refers to Texans of Mexican heritage, reflecting a blend of cultural influences distinct from general Texans or other groups.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Explain the significance of the Treaty of Guadalupe Hidalgo for the Texicans and how it affected their political status.&quot;,&quot;rubric&quot;:&quot;Answer should describe how the treaty ended the Mexican-American War, redefined political boundaries, and changed citizenship status for Texicans, highlighting its impact on their identity and rights.&quot;,&quot;sample&quot;:&quot;The Treaty of Guadalupe Hidalgo ended the Mexican-American War and transferred large territories, including Texas, to the United States. It granted U.S. citizenship to Mexicans living in these areas, including Texicans, which affected their political rights and identity.&quot;,&quot;accept&quot;:[&quot;The treaty ended the war and changed borders, making Texicans U.S. citizens.&quot;,&quot;It redefined political boundaries and citizenship for Texicans after the war.&quot;,&quot;Texicans became U.S. citizens under the treaty, impacting their political status.&quot;]}]\" data-pop=\"1\"></div></div>",
     "paper": {
       "secnum": "Deep Dive 09",
       "h": "Deep dive: What the facilitator should say",
@@ -628,7 +610,7 @@ window.SLIDES = [
       "h": "Deep dive: Avoid the tempting wrong turn",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Avoid the tempting wrong turn connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from tea.texas.gov. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Name a mistake a new learner might make.</li><li>Explain why the mistake is attractive.</li><li>Give a safer replacement action or question.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Avoid the tempting wrong turn\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Avoid the tempting wrong turn\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> tea.texas.gov <sup class=\"cite\" data-src=\"s14\">[14]</sup></p>"
     },
-    "poll": "poll2-texican-role-revolution"
+    "poll": "poll2-texican-role-history"
   },
   {
     "id": "application-15",
@@ -662,7 +644,7 @@ window.SLIDES = [
       "h": "Deep dive: Ask Bernard before moving on",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Ask Bernard before moving on connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from Class setup, learner profile, and research rules. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Pause for learner questions.</li><li>Use Bernard for a plain-language explanation or an alternate example.</li><li>Return to the slide when the class is ready to continue.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Ask Bernard before moving on\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Ask Bernard before moving on\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> Class setup, learner profile, and research rules <sup class=\"cite\" data-src=\"s1\">[1]</sup></p>"
     },
-    "words": "wordcloud1-geography-impact"
+    "words": "wordcloud1-cultural-elements"
   },
   {
     "id": "transfer-18",
@@ -701,7 +683,7 @@ window.SLIDES = [
     "id": "guided-practice-21",
     "eyebrow": "Guided Practice",
     "num": "21",
-    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">21</span><span class=\"bar\"></span>Guided Practice</div><h2 class=\"head anim\">Walk through a worked example</h2><ul><li>Start with a realistic learner scenario.</li><li>Model the first decision out loud.</li><li>Show where the source supports the decision.</li></ul><p class=\"lede anim\">Walk through a worked example connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s5\">[5]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Walk through a worked example\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Walk through a worked example\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-guided-practice-21\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which of the following best defines the term &#39;Texican&#39;?&quot;,&quot;options&quot;:[&quot;A term derived from a Native American word meaning &#39;friend&#39; or &#39;ally&#39;, referring to early Texas settlers blending multiple cultures&quot;,&quot;A Spanish word for Mexican citizens living in Texas&quot;,&quot;An Anglo-American term for settlers who arrived after Texas independence&quot;,&quot;A nickname for soldiers in the Texas Revolution&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;The term &#39;Texican&#39; originates from a Native American root meaning &#39;friend&#39; or &#39;ally&#39; and refers to the culturally blended early settlers of Texas.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Explain how the geography of Texas influenced the settlement patterns and lifestyle of the Texicans.&quot;,&quot;rubric&quot;:&quot;A strong answer should mention specific geographic features such as rivers, plains, and climate, and explain how these influenced economic activities, settlement locations, and social interactions of the Texicans.&quot;,&quot;sample&quot;:&quot;Texas&#39;s diverse geography, including rivers like the Rio Grande and fertile plains, provided water sources and arable land that attracted Texican settlements. The climate and terrain influenced their farming, ranching, and trade practices, shaping their lifestyle.&quot;,&quot;accept&quot;:[&quot;Texas&#39;s rivers and plains influenced where Texicans settled and how they lived&quot;,&quot;Geographic features like the Rio Grande and fertile land shaped Texican economic activities&quot;,&quot;The climate and terrain of Texas affected Texican lifestyle and settlement patterns&quot;]}]\" data-pop=\"1\"></div></div>",
+    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">21</span><span class=\"bar\"></span>Guided Practice</div><h2 class=\"head anim\">Walk through a worked example</h2><ul><li>Start with a realistic learner scenario.</li><li>Model the first decision out loud.</li><li>Show where the source supports the decision.</li></ul><p class=\"lede anim\">Walk through a worked example connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s5\">[5]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Walk through a worked example\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Walk through a worked example\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-guided-practice-21\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which of the following best defines the term &#39;Texican&#39;?&quot;,&quot;options&quot;:[&quot;A Texan of Mexican heritage with cultural ties to Native American and Spanish influences.&quot;,&quot;Any resident of Texas regardless of background.&quot;,&quot;A Native American tribe in Texas.&quot;,&quot;A term used only after Texas became a U.S. state.&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;The term &#39;Texican&#39; specifically refers to Texans of Mexican heritage, reflecting a blend of cultural influences distinct from general Texans or other groups.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Explain the significance of the Treaty of Guadalupe Hidalgo for the Texicans and how it affected their political status.&quot;,&quot;rubric&quot;:&quot;Answer should describe how the treaty ended the Mexican-American War, redefined political boundaries, and changed citizenship status for Texicans, highlighting its impact on their identity and rights.&quot;,&quot;sample&quot;:&quot;The Treaty of Guadalupe Hidalgo ended the Mexican-American War and transferred large territories, including Texas, to the United States. It granted U.S. citizenship to Mexicans living in these areas, including Texicans, which affected their political rights and identity.&quot;,&quot;accept&quot;:[&quot;The treaty ended the war and changed borders, making Texicans U.S. citizens.&quot;,&quot;It redefined political boundaries and citizenship for Texicans after the war.&quot;,&quot;Texicans became U.S. citizens under the treaty, impacting their political status.&quot;]}]\" data-pop=\"1\"></div></div>",
     "paper": {
       "secnum": "Deep Dive 21",
       "h": "Deep dive: Walk through a worked example",
@@ -740,7 +722,7 @@ window.SLIDES = [
       "h": "Deep dive: Try it in context",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Try it in context connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from everything-everywhere.com. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Apply the lesson to the terminal outcome: Identify who the Texicans were and describe their cultural background</li><li>Require learners to cite what information they used.</li><li>Ask what extra source would make the answer stronger.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Try it in context\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Try it in context\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> everything-everywhere.com <sup class=\"cite\" data-src=\"s8\">[8]</sup></p>"
     },
-    "poll": "poll2-texican-role-revolution"
+    "poll": "poll2-texican-role-history"
   },
   {
     "id": "advanced-extension-25",
@@ -774,7 +756,7 @@ window.SLIDES = [
       "h": "Deep dive: Move from class to practice",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Move from class to practice connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from texaspsp.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Name where learners will use this skill next.</li><li>Ask what they should check before acting alone.</li><li>Tie the answer back to the source and objective.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Move from class to practice\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Move from class to practice\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> texaspsp.org <sup class=\"cite\" data-src=\"s11\">[11]</sup></p>"
     },
-    "words": "wordcloud3-modern-texan-identity"
+    "words": "wordcloud3-settlement-lifestyle"
   },
   {
     "id": "evidence-28",
@@ -835,7 +817,7 @@ window.SLIDES = [
     "id": "application-33",
     "eyebrow": "Application",
     "num": "33",
-    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">33</span><span class=\"bar\"></span>Application</div><h2 class=\"head anim\">Try it in context</h2><ul><li>Apply the lesson to the terminal outcome: Identify who the Texicans were and describe their cultural background</li><li>Require learners to cite what information they used.</li><li>Ask what extra source would make the answer stronger.</li></ul><p class=\"lede anim\">Try it in context connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Try it in context\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Try it in context\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-application-33\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which of the following best defines the term &#39;Texican&#39;?&quot;,&quot;options&quot;:[&quot;A term derived from a Native American word meaning &#39;friend&#39; or &#39;ally&#39;, referring to early Texas settlers blending multiple cultures&quot;,&quot;A Spanish word for Mexican citizens living in Texas&quot;,&quot;An Anglo-American term for settlers who arrived after Texas independence&quot;,&quot;A nickname for soldiers in the Texas Revolution&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;The term &#39;Texican&#39; originates from a Native American root meaning &#39;friend&#39; or &#39;ally&#39; and refers to the culturally blended early settlers of Texas.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Explain how the geography of Texas influenced the settlement patterns and lifestyle of the Texicans.&quot;,&quot;rubric&quot;:&quot;A strong answer should mention specific geographic features such as rivers, plains, and climate, and explain how these influenced economic activities, settlement locations, and social interactions of the Texicans.&quot;,&quot;sample&quot;:&quot;Texas&#39;s diverse geography, including rivers like the Rio Grande and fertile plains, provided water sources and arable land that attracted Texican settlements. The climate and terrain influenced their farming, ranching, and trade practices, shaping their lifestyle.&quot;,&quot;accept&quot;:[&quot;Texas&#39;s rivers and plains influenced where Texicans settled and how they lived&quot;,&quot;Geographic features like the Rio Grande and fertile land shaped Texican economic activities&quot;,&quot;The climate and terrain of Texas affected Texican lifestyle and settlement patterns&quot;]}]\" data-pop=\"1\"></div></div>",
+    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">33</span><span class=\"bar\"></span>Application</div><h2 class=\"head anim\">Try it in context</h2><ul><li>Apply the lesson to the terminal outcome: Identify who the Texicans were and describe their cultural background</li><li>Require learners to cite what information they used.</li><li>Ask what extra source would make the answer stronger.</li></ul><p class=\"lede anim\">Try it in context connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Try it in context\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Try it in context\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-application-33\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which of the following best defines the term &#39;Texican&#39;?&quot;,&quot;options&quot;:[&quot;A Texan of Mexican heritage with cultural ties to Native American and Spanish influences.&quot;,&quot;Any resident of Texas regardless of background.&quot;,&quot;A Native American tribe in Texas.&quot;,&quot;A term used only after Texas became a U.S. state.&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;The term &#39;Texican&#39; specifically refers to Texans of Mexican heritage, reflecting a blend of cultural influences distinct from general Texans or other groups.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Explain the significance of the Treaty of Guadalupe Hidalgo for the Texicans and how it affected their political status.&quot;,&quot;rubric&quot;:&quot;Answer should describe how the treaty ended the Mexican-American War, redefined political boundaries, and changed citizenship status for Texicans, highlighting its impact on their identity and rights.&quot;,&quot;sample&quot;:&quot;The Treaty of Guadalupe Hidalgo ended the Mexican-American War and transferred large territories, including Texas, to the United States. It granted U.S. citizenship to Mexicans living in these areas, including Texicans, which affected their political rights and identity.&quot;,&quot;accept&quot;:[&quot;The treaty ended the war and changed borders, making Texicans U.S. citizens.&quot;,&quot;It redefined political boundaries and citizenship for Texicans after the war.&quot;,&quot;Texicans became U.S. citizens under the treaty, impacting their political status.&quot;]}]\" data-pop=\"1\"></div></div>",
     "paper": {
       "secnum": "Deep Dive 33",
       "h": "Deep dive: Try it in context",
@@ -852,7 +834,7 @@ window.SLIDES = [
       "h": "Deep dive: Add depth for experienced learners",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Add depth for experienced learners connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from facebook.com. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Name a more nuanced version of the same decision.</li><li>Compare the ordinary case with a harder edge case.</li><li>Ask what additional evidence would change the answer.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Add depth for experienced learners\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Add depth for experienced learners\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> facebook.com <sup class=\"cite\" data-src=\"s2\">[2]</sup></p>"
     },
-    "poll": "poll2-texican-role-revolution"
+    "poll": "poll2-texican-role-history"
   },
   {
     "id": "bernard-check-35",
@@ -886,7 +868,7 @@ window.SLIDES = [
       "h": "Deep dive: Source checkpoint: thestoryoftexas.com",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Source checkpoint: thestoryoftexas.com connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from thestoryoftexas.com. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Review what this source can safely support.</li><li>Separate verified points from questions that need more evidence.</li><li>Flag any statistic, date, or disputed point for corroboration.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Source checkpoint: thestoryoftexas.com\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Source checkpoint: thestoryoftexas.com\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> thestoryoftexas.com <sup class=\"cite\" data-src=\"s5\">[5]</sup></p>"
     },
-    "words": "wordcloud1-geography-impact"
+    "words": "wordcloud1-cultural-elements"
   },
   {
     "id": "concept-38",
@@ -964,13 +946,13 @@ window.SLIDES = [
       "h": "Deep dive: Ask Bernard before moving on",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Ask Bernard before moving on connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from shsulibraryguides.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Pause for learner questions.</li><li>Use Bernard for a plain-language explanation or an alternate example.</li><li>Return to the slide when the class is ready to continue.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Ask Bernard before moving on\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Ask Bernard before moving on\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> shsulibraryguides.org <sup class=\"cite\" data-src=\"s12\">[12]</sup></p>"
     },
-    "poll": "poll2-texican-role-revolution"
+    "poll": "poll2-texican-role-history"
   },
   {
     "id": "transfer-45",
     "eyebrow": "Transfer",
     "num": "45",
-    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">45</span><span class=\"bar\"></span>Transfer</div><h2 class=\"head anim\">Move from class to practice</h2><ul><li>Name where learners will use this skill next.</li><li>Ask what they should check before acting alone.</li><li>Tie the answer back to the source and objective.</li></ul><p class=\"lede anim\">Move from class to practice connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s13\">[13]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Move from class to practice\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Move from class to practice\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-transfer-45\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which of the following best defines the term &#39;Texican&#39;?&quot;,&quot;options&quot;:[&quot;A term derived from a Native American word meaning &#39;friend&#39; or &#39;ally&#39;, referring to early Texas settlers blending multiple cultures&quot;,&quot;A Spanish word for Mexican citizens living in Texas&quot;,&quot;An Anglo-American term for settlers who arrived after Texas independence&quot;,&quot;A nickname for soldiers in the Texas Revolution&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;The term &#39;Texican&#39; originates from a Native American root meaning &#39;friend&#39; or &#39;ally&#39; and refers to the culturally blended early settlers of Texas.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Explain how the geography of Texas influenced the settlement patterns and lifestyle of the Texicans.&quot;,&quot;rubric&quot;:&quot;A strong answer should mention specific geographic features such as rivers, plains, and climate, and explain how these influenced economic activities, settlement locations, and social interactions of the Texicans.&quot;,&quot;sample&quot;:&quot;Texas&#39;s diverse geography, including rivers like the Rio Grande and fertile plains, provided water sources and arable land that attracted Texican settlements. The climate and terrain influenced their farming, ranching, and trade practices, shaping their lifestyle.&quot;,&quot;accept&quot;:[&quot;Texas&#39;s rivers and plains influenced where Texicans settled and how they lived&quot;,&quot;Geographic features like the Rio Grande and fertile land shaped Texican economic activities&quot;,&quot;The climate and terrain of Texas affected Texican lifestyle and settlement patterns&quot;]}]\" data-pop=\"1\"></div></div>",
+    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">45</span><span class=\"bar\"></span>Transfer</div><h2 class=\"head anim\">Move from class to practice</h2><ul><li>Name where learners will use this skill next.</li><li>Ask what they should check before acting alone.</li><li>Tie the answer back to the source and objective.</li></ul><p class=\"lede anim\">Move from class to practice connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s13\">[13]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Move from class to practice\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Move from class to practice\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-transfer-45\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which of the following best defines the term &#39;Texican&#39;?&quot;,&quot;options&quot;:[&quot;A Texan of Mexican heritage with cultural ties to Native American and Spanish influences.&quot;,&quot;Any resident of Texas regardless of background.&quot;,&quot;A Native American tribe in Texas.&quot;,&quot;A term used only after Texas became a U.S. state.&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;The term &#39;Texican&#39; specifically refers to Texans of Mexican heritage, reflecting a blend of cultural influences distinct from general Texans or other groups.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Explain the significance of the Treaty of Guadalupe Hidalgo for the Texicans and how it affected their political status.&quot;,&quot;rubric&quot;:&quot;Answer should describe how the treaty ended the Mexican-American War, redefined political boundaries, and changed citizenship status for Texicans, highlighting its impact on their identity and rights.&quot;,&quot;sample&quot;:&quot;The Treaty of Guadalupe Hidalgo ended the Mexican-American War and transferred large territories, including Texas, to the United States. It granted U.S. citizenship to Mexicans living in these areas, including Texicans, which affected their political rights and identity.&quot;,&quot;accept&quot;:[&quot;The treaty ended the war and changed borders, making Texicans U.S. citizens.&quot;,&quot;It redefined political boundaries and citizenship for Texicans after the war.&quot;,&quot;Texicans became U.S. citizens under the treaty, impacting their political status.&quot;]}]\" data-pop=\"1\"></div></div>",
     "paper": {
       "secnum": "Deep Dive 45",
       "h": "Deep dive: Move from class to practice",
@@ -998,7 +980,7 @@ window.SLIDES = [
       "h": "Deep dive: Make the idea usable",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Make the idea usable connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from tshaonline.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Connect this part of Introduction to the Texicans to the floor learner's starting point.</li><li>Translate the key idea into plain language: Discuss the settlement patterns and lifestyle of the Texicans</li><li>Ask learners to restate the idea before moving on.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Make the idea usable\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Make the idea usable\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> tshaonline.org <sup class=\"cite\" data-src=\"s15\">[15]</sup></p>"
     },
-    "words": "wordcloud3-modern-texan-identity"
+    "words": "wordcloud3-settlement-lifestyle"
   },
   {
     "id": "guided-practice-48",
@@ -1076,7 +1058,7 @@ window.SLIDES = [
       "h": "Deep dive: Move from class to practice",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Move from class to practice connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from youtube.com. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Name where learners will use this skill next.</li><li>Ask what they should check before acting alone.</li><li>Tie the answer back to the source and objective.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Move from class to practice\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Move from class to practice\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> youtube.com <sup class=\"cite\" data-src=\"s6\">[6]</sup></p>"
     },
-    "poll": "poll2-texican-role-revolution"
+    "poll": "poll2-texican-role-history"
   },
   {
     "id": "evidence-55",
@@ -1104,7 +1086,7 @@ window.SLIDES = [
     "id": "guided-practice-57",
     "eyebrow": "Guided Practice",
     "num": "57",
-    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">57</span><span class=\"bar\"></span>Guided Practice</div><h2 class=\"head anim\">Walk through a worked example</h2><ul><li>Start with a realistic learner scenario.</li><li>Model the first decision out loud.</li><li>Show where the source supports the decision.</li></ul><p class=\"lede anim\">Walk through a worked example connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s9\">[9]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Walk through a worked example\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Walk through a worked example\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-guided-practice-57\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which of the following best defines the term &#39;Texican&#39;?&quot;,&quot;options&quot;:[&quot;A term derived from a Native American word meaning &#39;friend&#39; or &#39;ally&#39;, referring to early Texas settlers blending multiple cultures&quot;,&quot;A Spanish word for Mexican citizens living in Texas&quot;,&quot;An Anglo-American term for settlers who arrived after Texas independence&quot;,&quot;A nickname for soldiers in the Texas Revolution&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;The term &#39;Texican&#39; originates from a Native American root meaning &#39;friend&#39; or &#39;ally&#39; and refers to the culturally blended early settlers of Texas.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Explain how the geography of Texas influenced the settlement patterns and lifestyle of the Texicans.&quot;,&quot;rubric&quot;:&quot;A strong answer should mention specific geographic features such as rivers, plains, and climate, and explain how these influenced economic activities, settlement locations, and social interactions of the Texicans.&quot;,&quot;sample&quot;:&quot;Texas&#39;s diverse geography, including rivers like the Rio Grande and fertile plains, provided water sources and arable land that attracted Texican settlements. The climate and terrain influenced their farming, ranching, and trade practices, shaping their lifestyle.&quot;,&quot;accept&quot;:[&quot;Texas&#39;s rivers and plains influenced where Texicans settled and how they lived&quot;,&quot;Geographic features like the Rio Grande and fertile land shaped Texican economic activities&quot;,&quot;The climate and terrain of Texas affected Texican lifestyle and settlement patterns&quot;]}]\" data-pop=\"1\"></div></div>",
+    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">57</span><span class=\"bar\"></span>Guided Practice</div><h2 class=\"head anim\">Walk through a worked example</h2><ul><li>Start with a realistic learner scenario.</li><li>Model the first decision out loud.</li><li>Show where the source supports the decision.</li></ul><p class=\"lede anim\">Walk through a worked example connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s9\">[9]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Walk through a worked example\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Walk through a worked example\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-guided-practice-57\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which of the following best defines the term &#39;Texican&#39;?&quot;,&quot;options&quot;:[&quot;A Texan of Mexican heritage with cultural ties to Native American and Spanish influences.&quot;,&quot;Any resident of Texas regardless of background.&quot;,&quot;A Native American tribe in Texas.&quot;,&quot;A term used only after Texas became a U.S. state.&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;The term &#39;Texican&#39; specifically refers to Texans of Mexican heritage, reflecting a blend of cultural influences distinct from general Texans or other groups.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Explain the significance of the Treaty of Guadalupe Hidalgo for the Texicans and how it affected their political status.&quot;,&quot;rubric&quot;:&quot;Answer should describe how the treaty ended the Mexican-American War, redefined political boundaries, and changed citizenship status for Texicans, highlighting its impact on their identity and rights.&quot;,&quot;sample&quot;:&quot;The Treaty of Guadalupe Hidalgo ended the Mexican-American War and transferred large territories, including Texas, to the United States. It granted U.S. citizenship to Mexicans living in these areas, including Texicans, which affected their political rights and identity.&quot;,&quot;accept&quot;:[&quot;The treaty ended the war and changed borders, making Texicans U.S. citizens.&quot;,&quot;It redefined political boundaries and citizenship for Texicans after the war.&quot;,&quot;Texicans became U.S. citizens under the treaty, impacting their political status.&quot;]}]\" data-pop=\"1\"></div></div>",
     "paper": {
       "secnum": "Deep Dive 57",
       "h": "Deep dive: Walk through a worked example",
@@ -1187,7 +1169,7 @@ window.SLIDES = [
       "h": "Deep dive: Source checkpoint: archives.gov",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Source checkpoint: archives.gov connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from archives.gov. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Review what this source can safely support.</li><li>Separate verified points from questions that need more evidence.</li><li>Flag any statistic, date, or disputed point for corroboration.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Source checkpoint: archives.gov\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Source checkpoint: archives.gov\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> archives.gov <sup class=\"cite\" data-src=\"s16\">[16]</sup></p>"
     },
-    "poll": "poll2-texican-role-revolution"
+    "poll": "poll2-texican-role-history"
   },
   {
     "id": "concept-65",
@@ -1221,52 +1203,52 @@ window.SLIDES = [
       "h": "Deep dive: Choose the next best move",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Choose the next best move connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from en.wikipedia.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Present two or three plausible choices.</li><li>Ask which choice best matches the objective.</li><li>Use the answer to correct misunderstandings before the next section.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Choose the next best move\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Choose the next best move\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> en.wikipedia.org <sup class=\"cite\" data-src=\"s3\">[3]</sup></p>"
     },
-    "words": "wordcloud3-modern-texan-identity"
+    "words": "wordcloud3-settlement-lifestyle"
   },
   {
     "id": "knowledge-base-works-cited",
     "eyebrow": "Knowledge Base",
     "num": "68",
-    "deck": "<div class=\"wrap wide source-report\"><div class=\"eyebrow anim\"><span class=\"num\">KB</span><span class=\"bar\"></span>Knowledge Base</div><h2 class=\"head anim\">Works cited and source quality</h2><p class=\"lede anim\">These are the sources used or queued for Introduction to the Texicans. Bernard should teach from source-supported material only, and students can suggest stronger sources for the next version.</p><div class=\"lesson-detail anim\"><p><strong>Selected class tier:</strong> Standard class.</p><p><strong>Knowledge-base floor:</strong> 8 usable sources, including 2 primary sources. Current setup lists 15 sources, including 2 primary sources.</p><p><strong>Status:</strong> Knowledge base meets the selected Standard class floor.</p></div><div class=\"source-report-list anim\"><article class=\"source-report-card\"><div class=\"source-report-head\"><span>1</span><h3>Class setup, learner profile, and research rules</h3><sup class=\"cite\" data-src=\"s1\">[1]</sup></div><p><strong>Credibility:</strong> Context only · <strong>Reliability:</strong> Limited</p><p>Use this setup section to understand audience, scope, and rules. Do not treat it as outside evidence.</p></article><article class=\"source-report-card\"><div class=\"source-report-head\"><span>2</span><h3><a href=\"https://www.facebook.com/tejanovolunteercompany/posts/texonians-texasians-and-texicanstoday-we-may-know-them-simply-as-texans-but-deci/741437638004245\" target=\"_blank\" rel=\"noreferrer\">facebook.com</a></h3><sup class=\"cite\" data-src=\"s2\">[2]</sup></div><p><strong>Credibility:</strong> Moderate · <strong>Reliability:</strong> Moderate</p><p>Readable source text was available during generation. Use it for supported claims, and corroborate statistics, forecasts, or disputed points.</p></article><article class=\"source-report-card\"><div class=\"source-report-head\"><span>3</span><h3><a href=\"https://en.wikipedia.org/wiki/Texas\" target=\"_blank\" rel=\"noreferrer\">en.wikipedia.org</a></h3><sup class=\"cite\" data-src=\"s3\">[3]</sup></div><p><strong>Credibility:</strong> Moderate · <strong>Reliability:</strong> Moderate</p><p>Readable source text was available during generation. Use it for supported claims, and corroborate statistics, forecasts, or disputed points.</p></article><article class=\"source-report-card\"><div class=\"source-report-head\"><span>4</span><h3><a href=\"https://quizlet.com/562752387/ch-1-the-first-texans-flash-cards\" target=\"_blank\" rel=\"noreferrer\">quizlet.com</a></h3><sup class=\"cite\" data-src=\"s4\">[4]</sup></div><p><strong>Credibility:</strong> Moderate · <strong>Reliability:</strong> Moderate</p><p>Readable source text was available during generation. Use it for supported claims, and corroborate statistics, forecasts, or disputed points.</p></article><article class=\"source-report-card\"><div class=\"source-report-head\"><span>5</span><h3><a href=\"https://www.thestoryoftexas.com/resources/texas-facts\" target=\"_blank\" rel=\"noreferrer\">thestoryoftexas.com</a></h3><sup class=\"cite\" data-src=\"s5\">[5]</sup></div><p><strong>Credibility:</strong> Moderate · <strong>Reliability:</strong> Moderate</p><p>Readable source text was available during generation. Use it for supported claims, and corroborate statistics, forecasts, or disputed points.</p></article><article class=\"source-report-card\"><div class=\"source-report-head\"><span>6</span><h3><a href=\"https://www.youtube.com/watch?v=ck6ngwjhmzQ\" target=\"_blank\" rel=\"noreferrer\">youtube.com</a></h3><sup class=\"cite\" data-src=\"s6\">[6]</sup></div><p><strong>Credibility:</strong> Moderate · <strong>Reliability:</strong> Moderate</p><p>Readable source text was available during generation. Use it for supported claims, and corroborate statistics, forecasts, or disputed points.</p></article><article class=\"source-report-card\"><div class=\"source-report-head\"><span>7</span><h3><a href=\"https://kids.nationalgeographic.com/geography/states/article/texas\" target=\"_blank\" rel=\"noreferrer\">kids.nationalgeographic.com</a></h3><sup class=\"cite\" data-src=\"s7\">[7]</sup></div><p><strong>Credibility:</strong> Moderate · <strong>Reliability:</strong> Moderate</p><p>Readable source text was available during generation. Use it for supported claims, and corroborate statistics, forecasts, or disputed points.</p></article><article class=\"source-report-card\"><div class=\"source-report-head\"><span>8</span><h3><a href=\"https://everything-everywhere.com/a-brief-history-of-texas\" target=\"_blank\" rel=\"noreferrer\">everything-everywhere.com</a></h3><sup class=\"cite\" data-src=\"s8\">[8]</sup></div><p><strong>Credibility:</strong> Moderate · <strong>Reliability:</strong> Moderate</p><p>Readable source text was available during generation. Use it for supported claims, and corroborate statistics, forecasts, or disputed points.</p></article><article class=\"source-report-card\"><div class=\"source-report-head\"><span>9</span><h3><a href=\"https://www.britannica.com/topic/Texas-Revolution\" target=\"_blank\" rel=\"noreferrer\">britannica.com</a></h3><sup class=\"cite\" data-src=\"s9\">[9]</sup></div><p><strong>Credibility:</strong> Moderate · <strong>Reliability:</strong> Moderate</p><p>Readable source text was available during generation. Use it for supported claims, and corroborate statistics, forecasts, or disputed points.</p></article><article class=\"source-report-card\"><div class=\"source-report-head\"><span>10</span><h3><a href=\"https://www.oercommons.org/courseware/8453\" target=\"_blank\" rel=\"noreferrer\">oercommons.org</a></h3><sup class=\"cite\" data-src=\"s10\">[10]</sup></div><p><strong>Credibility:</strong> Moderate · <strong>Reliability:</strong> Moderate</p><p>Readable source text was available during generation. Use it for supported claims, and corroborate statistics, forecasts, or disputed points.</p></article><article class=\"source-report-card\"><div class=\"source-report-head\"><span>11</span><h3><a href=\"https://www.texaspsp.org/tasks/we-are-texans\" target=\"_blank\" rel=\"noreferrer\">texaspsp.org</a></h3><sup class=\"cite\" data-src=\"s11\">[11]</sup></div><p><strong>Credibility:</strong> Moderate · <strong>Reliability:</strong> Moderate</p><p>Readable source text was available during generation. Use it for supported claims, and corroborate statistics, forecasts, or disputed points.</p></article><article class=\"source-report-card\"><div class=\"source-report-head\"><span>12</span><h3><a href=\"https://shsulibraryguides.org/c.php?g=86894&amp;amp;p=594545\" target=\"_blank\" rel=\"noreferrer\">shsulibraryguides.org</a></h3><sup class=\"cite\" data-src=\"s12\">[12]</sup></div><p><strong>Credibility:</strong> Moderate · <strong>Reliability:</strong> Moderate</p><p>Readable source text was available during generation. Use it for supported claims, and corroborate statistics, forecasts, or disputed points.</p></article><article class=\"source-report-card\"><div class=\"source-report-head\"><span>13</span><h3><a href=\"https://www.gilderlehrman.org/history-resources/spotlight-primary-source/texas-declaration-independence-1836\" target=\"_blank\" rel=\"noreferrer\">gilderlehrman.org</a></h3><sup class=\"cite\" data-src=\"s13\">[13]</sup></div><p><strong>Credibility:</strong> Moderate · <strong>Reliability:</strong> Moderate</p><p>Readable source text was available during generation. Use it for supported claims, and corroborate statistics, forecasts, or disputed points.</p></article><article class=\"source-report-card\"><div class=\"source-report-head\"><span>14</span><h3><a href=\"https://tea.texas.gov/curriculum-and-instruction/texas-essential-knowledge-and-skills-teks\" target=\"_blank\" rel=\"noreferrer\">tea.texas.gov</a></h3><sup class=\"cite\" data-src=\"s14\">[14]</sup></div><p><strong>Credibility:</strong> High · <strong>Reliability:</strong> High</p><p>Readable source text was available during generation. Use it for supported claims, and corroborate statistics, forecasts, or disputed points.</p></article><article class=\"source-report-card\"><div class=\"source-report-head\"><span>15</span><h3><a href=\"https://www.tshaonline.org/handbook/entries/republic-of-texas\" target=\"_blank\" rel=\"noreferrer\">tshaonline.org</a></h3><sup class=\"cite\" data-src=\"s15\">[15]</sup></div><p><strong>Credibility:</strong> Moderate · <strong>Reliability:</strong> Moderate</p><p>Readable source text was available during generation. Use it for supported claims, and corroborate statistics, forecasts, or disputed points.</p></article><article class=\"source-report-card\"><div class=\"source-report-head\"><span>16</span><h3><a href=\"https://www.archives.gov/education/lessons/guadalupe-hidalgo\" target=\"_blank\" rel=\"noreferrer\">archives.gov</a></h3><sup class=\"cite\" data-src=\"s16\">[16]</sup></div><p><strong>Credibility:</strong> High · <strong>Reliability:</strong> High</p><p>Readable source text was available during generation. Use it for supported claims, and corroborate statistics, forecasts, or disputed points.</p></article></div><details class=\"source-rubric anim\" open><summary>How the source grading metric works</summary><ol><li><strong>Credibility ranking</strong> checks the source type and class-maker trust tag. Primary sources rank highest; secondary sources can be strong; unknown sources need review.</li><li><strong>Reliability ranking</strong> checks whether readable text, a transcript, or stable source material was available during generation.</li><li><strong>Corroboration rule</strong> requires extra independent support for statistics, forward-looking claims, and contested points.</li><li><strong>Information-literacy finding</strong> tells the learner whether the source can support claims now, is context-only, or needs more extraction before Bernard can teach from it.</li></ol></details><button class=\"deepbtn source-suggest-btn\" onclick=\"openSourceSuggestion()\">Suggest another source for the knowledge base</button></div>"
+    "deck": "<div class=\"wrap wide source-report\"><div class=\"eyebrow anim\"><span class=\"num\">KB</span><span class=\"bar\"></span>Knowledge Base</div><h2 class=\"head anim\">Works cited and source quality</h2><p class=\"lede anim\">These are the sources used or queued for Introduction to the Texicans. Bernard should teach from source-supported material only, and students can suggest stronger sources for the next version.</p><div class=\"lesson-detail anim\"><p><strong>Selected class tier:</strong> Standard class.</p><p><strong>Knowledge-base floor:</strong> 8 usable sources, including 2 primary sources. Current setup lists 15 sources, including 2 primary sources.</p><p><strong>Status:</strong> Knowledge base meets the selected Standard class floor.</p></div><div class=\"source-report-list anim\"><article class=\"source-report-card\"><div class=\"source-report-head\"><span>1</span><h3>Class setup, learner profile, and research rules</h3><sup class=\"cite\" data-src=\"s1\">[1]</sup></div><p><strong>Credibility:</strong> Context only · <strong>Reliability:</strong> Limited</p><p>Use this setup section to understand audience, scope, and rules. Do not treat it as outside evidence.</p></article><article class=\"source-report-card\"><div class=\"source-report-head\"><span>2</span><h3><a href=\"https://www.facebook.com/tejanovolunteercompany/posts/texonians-texasians-and-texicanstoday-we-may-know-them-simply-as-texans-but-deci/741437638004245\" target=\"_blank\" rel=\"noreferrer\">facebook.com</a></h3><sup class=\"cite\" data-src=\"s2\">[2]</sup></div><p><strong>Credibility:</strong> Moderate · <strong>Reliability:</strong> Moderate</p><p>Readable source text was available during generation. Use it for supported claims, and corroborate statistics, forecasts, or disputed points.</p></article><article class=\"source-report-card\"><div class=\"source-report-head\"><span>3</span><h3><a href=\"https://en.wikipedia.org/wiki/Texas\" target=\"_blank\" rel=\"noreferrer\">en.wikipedia.org</a></h3><sup class=\"cite\" data-src=\"s3\">[3]</sup></div><p><strong>Credibility:</strong> Moderate · <strong>Reliability:</strong> Moderate</p><p>Readable source text was available during generation. Use it for supported claims, and corroborate statistics, forecasts, or disputed points.</p></article><article class=\"source-report-card\"><div class=\"source-report-head\"><span>4</span><h3><a href=\"https://quizlet.com/562752387/ch-1-the-first-texans-flash-cards\" target=\"_blank\" rel=\"noreferrer\">quizlet.com</a></h3><sup class=\"cite\" data-src=\"s4\">[4]</sup></div><p><strong>Credibility:</strong> Moderate · <strong>Reliability:</strong> Moderate</p><p>Readable source text was available during generation. Use it for supported claims, and corroborate statistics, forecasts, or disputed points.</p></article><article class=\"source-report-card\"><div class=\"source-report-head\"><span>5</span><h3><a href=\"https://www.thestoryoftexas.com/resources/texas-facts\" target=\"_blank\" rel=\"noreferrer\">thestoryoftexas.com</a></h3><sup class=\"cite\" data-src=\"s5\">[5]</sup></div><p><strong>Credibility:</strong> Moderate · <strong>Reliability:</strong> Moderate</p><p>Readable source text was available during generation. Use it for supported claims, and corroborate statistics, forecasts, or disputed points.</p></article><article class=\"source-report-card\"><div class=\"source-report-head\"><span>6</span><h3><a href=\"https://www.youtube.com/watch?v=ck6ngwjhmzQ\" target=\"_blank\" rel=\"noreferrer\">youtube.com</a></h3><sup class=\"cite\" data-src=\"s6\">[6]</sup></div><p><strong>Credibility:</strong> Moderate · <strong>Reliability:</strong> Moderate</p><p>Readable source text was available during generation. Use it for supported claims, and corroborate statistics, forecasts, or disputed points.</p></article><article class=\"source-report-card\"><div class=\"source-report-head\"><span>7</span><h3><a href=\"https://kids.nationalgeographic.com/geography/states/article/texas\" target=\"_blank\" rel=\"noreferrer\">kids.nationalgeographic.com</a></h3><sup class=\"cite\" data-src=\"s7\">[7]</sup></div><p><strong>Credibility:</strong> Moderate · <strong>Reliability:</strong> Moderate</p><p>Readable source text was available during generation. Use it for supported claims, and corroborate statistics, forecasts, or disputed points.</p></article><article class=\"source-report-card\"><div class=\"source-report-head\"><span>8</span><h3><a href=\"https://everything-everywhere.com/a-brief-history-of-texas\" target=\"_blank\" rel=\"noreferrer\">everything-everywhere.com</a></h3><sup class=\"cite\" data-src=\"s8\">[8]</sup></div><p><strong>Credibility:</strong> Moderate · <strong>Reliability:</strong> Moderate</p><p>Readable source text was available during generation. Use it for supported claims, and corroborate statistics, forecasts, or disputed points.</p></article><article class=\"source-report-card\"><div class=\"source-report-head\"><span>9</span><h3><a href=\"https://www.britannica.com/topic/Texas-Revolution\" target=\"_blank\" rel=\"noreferrer\">britannica.com</a></h3><sup class=\"cite\" data-src=\"s9\">[9]</sup></div><p><strong>Credibility:</strong> Moderate · <strong>Reliability:</strong> Moderate</p><p>Readable source text was available during generation. Use it for supported claims, and corroborate statistics, forecasts, or disputed points.</p></article><article class=\"source-report-card\"><div class=\"source-report-head\"><span>10</span><h3>oercommons.org</h3><sup class=\"cite\" data-src=\"s10\">[10]</sup></div><p><strong>Credibility:</strong> Moderate · <strong>Reliability:</strong> Needs extraction</p><p>Listed in the knowledge base, but not enough text was available for factual teaching claims.</p></article><article class=\"source-report-card\"><div class=\"source-report-head\"><span>11</span><h3><a href=\"https://www.texaspsp.org/tasks/we-are-texans\" target=\"_blank\" rel=\"noreferrer\">texaspsp.org</a></h3><sup class=\"cite\" data-src=\"s11\">[11]</sup></div><p><strong>Credibility:</strong> Moderate · <strong>Reliability:</strong> Moderate</p><p>Readable source text was available during generation. Use it for supported claims, and corroborate statistics, forecasts, or disputed points.</p></article><article class=\"source-report-card\"><div class=\"source-report-head\"><span>12</span><h3><a href=\"https://shsulibraryguides.org/c.php?g=86894&amp;amp;p=594545\" target=\"_blank\" rel=\"noreferrer\">shsulibraryguides.org</a></h3><sup class=\"cite\" data-src=\"s12\">[12]</sup></div><p><strong>Credibility:</strong> Moderate · <strong>Reliability:</strong> Moderate</p><p>Readable source text was available during generation. Use it for supported claims, and corroborate statistics, forecasts, or disputed points.</p></article><article class=\"source-report-card\"><div class=\"source-report-head\"><span>13</span><h3><a href=\"https://www.gilderlehrman.org/history-resources/spotlight-primary-source/texas-declaration-independence-1836\" target=\"_blank\" rel=\"noreferrer\">gilderlehrman.org</a></h3><sup class=\"cite\" data-src=\"s13\">[13]</sup></div><p><strong>Credibility:</strong> Moderate · <strong>Reliability:</strong> Moderate</p><p>Readable source text was available during generation. Use it for supported claims, and corroborate statistics, forecasts, or disputed points.</p></article><article class=\"source-report-card\"><div class=\"source-report-head\"><span>14</span><h3><a href=\"https://tea.texas.gov/curriculum-and-instruction/texas-essential-knowledge-and-skills-teks\" target=\"_blank\" rel=\"noreferrer\">tea.texas.gov</a></h3><sup class=\"cite\" data-src=\"s14\">[14]</sup></div><p><strong>Credibility:</strong> High · <strong>Reliability:</strong> High</p><p>Readable source text was available during generation. Use it for supported claims, and corroborate statistics, forecasts, or disputed points.</p></article><article class=\"source-report-card\"><div class=\"source-report-head\"><span>15</span><h3><a href=\"https://www.tshaonline.org/handbook/entries/republic-of-texas\" target=\"_blank\" rel=\"noreferrer\">tshaonline.org</a></h3><sup class=\"cite\" data-src=\"s15\">[15]</sup></div><p><strong>Credibility:</strong> Moderate · <strong>Reliability:</strong> Moderate</p><p>Readable source text was available during generation. Use it for supported claims, and corroborate statistics, forecasts, or disputed points.</p></article><article class=\"source-report-card\"><div class=\"source-report-head\"><span>16</span><h3><a href=\"https://www.archives.gov/education/lessons/guadalupe-hidalgo\" target=\"_blank\" rel=\"noreferrer\">archives.gov</a></h3><sup class=\"cite\" data-src=\"s16\">[16]</sup></div><p><strong>Credibility:</strong> High · <strong>Reliability:</strong> High</p><p>Readable source text was available during generation. Use it for supported claims, and corroborate statistics, forecasts, or disputed points.</p></article></div><details class=\"source-rubric anim\" open><summary>How the source grading metric works</summary><ol><li><strong>Credibility ranking</strong> checks the source type and class-maker trust tag. Primary sources rank highest; secondary sources can be strong; unknown sources need review.</li><li><strong>Reliability ranking</strong> checks whether readable text, a transcript, or stable source material was available during generation.</li><li><strong>Corroboration rule</strong> requires extra independent support for statistics, forward-looking claims, and contested points.</li><li><strong>Information-literacy finding</strong> tells the learner whether the source can support claims now, is context-only, or needs more extraction before Bernard can teach from it.</li></ol></details><button class=\"deepbtn source-suggest-btn\" onclick=\"openSourceSuggestion()\">Suggest another source for the knowledge base</button></div>"
   }
 ];
 window.POLLS = {
-  "poll1-origin-of-texican": {
-    "q": "What do you think is the origin and meaning of the term 'Texican'?",
-    "desc": "Choose the option that best reflects your understanding before we explore its true linguistic roots.",
+  "poll1-prior-knowledge-texican": {
+    "q": "Before this lesson, how did you understand the term 'Texican'?",
+    "desc": "Vote on your prior knowledge and understanding of the term 'Texican' and how it differs from 'Texan' and 'Tejano'.",
     "opts": [
-      "A Native American word meaning 'friend' or 'ally'",
-      "A Spanish term for settlers in Texas",
-      "A Mexican word for Texas residents",
-      "An Anglo-American nickname for Texans"
+      "I thought 'Texican' meant the same as 'Texan'.",
+      "I knew 'Texican' referred to Texans of Mexican heritage.",
+      "I was unsure or had never heard the term 'Texican'.",
+      "I confused 'Texican' with 'Tejano' or other terms."
     ]
   },
-  "poll2-texican-role-revolution": {
-    "q": "What role do you think Texicans played in the Texas Revolution?",
-    "desc": "Select the option that best describes the Texicans' involvement before we review historical facts.",
+  "poll2-texican-role-history": {
+    "q": "What role do you think Texicans played in early Texas history?",
+    "desc": "Select the option that best matches your understanding of Texican contributions to Texas history.",
     "opts": [
-      "They were neutral observers",
-      "They actively fought for Texas independence",
-      "They supported Mexico against Texas",
-      "They migrated away from Texas during the conflict"
+      "Texicans were central participants in the Texas Revolution and founding of Texas.",
+      "Texicans had a minor or symbolic role in Texas history.",
+      "Texicans were primarily settlers with no political involvement.",
+      "I am not sure about the Texicans' historical role."
     ]
   }
 };
 window.WORDS = {
-  "wordcloud1-geography-impact": {
-    "q": "List geographic features of Texas that influenced Texican settlement and lifestyle.",
-    "desc": "Think about rivers, plains, mountains, and climate factors that shaped where and how Texicans lived."
+  "wordcloud1-cultural-elements": {
+    "q": "What words come to mind when you think about the cultural background of the Texicans?",
+    "desc": "Contribute words that reflect the cultural influences and identity of the Texicans."
   },
-  "wordcloud2-cultural-influences": {
-    "q": "List cultural influences that shaped Texican identity.",
-    "desc": "Consider Native American, Spanish, Mexican, and Anglo-American elements in Texican culture."
+  "wordcloud2-texican-identity": {
+    "q": "What words or phrases do you associate with Texican identity and regional pride today?",
+    "desc": "Share words that express the ongoing cultural pride and legacy of Texicans."
   },
-  "wordcloud3-modern-texan-identity": {
-    "q": "What words come to mind when you think of modern Texan identity and its roots in Texican culture?",
-    "desc": "Reflect on how historical Texican culture influences present-day Texas identity."
+  "wordcloud3-settlement-lifestyle": {
+    "q": "What words describe the settlement patterns and lifestyle of the Texicans in early Texas?",
+    "desc": "Think about geography, economy, and daily life when contributing words."
   },
-  "wordcloud4-immigration-and-settlement": {
-    "q": "Identify immigration routes and settlement areas that influenced Texican culture.",
-    "desc": "Consider how migration patterns shaped the demographics and culture of early Texas."
+  "wordcloud4-historical-debate": {
+    "q": "What words or ideas come to mind regarding the historical debates about Texican identity and roles?",
+    "desc": "Reflect on contested interpretations and differing scholarly views."
   }
 };

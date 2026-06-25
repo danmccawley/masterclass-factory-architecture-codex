@@ -1,7 +1,7 @@
 {
   "title": "Introduction to the Texicans",
   "slug": "introduction-to-the-texicans",
-  "generated_at": "2026-06-25T17:08:07.344Z",
+  "generated_at": "2026-06-25T17:10:39.848Z",
   "class_tier": {
     "level": "standard",
     "label": "Standard class",
@@ -389,7 +389,7 @@
   "evidence_map": [
     {
       "kind": "terminal objective",
-      "claim": "Identify who the Texicans were and describe their cultural background, settlement patterns, and their role in early Texas history.",
+      "claim": "Identify who the Texicans were and describe their cultural background, historical significance, and contributions to early Texas history.",
       "source_ids": [
         "s1",
         "s2",
@@ -405,7 +405,7 @@
     },
     {
       "kind": "enabling objective",
-      "claim": "Define the term 'Texican' and explain its linguistic and cultural origins.",
+      "claim": "Define the term 'Texican' and explain its origins and evolution over time.",
       "source_ids": [
         "s2",
         "s3",
@@ -421,7 +421,7 @@
     },
     {
       "kind": "enabling objective",
-      "claim": "Describe the settlement patterns and geographic influences on the lifestyle of the Texicans.",
+      "claim": "Discuss the settlement patterns, lifestyle, and economic activities of the Texicans in early Texas.",
       "source_ids": [
         "s3",
         "s4"
@@ -435,7 +435,7 @@
     },
     {
       "kind": "enabling objective",
-      "claim": "Analyze the cultural background of Texicans, highlighting the blend of Native American, Spanish, Mexican, and Anglo-American influences.",
+      "claim": "Explain the cultural influences shaping Texican identity, including Native American, Spanish, and Mexican elements.",
       "source_ids": [
         "s4"
       ],
@@ -447,7 +447,7 @@
     },
     {
       "kind": "enabling objective",
-      "claim": "Explain the role of the Texicans in the Texas Revolution and the establishment of the Republic of Texas.",
+      "claim": "Analyze the role of the Texicans in the Texas Revolution and the establishment of the Republic of Texas.",
       "source_ids": [
         "s1",
         "s2",
@@ -465,7 +465,7 @@
     },
     {
       "kind": "enabling objective",
-      "claim": "Interpret primary source documents such as the Texas Essential Knowledge and Skills (TEKS) and the Treaty of Guadalupe Hidalgo to understand Texican identity and territorial changes.",
+      "claim": "Describe the impact of the Treaty of Guadalupe Hidalgo on the Texicans and their political status.",
       "source_ids": [
         "s1",
         "s2",
@@ -483,7 +483,7 @@
     },
     {
       "kind": "enabling objective",
-      "claim": "Discuss the evolution of Texican identity into the broader Texan identity and its legacy in Texas history.",
+      "claim": "Recognize the regional pride and identity associated with Texicans within the broader Texan cultural narrative.",
       "source_ids": [
         "s1",
         "s2",
@@ -501,25 +501,7 @@
     },
     {
       "kind": "enabling objective",
-      "claim": "Evaluate educational resources emphasizing geography and immigration patterns shaping Texican culture and settlement.",
-      "source_ids": [
-        "s1",
-        "s2",
-        "s3",
-        "s4"
-      ],
-      "source_titles": [
-        "Class setup, learner profile, and research rules",
-        "facebook.com",
-        "en.wikipedia.org",
-        "quizlet.com"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "enabling objective",
-      "claim": "Critically assess contested historical interpretations of Texican identity and their political motivations using multiple credible sources.",
+      "claim": "Evaluate contested historical interpretations and field disagreements regarding Texican identity and roles.",
       "source_ids": [
         "s1",
         "s2",
@@ -537,7 +519,41 @@
     },
     {
       "kind": "lesson section",
-      "claim": "Introduction to the Term 'Texican'",
+      "claim": "Understanding the Term 'Texican'",
+      "source_ids": [
+        "s2",
+        "s5",
+        "s7",
+        "s8"
+      ],
+      "source_titles": [
+        "facebook.com",
+        "thestoryoftexas.com",
+        "kids.nationalgeographic.com",
+        "everything-everywhere.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Settlement Patterns and Lifestyle of the Texicans",
+      "source_ids": [
+        "s5",
+        "s8",
+        "s11"
+      ],
+      "source_titles": [
+        "thestoryoftexas.com",
+        "everything-everywhere.com",
+        "texaspsp.org"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Cultural Background and Influences",
       "source_ids": [
         "s5",
         "s7",
@@ -553,61 +569,29 @@
     },
     {
       "kind": "lesson section",
-      "claim": "Settlement Patterns and Geography of Texicans",
+      "claim": "Texicans in Early Texas History",
       "source_ids": [
         "s7",
-        "s11",
-        "s8"
+        "s8",
+        "s13",
+        "s15"
       ],
       "source_titles": [
         "kids.nationalgeographic.com",
-        "texaspsp.org",
-        "everything-everywhere.com"
+        "everything-everywhere.com",
+        "gilderlehrman.org",
+        "tshaonline.org"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "lesson section",
-      "claim": "Cultural Background of the Texicans",
+      "claim": "Impact of the Treaty of Guadalupe Hidalgo",
       "source_ids": [
-        "s2",
-        "s15",
-        "s8"
-      ],
-      "source_titles": [
-        "facebook.com",
-        "tshaonline.org",
-        "everything-everywhere.com"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "lesson section",
-      "claim": "Texicans in Early Texas History and the Texas Revolution",
-      "source_ids": [
-        "s9",
-        "s15",
-        "s13"
-      ],
-      "source_titles": [
-        "britannica.com",
-        "tshaonline.org",
-        "gilderlehrman.org"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "lesson section",
-      "claim": "Primary Sources on Texican Identity and Territorial Changes",
-      "source_ids": [
-        "s14",
         "s16"
       ],
       "source_titles": [
-        "tea.texas.gov",
         "archives.gov"
       ],
       "status": "mapped",
@@ -615,46 +599,44 @@
     },
     {
       "kind": "lesson section",
-      "claim": "Evolution and Legacy of Texican Identity",
+      "claim": "Texican Identity and Regional Pride",
       "source_ids": [
-        "s2",
-        "s8",
-        "s15"
+        "s5",
+        "s7",
+        "s8"
       ],
       "source_titles": [
-        "facebook.com",
-        "everything-everywhere.com",
-        "tshaonline.org"
+        "thestoryoftexas.com",
+        "kids.nationalgeographic.com",
+        "everything-everywhere.com"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "lesson section",
-      "claim": "Geography, Immigration, and Cultural Shaping of Texicans",
-      "source_ids": [
-        "s11"
-      ],
-      "source_titles": [
-        "texaspsp.org"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "lesson section",
-      "claim": "Contested Perspectives on Texican Identity and Role",
+      "claim": "Contested Interpretations and Historical Debates",
       "source_ids": [
         "s2",
         "s7",
-        "s8",
-        "s15"
+        "s8"
       ],
       "source_titles": [
         "facebook.com",
         "kids.nationalgeographic.com",
-        "everything-everywhere.com",
-        "tshaonline.org"
+        "everything-everywhere.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Review and Knowledge Check",
+      "source_ids": [
+        "s14"
+      ],
+      "source_titles": [
+        "tea.texas.gov"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
