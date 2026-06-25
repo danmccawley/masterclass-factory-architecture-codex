@@ -1,7 +1,7 @@
 [
   {
     "kind": "terminal objective",
-    "claim": "Identify who the Texicans were and describe their cultural background within the context of early Texas history.",
+    "claim": "Identify who the Texicans were and describe their cultural background, settlement patterns, lifestyle, and role in early Texas history.",
     "source_ids": [
       "s1",
       "s2",
@@ -17,7 +17,7 @@
   },
   {
     "kind": "enabling objective",
-    "claim": "Define the term 'Texican' and distinguish it from related terms such as 'Texan' and 'Texasian' based on historical and cultural sources.",
+    "claim": "Define the term 'Texican' and explain its historical origins and contested meanings.",
     "source_ids": [
       "s2",
       "s3",
@@ -33,7 +33,7 @@
   },
   {
     "kind": "enabling objective",
-    "claim": "Discuss the settlement patterns, geographic context, and lifestyle characteristics of the Texicans in early 19th-century Texas.",
+    "claim": "Describe the cultural influences shaping Texican identity, including Spanish colonial, Mexican, and indigenous elements.",
     "source_ids": [
       "s3",
       "s4"
@@ -47,7 +47,7 @@
   },
   {
     "kind": "enabling objective",
-    "claim": "Explain the political and military roles of the Texicans during the transition from Spanish to Mexican control and the Texas Revolution, including their divided loyalties.",
+    "claim": "Analyze the settlement patterns and frontier lifestyle of the Texicans in early 19th century Texas.",
     "source_ids": [
       "s4"
     ],
@@ -58,81 +58,163 @@
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
-    "kind": "lesson section",
-    "claim": "Understanding the Term 'Texican'",
+    "kind": "enabling objective",
+    "claim": "Explain the Texicans' participation and impact in the Texas Revolution and subsequent political developments.",
     "source_ids": [
+      "s1",
       "s2",
-      "s6"
+      "s3",
+      "s4"
     ],
     "source_titles": [
+      "Class setup, learner profile, and research rules",
       "jinxschwartz.com",
-      "facebook.com"
+      "en.wikipedia.org",
+      "kids.nationalgeographic.com"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
-    "kind": "lesson section",
-    "claim": "Settlement Patterns and Lifestyle of the Texicans",
+    "kind": "enabling objective",
+    "claim": "Evaluate primary source evidence to understand the perspectives and experiences of Texicans.",
     "source_ids": [
-      "s4",
-      "s7"
-    ],
-    "source_titles": [
-      "kids.nationalgeographic.com",
-      "everything-everywhere.com"
-    ],
-    "status": "mapped",
-    "finding": "Mapped to approved source-paper sections for source verification."
-  },
-  {
-    "kind": "lesson section",
-    "claim": "Cultural Background and Identity of the Texicans",
-    "source_ids": [
+      "s1",
       "s2",
-      "s6",
-      "s7"
+      "s3",
+      "s4"
     ],
     "source_titles": [
+      "Class setup, learner profile, and research rules",
       "jinxschwartz.com",
-      "facebook.com",
-      "everything-everywhere.com"
+      "en.wikipedia.org",
+      "kids.nationalgeographic.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "enabling objective",
+    "claim": "Discuss the contested historical interpretations and field disagreements regarding Texican identity and allegiances.",
+    "source_ids": [
+      "s1",
+      "s2",
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "jinxschwartz.com",
+      "en.wikipedia.org",
+      "kids.nationalgeographic.com"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
     "kind": "lesson section",
-    "claim": "The Texicans in Early Texas History and the Texas Revolution",
+    "claim": "Introduction to Texican Identity and Origins",
     "source_ids": [
       "s2",
       "s7",
-      "s8",
-      "s9"
+      "s10",
+      "s11"
     ],
     "source_titles": [
       "jinxschwartz.com",
       "everything-everywhere.com",
-      "britannica.com",
-      "thestoryoftexas.com"
+      "libguides.tamusa.edu",
+      "texasstudies.org"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
     "kind": "lesson section",
-    "claim": "Exploring Primary Sources on the Texicans",
+    "claim": "Cultural Background of the Texicans",
+    "source_ids": [
+      "s2",
+      "s7",
+      "s4",
+      "s8"
+    ],
+    "source_titles": [
+      "jinxschwartz.com",
+      "everything-everywhere.com",
+      "kids.nationalgeographic.com",
+      "britannica.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Settlement Patterns and Lifestyle",
+    "source_ids": [
+      "s2",
+      "s9",
+      "s10",
+      "s12"
+    ],
+    "source_titles": [
+      "jinxschwartz.com",
+      "thestoryoftexas.com",
+      "libguides.tamusa.edu",
+      "legacy.education.texashistory.unt.edu"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Texicans in Early Texas History and the Texas Revolution",
+    "source_ids": [
+      "s2",
+      "s8",
+      "s9",
+      "s13"
+    ],
+    "source_titles": [
+      "jinxschwartz.com",
+      "britannica.com",
+      "thestoryoftexas.com",
+      "kwlibguides.lonestar.edu"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Primary Source Analysis and Historical Interpretation",
     "source_ids": [
       "s10",
       "s11",
       "s12",
-      "s13"
+      "s15"
     ],
     "source_titles": [
       "libguides.tamusa.edu",
       "texasstudies.org",
       "legacy.education.texashistory.unt.edu",
-      "kwlibguides.lonestar.edu"
+      "shsulibraryguides.org"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Summary and Contemporary Perspectives",
+    "source_ids": [
+      "s2",
+      "s4",
+      "s5",
+      "s7"
+    ],
+    "source_titles": [
+      "jinxschwartz.com",
+      "kids.nationalgeographic.com",
+      "youtube.com",
+      "everything-everywhere.com"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."

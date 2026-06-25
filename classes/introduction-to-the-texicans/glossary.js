@@ -1,36 +1,36 @@
 /* Generated glossary. term -> {d, r}. */
 window.GLOSSARY = {
   "texican": {
-    "d": "A historical term referring to residents of Texas in the early 19th century who had cultural ties to both Mexican and Anglo-American heritage, distinct from 'Texan' or 'Texasian'.",
-    "r": "Understanding 'Texican' clarifies the complex cultural identity and loyalties of early Texas settlers during periods of Spanish, Mexican, and American influence."
-  },
-  "texan": {
-    "d": "A general term for residents of Texas, often used in modern contexts without the specific cultural and historical nuances associated with 'Texican'.",
-    "r": "Distinguishing 'Texan' from 'Texican' helps avoid conflating broad state identity with the unique frontier culture of early Texas settlers."
-  },
-  "texasian": {
-    "d": "A less commonly used term sometimes applied to Texas residents, often conflated with 'Texican' and 'Texan' but lacking clear historical definition.",
-    "r": "Recognizing 'Texasian' as distinct prevents confusion in historical discussions about Texas identity and cultural heritage."
+    "d": "A historical term referring to early settlers of Texas, often of mixed Spanish and Anglo heritage, culturally distinct from both Mexicans and later Anglo-American immigrants.",
+    "r": "Understanding 'Texican' is key to grasping the unique cultural identity and historical role of these settlers in Texas' early history and conflicts."
   },
   "texas revolution": {
-    "d": "The armed conflict (1835–1836) between Texican settlers and the Mexican government that led to the independence of Texas from Mexico.",
-    "r": "The revolution was a pivotal event shaping Texican political and military roles and their divided loyalties during early Texas history."
+    "d": "The armed conflict from 1835 to 1836 in which Texicans and other settlers fought against Mexican rule, leading to Texas' independence.",
+    "r": "This event shaped Texican identity and was pivotal in Texas becoming an independent republic and later a U.S. state."
   },
   "spanish texas": {
-    "d": "The territory of Texas under Spanish colonial rule before Mexican independence, characterized by Spanish settlements and governance.",
-    "r": "Spanish Texas provides the cultural and political backdrop for the origins of the Texican community."
+    "d": "The period and region when Texas was a province under Spanish colonial rule before Mexican independence.",
+    "r": "Spanish Texas set the cultural and political foundations influencing Texican settlement and identity."
   },
-  "mexican texas": {
-    "d": "The period when Texas was governed by Mexico after its independence from Spain, marked by political changes and tensions leading to the Texas Revolution.",
-    "r": "Mexican Texas shaped the Texicans' experiences of governance, cultural blending, and conflict."
-  },
-  "settlement patterns": {
-    "d": "The geographic distribution and community organization of Texican settlers, primarily in regions like the Gulf Coastal Plains and Great Plains.",
-    "r": "Settlement patterns influenced the Texicans' lifestyle, economy, and interactions with other cultural groups."
+  "caddo": {
+    "d": "An indigenous Native American tribe from East Texas whose language contributed the word 'Texas,' meaning friend or ally.",
+    "r": "Recognizing indigenous influence like the Caddo helps understand the cultural milieu surrounding Texican identity."
   },
   "primary sources": {
-    "d": "Original historical documents such as letters, legal records, and newspapers that provide firsthand evidence of Texican life and history.",
-    "r": "Engaging with primary sources allows learners to analyze authentic perspectives and deepen understanding of Texican identity and roles."
+    "d": "Original historical documents such as letters, legal records, and newspapers from the time of the Texicans.",
+    "r": "Primary sources provide direct evidence of Texican life and perspectives, essential for accurate historical interpretation."
+  },
+  "anglo-american settlers": {
+    "d": "Immigrants from the United States of Anglo-European descent who settled in Texas, especially after Mexican independence.",
+    "r": "Their arrival influenced Texican culture and political dynamics, often creating tensions and alliances."
+  },
+  "mexican governance": {
+    "d": "The period when Texas was governed as part of Mexico after its independence from Spain in 1821.",
+    "r": "Mexican laws and policies affected Texican settlement patterns, rights, and political allegiances."
+  },
+  "frontier lifestyle": {
+    "d": "The way of life characterized by ranching, farming, and self-reliance on the unsettled edges of Texas during early 1800s.",
+    "r": "This lifestyle shaped Texican economic activities and social organization, reflecting their adaptation to the region."
   },
   "terminal learning objective": {
     "d": "The main capability learners should demonstrate by the end of the class.",

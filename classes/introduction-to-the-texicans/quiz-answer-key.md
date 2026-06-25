@@ -1,12 +1,12 @@
 # Quiz Answer Key
 
 ## Question 1
-Which of the following best distinguishes a 'Texican' from a 'Texan'?
-Answer: Texicans had Spanish and Mexican cultural roots, while Texans generally refers to all residents of Texas including Anglo settlers.
-Why: The term 'Texican' specifically refers to early settlers with Spanish and Mexican heritage, while 'Texan' is a broader term for all Texas residents.
+Which of the following best explains the origins of the term 'Texican'?
+Answer: It originated as a Spanish colonial term for settlers in Texas blending Mexican and indigenous cultures
+Why: Historical evidence shows 'Texican' emerged during the Spanish colonial and Mexican periods to describe a cultural identity blending multiple influences.
 
 ## Question 2
-Describe the political and military roles of the Texicans during the Texas Revolution and explain how their cultural background influenced their loyalties.
+Explain how the Texicans contributed to the Texas Revolution and early political developments in Texas.
 Answer: undefined
-Rubric: Response should identify Texicans' participation in the Texas Revolution, mention their divided loyalties between Mexican and Texan causes, and explain how their Spanish-Mexican heritage and cultural blending influenced these positions.
-Sample: Texicans played complex roles in the Texas Revolution, with some supporting Mexican rule due to cultural ties, while others sided with Anglo settlers seeking independence. Their Spanish and Mexican heritage created divided loyalties that influenced their political and military actions.
+Rubric: Response should describe Texican participation in the revolution, including their military and political roles, and acknowledge contested interpretations of their allegiances.
+Sample: Texicans actively participated in the Texas Revolution by fighting alongside Anglo settlers and influencing early Texas politics. Their loyalties were complex, with some supporting independence and others remaining loyal to Mexico, reflecting contested historical views.
