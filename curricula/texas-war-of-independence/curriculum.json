@@ -2,13 +2,13 @@
   "schema": "curriculum/v1",
   "id": "texas-war-of-independence",
   "slug": "texas-war-of-independence",
-  "title": "Texas War of Independence",
-  "subject": "Texas War of Independence",
-  "audience": "high school",
+  "title": "Texas War of independence",
+  "subject": "Texas War of independence",
+  "audience": "",
   "level": "introductory",
-  "program_outcome": "This syllabus explores the Texas War of Independence, focusing on its causes, political context, key battles, and lasting impact.",
-  "created": "2026-06-24T19:18:36.740Z",
-  "updated": "2026-06-24T19:26:54.619Z",
+  "program_outcome": "This syllabus provides an overview of the Texas War of Independence, focusing on its political causes, key battles, folk lore, and lasting effects.",
+  "created": "2026-06-25T14:19:31.425Z",
+  "updated": "2026-06-25T14:19:31.428Z",
   "knowledge_core": {
     "shared": true,
     "sealed": false,
@@ -21,83 +21,42 @@
       "slug": "introduction-to-the-texas-war-of-independence",
       "order": 1,
       "title": "Introduction to the Texas War of Independence",
-      "summary": "This class introduces the Texas War of Independence, setting the historical context and significance.",
+      "summary": "This class introduces the historical context and key figures involved in the Texas War of Independence.",
       "terminal": [
-        "Describe the significance of the Texas War of Independence in American history"
+        "Describe the historical context of the Texas War of Independence",
+        "Identify key figures involved in the conflict"
       ],
       "enabling": [
-        "Identify the geographical region of Texas and its neighboring territories in the early 19th century",
-        "Summarize the initial conditions in Texas under Mexican rule"
+        "Explain the geopolitical situation in Texas prior to the war",
+        "List major political and military figures",
+        "Discuss the role of settlers and indigenous peoples"
       ],
       "prerequisites": [],
       "assessment": "",
       "suggested_minutes": 45,
-      "status": "failed",
+      "status": "planned",
       "class_url": "",
       "sources": []
     },
     {
-      "id": "causes-of-the-texas-war-of-independence",
-      "slug": "causes-of-the-texas-war-of-independence",
+      "id": "political-causes-of-the-texas-war-of-independence",
+      "slug": "political-causes-of-the-texas-war-of-independence",
       "order": 2,
-      "title": "Causes of the Texas War of Independence",
-      "summary": "This class explores the causes that led to the Texas War of Independence.",
+      "title": "Political Causes of the Texas War of Independence",
+      "summary": "This class examines the political causes leading up to the Texas War of Independence.",
       "terminal": [
-        "List the main causes of the Texas War of Independence"
+        "Explain the political causes of the Texas War of Independence"
       ],
       "enabling": [
-        "Explain the role of Mexican policies on Texas settlers",
-        "Describe the impact of cultural and political differences between Texas settlers and the Mexican government"
+        "Identify the key political tensions between Mexico and Texas settlers",
+        "Discuss the role of the Mexican government in escalating conflicts",
+        "Analyze the impact of immigration and land policies"
       ],
       "prerequisites": [
         "introduction-to-the-texas-war-of-independence"
       ],
       "assessment": "",
-      "suggested_minutes": 50,
-      "status": "planned",
-      "class_url": "",
-      "sources": []
-    },
-    {
-      "id": "the-road-to-war",
-      "slug": "the-road-to-war",
-      "order": 3,
-      "title": "The Road to War",
-      "summary": "This class examines the events and tensions that escalated towards war.",
-      "terminal": [
-        "Outline the key events leading up to the Texas War of Independence"
-      ],
-      "enabling": [
-        "Identify major events such as the Battle of Gonzales",
-        "Analyze how these events contributed to the escalation of conflict"
-      ],
-      "prerequisites": [
-        "causes-of-the-texas-war-of-independence"
-      ],
-      "assessment": "",
-      "suggested_minutes": 50,
-      "status": "planned",
-      "class_url": "",
-      "sources": []
-    },
-    {
-      "id": "political-context-and-key-figures",
-      "slug": "political-context-and-key-figures",
-      "order": 4,
-      "title": "Political Context and Key Figures",
-      "summary": "This class covers the political context and introduces key figures in the Texas War of Independence.",
-      "terminal": [
-        "Identify key political figures and their roles in the war"
-      ],
-      "enabling": [
-        "Discuss the political environment in Texas and Mexico during the war",
-        "Recognize key figures such as Sam Houston and Antonio López de Santa Anna"
-      ],
-      "prerequisites": [
-        "the-road-to-war"
-      ],
-      "assessment": "",
-      "suggested_minutes": 50,
+      "suggested_minutes": 45,
       "status": "planned",
       "class_url": "",
       "sources": []
@@ -105,18 +64,20 @@
     {
       "id": "major-battles-of-the-texas-war-of-independence",
       "slug": "major-battles-of-the-texas-war-of-independence",
-      "order": 5,
+      "order": 3,
       "title": "Major Battles of the Texas War of Independence",
-      "summary": "This class focuses on the major battles and military strategies of the war.",
+      "summary": "This class covers the major battles and military strategies of the Texas War of Independence.",
       "terminal": [
-        "Describe the major battles and their outcomes"
+        "Identify and describe major battles of the Texas War of Independence",
+        "Explain the outcomes of these battles"
       ],
       "enabling": [
-        "Detail the events of battles such as the Alamo and San Jacinto",
-        "Explain the military strategies used by both sides"
+        "List the major battles and their dates",
+        "Discuss the strategies used by both Texan and Mexican forces",
+        "Analyze the significance of each battle's outcome"
       ],
       "prerequisites": [
-        "political-context-and-key-figures"
+        "political-causes-of-the-texas-war-of-independence"
       ],
       "assessment": "",
       "suggested_minutes": 60,
@@ -125,48 +86,63 @@
       "sources": []
     },
     {
-      "id": "the-alamo-symbolism-and-legacy",
-      "slug": "the-alamo-symbolism-and-legacy",
-      "order": 6,
-      "title": "The Alamo: Symbolism and Legacy",
-      "summary": "This class examines the significance of the Battle of the Alamo in history and its symbolism today.",
+      "id": "folk-lore-and-myths-of-the-texas-war-of-independence",
+      "slug": "folk-lore-and-myths-of-the-texas-war-of-independence",
+      "order": 4,
+      "title": "Folk Lore and Myths of the Texas War of Independence",
+      "summary": "This class explores the folk lore and myths that emerged from the Texas War of Independence.",
       "terminal": [
-        "Explain the historical and modern significance of the Alamo"
+        "Describe key folk lore and myths from the Texas War of Independence"
       ],
       "enabling": [
-        "Discuss the events of the Battle of the Alamo",
-        "Analyze how the Alamo has been remembered and symbolized in American culture"
+        "Identify popular stories and characters from the war",
+        "Discuss how these stories have been passed down through generations",
+        "Analyze the role of folk lore in shaping public perception of the war"
       ],
       "prerequisites": [
         "major-battles-of-the-texas-war-of-independence"
       ],
       "assessment": "",
-      "suggested_minutes": 50,
+      "suggested_minutes": 45,
       "status": "planned",
       "class_url": "",
       "sources": []
     },
     {
-      "id": "consequences-and-impact-of-the-war",
-      "slug": "consequences-and-impact-of-the-war",
-      "order": 7,
-      "title": "Consequences and Impact of the War",
-      "summary": "This class explores the outcomes and long-term impacts of the Texas War of Independence.",
+      "id": "effects-and-legacy-of-the-texas-war-of-independence",
+      "slug": "effects-and-legacy-of-the-texas-war-of-independence",
+      "order": 5,
+      "title": "Effects and Legacy of the Texas War of Independence",
+      "summary": "This class examines the immediate and long-term effects of the Texas War of Independence.",
       "terminal": [
-        "Evaluate the consequences of the Texas War of Independence on Texas and the United States"
+        "Explain the immediate effects of the Texas War of Independence",
+        "Discuss the long-term legacy of the war on Texas and the United States"
       ],
       "enabling": [
-        "Identify the immediate outcomes of the war",
-        "Discuss the long-term political and cultural impacts on Texas and the US"
+        "Identify changes in territorial control following the war",
+        "Discuss the impact on Texas's path to statehood",
+        "Analyze the war's influence on U.S.-Mexico relations"
       ],
       "prerequisites": [
-        "the-alamo-symbolism-and-legacy"
+        "folk-lore-and-myths-of-the-texas-war-of-independence"
       ],
       "assessment": "",
-      "suggested_minutes": 50,
+      "suggested_minutes": 60,
       "status": "planned",
       "class_url": "",
       "sources": []
     }
-  ]
+  ],
+  "setup": {
+    "tier": "standard",
+    "research_owner": "ai",
+    "sources": [],
+    "audience": {
+      "education": "",
+      "technical": "mixed",
+      "role": "",
+      "tone": "plain",
+      "reading_grade_cap": 9
+    }
+  }
 }
