@@ -1,12 +1,12 @@
 # Quiz Answer Key
 
 ## Question 1
-Which of the following best describes the political status of Texas before the revolution?
-Answer: A Mexican state within the province of Coahuila y Tejas
-Why: Texas was part of the Mexican state of Coahuila y Tejas before declaring independence.
+Which of the following best describes the role of settlers in the Texas Revolution?
+Answer: They sought independence due to conflicts with Mexican governance and cultural differences.
+Why: Settlers were motivated by dissatisfaction with Mexican policies and cultural clashes, leading them to support independence.
 
 ## Question 2
-Describe the significance of the Texas War of Independence in American history.
+Describe the significance of Sam Houston in the Texas War of Independence.
 Answer: undefined
-Rubric: Response should include the impact on U.S. territorial expansion, the establishment of the Republic of Texas, and the conflict's role in U.S.-Mexico relations.
-Sample: The Texas War of Independence was significant because it led to the creation of the Republic of Texas, which later joined the United States, contributing to U.S. territorial expansion and increasing tensions with Mexico that eventually led to the Mexican-American War.
+Rubric: Response should identify Sam Houston as a key military and political leader, mention his leadership at the Battle of San Jacinto, and his role in securing Texas independence.
+Sample: Sam Houston was the commander of Texian forces who led them to victory at the Battle of San Jacinto, which was decisive in winning independence from Mexico. He later became the first president of the Republic of Texas.

@@ -1,7 +1,7 @@
 [
   {
     "kind": "terminal objective",
-    "claim": "Describe the significance of the Texas War of Independence in American history",
+    "claim": "Describe the historical context and key events of the Texas War of Independence, including its causes, major battles, and outcomes.",
     "source_ids": [
       "s1",
       "s2",
@@ -9,7 +9,7 @@
     ],
     "source_titles": [
       "Class setup, learner profile, and research rules",
-      "en.wikipedia.org",
+      "youtube.com",
       "britannica.com"
     ],
     "status": "mapped",
@@ -17,141 +17,187 @@
   },
   {
     "kind": "enabling objective",
-    "claim": "Identify the geographical region of Texas and its neighboring territories in the early 19th century",
+    "claim": "Explain the geopolitical situation in Texas prior to the war, including Mexican governance and Anglo-American settlement patterns.",
     "source_ids": [
       "s2",
       "s3",
       "s4"
     ],
     "source_titles": [
-      "en.wikipedia.org",
+      "youtube.com",
       "britannica.com",
-      "thc.texas.gov"
+      "battlefields.org"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
     "kind": "enabling objective",
-    "claim": "Summarize the initial conditions in Texas under Mexican rule",
+    "claim": "Identify and describe major political and military figures involved in the conflict, such as Sam Houston and other Texian leaders.",
     "source_ids": [
       "s3",
       "s4"
     ],
     "source_titles": [
       "britannica.com",
-      "thc.texas.gov"
+      "battlefields.org"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
-    "kind": "lesson section",
-    "claim": "Geographical and Political Context of Early 19th Century Texas",
+    "kind": "enabling objective",
+    "claim": "Discuss the roles and perspectives of settlers, Tejanos, and indigenous peoples during the Texas Revolution.",
     "source_ids": [
+      "s4"
+    ],
+    "source_titles": [
+      "battlefields.org"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "enabling objective",
+    "claim": "Analyze the Texas Declaration of Independence and its significance in the broader independence movement.",
+    "source_ids": [
+      "s1",
       "s2",
-      "s6",
-      "s11"
+      "s3",
+      "s4"
     ],
     "source_titles": [
-      "en.wikipedia.org",
-      "tshaonline.org",
-      "dp.la"
+      "Class setup, learner profile, and research rules",
+      "youtube.com",
+      "britannica.com",
+      "battlefields.org"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
-    "kind": "lesson section",
-    "claim": "Initial Conditions and Tensions Under Mexican Rule",
+    "kind": "enabling objective",
+    "claim": "Evaluate contested points and differing perspectives regarding motivations, treatment of Tejanos, and political implications of independence.",
     "source_ids": [
+      "s1",
       "s2",
-      "s6",
-      "s11"
+      "s3",
+      "s4"
     ],
     "source_titles": [
-      "en.wikipedia.org",
-      "tshaonline.org",
-      "dp.la"
+      "Class setup, learner profile, and research rules",
+      "youtube.com",
+      "britannica.com",
+      "battlefields.org"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
     "kind": "lesson section",
-    "claim": "Outbreak and Key Battles of the Texas Revolution",
+    "claim": "Geopolitical Background of Texas Before the Revolution",
     "source_ids": [
-      "s2",
-      "s6",
-      "s9",
-      "s11"
+      "s4",
+      "s10",
+      "s13"
     ],
     "source_titles": [
-      "en.wikipedia.org",
-      "tshaonline.org",
-      "billofrightsinstitute.org",
-      "dp.la"
-    ],
-    "status": "mapped",
-    "finding": "Mapped to approved source-paper sections for source verification."
-  },
-  {
-    "kind": "lesson section",
-    "claim": "Declaration of Independence and Formation of the Republic of Texas",
-    "source_ids": [
-      "s5",
-      "s11",
-      "s14"
-    ],
-    "source_titles": [
-      "history.com",
+      "battlefields.org",
       "dp.la",
-      "tsl.texas.gov"
+      "tshaonline.org"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
     "kind": "lesson section",
-    "claim": "Key Figures and Their Roles in the Texas Revolution",
+    "claim": "Key Figures of the Texas Revolution",
     "source_ids": [
-      "s9",
-      "s11"
+      "s7",
+      "s10",
+      "s12"
     ],
     "source_titles": [
       "billofrightsinstitute.org",
-      "dp.la"
+      "dp.la",
+      "en.wikipedia.org"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
     "kind": "lesson section",
-    "claim": "Complexities and Contested Perspectives of the Texas Revolution",
+    "claim": "Major Battles and Military Campaigns",
     "source_ids": [
-      "s2",
-      "s6",
-      "s11"
+      "s4",
+      "s10",
+      "s12",
+      "s13"
     ],
     "source_titles": [
+      "battlefields.org",
+      "dp.la",
       "en.wikipedia.org",
-      "tshaonline.org",
-      "dp.la"
+      "tshaonline.org"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
     "kind": "lesson section",
-    "claim": "Legacy and Significance of the Texas War of Independence",
+    "claim": "The Texas Declaration of Independence",
     "source_ids": [
-      "s2",
-      "s6",
+      "s10",
       "s11"
     ],
     "source_titles": [
+      "dp.la",
+      "shafr.org"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Roles of Settlers, Tejanos, and Indigenous Peoples",
+    "source_ids": [
+      "s10",
+      "s13"
+    ],
+    "source_titles": [
+      "dp.la",
+      "tshaonline.org"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Contested Issues and Historical Perspectives",
+    "source_ids": [
+      "s10",
+      "s12",
+      "s13"
+    ],
+    "source_titles": [
+      "dp.la",
       "en.wikipedia.org",
-      "tshaonline.org",
+      "tshaonline.org"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Summary and Review",
+    "source_ids": [
+      "s4",
+      "s7",
+      "s10"
+    ],
+    "source_titles": [
+      "battlefields.org",
+      "billofrightsinstitute.org",
       "dp.la"
     ],
     "status": "mapped",
@@ -168,9 +214,9 @@
     ],
     "source_titles": [
       "Class setup, learner profile, and research rules",
-      "en.wikipedia.org",
+      "youtube.com",
       "britannica.com",
-      "thc.texas.gov"
+      "battlefields.org"
     ],
     "status": "corroboration-required",
     "finding": "Mapped to approved source-paper sections for source verification."
@@ -184,7 +230,7 @@
     ],
     "source_titles": [
       "Class setup, learner profile, and research rules",
-      "en.wikipedia.org"
+      "youtube.com"
     ],
     "status": "scope-boundary",
     "finding": "Mapped to approved source-paper sections for source verification."

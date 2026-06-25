@@ -1,5 +1,5 @@
 {
-  "tier": "Standard class",
+  "tier": "Quick briefing",
   "slide_target": 68,
   "teaching_slide_target": 67,
   "knowledge_standard": {
@@ -7,25 +7,25 @@
     "floor_met": true,
     "evidence_limited": false,
     "tier": {
-      "level": "standard",
-      "label": "Standard class",
-      "source_floor": 8,
-      "primary_source_floor": 2,
-      "slide_floor": 40,
-      "standard": "Solid internal training with enough evidence for reliable instruction."
+      "level": "briefing",
+      "label": "Quick briefing",
+      "source_floor": 4,
+      "primary_source_floor": 1,
+      "slide_floor": 30,
+      "standard": "Short, source-aware orientation. Useful for overviews, not full mastery."
     },
     "counts": {
-      "total": 14,
-      "primary": 2,
+      "total": 13,
+      "primary": 1,
       "secondary": 12,
       "unknown": 0
     },
     "score": {
-      "score": 85,
-      "band": "excellent",
+      "score": 84,
+      "band": "strong",
       "components": {
         "coverage": 100,
-        "authority": 66,
+        "authority": 63,
         "recency": 75
       },
       "weights": {
@@ -34,22 +34,22 @@
         "recency": 0.2
       },
       "detail": {
-        "total": 14,
-        "primary": 2,
+        "total": 13,
+        "primary": 1,
         "secondary": 12,
-        "required_total": 8,
-        "required_primary": 2,
+        "required_total": 4,
+        "required_primary": 1,
         "dated_sources": 0,
         "recency_floor_year": 2024
       },
-      "summary": "Knowledge-base score 85/100 (excellent): coverage 100, authority 66, recency 75. 14/8 sources, 2/2 primary."
+      "summary": "Knowledge-base score 84/100 (strong): coverage 100, authority 63, recency 75. 13/4 sources, 1/1 primary."
     },
-    "required_sources": 8,
-    "required_primary_sources": 2,
+    "required_sources": 4,
+    "required_primary_sources": 1,
     "source_gap": 0,
     "primary_source_gap": 0,
     "messages": [
-      "Knowledge base meets the selected Standard class floor."
+      "Knowledge base meets the selected Quick briefing floor."
     ]
   },
   "approved_before_generation": true,

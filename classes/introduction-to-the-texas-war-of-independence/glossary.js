@@ -1,64 +1,44 @@
 /* Generated glossary. term -> {d, r}. */
 window.GLOSSARY = {
   "texas war of independence": {
-    "d": "A conflict from October 1835 to April 1836 where Texian settlers rebelled against Mexican rule to establish the Republic of Texas.",
-    "r": "It marks a key moment in American history that led to the creation of Texas as an independent republic and influenced U.S. territorial expansion."
-  },
-  "texian": {
-    "d": "A term used to describe settlers of Texas, mostly American-born, who participated in the Texas Revolution.",
-    "r": "Understanding who the Texians were helps explain the cultural and political tensions that fueled the revolution."
-  },
-  "coahuila y tejas": {
-    "d": "The Mexican state that included Texas during the early 19th century, bordering the United States and the Gulf of Mexico.",
-    "r": "Knowing this political region clarifies Texas's status under Mexican governance before independence."
-  },
-  "texas declaration of independence": {
-    "d": "The document adopted on March 2, 1836, declaring Texas a free and independent republic from Mexico.",
-    "r": "It legally formalized Texas’s break from Mexico and set the foundation for the Republic of Texas."
-  },
-  "battle of gonzales": {
-    "d": "The first military engagement of the Texas Revolution, where Texians resisted Mexican troops attempting to retrieve a cannon.",
-    "r": "This battle symbolizes the start of armed conflict and Texian resistance against Mexican authority."
-  },
-  "siege of the alamo": {
-    "d": "A pivotal 1836 battle where Mexican forces besieged Texian defenders at the Alamo mission in San Antonio.",
-    "r": "The Alamo became a powerful symbol of Texian sacrifice and resolve during the revolution."
-  },
-  "battle of san jacinto": {
-    "d": "The decisive 1836 battle where Texian forces under Sam Houston defeated Mexican troops, securing Texas independence.",
-    "r": "This victory ended major hostilities and ensured the success of the Texas Revolution."
+    "d": "A conflict from October 1835 to April 1836 in which Texian settlers and allies fought to gain independence from Mexico, culminating in the Battle of San Jacinto and the creation of the Republic of Texas.",
+    "r": "Understanding this war explains how Texas separated from Mexico and shaped its future as an independent republic and later U.S. state."
   },
   "sam houston": {
-    "d": "Commander of Texian forces during the revolution and the first president of the Republic of Texas.",
-    "r": "His leadership was crucial to the military and political success of Texas independence."
+    "d": "A key military and political leader who commanded Texian forces to victory at the Battle of San Jacinto and became the first president of the Republic of Texas.",
+    "r": "Houston’s leadership was crucial to Texian success and the establishment of Texas as an independent nation."
   },
-  "antonio lópez de santa anna": {
-    "d": "President and general of Mexico who led Mexican forces against Texian rebels during the Texas Revolution.",
-    "r": "His centralist policies and military actions escalated the conflict and shaped its course."
+  "empresario contracts": {
+    "d": "Agreements under Mexican law allowing Anglo-American settlers to colonize Texas by fulfilling conditions like Mexican citizenship and Catholic conversion.",
+    "r": "These contracts shaped settlement patterns and contributed to tensions leading to the revolution."
   },
-  "republic of texas": {
-    "d": "The independent nation established after Texas declared independence from Mexico in 1836.",
-    "r": "It represents the political outcome of the revolution and a unique chapter in U.S. and Mexican history."
-  },
-  "centralist policies": {
-    "d": "Mexican government policies that concentrated power in the central government, reducing regional autonomy.",
-    "r": "These policies caused tensions with Texian settlers who favored more local control, contributing to the revolution."
+  "texas declaration of independence": {
+    "d": "A document adopted in March 1836 declaring Texas independent from Mexico, inspired partly by the U.S. Declaration of Independence.",
+    "r": "It formalized Texian claims to sovereignty and justified the revolution’s cause."
   },
   "tejanos": {
-    "d": "Mexican Texans who lived in Texas before and during the revolution, some of whom supported independence.",
-    "r": "Their perspectives add complexity to the revolution beyond the Anglo-American settler narrative."
+    "d": "Texans of Mexican heritage who lived in Texas before and during the revolution, some of whom supported independence while others remained loyal to Mexico.",
+    "r": "Their diverse roles highlight the complex social and political dynamics within Texas during the conflict."
   },
-  "slavery issue": {
-    "d": "The conflict over the legality and practice of slavery in Texas under Mexican law and Texian settlers’ interests.",
-    "r": "Slavery was a major point of contention influencing settler loyalty and Mexican government policies."
+  "battle of gonzales": {
+    "d": "The first military engagement of the Texas War of Independence in October 1835, where Texians resisted Mexican troops attempting to retrieve a cannon.",
+    "r": "This battle marked the start of open armed conflict and symbolized Texian resistance."
   },
-  "anglo-american immigration": {
-    "d": "The movement of American settlers into Mexican Texas encouraged by Mexico to develop the frontier.",
-    "r": "This immigration changed Texas’s demographics and fueled cultural and political conflicts leading to revolution."
+  "battle of the alamo": {
+    "d": "A 13-day siege in early 1836 where a small Texian force was defeated by the Mexican army, becoming a rallying symbol for Texian independence.",
+    "r": "The Alamo’s legacy inspired Texian determination despite the defeat."
   },
-  "gulf of mexico": {
-    "d": "The large body of water bordering Texas to the southeast.",
-    "r": "Its location influenced Texas’s trade, settlement patterns, and strategic importance."
+  "battle of san jacinto": {
+    "d": "The decisive April 1836 battle where Texian forces led by Sam Houston defeated Mexican troops, securing Texas independence.",
+    "r": "This victory ended the war and established the Republic of Texas."
+  },
+  "indigenous peoples in texas revolution": {
+    "d": "Native groups whose involvement and perspectives during the Texas War of Independence were varied and complex, often underrepresented in historical accounts.",
+    "r": "Recognizing their role provides a fuller understanding of the conflict’s social landscape."
+  },
+  "republic of texas": {
+    "d": "The independent nation established after the Texas War of Independence, existing from 1836 to 1845 before joining the United States.",
+    "r": "Its formation marked a new political era and influenced U.S.-Mexico relations."
   },
   "terminal learning objective": {
     "d": "The main capability learners should demonstrate by the end of the class.",
