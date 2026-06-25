@@ -1,12 +1,12 @@
 # Quiz Answer Key
 
 ## Question 1
-Which of the following best defines the term 'Texican'?
-Answer: A term referring to early settlers of Texas with Spanish and Mexican cultural roots
-Why: The term 'Texican' specifically refers to early Texas settlers of Spanish and Mexican heritage, reflecting their unique cultural identity.
+Which of the following best describes the cultural background of the Texicans?
+Answer: They had Spanish colonial roots and Mexican identity blended with frontier experiences.
+Why: The Texicans' cultural background is a blend of Spanish colonial heritage, Mexican identity, and frontier family experiences, as covered in the course.
 
 ## Question 2
-Explain how the Texicans' cultural background influenced their role in the Texas Revolution.
+Explain the role of the Texicans in early Texas history, including their political loyalties and participation in conflicts.
 Answer: undefined
-Rubric: Response should describe the Texicans' Spanish and Mexican heritage, their settlement in Spanish Texas, and how their cultural identity led to complex political loyalties during the Texas Revolution. The answer should mention their participation in key events and the contested nature of their allegiance.
-Sample: The Texicans, being of Spanish and Mexican descent, settled in Spanish Texas and developed a unique cultural identity blending indigenous and colonial influences. During the Texas Revolution, their loyalties were complex; some supported independence while others remained loyal to Mexico. Their cultural background influenced their participation in battles like the Alamo and shaped early Texas history.
+Rubric: A complete answer should mention the Texicans' complex loyalties, their participation in conflicts such as the Texas Revolution, and their position between Spanish, Mexican, and Anglo interests.
+Sample: The Texicans were early settlers of Spanish and Mexican descent who played a significant role in early Texas history. They had complex political loyalties, often supporting Mexico but sometimes conflicted during the Texas Revolution. They participated in military and political events that shaped Texas's path to independence.

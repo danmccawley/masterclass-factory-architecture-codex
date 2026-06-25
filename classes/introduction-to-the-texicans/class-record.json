@@ -1,7 +1,7 @@
 {
   "title": "Introduction to the Texicans",
   "slug": "introduction-to-the-texicans",
-  "generated_at": "2026-06-25T16:26:54.395Z",
+  "generated_at": "2026-06-25T16:28:33.833Z",
   "class_tier": {
     "level": "standard",
     "label": "Standard class",
@@ -159,7 +159,7 @@
   "deep_dive_count": 67,
   "required_deep_dive_count": 67,
   "quality": {
-    "score": 99,
+    "score": 98,
     "status": "excellent",
     "scores": {
       "slide_budget": 100,
@@ -167,11 +167,11 @@
       "source_grounding": 100,
       "evidence_map": 100,
       "blueprint": 100,
-      "objective_alignment": 95,
+      "objective_alignment": 83,
       "content_density": 100,
       "deep_dive_depth": 100,
       "participation_design": 100,
-      "assessment": 80,
+      "assessment": 90,
       "transparency": 100,
       "schema_qa": 100
     },
@@ -394,12 +394,12 @@
         "deep_dive_expectation": "substantive deep dives where required by tier and setting"
       }
     ],
-    "lesson_sections": 5
+    "lesson_sections": 6
   },
   "evidence_map": [
     {
       "kind": "terminal objective",
-      "claim": "Identify who the Texicans were and describe their cultural background, including their origins, settlement patterns, lifestyle, and role in early Texas history.",
+      "claim": "Identify who the Texicans were and describe their cultural background, settlement patterns, and historical role in early Texas.",
       "source_ids": [
         "s1",
         "s2",
@@ -415,7 +415,7 @@
     },
     {
       "kind": "enabling objective",
-      "claim": "Define the term 'Texican' and explain its linguistic and cultural origins.",
+      "claim": "Define the term 'Texican' and explain its origins and etymological context.",
       "source_ids": [
         "s2",
         "s3",
@@ -431,7 +431,7 @@
     },
     {
       "kind": "enabling objective",
-      "claim": "Discuss the settlement patterns, lifestyle, and cultural blending of the Texicans in Spanish and early Mexican Texas.",
+      "claim": "Discuss the settlement patterns, geographical environment, and lifestyle of the Texicans in early 19th-century Texas.",
       "source_ids": [
         "s3",
         "s4"
@@ -445,47 +445,11 @@
     },
     {
       "kind": "enabling objective",
-      "claim": "Explain the complex political and cultural role of the Texicans during the Texas Revolution and early statehood.",
+      "claim": "Explain the role of the Texicans in early Texas history, including their political loyalties and participation in conflicts such as the Texas Revolution.",
       "source_ids": [
         "s4"
       ],
       "source_titles": [
-        "kids.nationalgeographic.com"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "enabling objective",
-      "claim": "Analyze primary source documents to explore the historical experiences and identity of the Texicans.",
-      "source_ids": [
-        "s1",
-        "s2",
-        "s3",
-        "s4"
-      ],
-      "source_titles": [
-        "Class setup, learner profile, and research rules",
-        "jinxschwartz.com",
-        "en.wikipedia.org",
-        "kids.nationalgeographic.com"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "enabling objective",
-      "claim": "Evaluate differing historical interpretations and contested points regarding Texican loyalties and identity.",
-      "source_ids": [
-        "s1",
-        "s2",
-        "s3",
-        "s4"
-      ],
-      "source_titles": [
-        "Class setup, learner profile, and research rules",
-        "jinxschwartz.com",
-        "en.wikipedia.org",
         "kids.nationalgeographic.com"
       ],
       "status": "mapped",
@@ -493,16 +457,32 @@
     },
     {
       "kind": "lesson section",
-      "claim": "Introduction to the Texicans and Their Origins",
+      "claim": "Introduction to the Texicans: Definition and Origins",
       "source_ids": [
         "s2",
         "s4",
+        "s6",
         "s7"
       ],
       "source_titles": [
         "jinxschwartz.com",
         "kids.nationalgeographic.com",
+        "facebook.com",
         "everything-everywhere.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Cultural Background of the Texicans",
+      "source_ids": [
+        "s2",
+        "s6"
+      ],
+      "source_titles": [
+        "jinxschwartz.com",
+        "facebook.com"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
@@ -512,11 +492,13 @@
       "claim": "Settlement Patterns and Lifestyle of the Texicans",
       "source_ids": [
         "s2",
+        "s4",
         "s7",
         "s9"
       ],
       "source_titles": [
         "jinxschwartz.com",
+        "kids.nationalgeographic.com",
         "everything-everywhere.com",
         "thestoryoftexas.com"
       ],
@@ -525,25 +507,23 @@
     },
     {
       "kind": "lesson section",
-      "claim": "The Texicans in Early Texas History and the Texas Revolution",
+      "claim": "The Texicans in Early Texas History",
       "source_ids": [
         "s2",
-        "s4",
-        "s8",
-        "s9"
+        "s7",
+        "s8"
       ],
       "source_titles": [
         "jinxschwartz.com",
-        "kids.nationalgeographic.com",
-        "britannica.com",
-        "thestoryoftexas.com"
+        "everything-everywhere.com",
+        "britannica.com"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "lesson section",
-      "claim": "Exploring Primary Sources on the Texicans",
+      "claim": "Primary Sources and Research on the Texicans",
       "source_ids": [
         "s10",
         "s11",
@@ -561,14 +541,18 @@
     },
     {
       "kind": "lesson section",
-      "claim": "Cultural Identity and Contested Interpretations of the Texicans",
+      "claim": "Synthesis and Review: Understanding the Texicans Today",
       "source_ids": [
         "s2",
-        "s6"
+        "s4",
+        "s7",
+        "s9"
       ],
       "source_titles": [
         "jinxschwartz.com",
-        "facebook.com"
+        "kids.nationalgeographic.com",
+        "everything-everywhere.com",
+        "thestoryoftexas.com"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
