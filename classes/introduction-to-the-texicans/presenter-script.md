@@ -1,6 +1,6 @@
 # Presenter Script: Introduction to the Texicans
 
-Generated: 2026-06-25T17:05:23.824Z
+Generated: 2026-06-25T17:08:07.342Z
 Language setting: en
 Class tier: Standard class
 Pipeline: OpenAI staged generation
@@ -10,115 +10,110 @@ Use the cited source paper sections as the boundary for factual claims. If a lea
 Knowledge-base standard: 8 usable sources, including 2 primary sources. Current setup: 15 sources, including 2 primary sources.
 
 ## Learning Objectives
-- TLO: Identify who the Texicans were and describe their cultural background and historical significance in early Texas.
-- ELO: Define the term 'Texican' and distinguish it from related terms such as 'Texan' and 'Tejano', including its origins and usage.
-- ELO: Discuss the settlement patterns, geographic distribution, and lifestyle characteristics of the Texican communities in early Texas.
-- ELO: Explain the role of the Texicans in the Texas Revolution and the establishment of the Republic of Texas, including political and military contributions.
+- TLO: Identify who the Texicans were and describe their cultural background, settlement patterns, and their role in early Texas history.
+- ELO: Define the term 'Texican' and explain its linguistic and cultural origins.
+- ELO: Describe the settlement patterns and geographic influences on the lifestyle of the Texicans.
+- ELO: Analyze the cultural background of Texicans, highlighting the blend of Native American, Spanish, Mexican, and Anglo-American influences.
+- ELO: Explain the role of the Texicans in the Texas Revolution and the establishment of the Republic of Texas.
+- ELO: Interpret primary source documents such as the Texas Essential Knowledge and Skills (TEKS) and the Treaty of Guadalupe Hidalgo to understand Texican identity and territorial changes.
+- ELO: Discuss the evolution of Texican identity into the broader Texan identity and its legacy in Texas history.
+- ELO: Evaluate educational resources emphasizing geography and immigration patterns shaping Texican culture and settlement.
+- ELO: Critically assess contested historical interpretations of Texican identity and their political motivations using multiple credible sources.
 
 ## Slide Talk Track
-### 1. Welcome to Introduction to the Texicans
-Say: Why this deserves a deeper look. This lesson introduces the Texicans, a distinct cultural group in early Texas history. We will clarify terminology, explore their cultural roots, and examine their historical significance. Source boundary. Teach this point from facebook.com; tshaonline.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Explore who the Texicans were and their cultural background Understand key terms: Texican, Texan, Tejano Trace Texican roles in early Texas history Worked example Consider how the term 'Texican' differs from 'Texan' and 'Tejano' in historical contexts. Practice and transfer Reflect on what you already know about Texas history and what questions you have about Texican identity. Common mistake to prevent. Confusing 'Texican' with 'Texan' or 'Tejano' without understanding their unique meanings. Source anchor: facebook.com; tshaonline.org [2] [15]
+### 1. Introduction to the Texicans
+Say: Why this deserves a deeper look. Introduction to the Texicans connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from Class setup, learner profile, and research rules. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Start with the learner profile and source rules. Use the knowledge base to decide what the class can safely teach. Keep unsupported claims out of the lesson. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Introduction to the Texicans" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Introduction to the Texicans" into a rule of thumb unless the knowledge base supports that claim. Source anchor: Class setup, learner profile, and research rules [1]
 Key points:
-- Explore who the Texicans were and their cultural background
-- Understand key terms: Texican, Texan, Tejano
-- Trace Texican roles in early Texas history
-Sources: s2, s15
+- Start with the learner profile and source rules.
+- Use the knowledge base to decide what the class can safely teach.
+- Keep unsupported claims out of the lesson.
+Sources: s1
 
-### 2. Defining 'Texican' and Related Terms
-Say: Why this deserves a deeper look. Understanding these terms is key to grasping Texas history. 'Texican' specifically highlights Mexican heritage settlers before Texas became part of the U.S., while 'Texan' and 'Tejano' have broader or different connotations. Source boundary. Teach this point from facebook.com; en.wikipedia.org; everything-everywhere.com; tshaonline.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize 'Texican' refers to early Mexican settlers in Texas 'Texan' generally denotes Anglo-American settlers and later residents 'Tejano' is a broader term for Texans of Mexican descent Terms overlap but have distinct historical and cultural meanings Worked example A 19th-century settler of Mexican descent living in Texas would be called a Texican, but after Texas statehood, their descendants might be called Tejanos. Practice and transfer Identify which term best fits different historical figures or groups based on their background and time period. Common mistake to prevent. Assuming 'Texican' and 'Tejano' are interchangeable without considering historical context. Source anchor: facebook.com; en.wikipedia.org; everything-everywhere.com; tshaonline.org [2] [3] [8] [15]
+### 2. What the generator could verify
+Say: Why this deserves a deeper look. What the generator could verify connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from Class setup, learner profile, and research rules; facebook.com. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize 1. Class setup, learner profile, and research rules 2. facebook.com 3. en.wikipedia.org 4. quizlet.com 5. thestoryoftexas.com Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "What the generator could verify" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "What the generator could verify" into a rule of thumb unless the knowledge base supports that claim. Source anchor: Class setup, learner profile, and research rules; facebook.com [1] [2]
 Key points:
-- 'Texican' refers to early Mexican settlers in Texas
-- 'Texan' generally denotes Anglo-American settlers and later residents
-- 'Tejano' is a broader term for Texans of Mexican descent
-- Terms overlap but have distinct historical and cultural meanings
-Sources: s2, s3, s8, s15
+- 1. Class setup, learner profile, and research rules
+- 2. facebook.com
+- 3. en.wikipedia.org
+- 4. quizlet.com
+- 5. thestoryoftexas.com
+Sources: s1, s2
 
-### 3. Historical Context of Texican Identity
-Say: Why this deserves a deeper look. Texican identity developed amid shifting sovereignties and cultural influences. Understanding this context helps explain their unique cultural and political position in Texas history. Source boundary. Teach this point from everything-everywhere.com; tshaonline.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Texicans lived in Texas when it was part of Mexico They experienced cultural blending of Spanish, Mexican, indigenous, and Anglo influences Their identity was shaped by political changes: Spanish rule, Mexican independence, Texas Revolution Texicans played key roles in early Texas society and conflicts Worked example During the Texas Revolution, many Texicans supported independence but also faced complex loyalties due to their Mexican heritage. Practice and transfer Consider how changing political control might affect a group's identity and alliances. Common mistake to prevent. Viewing Texican identity as static rather than evolving with historical events. Source anchor: everything-everywhere.com; tshaonline.org [8] [15]
+### 3. Design for the floor learner
+Say: Why this deserves a deeper look. Design for the floor learner connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from Class setup, learner profile, and research rules. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Typical learner: not specified. Floor learner: new learners. Tone: plain; reading grade cap: 9. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Design for the floor learner" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Design for the floor learner" into a rule of thumb unless the knowledge base supports that claim. Source anchor: Class setup, learner profile, and research rules [1]
 Key points:
-- Texicans lived in Texas when it was part of Mexico
-- They experienced cultural blending of Spanish, Mexican, indigenous, and Anglo influences
-- Their identity was shaped by political changes: Spanish rule, Mexican independence, Texas Revolution
-- Texicans played key roles in early Texas society and conflicts
-Sources: s8, s15
+- Typical learner: not specified.
+- Floor learner: new learners.
+- Tone: plain; reading grade cap: 9.
+Sources: s1
 
-### 4. Cultural Influences on Texican Identity
-Say: Why this deserves a deeper look. Texican culture is a synthesis of indigenous, Spanish, Mexican, and Anglo-American elements, creating a unique social fabric in early Texas. Source boundary. Teach this point from thestoryoftexas.com; kids.nationalgeographic.com; tshaonline.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Indigenous peoples contributed languages, customs, and knowledge Spanish colonial heritage shaped religion, law, and land use Mexican governance introduced new political and social structures Anglo-American settlers brought different customs and economic models Worked example Texican communities often practiced Catholicism inherited from Spanish colonization alongside indigenous traditions. Practice and transfer Identify examples of cultural blending in Texican traditions or daily life. Common mistake to prevent. Oversimplifying Texican culture as purely Mexican without recognizing indigenous and Anglo influences. Source anchor: thestoryoftexas.com; kids.nationalgeographic.com; tshaonline.org [5] [7] [15]
+### 4. Terminal learning objectives
+Say: Why this deserves a deeper look. Terminal learning objectives connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from Class setup, learner profile, and research rules. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Identify who the Texicans were and describe their cultural background Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Terminal learning objectives" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Terminal learning objectives" into a rule of thumb unless the knowledge base supports that claim. Source anchor: Class setup, learner profile, and research rules [1]
 Key points:
-- Indigenous peoples contributed languages, customs, and knowledge
-- Spanish colonial heritage shaped religion, law, and land use
-- Mexican governance introduced new political and social structures
-- Anglo-American settlers brought different customs and economic models
-Sources: s5, s7, s15
+- Identify who the Texicans were and describe their cultural background
+Sources: s1
 
-### 5. Settlement Patterns of Texicans
-Say: Why this deserves a deeper look. Geography and colonial policies shaped where Texicans lived, affecting their economic activities and interactions with other groups. Source boundary. Teach this point from thestoryoftexas.com; texaspsp.org; tshaonline.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Texicans primarily settled in South and Central Texas Communities often formed near rivers and fertile land Settlement patterns influenced by Spanish land grants and Mexican colonization policies Proximity to Anglo settlements led to cultural exchange and conflict Worked example The San Antonio area was a key Texican settlement due to its strategic location and resources. Practice and transfer Locate major Texican settlements on a map and consider why these locations were chosen. Common mistake to prevent. Assuming Texicans were evenly spread across Texas without regard to geography or policy. Source anchor: thestoryoftexas.com; texaspsp.org; tshaonline.org [5] [11] [15]
+### 5. Enabling learning objectives
+Say: Why this deserves a deeper look. Enabling learning objectives connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from Class setup, learner profile, and research rules. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Define the term 'Texican' and its origins Discuss the settlement patterns and lifestyle of the Texicans Explain the role of the Texicans in early Texas history Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Enabling learning objectives" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Enabling learning objectives" into a rule of thumb unless the knowledge base supports that claim. Source anchor: Class setup, learner profile, and research rules [1]
 Key points:
-- Texicans primarily settled in South and Central Texas
-- Communities often formed near rivers and fertile land
-- Settlement patterns influenced by Spanish land grants and Mexican colonization policies
-- Proximity to Anglo settlements led to cultural exchange and conflict
-Sources: s5, s11, s15
+- Define the term 'Texican' and its origins
+- Discuss the settlement patterns and lifestyle of the Texicans
+- Explain the role of the Texicans in early Texas history
+Sources: s1
 
-### 6. Texican Lifestyle and Social Structure
-Say: Why this deserves a deeper look. Texican daily life revolved around family, land, and faith, with social roles shaped by economic status and cultural traditions. Source boundary. Teach this point from kids.nationalgeographic.com; tshaonline.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Family and community were central to Texican life Economy based on ranching, farming, and trade Social hierarchy influenced by land ownership and heritage Religious practices reinforced community bonds Worked example Large ranches owned by Texican families served as economic and social hubs. Practice and transfer Describe how social status might affect a Texican's role in their community. Common mistake to prevent. Ignoring the importance of religion and family in shaping social life. Source anchor: kids.nationalgeographic.com; tshaonline.org [7] [15]
+### 6. Practice path
+Say: Why this deserves a deeper look. Practice path connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from Class setup, learner profile, and research rules. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Name the decision or action learners must perform. Show a clean example with the key vocabulary. Ask learners to apply the same pattern to a realistic scenario. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Practice path" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Practice path" into a rule of thumb unless the knowledge base supports that claim. Source anchor: Class setup, learner profile, and research rules [1]
 Key points:
-- Family and community were central to Texican life
-- Economy based on ranching, farming, and trade
-- Social hierarchy influenced by land ownership and heritage
-- Religious practices reinforced community bonds
-Sources: s7, s15
+- Name the decision or action learners must perform.
+- Show a clean example with the key vocabulary.
+- Ask learners to apply the same pattern to a realistic scenario.
+Sources: s1
 
-### 7. Texicans' Role in the Texas Revolution
-Say: Why this deserves a deeper look. Texicans were key players in the Texas Revolution, balancing their Mexican heritage with aspirations for self-governance. Source boundary. Teach this point from britannica.com; tshaonline.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Texicans participated actively in the fight for Texas independence They held leadership positions in military and political spheres Texican support was crucial despite complex loyalties Their contributions shaped the Republic of Texas foundation Worked example Texican leaders like Juan Seguín commanded troops and influenced political decisions during the revolution. Practice and transfer Analyze how Texican involvement impacted the revolution's outcome. Common mistake to prevent. Underestimating Texican contributions due to their Mexican roots. Source anchor: britannica.com; tshaonline.org [9] [15]
+### 7. Guardrails for quality
+Say: Why this deserves a deeper look. Guardrails for quality connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from Class setup, learner profile, and research rules. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize No fabricated sources, URLs, dates, or statistics. No out-of-scope side trips. No final claim unless the source paper supports it. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Guardrails for quality" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Guardrails for quality" into a rule of thumb unless the knowledge base supports that claim. Source anchor: Class setup, learner profile, and research rules [1]
 Key points:
-- Texicans participated actively in the fight for Texas independence
-- They held leadership positions in military and political spheres
-- Texican support was crucial despite complex loyalties
-- Their contributions shaped the Republic of Texas foundation
-Sources: s9, s15
+- No fabricated sources, URLs, dates, or statistics.
+- No out-of-scope side trips.
+- No final claim unless the source paper supports it.
+Sources: s1
 
-### 8. Texicans in the Republic of Texas Era
-Say: Why this deserves a deeper look. After independence, Texicans contributed to building the Republic but navigated social and political challenges amid demographic shifts. Source boundary. Teach this point from gilderlehrman.org; tshaonline.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Texicans held political offices and influenced governance They faced challenges integrating into Anglo-dominated society Land disputes and cultural tensions persisted Texican identity evolved during this period Worked example Texican politicians advocated for rights and land protections within the new government. Practice and transfer Discuss the challenges Texicans faced in maintaining their cultural identity post-independence. Common mistake to prevent. Assuming Texicans were fully accepted without conflict in the Republic era. Source anchor: gilderlehrman.org; tshaonline.org [13] [15]
+### 8. Check understanding
+Say: Why this deserves a deeper look. Check understanding connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from Class setup, learner profile, and research rules. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Answer the questions below before moving to final practice. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Check understanding" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Check understanding" into a rule of thumb unless the knowledge base supports that claim. Source anchor: Class setup, learner profile, and research rules [1]
 Key points:
-- Texicans held political offices and influenced governance
-- They faced challenges integrating into Anglo-dominated society
-- Land disputes and cultural tensions persisted
-- Texican identity evolved during this period
-Sources: s13, s15
+- Answer the questions below before moving to final practice.
+Sources: s1
 
-### 9. Interactive Word Cloud: What Does 'Texican' Mean to You?
-Say: Why this deserves a deeper look. This activity helps surface learners' prior knowledge and assumptions about Texican identity, setting the stage for deeper understanding. Source boundary. Teach this point from facebook.com; tshaonline.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Submit words or phrases you associate with 'Texican' Explore common perceptions and misconceptions Compare your ideas with historical definitions Worked example Words like 'Mexican heritage,' 'Texas history,' or 'cultural blending' might appear. Practice and transfer Think about your associations and how they align or differ from historical meanings. Common mistake to prevent. Relying solely on modern or popular culture meanings without historical context. Source anchor: facebook.com; tshaonline.org [2] [15]
+### 9. What the facilitator should say
+Say: Why this deserves a deeper look. What the facilitator should say connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from Class setup, learner profile, and research rules. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Explain why the knowledge base comes before final objectives. Tell learners which claims are supported and which need more evidence. Use the practice path to keep the class active. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "What the facilitator should say" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "What the facilitator should say" into a rule of thumb unless the knowledge base supports that claim. Source anchor: Class setup, learner profile, and research rules [1]
 Key points:
-- Submit words or phrases you associate with 'Texican'
-- Explore common perceptions and misconceptions
-- Compare your ideas with historical definitions
-Sources: s2, s15
+- Explain why the knowledge base comes before final objectives.
+- Tell learners which claims are supported and which need more evidence.
+- Use the practice path to keep the class active.
+Sources: s1
 
-### 10. Map Activity: Identifying Texican Settlements
-Say: Why this deserves a deeper look. Mapping helps visualize where Texicans lived and understand how geography shaped their social and economic life. Source boundary. Teach this point from thestoryoftexas.com; texaspsp.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Locate key Texican communities on a Texas map Analyze geographic factors influencing settlement Discuss interactions with neighboring groups Worked example San Antonio and surrounding areas were major Texican hubs due to fertile land and strategic location. Practice and transfer Mark settlements and consider why these locations were chosen. Common mistake to prevent. Ignoring natural features like rivers and terrain when considering settlement choices. Source anchor: thestoryoftexas.com; texaspsp.org [5] [11]
+### 10. Ready to teach, then improve
+Say: Why this deserves a deeper look. Ready to teach, then improve connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from Class setup, learner profile, and research rules. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Run the class preview. Add richer source text when available. Regenerate after the source-verification and QA gates pass. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Ready to teach, then improve" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Ready to teach, then improve" into a rule of thumb unless the knowledge base supports that claim. Source anchor: Class setup, learner profile, and research rules [1]
 Key points:
-- Locate key Texican communities on a Texas map
-- Analyze geographic factors influencing settlement
-- Discuss interactions with neighboring groups
-Sources: s5, s11
+- Run the class preview.
+- Add richer source text when available.
+- Regenerate after the source-verification and QA gates pass.
+Sources: s1
 
-### 11. Quiz: Texican Identity and History
-Say: Why this deserves a deeper look. This quiz reinforces learning and identifies areas needing review. Source boundary. Teach this point from facebook.com; tshaonline.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Test your understanding of Texican definitions Recall key cultural influences and settlement patterns Assess knowledge of Texican roles in Texas Revolution Worked example Sample question: 'Which term best describes early Mexican settlers in Texas?' Practice and transfer Answer quiz questions to check comprehension. Common mistake to prevent. Confusing terms or overlooking historical context in answers. Source anchor: facebook.com; tshaonline.org [2] [15]
+### 11. Make the idea usable
+Say: Why this deserves a deeper look. Make the idea usable connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from texaspsp.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Connect this part of Introduction to the Texicans to the floor learner's starting point. Translate the key idea into plain language: Discuss the settlement patterns and lifestyle of the Texicans Ask learners to restate the idea before moving on. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Make the idea usable" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Make the idea usable" into a rule of thumb unless the knowledge base supports that claim. Source anchor: texaspsp.org [11]
 Key points:
-- Test your understanding of Texican definitions
-- Recall key cultural influences and settlement patterns
-- Assess knowledge of Texican roles in Texas Revolution
-Sources: s2, s15
+- Connect this part of Introduction to the Texicans to the floor learner's starting point.
+- Translate the key idea into plain language: Discuss the settlement patterns and lifestyle of the Texicans
+- Ask learners to restate the idea before moving on.
+Sources: s11
 
-### 12. Reflection: Why Study the Texicans?
-Say: Why this deserves a deeper look. Reflecting on the importance of Texicans helps learners appreciate the complexity of Texas history and identity. Source boundary. Teach this point from tshaonline.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Texicans reveal the multicultural roots of Texas Their history challenges simple narratives of Texas identity Understanding Texicans enriches knowledge of cultural blending and conflict Reflect on how this shapes modern Texas society Worked example Recognizing Texican contributions highlights the diverse foundations of Texas culture. Practice and transfer Write a brief reflection on what Texican history teaches about cultural identity. Common mistake to prevent. Viewing history as only about dominant groups, ignoring minority contributions. Source anchor: tshaonline.org [15]
+### 12. Walk through a worked example
+Say: Why this deserves a deeper look. Walk through a worked example connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from shsulibraryguides.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Start with a realistic learner scenario. Model the first decision out loud. Show where the source supports the decision. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Walk through a worked example" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Walk through a worked example" into a rule of thumb unless the knowledge base supports that claim. Source anchor: shsulibraryguides.org [12]
 Key points:
-- Texicans reveal the multicultural roots of Texas
-- Their history challenges simple narratives of Texas identity
-- Understanding Texicans enriches knowledge of cultural blending and conflict
-- Reflect on how this shapes modern Texas society
-Sources: s15
+- Start with a realistic learner scenario.
+- Model the first decision out loud.
+- Show where the source supports the decision.
+Sources: s12
 
 ### 13. Choose the next best move
 Say: Why this deserves a deeper look. Choose the next best move connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from gilderlehrman.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Present two or three plausible choices. Ask which choice best matches the objective. Use the answer to correct misunderstandings before the next section. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Choose the next best move" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Choose the next best move" into a rule of thumb unless the knowledge base supports that claim. Source anchor: gilderlehrman.org [13]
@@ -572,8 +567,7 @@ Key points:
 Sources: s1, s2, s3, s4
 
 ## Research Gaps to Resolve
-- Lack of a clear, detailed definition and origin story of the term 'Texican' distinct from 'Texan' or 'Tejano' in the available sources.
-- Insufficient detailed descriptions of the daily lifestyle, customs, and social structures of Texican communities.
-- Limited primary source excerpts or direct historical documents specifically focused on Texicans as a group.
-- Absence of comprehensive coverage on the contested historical interpretations or differing perspectives about Texican identity and role.
-- No extractable or detailed content from some sources (e.g., Facebook post, Quizlet flashcards, Britannica Texas Revolution page) limiting their immediate use.
+- Lack of detailed primary source narratives or firsthand accounts specifically describing the daily life, customs, and social structures of Texicans distinct from broader Texan settlers.
+- Insufficient direct evidence on the specific settlement patterns and lifestyle adaptations of Texicans compared to other groups in early Texas history.
+- Limited analysis of contested historical interpretations or differing perspectives on Texican identity and their role in Texas independence beyond general summaries.
+- Absence of comprehensive demographic or statistical data on Texican populations during the Republic of Texas period supported by multiple primary sources.

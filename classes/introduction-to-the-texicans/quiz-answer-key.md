@@ -2,11 +2,11 @@
 
 ## Question 1
 Which of the following best defines the term 'Texican'?
-Answer: A cultural identity blending Mexican and Texan heritage
-Why: The term 'Texican' specifically refers to people of Mexican-Texan heritage, distinct from Anglo 'Texans' and indigenous groups.
+Answer: A term derived from a Native American word meaning 'friend' or 'ally', referring to early Texas settlers blending multiple cultures
+Why: The term 'Texican' originates from a Native American root meaning 'friend' or 'ally' and refers to the culturally blended early settlers of Texas.
 
 ## Question 2
-Explain how Texican settlement patterns influenced their lifestyle and community structure in early Texas.
+Explain how the geography of Texas influenced the settlement patterns and lifestyle of the Texicans.
 Answer: undefined
-Rubric: Response should describe geographic locations of Texican communities, how environment shaped their daily life, and social organization aspects, supported by historical context.
-Sample: Texicans settled primarily in southern and central Texas near rivers and fertile land, which supported ranching and farming. Their communities were often tight-knit with strong family ties and blended cultural traditions from Mexican and indigenous influences.
+Rubric: A strong answer should mention specific geographic features such as rivers, plains, and climate, and explain how these influenced economic activities, settlement locations, and social interactions of the Texicans.
+Sample: Texas's diverse geography, including rivers like the Rio Grande and fertile plains, provided water sources and arable land that attracted Texican settlements. The climate and terrain influenced their farming, ranching, and trade practices, shaping their lifestyle.

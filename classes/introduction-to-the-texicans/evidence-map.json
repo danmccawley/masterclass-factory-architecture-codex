@@ -1,7 +1,7 @@
 [
   {
     "kind": "terminal objective",
-    "claim": "Identify who the Texicans were and describe their cultural background and historical significance in early Texas.",
+    "claim": "Identify who the Texicans were and describe their cultural background, settlement patterns, and their role in early Texas history.",
     "source_ids": [
       "s1",
       "s2",
@@ -17,7 +17,7 @@
   },
   {
     "kind": "enabling objective",
-    "claim": "Define the term 'Texican' and distinguish it from related terms such as 'Texan' and 'Tejano', including its origins and usage.",
+    "claim": "Define the term 'Texican' and explain its linguistic and cultural origins.",
     "source_ids": [
       "s2",
       "s3",
@@ -33,7 +33,7 @@
   },
   {
     "kind": "enabling objective",
-    "claim": "Discuss the settlement patterns, geographic distribution, and lifestyle characteristics of the Texican communities in early Texas.",
+    "claim": "Describe the settlement patterns and geographic influences on the lifestyle of the Texicans.",
     "source_ids": [
       "s3",
       "s4"
@@ -47,11 +47,101 @@
   },
   {
     "kind": "enabling objective",
-    "claim": "Explain the role of the Texicans in the Texas Revolution and the establishment of the Republic of Texas, including political and military contributions.",
+    "claim": "Analyze the cultural background of Texicans, highlighting the blend of Native American, Spanish, Mexican, and Anglo-American influences.",
     "source_ids": [
       "s4"
     ],
     "source_titles": [
+      "quizlet.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "enabling objective",
+    "claim": "Explain the role of the Texicans in the Texas Revolution and the establishment of the Republic of Texas.",
+    "source_ids": [
+      "s1",
+      "s2",
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "facebook.com",
+      "en.wikipedia.org",
+      "quizlet.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "enabling objective",
+    "claim": "Interpret primary source documents such as the Texas Essential Knowledge and Skills (TEKS) and the Treaty of Guadalupe Hidalgo to understand Texican identity and territorial changes.",
+    "source_ids": [
+      "s1",
+      "s2",
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "facebook.com",
+      "en.wikipedia.org",
+      "quizlet.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "enabling objective",
+    "claim": "Discuss the evolution of Texican identity into the broader Texan identity and its legacy in Texas history.",
+    "source_ids": [
+      "s1",
+      "s2",
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "facebook.com",
+      "en.wikipedia.org",
+      "quizlet.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "enabling objective",
+    "claim": "Evaluate educational resources emphasizing geography and immigration patterns shaping Texican culture and settlement.",
+    "source_ids": [
+      "s1",
+      "s2",
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "facebook.com",
+      "en.wikipedia.org",
+      "quizlet.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "enabling objective",
+    "claim": "Critically assess contested historical interpretations of Texican identity and their political motivations using multiple credible sources.",
+    "source_ids": [
+      "s1",
+      "s2",
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "facebook.com",
+      "en.wikipedia.org",
       "quizlet.com"
     ],
     "status": "mapped",
@@ -59,18 +149,32 @@
   },
   {
     "kind": "lesson section",
-    "claim": "Introduction to Texican Identity",
+    "claim": "Introduction to the Term 'Texican'",
     "source_ids": [
-      "s2",
-      "s3",
-      "s8",
-      "s15"
+      "s5",
+      "s7",
+      "s8"
     ],
     "source_titles": [
-      "facebook.com",
-      "en.wikipedia.org",
-      "everything-everywhere.com",
-      "tshaonline.org"
+      "thestoryoftexas.com",
+      "kids.nationalgeographic.com",
+      "everything-everywhere.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Settlement Patterns and Geography of Texicans",
+    "source_ids": [
+      "s7",
+      "s11",
+      "s8"
+    ],
+    "source_titles": [
+      "kids.nationalgeographic.com",
+      "texaspsp.org",
+      "everything-everywhere.com"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
@@ -79,57 +183,37 @@
     "kind": "lesson section",
     "claim": "Cultural Background of the Texicans",
     "source_ids": [
-      "s5",
-      "s7",
-      "s8",
-      "s15"
+      "s2",
+      "s15",
+      "s8"
     ],
     "source_titles": [
-      "thestoryoftexas.com",
-      "kids.nationalgeographic.com",
-      "everything-everywhere.com",
-      "tshaonline.org"
+      "facebook.com",
+      "tshaonline.org",
+      "everything-everywhere.com"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
     "kind": "lesson section",
-    "claim": "Settlement Patterns and Lifestyle",
-    "source_ids": [
-      "s5",
-      "s7",
-      "s11",
-      "s15"
-    ],
-    "source_titles": [
-      "thestoryoftexas.com",
-      "kids.nationalgeographic.com",
-      "texaspsp.org",
-      "tshaonline.org"
-    ],
-    "status": "mapped",
-    "finding": "Mapped to approved source-paper sections for source verification."
-  },
-  {
-    "kind": "lesson section",
-    "claim": "Texicans in Early Texas History",
+    "claim": "Texicans in Early Texas History and the Texas Revolution",
     "source_ids": [
       "s9",
-      "s13",
-      "s15"
+      "s15",
+      "s13"
     ],
     "source_titles": [
       "britannica.com",
-      "gilderlehrman.org",
-      "tshaonline.org"
+      "tshaonline.org",
+      "gilderlehrman.org"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
     "kind": "lesson section",
-    "claim": "Primary Source Perspectives",
+    "claim": "Primary Sources on Texican Identity and Territorial Changes",
     "source_ids": [
       "s14",
       "s16"
@@ -143,7 +227,7 @@
   },
   {
     "kind": "lesson section",
-    "claim": "Contested Interpretations and Historical Debates",
+    "claim": "Evolution and Legacy of Texican Identity",
     "source_ids": [
       "s2",
       "s8",
@@ -159,18 +243,30 @@
   },
   {
     "kind": "lesson section",
-    "claim": "Course Review and Knowledge Check",
+    "claim": "Geography, Immigration, and Cultural Shaping of Texicans",
     "source_ids": [
-      "s1",
-      "s2",
-      "s3",
-      "s4"
+      "s11"
     ],
     "source_titles": [
-      "Class setup, learner profile, and research rules",
+      "texaspsp.org"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Contested Perspectives on Texican Identity and Role",
+    "source_ids": [
+      "s2",
+      "s7",
+      "s8",
+      "s15"
+    ],
+    "source_titles": [
       "facebook.com",
-      "en.wikipedia.org",
-      "quizlet.com"
+      "kids.nationalgeographic.com",
+      "everything-everywhere.com",
+      "tshaonline.org"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
