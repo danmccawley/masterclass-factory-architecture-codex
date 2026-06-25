@@ -138,6 +138,9 @@
         padding: 1px 7px;
       }
       .provider-tile .pt-sub { font-size: 0.8rem; color: var(--ink-soft); }
+      .byok { margin-top: 18px; }
+      .byok input { width: 100%; max-width: 540px; margin-top: 6px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; font: inherit; color: var(--ink); background: var(--bg, #fff); }
+      .byok .byok-prov, .byok .byok-opt { color: var(--ink-soft); font-weight: 400; }
       .provider-section .settings-hint {
         margin: 12px 0 0;
         color: var(--ink-soft);
@@ -202,6 +205,13 @@
         <p class="settings-hint">
           Your default for new classes &mdash; change it per class in the Create step. Providers without a key configured appear dimmed.
         </p>
+        <div class="byok" id="byokWrap">
+          <label class="settings-label" for="byokKey">Use your own API key <span class="byok-prov" id="byokProvLabel"></span> <span class="byok-opt">(optional)</span></label>
+          <input type="password" id="byokKey" placeholder="Paste a key to build with your own account" autocomplete="off" autocapitalize="off" spellcheck="false" />
+          <p class="settings-hint">
+            Used only for your build requests, held in memory for this browser tab &mdash; never stored on the server or saved to your repo, and cleared when you close the tab.
+          </p>
+        </div>
       </section>
     </main>
     <script>
@@ -211,6 +221,35 @@
         var ORDER = ["anthropic", "openai", "gemini", "xai"];
         var saved = "";
         try { saved = window.localStorage ? (window.localStorage.getItem("mf-provider") || "") : ""; } catch (e) { saved = ""; }
+        var byIdGlobal = {};
+        var keyInput = document.getElementById("byokKey");
+        var provLabel = document.getElementById("byokProvLabel");
+
+        function keyName(p) { return "mf-api-key:" + (p || ""); }
+        function selectedProvider() {
+          var b = host.querySelector('.provider-tile[aria-pressed="true"]');
+          return b ? (b.getAttribute("data-id") || "") : "";
+        }
+        // The key is scoped per provider so switching providers never sends a key
+        // to a provider it wasn't meant for. Transient: sessionStorage only.
+        function loadKeyFor(p) {
+          if (!keyInput) return;
+          var v = "";
+          try { v = window.sessionStorage ? (sessionStorage.getItem(keyName(p)) || "") : ""; } catch (e) {}
+          keyInput.value = v;
+          if (provLabel) provLabel.textContent = p ? ("for " + ((byIdGlobal[p] && byIdGlobal[p].label) || p)) : "";
+        }
+        if (keyInput) {
+          keyInput.addEventListener("input", function () {
+            var p = selectedProvider();
+            try {
+              if (window.sessionStorage) {
+                if (keyInput.value) sessionStorage.setItem(keyName(p), keyInput.value);
+                else sessionStorage.removeItem(keyName(p));
+              }
+            } catch (e) {}
+          });
+        }
 
         function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
 
@@ -227,11 +266,13 @@
           var def = (catalog && catalog.default) || "anthropic";
           var byId = {};
           ((catalog && catalog.providers) || []).forEach(function (p) { byId[p.id] = p; });
+          byIdGlobal = byId;
           var list = ORDER.map(function (id) { return byId[id]; }).filter(Boolean);
           ((catalog && catalog.providers) || []).forEach(function (p) { if (ORDER.indexOf(p.id) < 0) list.push(p); });
           var savedAvailable = list.some(function (p) { return p.id === saved && p.available; });
           var selected = (saved && savedAvailable) ? saved : def;
           host.innerHTML = list.map(function (p) { return tileHtml(p, p.id === def, p.id === selected); }).join("");
+          loadKeyFor(selected);
         }
 
         fetch("api/providers", { cache: "no-store" })
@@ -246,6 +287,7 @@
             b.setAttribute("aria-pressed", b === btn ? "true" : "false");
           });
           try { if (window.localStorage) window.localStorage.setItem("mf-provider", btn.getAttribute("data-id") || ""); } catch (e2) {}
+          loadKeyFor(btn.getAttribute("data-id") || "");
         });
       })();
     </script>

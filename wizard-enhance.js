@@ -1492,7 +1492,9 @@
       await fetch("/api/brief", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(parseBrief()) });
       markTrackerStagePassed(0);
       setGeneratorTrackerStage(1, "Building the knowledge base and source-quality list.");
-      var response = await fetch("/api/generate", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ brief: briefForGenerate(), publish: true }) });
+      var genBody = { brief: briefForGenerate(), publish: true };
+      try { var gp = (genBody.brief.engine && genBody.brief.engine.provider) || (window.localStorage && localStorage.getItem("mf-provider")) || ""; var gk = (gp && window.sessionStorage) ? sessionStorage.getItem("mf-api-key:" + gp) : ""; if (gk) genBody.api_key = gk; } catch (e) {}
+      var response = await fetch("/api/generate", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(genBody) });
       var payload = await readJsonSafe(response);
       if (!payload) { presentGeneratorSnag(response.status); return; }
       if (!response.ok || !payload.ok) {
@@ -1568,6 +1570,7 @@
       markTrackerStagePassed(0);
       setGeneratorTrackerStage(1, "Building the knowledge base on the approved scope.");
       var body = Object.assign({ brief: briefForGenerate(), publish: true }, extra || {});
+      try { var ap = (body.brief.engine && body.brief.engine.provider) || (window.localStorage && localStorage.getItem("mf-provider")) || ""; var akey = (ap && window.sessionStorage) ? sessionStorage.getItem("mf-api-key:" + ap) : ""; if (akey) body.api_key = akey; } catch (e) {}
       var response = await fetch("/api/generate", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
       var payload = await readJsonSafe(response);
       if (!payload) { presentGeneratorSnag(response.status); return; }

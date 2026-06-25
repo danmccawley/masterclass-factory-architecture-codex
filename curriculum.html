@@ -405,6 +405,9 @@
     var b = JSON.parse(JSON.stringify(brief));
     try { var prov = window.localStorage ? window.localStorage.getItem("mf-provider") : ""; if(prov){ b.engine = { provider: prov, model: "" }; } } catch(e){}
     var body = { brief: b, publish: true };
+    // Optional bring-your-own key, scoped to the chosen provider; sent out-of-band,
+    // never placed on the brief. Absent => server env key, as before.
+    try { var pk = (b.engine && b.engine.provider) || ""; var ak = (pk && window.sessionStorage) ? sessionStorage.getItem("mf-api-key:"+pk) : ""; if(ak) body.api_key = ak; } catch(e){}
     if(force){ body.proceed_anyway = true; body.accept_quality = true; }
     return fetch("/api/generate", {method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(body)})
       .then(function(r){ return r.json().then(function(j){ return j; }); })
