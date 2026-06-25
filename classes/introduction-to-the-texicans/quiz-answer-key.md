@@ -1,12 +1,12 @@
 # Quiz Answer Key
 
 ## Question 1
-What distinguishes the term 'Texican' from 'Texan' and 'Texonian'?
-Answer: Texican refers to Spanish-Mexican settlers, Texan is a general term for Texas residents, and Texonian refers to Anglo settlers
-Why: The term 'Texican' specifically refers to Spanish-Mexican settlers in early Texas, while 'Texan' is a broader term for residents, and 'Texonian' often refers to Anglo settlers.
+Which of the following best defines the term 'Texican'?
+Answer: A Mexican or Spanish-descended inhabitant of early Texas
+Why: The term 'Texican' specifically refers to inhabitants of early Texas with Mexican or Spanish heritage, distinguishing them from Anglo settlers or other groups.
 
 ## Question 2
-Explain the role of the Texicans in the Texas Revolution and how their cultural background influenced their political challenges.
+Explain the role of Texicans in the Texas Revolution and how their cultural background influenced their contributions.
 Answer: undefined
-Rubric: Response should describe Texicans' participation in the revolution, mention their Spanish-Mexican heritage, and discuss cultural and political tensions with Anglo settlers.
-Sample: Texicans were key participants in the Texas Revolution, fighting to protect their land and rights. Their Spanish-Mexican heritage shaped their identity and led to political challenges as Anglo-American settlers increased, causing cultural conflicts and struggles over governance.
+Rubric: Response should identify Texicans as key participants in the Texas Revolution, highlighting their Mexican heritage and how it shaped their political and military involvement. The answer should mention their dual identity navigating Spanish/Mexican and Anglo influences and their significance in early Texas history.
+Sample: Texicans were Mexican-descended settlers who played important roles in the Texas Revolution by serving as soldiers and leaders. Their cultural background gave them a unique perspective bridging Mexican and Anglo cultures, influencing their fight for independence and shaping Texas's early identity.

@@ -1,7 +1,7 @@
 {
   "title": "Introduction to the Texicans",
   "slug": "introduction-to-the-texicans",
-  "generated_at": "2026-06-25T16:08:47.706Z",
+  "generated_at": "2026-06-25T16:10:43.782Z",
   "class_tier": {
     "level": "standard",
     "label": "Standard class",
@@ -394,12 +394,12 @@
         "deep_dive_expectation": "substantive deep dives where required by tier and setting"
       }
     ],
-    "lesson_sections": 7
+    "lesson_sections": 5
   },
   "evidence_map": [
     {
       "kind": "terminal objective",
-      "claim": "Identify who the Texicans were and describe their cultural background, including their historical role in early Texas history.",
+      "claim": "Identify who the Texicans were and describe their cultural background, historical role, and significance in early Texas history.",
       "source_ids": [
         "s1",
         "s2",
@@ -415,7 +415,7 @@
     },
     {
       "kind": "enabling objective",
-      "claim": "Define the term 'Texican' and explain its origins and distinctions from related terms such as 'Texan' and 'Texonian'.",
+      "claim": "Define the term 'Texican' including its etymology and origins in early 19th-century Spanish Texas.",
       "source_ids": [
         "s2",
         "s3",
@@ -431,7 +431,7 @@
     },
     {
       "kind": "enabling objective",
-      "claim": "Discuss the settlement patterns, geographic locations, and lifestyle characteristics of the Texicans during the early 19th century.",
+      "claim": "Discuss the settlement patterns, frontier lifestyle, and cultural identity of the Texicans within Spanish and Mexican Texas.",
       "source_ids": [
         "s3",
         "s4"
@@ -445,7 +445,7 @@
     },
     {
       "kind": "enabling objective",
-      "claim": "Explain the role of the Texicans in the Texas Revolution and early statehood, highlighting their cultural and political challenges amid Anglo-American settlement.",
+      "claim": "Explain the role and contributions of the Texicans in key historical events such as Mexico's independence movement, the Texas Revolution, and the Republic of Texas era.",
       "source_ids": [
         "s4"
       ],
@@ -457,16 +457,18 @@
     },
     {
       "kind": "lesson section",
-      "claim": "Understanding the Term 'Texican'",
+      "claim": "Understanding the Term 'Texican' and Its Origins",
       "source_ids": [
         "s2",
-        "s6",
-        "s7"
+        "s3",
+        "s4",
+        "s6"
       ],
       "source_titles": [
         "jinxschwartz.com",
-        "facebook.com",
-        "everything-everywhere.com"
+        "en.wikipedia.org",
+        "kids.nationalgeographic.com",
+        "facebook.com"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
@@ -475,30 +477,32 @@
       "kind": "lesson section",
       "claim": "Settlement Patterns and Lifestyle of the Texicans",
       "source_ids": [
+        "s2",
         "s7",
-        "s9",
-        "s2"
+        "s10",
+        "s11"
       ],
       "source_titles": [
+        "jinxschwartz.com",
         "everything-everywhere.com",
-        "thestoryoftexas.com",
-        "jinxschwartz.com"
+        "libguides.tamusa.edu",
+        "texasstudies.org"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "lesson section",
-      "claim": "Texicans in Early Texas History and the Texas Revolution",
+      "claim": "Texicans’ Role in Early Texas History",
       "source_ids": [
         "s2",
-        "s7",
+        "s3",
         "s8",
         "s9"
       ],
       "source_titles": [
         "jinxschwartz.com",
-        "everything-everywhere.com",
+        "en.wikipedia.org",
         "britannica.com",
         "thestoryoftexas.com"
       ],
@@ -507,41 +511,25 @@
     },
     {
       "kind": "lesson section",
-      "claim": "Cultural Background and Identity of the Texicans",
-      "source_ids": [
-        "s2",
-        "s7",
-        "s9"
-      ],
-      "source_titles": [
-        "jinxschwartz.com",
-        "everything-everywhere.com",
-        "thestoryoftexas.com"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "lesson section",
-      "claim": "Contested Narratives and Field Disagreements about the Texicans",
+      "claim": "Cultural Conflicts and Identity Challenges",
       "source_ids": [
         "s2",
         "s6",
         "s7",
-        "s8"
+        "s16"
       ],
       "source_titles": [
         "jinxschwartz.com",
         "facebook.com",
         "everything-everywhere.com",
-        "britannica.com"
+        "libguides.uta.edu"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "lesson section",
-      "claim": "Using Primary Sources to Study the Texicans",
+      "claim": "Primary Sources and Research on Texican History",
       "source_ids": [
         "s10",
         "s11",
@@ -553,22 +541,6 @@
         "texasstudies.org",
         "legacy.education.texashistory.unt.edu",
         "kwlibguides.lonestar.edu"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "lesson section",
-      "claim": "Synthesizing Texican History and Identity",
-      "source_ids": [
-        "s2",
-        "s7",
-        "s9"
-      ],
-      "source_titles": [
-        "jinxschwartz.com",
-        "everything-everywhere.com",
-        "thestoryoftexas.com"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
