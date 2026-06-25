@@ -2,7 +2,7 @@
 window.CLASS_TITLE = "Introduction to the Texicans";
 window.DECK_META = {
   "slug": "introduction-to-the-texicans",
-  "generated": "2026-06-25T16:19:52.849Z",
+  "generated": "2026-06-25T16:21:40.318Z",
   "language": "en",
   "class_tier": "Standard class"
 };
@@ -155,12 +155,12 @@ window.CLASS_BLUEPRINT = {
       "deep_dive_expectation": "substantive deep dives where required by tier and setting"
     }
   ],
-  "lesson_sections": 7
+  "lesson_sections": 6
 };
 window.EVIDENCE_MAP = [
   {
     "kind": "terminal objective",
-    "claim": "Identify who the Texicans were and describe their cultural background, settlement patterns, and role in early Texas history using primary and secondary sources.",
+    "claim": "Identify who the Texicans were and describe their cultural background, settlement patterns, and their role in early Texas history.",
     "source_ids": [
       "s1",
       "s2",
@@ -176,7 +176,7 @@ window.EVIDENCE_MAP = [
   },
   {
     "kind": "enabling objective",
-    "claim": "Define the term 'Texican' with reference to its historical and linguistic origins and explain its evolution over time.",
+    "claim": "Define the term 'Texican' and explain its historical origins and usage.",
     "source_ids": [
       "s2",
       "s3",
@@ -192,7 +192,7 @@ window.EVIDENCE_MAP = [
   },
   {
     "kind": "enabling objective",
-    "claim": "Discuss the settlement patterns, lifestyle, and daily activities of the Texicans under Spanish and Mexican rule.",
+    "claim": "Describe the cultural background of the Texicans, including Spanish, Mexican, indigenous, and European influences.",
     "source_ids": [
       "s3",
       "s4"
@@ -206,7 +206,7 @@ window.EVIDENCE_MAP = [
   },
   {
     "kind": "enabling objective",
-    "claim": "Explain the cultural background of the Texicans, highlighting Spanish colonial, Mexican, indigenous, and Anglo-American influences.",
+    "claim": "Analyze the settlement patterns and lifestyle of the Texicans on the Texas frontier.",
     "source_ids": [
       "s4"
     ],
@@ -218,43 +218,7 @@ window.EVIDENCE_MAP = [
   },
   {
     "kind": "enabling objective",
-    "claim": "Analyze the political and military roles of the Texicans in early Texas history, including their participation in the Texas Revolution and conflicts with Anglo settlers.",
-    "source_ids": [
-      "s1",
-      "s2",
-      "s3",
-      "s4"
-    ],
-    "source_titles": [
-      "Class setup, learner profile, and research rules",
-      "jinxschwartz.com",
-      "en.wikipedia.org",
-      "kids.nationalgeographic.com"
-    ],
-    "status": "mapped",
-    "finding": "Mapped to approved source-paper sections for source verification."
-  },
-  {
-    "kind": "enabling objective",
-    "claim": "Interpret primary source documents and artifacts to illustrate Texican life, identity, and perspectives.",
-    "source_ids": [
-      "s1",
-      "s2",
-      "s3",
-      "s4"
-    ],
-    "source_titles": [
-      "Class setup, learner profile, and research rules",
-      "jinxschwartz.com",
-      "en.wikipedia.org",
-      "kids.nationalgeographic.com"
-    ],
-    "status": "mapped",
-    "finding": "Mapped to approved source-paper sections for source verification."
-  },
-  {
-    "kind": "enabling objective",
-    "claim": "Evaluate differing historical perspectives and field disagreements regarding Texican identity and history.",
+    "claim": "Explain the role and perspectives of the Texicans in key historical events such as the Texas Revolution and the transition from Spanish to Mexican rule.",
     "source_ids": [
       "s1",
       "s2",
@@ -272,18 +236,34 @@ window.EVIDENCE_MAP = [
   },
   {
     "kind": "lesson section",
-    "claim": "Introduction to Texas and the Origins of the Texicans",
+    "claim": "Introduction to the Texicans: Defining the Term and Origins",
     "source_ids": [
       "s2",
-      "s4",
-      "s7",
-      "s11"
+      "s6",
+      "s5"
     ],
     "source_titles": [
       "jinxschwartz.com",
-      "kids.nationalgeographic.com",
+      "facebook.com",
+      "youtube.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Cultural Background of the Texicans",
+    "source_ids": [
+      "s2",
+      "s7",
+      "s9",
+      "s3"
+    ],
+    "source_titles": [
+      "jinxschwartz.com",
       "everything-everywhere.com",
-      "texasstudies.org"
+      "thestoryoftexas.com",
+      "en.wikipedia.org"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
@@ -293,49 +273,31 @@ window.EVIDENCE_MAP = [
     "claim": "Settlement Patterns and Lifestyle of the Texicans",
     "source_ids": [
       "s2",
-      "s11",
-      "s10",
-      "s12"
+      "s7",
+      "s9",
+      "s10"
     ],
     "source_titles": [
       "jinxschwartz.com",
-      "texasstudies.org",
-      "libguides.tamusa.edu",
-      "legacy.education.texashistory.unt.edu"
+      "everything-everywhere.com",
+      "thestoryoftexas.com",
+      "libguides.tamusa.edu"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
     "kind": "lesson section",
-    "claim": "Cultural Background and Identity of the Texicans",
+    "claim": "The Texicans’ Role in Early Texas History",
     "source_ids": [
       "s2",
-      "s11",
-      "s17",
-      "s13"
-    ],
-    "source_titles": [
-      "jinxschwartz.com",
-      "texasstudies.org",
-      "guides.library.yale.edu",
-      "kwlibguides.lonestar.edu"
-    ],
-    "status": "mapped",
-    "finding": "Mapped to approved source-paper sections for source verification."
-  },
-  {
-    "kind": "lesson section",
-    "claim": "Texicans in Early Texas History and the Texas Revolution",
-    "source_ids": [
-      "s2",
-      "s4",
+      "s7",
       "s8",
       "s9"
     ],
     "source_titles": [
       "jinxschwartz.com",
-      "kids.nationalgeographic.com",
+      "everything-everywhere.com",
       "britannica.com",
       "thestoryoftexas.com"
     ],
@@ -344,7 +306,7 @@ window.EVIDENCE_MAP = [
   },
   {
     "kind": "lesson section",
-    "claim": "Primary Source Exploration: Voices of the Texicans",
+    "claim": "Primary Sources and Research Methods for Studying the Texicans",
     "source_ids": [
       "s10",
       "s11",
@@ -362,36 +324,16 @@ window.EVIDENCE_MAP = [
   },
   {
     "kind": "lesson section",
-    "claim": "Field Disagreements and Evolving Definitions of Texican Identity",
+    "claim": "Summary and Review: Understanding the Texicans’ Identity and Legacy",
     "source_ids": [
       "s2",
-      "s6",
-      "s11",
-      "s17"
+      "s7",
+      "s9"
     ],
     "source_titles": [
       "jinxschwartz.com",
-      "facebook.com",
-      "texasstudies.org",
-      "guides.library.yale.edu"
-    ],
-    "status": "mapped",
-    "finding": "Mapped to approved source-paper sections for source verification."
-  },
-  {
-    "kind": "lesson section",
-    "claim": "Review and Knowledge Check",
-    "source_ids": [
-      "s2",
-      "s4",
-      "s8",
-      "s10"
-    ],
-    "source_titles": [
-      "jinxschwartz.com",
-      "kids.nationalgeographic.com",
-      "britannica.com",
-      "libguides.tamusa.edu"
+      "everything-everywhere.com",
+      "thestoryoftexas.com"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
@@ -468,7 +410,7 @@ window.SLIDES = [
       "h": "Deep dive: Design for the floor learner",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Design for the floor learner connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from Class setup, learner profile, and research rules. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Typical learner: not specified.</li><li>Floor learner: new learners.</li><li>Tone: plain; reading grade cap: 9.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Design for the floor learner\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Design for the floor learner\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> Class setup, learner profile, and research rules <sup class=\"cite\" data-src=\"s1\">[1]</sup></p>"
     },
-    "words": "wordcloud1"
+    "words": "wordcloud1-cultural-elements"
   },
   {
     "id": "terminal-objectives",
@@ -480,7 +422,7 @@ window.SLIDES = [
       "h": "Deep dive: Terminal learning objectives",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Terminal learning objectives connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from Class setup, learner profile, and research rules. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Identify who the Texicans were and describe their cultural background</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Terminal learning objectives\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Terminal learning objectives\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> Class setup, learner profile, and research rules <sup class=\"cite\" data-src=\"s1\">[1]</sup></p>"
     },
-    "poll": "poll2"
+    "poll": "poll2-texicans-role"
   },
   {
     "id": "enabling-objectives",
@@ -503,7 +445,7 @@ window.SLIDES = [
       "h": "Deep dive: Practice path",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Practice path connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from Class setup, learner profile, and research rules. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Name the decision or action learners must perform.</li><li>Show a clean example with the key vocabulary.</li><li>Ask learners to apply the same pattern to a realistic scenario.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Practice path\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Practice path\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> Class setup, learner profile, and research rules <sup class=\"cite\" data-src=\"s1\">[1]</sup></p>"
     },
-    "poll": "poll1"
+    "poll": "poll1-texican-definition"
   },
   {
     "id": "guardrails",
@@ -515,14 +457,14 @@ window.SLIDES = [
       "h": "Deep dive: Guardrails for quality",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Guardrails for quality connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from Class setup, learner profile, and research rules. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>No fabricated sources, URLs, dates, or statistics.</li><li>No out-of-scope side trips.</li><li>No final claim unless the source paper supports it.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Guardrails for quality\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Guardrails for quality\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> Class setup, learner profile, and research rules <sup class=\"cite\" data-src=\"s1\">[1]</sup></p>"
     },
-    "poll": "poll2",
-    "words": "wordcloud3"
+    "poll": "poll2-texicans-role",
+    "words": "wordcloud3-historical-events"
   },
   {
     "id": "knowledge-check",
     "eyebrow": "Knowledge Check",
     "num": "08",
-    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">08</span><span class=\"bar\"></span>Knowledge Check</div><h2 class=\"head anim\">Check understanding</h2><ul><li>Answer the questions below before moving to final practice.</li></ul><p class=\"lede anim\">Check understanding connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Check understanding\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Check understanding\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-final-check\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;What is the origin of the term &#39;Texican&#39;?&quot;,&quot;options&quot;:[&quot;A combination of &#39;Texas&#39; and &#39;Mexican&#39; reflecting cultural blending&quot;,&quot;A nickname given by Anglo settlers for all Texans&quot;,&quot;A Spanish word meaning &#39;frontier settler&#39;&quot;,&quot;An indigenous term for native Texans&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;The term &#39;Texican&#39; originated as a blend of &#39;Texas&#39; and &#39;Mexican&#39; to describe the culturally mixed population in early Texas.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Explain how the Texicans contributed to the political and military history of early Texas.&quot;,&quot;rubric&quot;:&quot;Response should include specific examples of Texican participation in the Texas Revolution and their roles in conflicts with Anglo settlers, supported by primary or secondary source evidence.&quot;,&quot;sample&quot;:&quot;Texicans played active roles in the Texas Revolution by fighting alongside Anglo settlers for independence from Mexico, serving as soldiers and leaders. They also navigated complex political loyalties, sometimes conflicting with Anglo settlers, reflecting their unique cultural identity.&quot;,&quot;accept&quot;:[&quot;Texicans fought in the Texas Revolution and held leadership roles&quot;,&quot;They were involved in political struggles during early Texas history&quot;,&quot;Texicans had a complex relationship with Anglo settlers during conflicts&quot;,&quot;They contributed both militarily and politically to Texas independence&quot;]}]\" data-pop=\"1\"></div></div>",
+    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">08</span><span class=\"bar\"></span>Knowledge Check</div><h2 class=\"head anim\">Check understanding</h2><ul><li>Answer the questions below before moving to final practice.</li></ul><p class=\"lede anim\">Check understanding connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Check understanding\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Check understanding\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-final-check\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which of the following best defines the term &#39;Texican&#39;?&quot;,&quot;options&quot;:[&quot;A Texan of Anglo-American descent&quot;,&quot;A historical group in Texas with Spanish, Mexican, and indigenous cultural influences&quot;,&quot;A recent immigrant to Texas from Mexico&quot;,&quot;A person born in Texas after it became a U.S. state&quot;],&quot;answer&quot;:1,&quot;why&quot;:&quot;The term &#39;Texican&#39; historically refers to people in Texas with mixed Spanish, Mexican, and indigenous heritage, distinguishing them from Anglo settlers or later Texans.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Explain the role of the Texicans in early Texas history, including their involvement in political and military events.&quot;,&quot;rubric&quot;:&quot;Response should describe Texicans&#39; active participation during the transition from Spanish to Mexican rule and the Texas Revolution, highlighting their perspectives and contributions. Answers must reference their cultural background and settlement context.&quot;,&quot;sample&quot;:&quot;The Texicans played a significant role in early Texas history by engaging in political and military actions during the Texas Revolution. They were influenced by their mixed cultural heritage and often acted as intermediaries between indigenous peoples, Anglo settlers, and Mexican authorities.&quot;,&quot;accept&quot;:[&quot;Texicans were active in political and military events during early Texas history&quot;,&quot;They participated in the Texas Revolution and the transition from Spanish to Mexican rule&quot;,&quot;Their mixed cultural background influenced their role and perspectives&quot;,&quot;Texicans lived on the Texas frontier and contributed to its settlement and defense&quot;]}]\" data-pop=\"1\"></div></div>",
     "paper": {
       "secnum": "Deep Dive 08",
       "h": "Deep dive: Check understanding",
@@ -533,7 +475,7 @@ window.SLIDES = [
     "id": "facilitator-script",
     "eyebrow": "Presenter",
     "num": "09",
-    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">09</span><span class=\"bar\"></span>Presenter</div><h2 class=\"head anim\">What the facilitator should say</h2><ul><li>Explain why the knowledge base comes before final objectives.</li><li>Tell learners which claims are supported and which need more evidence.</li><li>Use the practice path to keep the class active.</li></ul><p class=\"lede anim\">What the facilitator should say connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"What the facilitator should say\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"What the facilitator should say\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-facilitator-script\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;What is the origin of the term &#39;Texican&#39;?&quot;,&quot;options&quot;:[&quot;A combination of &#39;Texas&#39; and &#39;Mexican&#39; reflecting cultural blending&quot;,&quot;A nickname given by Anglo settlers for all Texans&quot;,&quot;A Spanish word meaning &#39;frontier settler&#39;&quot;,&quot;An indigenous term for native Texans&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;The term &#39;Texican&#39; originated as a blend of &#39;Texas&#39; and &#39;Mexican&#39; to describe the culturally mixed population in early Texas.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Explain how the Texicans contributed to the political and military history of early Texas.&quot;,&quot;rubric&quot;:&quot;Response should include specific examples of Texican participation in the Texas Revolution and their roles in conflicts with Anglo settlers, supported by primary or secondary source evidence.&quot;,&quot;sample&quot;:&quot;Texicans played active roles in the Texas Revolution by fighting alongside Anglo settlers for independence from Mexico, serving as soldiers and leaders. They also navigated complex political loyalties, sometimes conflicting with Anglo settlers, reflecting their unique cultural identity.&quot;,&quot;accept&quot;:[&quot;Texicans fought in the Texas Revolution and held leadership roles&quot;,&quot;They were involved in political struggles during early Texas history&quot;,&quot;Texicans had a complex relationship with Anglo settlers during conflicts&quot;,&quot;They contributed both militarily and politically to Texas independence&quot;]}]\" data-pop=\"1\"></div></div>",
+    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">09</span><span class=\"bar\"></span>Presenter</div><h2 class=\"head anim\">What the facilitator should say</h2><ul><li>Explain why the knowledge base comes before final objectives.</li><li>Tell learners which claims are supported and which need more evidence.</li><li>Use the practice path to keep the class active.</li></ul><p class=\"lede anim\">What the facilitator should say connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"What the facilitator should say\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"What the facilitator should say\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-facilitator-script\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which of the following best defines the term &#39;Texican&#39;?&quot;,&quot;options&quot;:[&quot;A Texan of Anglo-American descent&quot;,&quot;A historical group in Texas with Spanish, Mexican, and indigenous cultural influences&quot;,&quot;A recent immigrant to Texas from Mexico&quot;,&quot;A person born in Texas after it became a U.S. state&quot;],&quot;answer&quot;:1,&quot;why&quot;:&quot;The term &#39;Texican&#39; historically refers to people in Texas with mixed Spanish, Mexican, and indigenous heritage, distinguishing them from Anglo settlers or later Texans.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Explain the role of the Texicans in early Texas history, including their involvement in political and military events.&quot;,&quot;rubric&quot;:&quot;Response should describe Texicans&#39; active participation during the transition from Spanish to Mexican rule and the Texas Revolution, highlighting their perspectives and contributions. Answers must reference their cultural background and settlement context.&quot;,&quot;sample&quot;:&quot;The Texicans played a significant role in early Texas history by engaging in political and military actions during the Texas Revolution. They were influenced by their mixed cultural heritage and often acted as intermediaries between indigenous peoples, Anglo settlers, and Mexican authorities.&quot;,&quot;accept&quot;:[&quot;Texicans were active in political and military events during early Texas history&quot;,&quot;They participated in the Texas Revolution and the transition from Spanish to Mexican rule&quot;,&quot;Their mixed cultural background influenced their role and perspectives&quot;,&quot;Texicans lived on the Texas frontier and contributed to its settlement and defense&quot;]}]\" data-pop=\"1\"></div></div>",
     "paper": {
       "secnum": "Deep Dive 09",
       "h": "Deep dive: What the facilitator should say",
@@ -594,7 +536,7 @@ window.SLIDES = [
       "h": "Deep dive: Avoid the tempting wrong turn",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Avoid the tempting wrong turn connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from texasarchive.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Name a mistake a new learner might make.</li><li>Explain why the mistake is attractive.</li><li>Give a safer replacement action or question.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Avoid the tempting wrong turn\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Avoid the tempting wrong turn\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> texasarchive.org <sup class=\"cite\" data-src=\"s14\">[14]</sup></p>"
     },
-    "poll": "poll2"
+    "poll": "poll2-texicans-role"
   },
   {
     "id": "application-15",
@@ -628,7 +570,7 @@ window.SLIDES = [
       "h": "Deep dive: Ask Bernard before moving on",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Ask Bernard before moving on connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from guides.library.yale.edu. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Pause for learner questions.</li><li>Use Bernard for a plain-language explanation or an alternate example.</li><li>Return to the slide when the class is ready to continue.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Ask Bernard before moving on\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Ask Bernard before moving on\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> guides.library.yale.edu <sup class=\"cite\" data-src=\"s17\">[17]</sup></p>"
     },
-    "words": "wordcloud1"
+    "words": "wordcloud1-cultural-elements"
   },
   {
     "id": "transfer-18",
@@ -667,7 +609,7 @@ window.SLIDES = [
     "id": "guided-practice-21",
     "eyebrow": "Guided Practice",
     "num": "21",
-    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">21</span><span class=\"bar\"></span>Guided Practice</div><h2 class=\"head anim\">Walk through a worked example</h2><ul><li>Start with a realistic learner scenario.</li><li>Model the first decision out loud.</li><li>Show where the source supports the decision.</li></ul><p class=\"lede anim\">Walk through a worked example connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s4\">[4]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Walk through a worked example\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Walk through a worked example\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-guided-practice-21\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;What is the origin of the term &#39;Texican&#39;?&quot;,&quot;options&quot;:[&quot;A combination of &#39;Texas&#39; and &#39;Mexican&#39; reflecting cultural blending&quot;,&quot;A nickname given by Anglo settlers for all Texans&quot;,&quot;A Spanish word meaning &#39;frontier settler&#39;&quot;,&quot;An indigenous term for native Texans&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;The term &#39;Texican&#39; originated as a blend of &#39;Texas&#39; and &#39;Mexican&#39; to describe the culturally mixed population in early Texas.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Explain how the Texicans contributed to the political and military history of early Texas.&quot;,&quot;rubric&quot;:&quot;Response should include specific examples of Texican participation in the Texas Revolution and their roles in conflicts with Anglo settlers, supported by primary or secondary source evidence.&quot;,&quot;sample&quot;:&quot;Texicans played active roles in the Texas Revolution by fighting alongside Anglo settlers for independence from Mexico, serving as soldiers and leaders. They also navigated complex political loyalties, sometimes conflicting with Anglo settlers, reflecting their unique cultural identity.&quot;,&quot;accept&quot;:[&quot;Texicans fought in the Texas Revolution and held leadership roles&quot;,&quot;They were involved in political struggles during early Texas history&quot;,&quot;Texicans had a complex relationship with Anglo settlers during conflicts&quot;,&quot;They contributed both militarily and politically to Texas independence&quot;]}]\" data-pop=\"1\"></div></div>",
+    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">21</span><span class=\"bar\"></span>Guided Practice</div><h2 class=\"head anim\">Walk through a worked example</h2><ul><li>Start with a realistic learner scenario.</li><li>Model the first decision out loud.</li><li>Show where the source supports the decision.</li></ul><p class=\"lede anim\">Walk through a worked example connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s4\">[4]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Walk through a worked example\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Walk through a worked example\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-guided-practice-21\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which of the following best defines the term &#39;Texican&#39;?&quot;,&quot;options&quot;:[&quot;A Texan of Anglo-American descent&quot;,&quot;A historical group in Texas with Spanish, Mexican, and indigenous cultural influences&quot;,&quot;A recent immigrant to Texas from Mexico&quot;,&quot;A person born in Texas after it became a U.S. state&quot;],&quot;answer&quot;:1,&quot;why&quot;:&quot;The term &#39;Texican&#39; historically refers to people in Texas with mixed Spanish, Mexican, and indigenous heritage, distinguishing them from Anglo settlers or later Texans.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Explain the role of the Texicans in early Texas history, including their involvement in political and military events.&quot;,&quot;rubric&quot;:&quot;Response should describe Texicans&#39; active participation during the transition from Spanish to Mexican rule and the Texas Revolution, highlighting their perspectives and contributions. Answers must reference their cultural background and settlement context.&quot;,&quot;sample&quot;:&quot;The Texicans played a significant role in early Texas history by engaging in political and military actions during the Texas Revolution. They were influenced by their mixed cultural heritage and often acted as intermediaries between indigenous peoples, Anglo settlers, and Mexican authorities.&quot;,&quot;accept&quot;:[&quot;Texicans were active in political and military events during early Texas history&quot;,&quot;They participated in the Texas Revolution and the transition from Spanish to Mexican rule&quot;,&quot;Their mixed cultural background influenced their role and perspectives&quot;,&quot;Texicans lived on the Texas frontier and contributed to its settlement and defense&quot;]}]\" data-pop=\"1\"></div></div>",
     "paper": {
       "secnum": "Deep Dive 21",
       "h": "Deep dive: Walk through a worked example",
@@ -706,7 +648,7 @@ window.SLIDES = [
       "h": "Deep dive: Try it in context",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Try it in context connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from everything-everywhere.com. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Apply the lesson to the terminal outcome: Identify who the Texicans were and describe their cultural background</li><li>Require learners to cite what information they used.</li><li>Ask what extra source would make the answer stronger.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Try it in context\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Try it in context\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> everything-everywhere.com <sup class=\"cite\" data-src=\"s7\">[7]</sup></p>"
     },
-    "poll": "poll2"
+    "poll": "poll2-texicans-role"
   },
   {
     "id": "advanced-extension-25",
@@ -740,7 +682,7 @@ window.SLIDES = [
       "h": "Deep dive: Move from class to practice",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Move from class to practice connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from libguides.tamusa.edu. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Name where learners will use this skill next.</li><li>Ask what they should check before acting alone.</li><li>Tie the answer back to the source and objective.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Move from class to practice\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Move from class to practice\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> libguides.tamusa.edu <sup class=\"cite\" data-src=\"s10\">[10]</sup></p>"
     },
-    "words": "wordcloud3"
+    "words": "wordcloud3-historical-events"
   },
   {
     "id": "evidence-28",
@@ -801,7 +743,7 @@ window.SLIDES = [
     "id": "application-33",
     "eyebrow": "Application",
     "num": "33",
-    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">33</span><span class=\"bar\"></span>Application</div><h2 class=\"head anim\">Try it in context</h2><ul><li>Apply the lesson to the terminal outcome: Identify who the Texicans were and describe their cultural background</li><li>Require learners to cite what information they used.</li><li>Ask what extra source would make the answer stronger.</li></ul><p class=\"lede anim\">Try it in context connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s16\">[16]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Try it in context\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Try it in context\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-application-33\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;What is the origin of the term &#39;Texican&#39;?&quot;,&quot;options&quot;:[&quot;A combination of &#39;Texas&#39; and &#39;Mexican&#39; reflecting cultural blending&quot;,&quot;A nickname given by Anglo settlers for all Texans&quot;,&quot;A Spanish word meaning &#39;frontier settler&#39;&quot;,&quot;An indigenous term for native Texans&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;The term &#39;Texican&#39; originated as a blend of &#39;Texas&#39; and &#39;Mexican&#39; to describe the culturally mixed population in early Texas.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Explain how the Texicans contributed to the political and military history of early Texas.&quot;,&quot;rubric&quot;:&quot;Response should include specific examples of Texican participation in the Texas Revolution and their roles in conflicts with Anglo settlers, supported by primary or secondary source evidence.&quot;,&quot;sample&quot;:&quot;Texicans played active roles in the Texas Revolution by fighting alongside Anglo settlers for independence from Mexico, serving as soldiers and leaders. They also navigated complex political loyalties, sometimes conflicting with Anglo settlers, reflecting their unique cultural identity.&quot;,&quot;accept&quot;:[&quot;Texicans fought in the Texas Revolution and held leadership roles&quot;,&quot;They were involved in political struggles during early Texas history&quot;,&quot;Texicans had a complex relationship with Anglo settlers during conflicts&quot;,&quot;They contributed both militarily and politically to Texas independence&quot;]}]\" data-pop=\"1\"></div></div>",
+    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">33</span><span class=\"bar\"></span>Application</div><h2 class=\"head anim\">Try it in context</h2><ul><li>Apply the lesson to the terminal outcome: Identify who the Texicans were and describe their cultural background</li><li>Require learners to cite what information they used.</li><li>Ask what extra source would make the answer stronger.</li></ul><p class=\"lede anim\">Try it in context connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s16\">[16]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Try it in context\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Try it in context\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-application-33\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which of the following best defines the term &#39;Texican&#39;?&quot;,&quot;options&quot;:[&quot;A Texan of Anglo-American descent&quot;,&quot;A historical group in Texas with Spanish, Mexican, and indigenous cultural influences&quot;,&quot;A recent immigrant to Texas from Mexico&quot;,&quot;A person born in Texas after it became a U.S. state&quot;],&quot;answer&quot;:1,&quot;why&quot;:&quot;The term &#39;Texican&#39; historically refers to people in Texas with mixed Spanish, Mexican, and indigenous heritage, distinguishing them from Anglo settlers or later Texans.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Explain the role of the Texicans in early Texas history, including their involvement in political and military events.&quot;,&quot;rubric&quot;:&quot;Response should describe Texicans&#39; active participation during the transition from Spanish to Mexican rule and the Texas Revolution, highlighting their perspectives and contributions. Answers must reference their cultural background and settlement context.&quot;,&quot;sample&quot;:&quot;The Texicans played a significant role in early Texas history by engaging in political and military actions during the Texas Revolution. They were influenced by their mixed cultural heritage and often acted as intermediaries between indigenous peoples, Anglo settlers, and Mexican authorities.&quot;,&quot;accept&quot;:[&quot;Texicans were active in political and military events during early Texas history&quot;,&quot;They participated in the Texas Revolution and the transition from Spanish to Mexican rule&quot;,&quot;Their mixed cultural background influenced their role and perspectives&quot;,&quot;Texicans lived on the Texas frontier and contributed to its settlement and defense&quot;]}]\" data-pop=\"1\"></div></div>",
     "paper": {
       "secnum": "Deep Dive 33",
       "h": "Deep dive: Try it in context",
@@ -818,7 +760,7 @@ window.SLIDES = [
       "h": "Deep dive: Add depth for experienced learners",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Add depth for experienced learners connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from guides.library.yale.edu. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Name a more nuanced version of the same decision.</li><li>Compare the ordinary case with a harder edge case.</li><li>Ask what additional evidence would change the answer.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Add depth for experienced learners\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Add depth for experienced learners\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> guides.library.yale.edu <sup class=\"cite\" data-src=\"s17\">[17]</sup></p>"
     },
-    "poll": "poll2"
+    "poll": "poll2-texicans-role"
   },
   {
     "id": "bernard-check-35",
@@ -852,7 +794,7 @@ window.SLIDES = [
       "h": "Deep dive: Source checkpoint: en.wikipedia.org",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Source checkpoint: en.wikipedia.org connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from en.wikipedia.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Review what this source can safely support.</li><li>Separate verified points from questions that need more evidence.</li><li>Flag any statistic, date, or disputed point for corroboration.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Source checkpoint: en.wikipedia.org\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Source checkpoint: en.wikipedia.org\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> en.wikipedia.org <sup class=\"cite\" data-src=\"s3\">[3]</sup></p>"
     },
-    "words": "wordcloud1"
+    "words": "wordcloud1-cultural-elements"
   },
   {
     "id": "concept-38",
@@ -930,13 +872,13 @@ window.SLIDES = [
       "h": "Deep dive: Ask Bernard before moving on",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Ask Bernard before moving on connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from libguides.tamusa.edu. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Pause for learner questions.</li><li>Use Bernard for a plain-language explanation or an alternate example.</li><li>Return to the slide when the class is ready to continue.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Ask Bernard before moving on\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Ask Bernard before moving on\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> libguides.tamusa.edu <sup class=\"cite\" data-src=\"s10\">[10]</sup></p>"
     },
-    "poll": "poll2"
+    "poll": "poll2-texicans-role"
   },
   {
     "id": "transfer-45",
     "eyebrow": "Transfer",
     "num": "45",
-    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">45</span><span class=\"bar\"></span>Transfer</div><h2 class=\"head anim\">Move from class to practice</h2><ul><li>Name where learners will use this skill next.</li><li>Ask what they should check before acting alone.</li><li>Tie the answer back to the source and objective.</li></ul><p class=\"lede anim\">Move from class to practice connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s11\">[11]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Move from class to practice\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Move from class to practice\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-transfer-45\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;What is the origin of the term &#39;Texican&#39;?&quot;,&quot;options&quot;:[&quot;A combination of &#39;Texas&#39; and &#39;Mexican&#39; reflecting cultural blending&quot;,&quot;A nickname given by Anglo settlers for all Texans&quot;,&quot;A Spanish word meaning &#39;frontier settler&#39;&quot;,&quot;An indigenous term for native Texans&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;The term &#39;Texican&#39; originated as a blend of &#39;Texas&#39; and &#39;Mexican&#39; to describe the culturally mixed population in early Texas.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Explain how the Texicans contributed to the political and military history of early Texas.&quot;,&quot;rubric&quot;:&quot;Response should include specific examples of Texican participation in the Texas Revolution and their roles in conflicts with Anglo settlers, supported by primary or secondary source evidence.&quot;,&quot;sample&quot;:&quot;Texicans played active roles in the Texas Revolution by fighting alongside Anglo settlers for independence from Mexico, serving as soldiers and leaders. They also navigated complex political loyalties, sometimes conflicting with Anglo settlers, reflecting their unique cultural identity.&quot;,&quot;accept&quot;:[&quot;Texicans fought in the Texas Revolution and held leadership roles&quot;,&quot;They were involved in political struggles during early Texas history&quot;,&quot;Texicans had a complex relationship with Anglo settlers during conflicts&quot;,&quot;They contributed both militarily and politically to Texas independence&quot;]}]\" data-pop=\"1\"></div></div>",
+    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">45</span><span class=\"bar\"></span>Transfer</div><h2 class=\"head anim\">Move from class to practice</h2><ul><li>Name where learners will use this skill next.</li><li>Ask what they should check before acting alone.</li><li>Tie the answer back to the source and objective.</li></ul><p class=\"lede anim\">Move from class to practice connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s11\">[11]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Move from class to practice\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Move from class to practice\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-transfer-45\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which of the following best defines the term &#39;Texican&#39;?&quot;,&quot;options&quot;:[&quot;A Texan of Anglo-American descent&quot;,&quot;A historical group in Texas with Spanish, Mexican, and indigenous cultural influences&quot;,&quot;A recent immigrant to Texas from Mexico&quot;,&quot;A person born in Texas after it became a U.S. state&quot;],&quot;answer&quot;:1,&quot;why&quot;:&quot;The term &#39;Texican&#39; historically refers to people in Texas with mixed Spanish, Mexican, and indigenous heritage, distinguishing them from Anglo settlers or later Texans.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Explain the role of the Texicans in early Texas history, including their involvement in political and military events.&quot;,&quot;rubric&quot;:&quot;Response should describe Texicans&#39; active participation during the transition from Spanish to Mexican rule and the Texas Revolution, highlighting their perspectives and contributions. Answers must reference their cultural background and settlement context.&quot;,&quot;sample&quot;:&quot;The Texicans played a significant role in early Texas history by engaging in political and military actions during the Texas Revolution. They were influenced by their mixed cultural heritage and often acted as intermediaries between indigenous peoples, Anglo settlers, and Mexican authorities.&quot;,&quot;accept&quot;:[&quot;Texicans were active in political and military events during early Texas history&quot;,&quot;They participated in the Texas Revolution and the transition from Spanish to Mexican rule&quot;,&quot;Their mixed cultural background influenced their role and perspectives&quot;,&quot;Texicans lived on the Texas frontier and contributed to its settlement and defense&quot;]}]\" data-pop=\"1\"></div></div>",
     "paper": {
       "secnum": "Deep Dive 45",
       "h": "Deep dive: Move from class to practice",
@@ -964,7 +906,7 @@ window.SLIDES = [
       "h": "Deep dive: Make the idea usable",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Make the idea usable connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from kwlibguides.lonestar.edu. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Connect this part of Introduction to the Texicans to the floor learner's starting point.</li><li>Translate the key idea into plain language: Discuss the settlement patterns and lifestyle of the Texicans</li><li>Ask learners to restate the idea before moving on.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Make the idea usable\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Make the idea usable\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> kwlibguides.lonestar.edu <sup class=\"cite\" data-src=\"s13\">[13]</sup></p>"
     },
-    "words": "wordcloud3"
+    "words": "wordcloud3-historical-events"
   },
   {
     "id": "guided-practice-48",
@@ -1042,7 +984,7 @@ window.SLIDES = [
       "h": "Deep dive: Move from class to practice",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Move from class to practice connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from en.wikipedia.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Name where learners will use this skill next.</li><li>Ask what they should check before acting alone.</li><li>Tie the answer back to the source and objective.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Move from class to practice\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Move from class to practice\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> en.wikipedia.org <sup class=\"cite\" data-src=\"s3\">[3]</sup></p>"
     },
-    "poll": "poll2"
+    "poll": "poll2-texicans-role"
   },
   {
     "id": "evidence-55",
@@ -1070,7 +1012,7 @@ window.SLIDES = [
     "id": "guided-practice-57",
     "eyebrow": "Guided Practice",
     "num": "57",
-    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">57</span><span class=\"bar\"></span>Guided Practice</div><h2 class=\"head anim\">Walk through a worked example</h2><ul><li>Start with a realistic learner scenario.</li><li>Model the first decision out loud.</li><li>Show where the source supports the decision.</li></ul><p class=\"lede anim\">Walk through a worked example connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s6\">[6]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Walk through a worked example\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Walk through a worked example\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-guided-practice-57\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;What is the origin of the term &#39;Texican&#39;?&quot;,&quot;options&quot;:[&quot;A combination of &#39;Texas&#39; and &#39;Mexican&#39; reflecting cultural blending&quot;,&quot;A nickname given by Anglo settlers for all Texans&quot;,&quot;A Spanish word meaning &#39;frontier settler&#39;&quot;,&quot;An indigenous term for native Texans&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;The term &#39;Texican&#39; originated as a blend of &#39;Texas&#39; and &#39;Mexican&#39; to describe the culturally mixed population in early Texas.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Explain how the Texicans contributed to the political and military history of early Texas.&quot;,&quot;rubric&quot;:&quot;Response should include specific examples of Texican participation in the Texas Revolution and their roles in conflicts with Anglo settlers, supported by primary or secondary source evidence.&quot;,&quot;sample&quot;:&quot;Texicans played active roles in the Texas Revolution by fighting alongside Anglo settlers for independence from Mexico, serving as soldiers and leaders. They also navigated complex political loyalties, sometimes conflicting with Anglo settlers, reflecting their unique cultural identity.&quot;,&quot;accept&quot;:[&quot;Texicans fought in the Texas Revolution and held leadership roles&quot;,&quot;They were involved in political struggles during early Texas history&quot;,&quot;Texicans had a complex relationship with Anglo settlers during conflicts&quot;,&quot;They contributed both militarily and politically to Texas independence&quot;]}]\" data-pop=\"1\"></div></div>",
+    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">57</span><span class=\"bar\"></span>Guided Practice</div><h2 class=\"head anim\">Walk through a worked example</h2><ul><li>Start with a realistic learner scenario.</li><li>Model the first decision out loud.</li><li>Show where the source supports the decision.</li></ul><p class=\"lede anim\">Walk through a worked example connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s6\">[6]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Walk through a worked example\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Walk through a worked example\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-guided-practice-57\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which of the following best defines the term &#39;Texican&#39;?&quot;,&quot;options&quot;:[&quot;A Texan of Anglo-American descent&quot;,&quot;A historical group in Texas with Spanish, Mexican, and indigenous cultural influences&quot;,&quot;A recent immigrant to Texas from Mexico&quot;,&quot;A person born in Texas after it became a U.S. state&quot;],&quot;answer&quot;:1,&quot;why&quot;:&quot;The term &#39;Texican&#39; historically refers to people in Texas with mixed Spanish, Mexican, and indigenous heritage, distinguishing them from Anglo settlers or later Texans.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Explain the role of the Texicans in early Texas history, including their involvement in political and military events.&quot;,&quot;rubric&quot;:&quot;Response should describe Texicans&#39; active participation during the transition from Spanish to Mexican rule and the Texas Revolution, highlighting their perspectives and contributions. Answers must reference their cultural background and settlement context.&quot;,&quot;sample&quot;:&quot;The Texicans played a significant role in early Texas history by engaging in political and military actions during the Texas Revolution. They were influenced by their mixed cultural heritage and often acted as intermediaries between indigenous peoples, Anglo settlers, and Mexican authorities.&quot;,&quot;accept&quot;:[&quot;Texicans were active in political and military events during early Texas history&quot;,&quot;They participated in the Texas Revolution and the transition from Spanish to Mexican rule&quot;,&quot;Their mixed cultural background influenced their role and perspectives&quot;,&quot;Texicans lived on the Texas frontier and contributed to its settlement and defense&quot;]}]\" data-pop=\"1\"></div></div>",
     "paper": {
       "secnum": "Deep Dive 57",
       "h": "Deep dive: Walk through a worked example",
@@ -1153,7 +1095,7 @@ window.SLIDES = [
       "h": "Deep dive: Source checkpoint: kwlibguides.lonestar.edu",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Source checkpoint: kwlibguides.lonestar.edu connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from kwlibguides.lonestar.edu. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Review what this source can safely support.</li><li>Separate verified points from questions that need more evidence.</li><li>Flag any statistic, date, or disputed point for corroboration.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Source checkpoint: kwlibguides.lonestar.edu\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Source checkpoint: kwlibguides.lonestar.edu\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> kwlibguides.lonestar.edu <sup class=\"cite\" data-src=\"s13\">[13]</sup></p>"
     },
-    "poll": "poll2"
+    "poll": "poll2-texicans-role"
   },
   {
     "id": "concept-65",
@@ -1187,7 +1129,7 @@ window.SLIDES = [
       "h": "Deep dive: Choose the next best move",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Choose the next best move connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from libguides.uta.edu. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Present two or three plausible choices.</li><li>Ask which choice best matches the objective.</li><li>Use the answer to correct misunderstandings before the next section.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Choose the next best move\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Choose the next best move\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> libguides.uta.edu <sup class=\"cite\" data-src=\"s16\">[16]</sup></p>"
     },
-    "words": "wordcloud3"
+    "words": "wordcloud3-historical-events"
   },
   {
     "id": "knowledge-base-works-cited",
@@ -1197,43 +1139,42 @@ window.SLIDES = [
   }
 ];
 window.POLLS = {
-  "poll1": {
-    "q": "Which cultural influences shaped the identity of the Texicans?",
-    "desc": "Select all that apply based on the course content about Texican cultural background.",
+  "poll1-texican-definition": {
+    "q": "What do you think the term 'Texican' refers to?",
+    "desc": "Share your initial understanding or assumptions about the term 'Texican' to help clarify its meaning.",
     "opts": [
-      "Spanish colonial",
-      "Mexican",
-      "Indigenous",
-      "Anglo-American",
-      "French"
+      "A person from Texas regardless of background",
+      "A Mexican living in Texas",
+      "A historical group with mixed Spanish, Mexican, and indigenous heritage in Texas",
+      "A Texan of Anglo-American descent"
     ]
   },
-  "poll2": {
-    "q": "What role did the Texicans play in early Texas history?",
-    "desc": "Choose the best description of Texican involvement in Texas historical events.",
+  "poll2-texicans-role": {
+    "q": "How do you think the Texicans influenced early Texas history?",
+    "desc": "Select the role you believe Texicans played during Texas' transition from Spanish to Mexican rule and the Texas Revolution.",
     "opts": [
       "They were passive observers",
-      "They participated politically and militarily",
-      "They only engaged in trade",
-      "They opposed all Anglo settlers"
+      "They actively participated in political and military events",
+      "They opposed Texas independence",
+      "They were primarily settlers with little political involvement"
     ]
   }
 };
 window.WORDS = {
-  "wordcloud1": {
-    "q": "What words come to mind when you think of the term 'Texican'?",
-    "desc": "Share your initial associations before we explore the term's origins and meanings."
+  "wordcloud1-cultural-elements": {
+    "q": "What cultural elements do you associate with the Texicans?",
+    "desc": "Contribute words or phrases that describe the cultural background and influences of the Texicans."
   },
-  "wordcloud2": {
-    "q": "What daily activities and lifestyle aspects do you associate with Texican settlements?",
-    "desc": "Reflect on the economic and social life of Texicans under Spanish and Mexican rule."
+  "wordcloud2-settlement-features": {
+    "q": "What features or aspects come to mind when thinking about Texican settlements and lifestyle?",
+    "desc": "Share terms related to where and how Texicans lived, their social customs, and economic activities."
   },
-  "wordcloud3": {
-    "q": "What cultural traits or traditions do you think were unique to the Texicans?",
-    "desc": "Consider the blend of influences shaping Texican identity."
+  "wordcloud3-historical-events": {
+    "q": "Which key historical events involving Texicans do you recall or consider important?",
+    "desc": "List events or moments that highlight the Texicans' role in early Texas history."
   },
-  "wordcloud4": {
-    "q": "What challenges or conflicts might Texicans have faced during the Texas Revolution?",
-    "desc": "Think about the political and military roles Texicans played."
+  "wordcloud4-primary-sources": {
+    "q": "What types of primary sources do you think are useful for studying the Texicans?",
+    "desc": "Suggest documents, artifacts, or records that could provide insights into Texican history."
   }
 };
