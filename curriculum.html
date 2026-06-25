@@ -107,6 +107,22 @@
   .brow-bar{flex:1;height:6px;background:var(--card2);border:1px solid var(--line);border-radius:999px;overflow:hidden;}
   .brow-bar > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--amber));transition:width .45s ease;}
   .brow-meta{font-family:var(--mono);font-size:11px;color:var(--dim);white-space:nowrap;}
+  .bstatus{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;margin:10px 0;font-size:13px;}
+  .bstatus .dot{width:9px;height:9px;border-radius:50%;flex:none;background:var(--dim);}
+  .bstatus .bmsg{flex:1;line-height:1.5;}
+  .bstatus .bact{flex:none;}
+  .bstatus[data-phase="working"]{border-color:var(--teal);}
+  .bstatus[data-phase="working"] .dot{background:var(--teal);animation:bpulse 1.1s ease-in-out infinite;}
+  .bstatus[data-phase="waiting"]{border-color:var(--amber);background:rgba(196,160,107,0.10);}
+  .bstatus[data-phase="waiting"] .dot{background:var(--amber);animation:bpulse 1.1s ease-in-out infinite;}
+  .bstatus[data-phase="done"]{border-color:var(--good);}
+  .bstatus[data-phase="done"] .dot{background:var(--good);}
+  .bstatus[data-phase="stopped"] .dot{background:var(--dim);}
+  .bstatus[data-phase="stuck"]{border-color:var(--warn);background:rgba(154,92,69,0.08);}
+  .bstatus[data-phase="stuck"] .dot{background:var(--warn);}
+  @keyframes bpulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.3;transform:scale(.7);}}
+  .brow.flagged{animation:rowpulse 1.5s ease-in-out infinite;border-radius:8px;}
+  @keyframes rowpulse{0%,100%{background:transparent;}50%{background:rgba(196,160,107,0.16);}}
   @keyframes sp{to{transform:rotate(360deg);}}
   @media (max-width:760px){
     .row,.row3{grid-template-columns:1fr;}
@@ -360,6 +376,7 @@
     }).join("");
     var html = "<div class='build'><div class='build-head'>Build classes <span class='hint'>\u00B7 in dependency order, one at a time</span></div>";
     html += "<div class='build-rows' id='buildRows'>"+rows+"</div>";
+    html = html.replace("<div class='build-rows'", "<div class='bstatus' id='buildStatus' data-phase='' style='display:none'><span class='dot'></span><span class='bmsg'></span></div><div class='build-rows'");
     if(coh.ok){
       html += "<button class='primary' id='buildAll' style='margin-top:8px'>Build all classes</button>";
     } else {
@@ -491,7 +508,9 @@
   function finishBuild(msg, warn){
     building = false;
     stopTick();
-    var ba=$("buildAll"); if(ba){ ba.disabled=false; ba.textContent="Build remaining classes"; }
+    flagRow(null);
+    setBuildButton("Build remaining classes", false);
+    setPhase(warn ? "stopped" : "done", esc(msg||""));
     if(msg) $("buildNote").innerHTML = warn ? ("<span class='warn'>"+esc(msg)+"</span>") : esc(msg);
   }
 
@@ -501,39 +520,66 @@
   function escalateFailures(slug, v){
     building = false;
     stopTick();
-    var ba=$("buildAll"); if(ba){ ba.disabled=false; ba.textContent="Build remaining classes"; }
+    setBuildButton("Build remaining classes", false);
     var built = (v && v.progress) ? v.progress.built : null;
     var total = (v && v.progress) ? v.progress.total : null;
     var last = failures[failures.length-1];
     var msg = "Bernard built everything it could"+(built!=null?(" ("+built+" of "+total+")"):"")+". "+
       failures.length+" class"+(failures.length===1?"":"es")+" couldn't finish after "+(MAX_RETRIES+1)+" attempts each"+
       (last && last.msg ? (" \u2014 last issue: "+last.msg) : "")+".";
-    var box = $("buildNote");
-    box.innerHTML = "<span class='warn'>"+esc(msg)+"</span> ";
-    var rb = document.createElement("button");
-    rb.className = "primary mini";
-    rb.textContent = "Try the "+failures.length+" again";
-    rb.onclick = function(){
-      failures.forEach(function(f){ attempts[f.slug] = 0; });
-      failures = [];
-      buildAll(slug);
-    };
-    box.appendChild(rb);
+    flagRow(failures[0] ? failures[0].slug : null);
+    setPhase("stuck", esc(msg), { label:"Try the "+failures.length+" again", fn:function(){ flagRow(null); buildAll(slug); } });
+    $("buildNote").innerHTML = "";
+  }
+
+  // ---- Macro build state: Working / Waiting-for-you / Done / Stopped / Stuck.
+  // Motion = alive; a still screen must never read as "working". Every state is
+  // visually distinct, and anything that needs the human links straight to it.
+  var slugTitles = {};
+  var runStart = 0;
+  var AVG_MIN = 2.5; // honest rough per-class estimate; /api/generate streams no progress
+  function titleOf(slug){ return slugTitles[slug] || slug; }
+  function setBuildButton(label, disabled){ var ba=$("buildAll"); if(!ba) return; ba.disabled=!!disabled; ba.textContent=label; }
+  function setPhase(phase, msg, action){
+    var el=$("buildStatus"); if(!el) return;
+    el.style.display="flex"; el.setAttribute("data-phase", phase);
+    el.querySelector(".bmsg").innerHTML = msg;
+    var old=el.querySelector(".bact"); if(old) old.remove();
+    if(action){ var b=document.createElement("button"); b.className="ghost mini bact"; b.textContent=action.label; b.onclick=action.fn; el.appendChild(b); }
+  }
+  function flagRow(slug){
+    Array.prototype.forEach.call(document.querySelectorAll(".brow.flagged"), function(r){ r.classList.remove("flagged"); });
+    if(slug){ var r=rowFor(slug); if(r) r.classList.add("flagged"); }
+  }
+  function scrollToRow(slug){ var r=rowFor(slug); if(r && r.scrollIntoView) r.scrollIntoView({behavior:"smooth", block:"center"}); }
+  function estLine(built, total){
+    var remaining=Math.max(0, total-built);
+    var elapsed=runStart ? Math.floor((Date.now()-runStart)/1000) : 0;
+    return "Building class "+Math.min(built+1,total)+" of "+total+
+      " \u00b7 ~"+Math.ceil(remaining*AVG_MIN)+" min left (est.) \u00b7 "+mmss(elapsed)+" elapsed";
   }
 
   function buildAll(slug){
     if(building) return;
     building = true;
     attempts = {}; failures = [];
-    var ba=$("buildAll"); if(ba){ ba.disabled=true; ba.textContent="Building\u2026"; }
-    $("buildNote").textContent = "Building in dependency order \u2014 a few minutes per class. Keep this tab open.";
+    runStart = Date.now();
+    setBuildButton("Building\u2026", true);
+    setPhase("working", "Starting the build \u2014 in dependency order, one class at a time.");
+    $("buildNote").textContent = "";
     step(slug);
   }
 
   function step(slug){
     getView(slug).then(function(v){
-      if(!v || !v.ok){ finishBuild("Couldn't read the curriculum state.", true); return; }
-      v.manifest.classes.forEach(function(c){ if(c.status!=="building") setRow(c.slug, c.status, {url:c.class_url}); });
+      if(!v || !v.ok){
+        building=false; stopTick();
+        setBuildButton("Build remaining classes", false);
+        setPhase("stuck", "Couldn't read the curriculum state \u2014 the service may have hiccuped. Your built classes are safe.",
+          {label:"Retry", fn:function(){ building=true; setBuildButton("Building\u2026", true); setPhase("working","Re-reading the curriculum state\u2026"); step(slug); }});
+        return;
+      }
+      v.manifest.classes.forEach(function(c){ slugTitles[c.slug]=c.title; if(c.status!=="building") setRow(c.slug, c.status, {url:c.class_url}); });
       renderBibliography(v);
       if(!v.next){
         if(v.progress.done) finishBuild("All "+v.progress.total+" classes built. \uD83C\uDF89");
@@ -541,8 +587,11 @@
         else finishBuild("No more classes can build automatically \u2014 some are blocked by a failed prerequisite.", true);
         return;
       }
+      flagRow(null);
+      setBuildButton("Building\u2026", true);
+      setPhase("working", esc(estLine(v.progress.built, v.progress.total)));
       setRow(v.next, "building");
-      $("buildNote").textContent = "Building \u2014 " + v.progress.built + " of " + v.progress.total + " complete\u2026";
+      $("buildNote").textContent = "";
       runOne(slug, v.next, v.next_brief, false);
     });
   }
@@ -553,10 +602,23 @@
         postStatus(slug, classSlug, "built", out.url, out.sources).then(function(){ setRow(classSlug, "built", {url:out.url}); step(slug); });
       } else if(out.kind==="review"){
         setRow(classSlug, "review", {
-          onProceed:function(){ setRow(classSlug,"building"); runOne(slug, classSlug, brief, true); },
-          onStop:function(){ finishBuild("Paused at \u201C"+classSlug+"\u201D \u2014 "+out.msg, true); }
+          onProceed:function(){
+            flagRow(null);
+            setBuildButton("Building\u2026", true);
+            setPhase("working", "Resuming \u2014 building \u201C"+esc(titleOf(classSlug))+"\u201D on your go-ahead.");
+            setRow(classSlug,"building");
+            runOne(slug, classSlug, brief, true);
+          },
+          onStop:function(){ flagRow(null); finishBuild("Stopped at \u201C"+titleOf(classSlug)+"\u201D \u2014 "+out.msg, true); }
         });
-        $("buildNote").innerHTML = "<span class='warn'>\u201C"+esc(classSlug)+"\u201D needs a decision \u2014 "+esc(out.msg)+". Build anyway, or stop.</span>";
+        flagRow(classSlug);
+        scrollToRow(classSlug);
+        setBuildButton("Paused \u2014 awaiting your decision", true);
+        setPhase("waiting",
+          "<strong>Paused \u2014 Bernard needs your decision on \u201C"+esc(titleOf(classSlug))+"\u201D.</strong> "+esc(out.msg)+
+          " Use <em>Build anyway</em> or <em>Stop</em> on the highlighted row.",
+          {label:"Go to it \u2193", fn:function(){ scrollToRow(classSlug); }});
+        $("buildNote").innerHTML = "";
         // loop stays paused until the row's Build anyway / Stop is used
       } else {
         // A stumble is almost always infra, not knowledge. Auto-retry a few
@@ -565,7 +627,8 @@
         var n = (attempts[classSlug] = (attempts[classSlug] || 0) + 1);
         if(n <= MAX_RETRIES){
           setRow(classSlug, "building");
-          $("buildNote").textContent = "\u201C"+classSlug+"\u201D hit a snag \u2014 Bernard is retrying (attempt "+(n+1)+" of "+(MAX_RETRIES+1)+")\u2026";
+          setPhase("working", "\u201C"+esc(titleOf(classSlug))+"\u201D hit a snag \u2014 Bernard is retrying (attempt "+(n+1)+" of "+(MAX_RETRIES+1)+")\u2026");
+          $("buildNote").textContent = "";
           setTimeout(function(){ runOne(slug, classSlug, brief, force); }, 1500 * n);
           return;
         }

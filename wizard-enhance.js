@@ -641,7 +641,12 @@
       if (payload.brief && payload.brief.class_tier) sealedKnowledgeBase._class_tier = payload.brief.class_tier;
       renderSealedState(payload, target);
     } catch (error) {
-      if (target) target.innerHTML = "<div class=\"notice kb-error\">" + esc(error.message || "Seal failed.") + "</div>";
+      if (target) {
+        target.innerHTML = "<div class=\"notice kb-error\">" + esc(error.message || "Seal failed.") + "</div>" +
+          "<div class=\"assist-actions\"><button type=\"button\" class=\"primary\" data-kb-seal-retry>Try sealing again</button></div>";
+        var sr = target.querySelector("[data-kb-seal-retry]");
+        if (sr) sr.addEventListener("click", function () { sealKnowledgeBaseDecision(decision, extra, target); });
+      }
     }
   }
 
