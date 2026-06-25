@@ -8,7 +8,7 @@
   "level": "introductory",
   "program_outcome": "This syllabus introduces learners to the Texas War of Independence, covering its causes, key political events, major battles, significant historical figures, and the aftermath, including the establishment of the Republic of Texas.",
   "created": "2026-06-25T14:52:43.696Z",
-  "updated": "2026-06-25T14:52:43.698Z",
+  "updated": "2026-06-25T15:09:28.724Z",
   "knowledge_core": {
     "shared": true,
     "sealed": false,
@@ -32,7 +32,7 @@
       "prerequisites": [],
       "assessment": "",
       "suggested_minutes": 45,
-      "status": "planned",
+      "status": "failed",
       "class_url": "",
       "sources": []
     },
