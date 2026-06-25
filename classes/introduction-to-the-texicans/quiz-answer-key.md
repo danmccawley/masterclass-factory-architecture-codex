@@ -1,12 +1,12 @@
 # Quiz Answer Key
 
 ## Question 1
-Which of the following best defines the term 'Texican' in its historical context?
-Answer: A person of Spanish or Mexican descent living in early Texas
-Why: Historically, 'Texican' refers to people of Spanish or Mexican heritage who lived in Texas before and during early statehood, distinguishing them from Anglo settlers.
+Which of the following best defines the term 'Texican'?
+Answer: A term referring to early settlers of Texas with Spanish and Mexican cultural roots
+Why: The term 'Texican' specifically refers to early Texas settlers of Spanish and Mexican heritage, reflecting their unique cultural identity.
 
 ## Question 2
-Explain how the cultural background of Texicans was shaped by Spanish, Mexican, and indigenous influences.
+Explain how the Texicans' cultural background influenced their role in the Texas Revolution.
 Answer: undefined
-Rubric: The answer should describe the blending of Spanish colonial traditions, Mexican governance and culture, and indigenous practices that together formed a unique Texican identity. It should mention examples such as language, religion, family structures, and customs.
-Sample: Texicans developed a unique culture influenced by Spanish colonial laws and Catholicism, Mexican political changes, and indigenous customs, resulting in a blended identity distinct from Anglo settlers.
+Rubric: Response should describe the Texicans' Spanish and Mexican heritage, their settlement in Spanish Texas, and how their cultural identity led to complex political loyalties during the Texas Revolution. The answer should mention their participation in key events and the contested nature of their allegiance.
+Sample: The Texicans, being of Spanish and Mexican descent, settled in Spanish Texas and developed a unique cultural identity blending indigenous and colonial influences. During the Texas Revolution, their loyalties were complex; some supported independence while others remained loyal to Mexico. Their cultural background influenced their participation in battles like the Alamo and shaped early Texas history.
