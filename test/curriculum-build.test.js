@@ -86,6 +86,88 @@ test("a dependent stays blocked while its prerequisite is failed", function () {
   assert.strictEqual(B.nextBuildable(m), "foundations");
 });
 
+group("readyBuildable (parallel-build superset of nextBuildable)");
+test("readyBuildable[0] always equals nextBuildable (invariant)", function () {
+  // diamond: foundations -> (a, b) -> capstone
+  let m = S.makeManifest({ classes: [
+    { title: "Foundations", order: 1, terminal: ["f"], prerequisites: [] },
+    { title: "Track A", order: 2, terminal: ["a"], prerequisites: ["foundations"] },
+    { title: "Track B", order: 3, terminal: ["b"], prerequisites: ["foundations"] },
+    { title: "Capstone", order: 4, terminal: ["c"], prerequisites: ["track-a", "track-b"] }
+  ] });
+  // walk the whole build, asserting the invariant at each step
+  for (let guard = 0; guard < 20; guard++) {
+    const ready = B.readyBuildable(m);
+    const next = B.nextBuildable(m);
+    if (next === null) { assert.strictEqual(ready.length, 0); break; }
+    assert.strictEqual(ready[0], next);
+    m = setStatus(m, next, "built");
+  }
+});
+test("multiple independent roots are all ready at once, in order", function () {
+  const m = S.makeManifest({ classes: [
+    { title: "One", order: 1, terminal: ["a"], prerequisites: [] },
+    { title: "Two", order: 2, terminal: ["b"], prerequisites: [] },
+    { title: "Three", order: 3, terminal: ["c"], prerequisites: [] }
+  ] });
+  assert.deepStrictEqual(B.readyBuildable(m), ["one", "two", "three"]);
+});
+test("a diamond exposes both middle tracks together once the root is built", function () {
+  let m = S.makeManifest({ classes: [
+    { title: "Foundations", order: 1, terminal: ["f"], prerequisites: [] },
+    { title: "Track A", order: 2, terminal: ["a"], prerequisites: ["foundations"] },
+    { title: "Track B", order: 3, terminal: ["b"], prerequisites: ["foundations"] },
+    { title: "Capstone", order: 4, terminal: ["c"], prerequisites: ["track-a", "track-b"] }
+  ] });
+  assert.deepStrictEqual(B.readyBuildable(m), ["foundations"]); // only the root at first
+  m = setStatus(m, "foundations", "built");
+  assert.deepStrictEqual(B.readyBuildable(m), ["track-a", "track-b"]); // both middles now parallel
+  assert.strictEqual(B.readyBuildable(m).indexOf("capstone"), -1);     // capstone still blocked
+  m = setStatus(m, "track-a", "built");
+  assert.deepStrictEqual(B.readyBuildable(m), ["track-b"]);            // capstone still needs track-b
+  m = setStatus(m, "track-b", "built");
+  assert.deepStrictEqual(B.readyBuildable(m), ["capstone"]);
+});
+test("a class in flight (building) does not appear as ready", function () {
+  let m = S.makeManifest({ classes: [
+    { title: "One", order: 1, terminal: ["a"], prerequisites: [] },
+    { title: "Two", order: 2, terminal: ["b"], prerequisites: [] }
+  ] });
+  m = setStatus(m, "one", "building"); // a worker already owns it
+  assert.deepStrictEqual(B.readyBuildable(m), ["two"]); // only the un-started one is offered
+});
+test("empty when everything is built (matches nextBuildable === null)", function () {
+  let m = S.makeManifest({ classes: [
+    { title: "One", order: 1, terminal: ["a"], prerequisites: [] },
+    { title: "Two", order: 2, terminal: ["b"], prerequisites: [] }
+  ] });
+  m = setStatus(m, "one", "built");
+  m = setStatus(m, "two", "built");
+  assert.deepStrictEqual(B.readyBuildable(m), []);
+  assert.strictEqual(B.nextBuildable(m), null);
+});
+test("failed classes are offered again (retry) alongside other ready ones", function () {
+  let m = S.makeManifest({ classes: [
+    { title: "One", order: 1, terminal: ["a"], prerequisites: [] },
+    { title: "Two", order: 2, terminal: ["b"], prerequisites: [] }
+  ] });
+  m = setStatus(m, "one", "failed");
+  assert.deepStrictEqual(B.readyBuildable(m), ["one", "two"]);
+});
+test("a cycle never appears as ready (blocked, surfaced to the human — no dead-end loop)", function () {
+  const m = S.makeManifest({ classes: [
+    { title: "A", order: 1, terminal: ["a"], prerequisites: ["b"] },
+    { title: "B", order: 2, terminal: ["b"], prerequisites: ["a"] }
+  ] });
+  // neither can be built (each needs the other); readyBuildable is empty
+  assert.deepStrictEqual(B.readyBuildable(m), []);
+  assert.strictEqual(B.nextBuildable(m), null);
+});
+test("empty manifest yields an empty ready list", function () {
+  const m = S.makeManifest({ classes: [] });
+  assert.deepStrictEqual(B.readyBuildable(m), []);
+});
+
 group("briefForClass (full brief synthesis)");
 test("synthesizes a contract-valid brief from a class", function () {
   var BV = require("../brief-validator.js");

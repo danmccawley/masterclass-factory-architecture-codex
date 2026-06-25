@@ -82,6 +82,32 @@ function nextBuildable(manifest) {
   return null;
 }
 
+/* Pure: EVERY class that can be built right now — planned/failed, with every
+   prerequisite already built — returned in dependency/order order. This is the
+   parallel-build superset of nextBuildable: readyBuildable(m)[0] === nextBuildable(m),
+   and readyBuildable(m).length === 0 exactly when nextBuildable(m) === null.
+   The client scheduler fills its worker slots from this list; because readiness
+   is recomputed server-side from the manifest, two returned slugs are always
+   safe to build concurrently (neither depends on the other, nor on anything
+   still unbuilt). */
+function readyBuildable(manifest) {
+  var classes = (manifest && manifest.classes) || [];
+  var bySlug = {};
+  classes.forEach(function (c) { bySlug[c.slug] = c; });
+  var order = buildOrder(manifest);
+  var ready = [];
+  for (var i = 0; i < order.length; i++) {
+    var c = bySlug[order[i]];
+    if (!c) continue;
+    if (c.status !== "planned" && c.status !== "failed") continue;
+    var prereqsBuilt = (c.prerequisites || []).every(function (p) {
+      return !bySlug[p] || bySlug[p].status === "built";
+    });
+    if (prereqsBuilt) ready.push(c.slug);
+  }
+  return ready;
+}
+
 /* Pure: synthesize a FULL, contract-valid brief for one class by merging the
    brief template defaults with curriculum-level and class-level data. This is
    what the build loop sends to /api/generate. Template is injectable for tests. */
@@ -239,5 +265,6 @@ module.exports = async function curriculumBuildHandler(req, res) {
 
 module.exports.buildOrder = buildOrder;
 module.exports.nextBuildable = nextBuildable;
+module.exports.readyBuildable = readyBuildable;
 module.exports.briefForClass = briefForClass;
-module.exports._internal = { buildOrder: buildOrder, nextBuildable: nextBuildable, briefForClass: briefForClass };
+module.exports._internal = { buildOrder: buildOrder, nextBuildable: nextBuildable, readyBuildable: readyBuildable, briefForClass: briefForClass };
