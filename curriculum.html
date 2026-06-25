@@ -103,6 +103,10 @@
   .brow .cu:hover{text-decoration:underline;}
   .brow .mini{font-size:12px;padding:5px 11px;}
   .spin{display:inline-block;width:11px;height:11px;border:2px solid var(--line);border-top-color:var(--teal);border-radius:50%;animation:sp .7s linear infinite;vertical-align:-1px;margin-right:5px;}
+  .brow-progress{flex-basis:100%;display:flex;align-items:center;gap:10px;margin:2px 0;}
+  .brow-bar{flex:1;height:6px;background:var(--card2);border:1px solid var(--line);border-radius:999px;overflow:hidden;}
+  .brow-bar > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--amber));transition:width .45s ease;}
+  .brow-meta{font-family:var(--mono);font-size:11px;color:var(--dim);white-space:nowrap;}
   @keyframes sp{to{transform:rotate(360deg);}}
   @media (max-width:760px){
     .row,.row3{grid-template-columns:1fr;}
@@ -368,6 +372,37 @@
 
   function rowFor(slug){ return document.querySelector(".brow[data-slug=\""+slug+"\"]"); }
 
+  // Live per-class readiness ticker. /api/generate is one long request with no
+  // progress signal, so this is an honest client-side estimate — an elapsed
+  // clock, an asymptotic creep that never claims completion until the response
+  // lands, and a stage caption that advances on typical build timing.
+  var tick = { id:null, slug:null, start:0 };
+  var BUILD_STAGES = [
+    [0,   "Checking the brief"],
+    [5,   "Researching \u0026 verifying sources"],
+    [40,  "Designing the deck"],
+    [75,  "Writing \u0026 grounding the slides"],
+    [140, "Finalizing \u0026 publishing"]
+  ];
+  function mmss(s){ var m=Math.floor(s/60), r=s%60; return m+":"+(r<10?"0":"")+r; }
+  function stopTick(){ if(tick.id){ clearInterval(tick.id); tick.id=null; } tick.slug=null; }
+  function startTick(slug){
+    if(tick.slug===slug && tick.id) return;
+    if(tick.id) clearInterval(tick.id);
+    tick.slug=slug; tick.start=Date.now();
+    tick.id=setInterval(paintTick, 300); paintTick();
+  }
+  function paintTick(){
+    if(!tick.slug) return;
+    var row=rowFor(tick.slug); if(!row) return;
+    var secs=Math.floor((Date.now()-tick.start)/1000);
+    var pct=Math.min(96, 100*(1-Math.exp(-secs/75)));
+    var stage=BUILD_STAGES[0][1];
+    for(var i=0;i<BUILD_STAGES.length;i++){ if(secs>=BUILD_STAGES[i][0]) stage=BUILD_STAGES[i][1]; }
+    var bar=row.querySelector(".brow-bar > i"); if(bar) bar.style.width=pct.toFixed(1)+"%";
+    var meta=row.querySelector(".brow-meta"); if(meta) meta.textContent=stage+" \u00b7 "+mmss(secs);
+  }
+
   // The shared knowledge core, made visible: every source Bernard verified while
   // building, deduped across classes, with who cites it. Refreshes as classes build.
   function renderBibliography(v){
@@ -402,6 +437,17 @@
     badge.setAttribute("data-state", (st==="review"?"failed":st));
     badge.innerHTML = st==="building" ? "<span class='spin'></span>building" : (st==="review" ? "needs review" : esc(st));
     Array.prototype.slice.call(row.querySelectorAll(".mini,.cu.added")).forEach(function(e){ e.remove(); });
+    if(st==="building"){
+      startTick(slug);
+      if(!row.querySelector(".brow-progress")){
+        var pg=document.createElement("div"); pg.className="brow-progress";
+        pg.innerHTML="<span class='brow-bar'><i></i></span><span class='brow-meta'></span>";
+        row.appendChild(pg);
+      }
+    } else {
+      if(tick.slug===slug) stopTick();
+      var ex=row.querySelector(".brow-progress"); if(ex) ex.remove();
+    }
     if(st==="built" && opts.url){
       var a=document.createElement("a"); a.className="cu added"; a.href=opts.url; a.target="_blank"; a.rel="noopener"; a.textContent="view \u2192"; row.appendChild(a);
     }
@@ -444,6 +490,7 @@
 
   function finishBuild(msg, warn){
     building = false;
+    stopTick();
     var ba=$("buildAll"); if(ba){ ba.disabled=false; ba.textContent="Build remaining classes"; }
     if(msg) $("buildNote").innerHTML = warn ? ("<span class='warn'>"+esc(msg)+"</span>") : esc(msg);
   }
@@ -453,6 +500,7 @@
   // and offer one click to try the stragglers again — never a silent dead-end.
   function escalateFailures(slug, v){
     building = false;
+    stopTick();
     var ba=$("buildAll"); if(ba){ ba.disabled=false; ba.textContent="Build remaining classes"; }
     var built = (v && v.progress) ? v.progress.built : null;
     var total = (v && v.progress) ? v.progress.total : null;
@@ -494,6 +542,7 @@
         return;
       }
       setRow(v.next, "building");
+      $("buildNote").textContent = "Building \u2014 " + v.progress.built + " of " + v.progress.total + " complete\u2026";
       runOne(slug, v.next, v.next_brief, false);
     });
   }
