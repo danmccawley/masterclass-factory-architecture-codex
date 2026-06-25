@@ -1,7 +1,7 @@
 {
   "title": "Introduction to the Texicans",
   "slug": "introduction-to-the-texicans",
-  "generated_at": "2026-06-25T16:06:47.316Z",
+  "generated_at": "2026-06-25T16:08:47.706Z",
   "class_tier": {
     "level": "standard",
     "label": "Standard class",
@@ -399,7 +399,7 @@
   "evidence_map": [
     {
       "kind": "terminal objective",
-      "claim": "Identify who the Texicans were and their significance in Texas history",
+      "claim": "Identify who the Texicans were and describe their cultural background, including their historical role in early Texas history.",
       "source_ids": [
         "s1",
         "s2",
@@ -415,7 +415,7 @@
     },
     {
       "kind": "enabling objective",
-      "claim": "Define the term 'Texicans' with historical context and clarify distinctions from 'Texians' and 'Texans'",
+      "claim": "Define the term 'Texican' and explain its origins and distinctions from related terms such as 'Texan' and 'Texonian'.",
       "source_ids": [
         "s2",
         "s3",
@@ -431,7 +431,7 @@
     },
     {
       "kind": "enabling objective",
-      "claim": "Describe the origins and early settlement patterns of the Texicans in Spanish Texas",
+      "claim": "Discuss the settlement patterns, geographic locations, and lifestyle characteristics of the Texicans during the early 19th century.",
       "source_ids": [
         "s3",
         "s4"
@@ -445,7 +445,7 @@
     },
     {
       "kind": "enabling objective",
-      "claim": "Explain the socio-political context of the Texicans during the Mexican War of Independence and Texas Revolution, including their interactions with Mexican authorities and Anglo settlers",
+      "claim": "Explain the role of the Texicans in the Texas Revolution and early statehood, highlighting their cultural and political challenges amid Anglo-American settlement.",
       "source_ids": [
         "s4"
       ],
@@ -457,67 +457,7 @@
     },
     {
       "kind": "lesson section",
-      "claim": "Introduction to Texas and Early Inhabitants",
-      "source_ids": [
-        "s3",
-        "s4",
-        "s7",
-        "s9"
-      ],
-      "source_titles": [
-        "en.wikipedia.org",
-        "kids.nationalgeographic.com",
-        "everything-everywhere.com",
-        "thestoryoftexas.com"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "lesson section",
-      "claim": "Defining the Texicans: Identity and Terminology",
-      "source_ids": [
-        "s2",
-        "s6"
-      ],
-      "source_titles": [
-        "jinxschwartz.com",
-        "facebook.com"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "lesson section",
-      "claim": "Origins and Settlement of the Texicans",
-      "source_ids": [
-        "s2"
-      ],
-      "source_titles": [
-        "jinxschwartz.com"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "lesson section",
-      "claim": "Socio-Political Context: Texicans in Mexican Texas",
-      "source_ids": [
-        "s2",
-        "s7",
-        "s9"
-      ],
-      "source_titles": [
-        "jinxschwartz.com",
-        "everything-everywhere.com",
-        "thestoryoftexas.com"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "lesson section",
-      "claim": "Texicans and Anglo Settlers: Cultural and Political Tensions",
+      "claim": "Understanding the Term 'Texican'",
       "source_ids": [
         "s2",
         "s6",
@@ -533,7 +473,75 @@
     },
     {
       "kind": "lesson section",
-      "claim": "Primary Sources and Research Methods on Texican History",
+      "claim": "Settlement Patterns and Lifestyle of the Texicans",
+      "source_ids": [
+        "s7",
+        "s9",
+        "s2"
+      ],
+      "source_titles": [
+        "everything-everywhere.com",
+        "thestoryoftexas.com",
+        "jinxschwartz.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Texicans in Early Texas History and the Texas Revolution",
+      "source_ids": [
+        "s2",
+        "s7",
+        "s8",
+        "s9"
+      ],
+      "source_titles": [
+        "jinxschwartz.com",
+        "everything-everywhere.com",
+        "britannica.com",
+        "thestoryoftexas.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Cultural Background and Identity of the Texicans",
+      "source_ids": [
+        "s2",
+        "s7",
+        "s9"
+      ],
+      "source_titles": [
+        "jinxschwartz.com",
+        "everything-everywhere.com",
+        "thestoryoftexas.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Contested Narratives and Field Disagreements about the Texicans",
+      "source_ids": [
+        "s2",
+        "s6",
+        "s7",
+        "s8"
+      ],
+      "source_titles": [
+        "jinxschwartz.com",
+        "facebook.com",
+        "everything-everywhere.com",
+        "britannica.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Using Primary Sources to Study the Texicans",
       "source_ids": [
         "s10",
         "s11",
@@ -551,7 +559,7 @@
     },
     {
       "kind": "lesson section",
-      "claim": "Summary and Significance of the Texicans in Texas History",
+      "claim": "Synthesizing Texican History and Identity",
       "source_ids": [
         "s2",
         "s7",
