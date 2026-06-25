@@ -1,6 +1,6 @@
 # Facilitator Guide: Introduction to the Texicans
 
-Quality score at build: 96 / 100 (excellent)
+Quality score at build: 95 / 100 (excellent)
 Class tier: Standard class
 
 ## How to Run This Class

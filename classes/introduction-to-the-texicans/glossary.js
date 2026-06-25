@@ -1,36 +1,36 @@
 /* Generated glossary. term -> {d, r}. */
 window.GLOSSARY = {
   "texican": {
-    "d": "A historical term referring to early settlers of Texas with Spanish and Mexican heritage, distinct from later Anglo-American settlers.",
-    "r": "Understanding who the Texicans were is essential to grasp the cultural and historical foundations of Texas, especially their role in shaping its identity and independence."
+    "d": "An early settler of Spanish Texas whose identity blends Mexican and Texan cultural elements, distinct from later Anglo-American settlers. The term reflects the complex colonial and revolutionary history of the region.",
+    "r": "Understanding 'Texican' clarifies the unique cultural and historical identity of early Texas inhabitants, avoiding confusion with Anglo settlers and highlighting their role in Texas history."
+  },
+  "texan": {
+    "d": "A general term for residents of Texas, often associated with Anglo-American settlers who arrived after Mexican independence, differing culturally and historically from Texicans.",
+    "r": "Distinguishing 'Texan' from 'Texican' helps learners recognize shifts in population and culture in Texas history."
+  },
+  "texian": {
+    "d": "A historical term used primarily during the Texas Revolution to describe Anglo-American settlers and soldiers fighting for Texas independence from Mexico.",
+    "r": "Knowing 'Texian' aids in understanding the political and military context of Texas independence and differentiates groups involved."
   },
   "texas revolution": {
-    "d": "A conflict from 1835 to 1836 in which Texicans and Anglo settlers fought against Mexican rule to establish the Republic of Texas.",
-    "r": "The Texas Revolution was a pivotal event involving Texicans that influenced Texas' political status and cultural development."
+    "d": "The 1835-1836 conflict in which Texicans, Texians, and others fought to gain independence from Mexican rule, leading to the creation of the Republic of Texas.",
+    "r": "The Texas Revolution is central to Texican history, illustrating their political allegiances and participation in shaping Texas."
   },
-  "spanish colonial heritage": {
-    "d": "The cultural, legal, and social influences inherited from Spain’s colonization of Texas before Mexican independence.",
-    "r": "This heritage shaped Texican lifestyle, traditions, and settlement patterns, distinguishing them from Anglo settlers."
-  },
-  "mexican governance": {
-    "d": "The period when Texas was governed as part of Mexico after its independence from Spain, influencing Texican political and social life.",
-    "r": "Texicans lived under Mexican laws and policies, which affected their alliances and conflicts during Texas’ early history."
-  },
-  "settlement patterns": {
-    "d": "The geographic distribution and community organization of Texicans, primarily along the Texas-Mexico border engaging in ranching and farming.",
-    "r": "Knowing where and how Texicans lived helps explain their economic activities and cultural interactions."
+  "frontier life": {
+    "d": "The challenging lifestyle of settlers living in sparsely populated, undeveloped areas involving ranching, farming, and navigating cultural and political tensions.",
+    "r": "Understanding frontier life provides context for Texican settlement patterns and daily experiences."
   },
   "primary sources": {
-    "d": "Original documents, letters, newspapers, and artifacts from the time of the Texicans that provide firsthand historical evidence.",
-    "r": "Primary sources are crucial for studying Texican history accurately and understanding their cultural background."
+    "d": "Original historical documents such as letters, legal records, and newspapers that offer firsthand accounts of Texican history and culture.",
+    "r": "Primary sources enable authentic study and interpretation of Texican experiences and perspectives."
   },
-  "anglo-american settlers": {
-    "d": "Later settlers of Texas primarily from the United States who had different cultural backgrounds and often conflicting interests with Texicans.",
-    "r": "Their interactions and conflicts with Texicans shaped Texas’ social and political landscape."
+  "cultural allegiances": {
+    "d": "The complex loyalties Texicans held between Mexico and the emerging Texan independence movement, influenced by their bicultural identity.",
+    "r": "Recognizing these allegiances explains Texican roles in political and military events during early Texas history."
   },
-  "contested perspectives": {
-    "d": "Differing and sometimes conflicting interpretations about Texican identity, history, and legacy within Texas historiography.",
-    "r": "Recognizing these debates is important for a balanced understanding of Texas history and the role of Texicans."
+  "settlement patterns": {
+    "d": "The geographic and social distribution of Texican communities, primarily in frontier areas engaging in ranching and farming.",
+    "r": "Settlement patterns reveal how Texicans adapted to and shaped the Texas frontier environment."
   },
   "terminal learning objective": {
     "d": "The main capability learners should demonstrate by the end of the class.",

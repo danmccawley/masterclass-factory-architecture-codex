@@ -1,12 +1,12 @@
 # Quiz Answer Key
 
 ## Question 1
-Which of the following best describes the origins of the term 'Texican'?
-Answer: It originated from a blend of Mexican and Texan cultural identities during early Texas history
-Why: The term 'Texican' historically refers to people of mixed Mexican and Texan heritage, reflecting cultural blending in early Texas.
+Which statement correctly distinguishes 'Texican' from 'Texian' and 'Texan'?
+Answer: 'Texican' refers to early Spanish-speaking settlers; 'Texian' was used for Anglo settlers during the Texas Revolution; 'Texan' is the modern term for all residents of Texas.
+Why: This option accurately reflects historical usage and distinctions among the terms as taught.
 
 ## Question 2
-Explain the role of the Texicans in the Texas Revolution and their interactions with Anglo settlers and Mexican authorities.
+Explain the role of Texicans in the Texas Revolution and how their political allegiances were complex.
 Answer: undefined
-Rubric: A complete answer should describe Texicans' active participation in the Texas Revolution, their complex loyalties, and how they navigated relationships with both Anglo settlers and Mexican authorities. Partial credit for mentioning involvement in key events or cultural mediation.
-Sample: Texicans played a significant role in the Texas Revolution by supporting independence efforts while maintaining cultural ties to Mexico. They often acted as intermediaries between Anglo settlers and Mexican authorities, reflecting their unique position in early Texas society.
+Rubric: A complete answer should describe Texican participation in military and political events, mention their cultural background, and discuss their divided loyalties between Mexico and Texas independence.
+Sample: Texicans, as Spanish-speaking settlers, played key roles in battles and political movements during the Texas Revolution. Their allegiances were complex because many identified culturally with Mexico but also supported Texas independence due to local interests.
