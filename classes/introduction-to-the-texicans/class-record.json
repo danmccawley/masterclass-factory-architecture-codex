@@ -1,7 +1,7 @@
 {
   "title": "Introduction to the Texicans",
   "slug": "introduction-to-the-texicans",
-  "generated_at": "2026-06-25T16:52:37.842Z",
+  "generated_at": "2026-06-25T16:56:35.300Z",
   "class_tier": {
     "level": "standard",
     "label": "Standard class",
@@ -57,50 +57,45 @@
         "trust": "secondary"
       },
       {
-        "path": "https://libguides.fau.edu/primary-sources-american-west/texas",
-        "type": "certification training",
+        "path": "https://www.oercommons.org/courseware/8453",
+        "type": "url",
+        "trust": "secondary"
+      },
+      {
+        "path": "https://www.texaspsp.org/tasks/we-are-texans",
+        "type": "url",
+        "trust": "secondary"
+      },
+      {
+        "path": "https://shsulibraryguides.org/c.php?g=86894&p=594545",
+        "type": "url",
+        "trust": "secondary"
+      },
+      {
+        "path": "https://www.gilderlehrman.org/history-resources/spotlight-primary-source/texas-declaration-independence-1836",
+        "type": "url",
+        "trust": "secondary"
+      },
+      {
+        "path": "https://tea.texas.gov/curriculum-and-instruction/texas-essential-knowledge-and-skills-teks",
+        "type": "standard",
         "trust": "primary"
       },
       {
-        "path": "https://kwlibguides.lonestar.edu/PrimarySources-History/texas",
-        "type": "certification training",
-        "trust": "primary"
+        "path": "https://www.tshaonline.org/handbook/entries/republic-of-texas",
+        "type": "url",
+        "trust": "secondary"
       },
       {
-        "path": "https://shsulibraryguides.org/txprimary",
-        "type": "data",
-        "trust": "primary"
-      },
-      {
-        "path": "https://libguides.tamusa.edu/c.php?g=794236&p=5679601",
-        "type": "certification training",
-        "trust": "primary"
-      },
-      {
-        "path": "https://guides.library.yale.edu/c.php?g=295904&p=8723537",
-        "type": "certification training",
-        "trust": "primary"
-      },
-      {
-        "path": "https://guides.lib.berkeley.edu/cs/primary",
-        "type": "certification training",
-        "trust": "primary"
-      },
-      {
-        "path": "http://www.tsl.texas.gov/ref/republicoftexasresources",
+        "path": "https://www.archives.gov/education/lessons/guadalupe-hidalgo",
         "type": "standard",
         "trust": "primary"
       }
     ],
-    "rejected_sources": [
-      {
-        "path": "https://legacy.education.texashistory.unt.edu/lessons/primary%20source%20sets/index.html",
-        "reason": "This operation was aborted"
-      }
-    ],
+    "rejected_sources": [],
     "gaps": [],
     "notes": [
-      "Round 1: Bernard found 24 new candidates and checked 16 URLs for readability."
+      "Round 1: Bernard found 15 new candidates and checked 15 URLs for readability."
     ],
     "rounds": 1
   },
@@ -118,16 +113,16 @@
     },
     "counts": {
       "total": 15,
-      "primary": 7,
-      "secondary": 8,
+      "primary": 2,
+      "secondary": 13,
       "unknown": 0
     },
     "score": {
-      "score": 89,
+      "score": 85,
       "band": "excellent",
       "components": {
         "coverage": 100,
-        "authority": 79,
+        "authority": 65,
         "recency": 75
       },
       "weights": {
@@ -137,14 +132,14 @@
       },
       "detail": {
         "total": 15,
-        "primary": 7,
-        "secondary": 8,
+        "primary": 2,
+        "secondary": 13,
         "required_total": 8,
         "required_primary": 2,
         "dated_sources": 0,
         "recency_floor_year": 2024
       },
-      "summary": "Knowledge-base score 89/100 (excellent): coverage 100, authority 79, recency 75. 15/8 sources, 7/2 primary."
+      "summary": "Knowledge-base score 85/100 (excellent): coverage 100, authority 65, recency 75. 15/8 sources, 2/2 primary."
     },
     "required_sources": 8,
     "required_primary_sources": 2,
@@ -159,7 +154,7 @@
   "deep_dive_count": 67,
   "required_deep_dive_count": 67,
   "quality": {
-    "score": 96,
+    "score": 97,
     "status": "excellent",
     "scores": {
       "slide_budget": 100,
@@ -170,7 +165,7 @@
       "objective_alignment": 83,
       "content_density": 100,
       "deep_dive_depth": 100,
-      "participation_design": 76,
+      "participation_design": 79,
       "assessment": 90,
       "transparency": 100,
       "schema_qa": 100
@@ -256,12 +251,12 @@
       {
         "id": "s10",
         "num": "10",
-        "title": "libguides.fau.edu"
+        "title": "oercommons.org"
       },
       {
         "id": "s11",
         "num": "11",
-        "title": "kwlibguides.lonestar.edu"
+        "title": "texaspsp.org"
       },
       {
         "id": "s12",
@@ -271,22 +266,22 @@
       {
         "id": "s13",
         "num": "13",
-        "title": "libguides.tamusa.edu"
+        "title": "gilderlehrman.org"
       },
       {
         "id": "s14",
         "num": "14",
-        "title": "guides.library.yale.edu"
+        "title": "tea.texas.gov"
       },
       {
         "id": "s15",
         "num": "15",
-        "title": "guides.lib.berkeley.edu"
+        "title": "tshaonline.org"
       },
       {
         "id": "s16",
         "num": "16",
-        "title": "tsl.texas.gov"
+        "title": "archives.gov"
       }
     ]
   },
@@ -308,16 +303,16 @@
       },
       "counts": {
         "total": 15,
-        "primary": 7,
-        "secondary": 8,
+        "primary": 2,
+        "secondary": 13,
         "unknown": 0
       },
       "score": {
-        "score": 89,
+        "score": 85,
         "band": "excellent",
         "components": {
           "coverage": 100,
-          "authority": 79,
+          "authority": 65,
           "recency": 75
         },
         "weights": {
@@ -327,14 +322,14 @@
         },
         "detail": {
           "total": 15,
-          "primary": 7,
-          "secondary": 8,
+          "primary": 2,
+          "secondary": 13,
           "required_total": 8,
           "required_primary": 2,
           "dated_sources": 0,
           "recency_floor_year": 2024
         },
-        "summary": "Knowledge-base score 89/100 (excellent): coverage 100, authority 79, recency 75. 15/8 sources, 7/2 primary."
+        "summary": "Knowledge-base score 85/100 (excellent): coverage 100, authority 65, recency 75. 15/8 sources, 2/2 primary."
       },
       "required_sources": 8,
       "required_primary_sources": 2,
@@ -389,7 +384,7 @@
         "deep_dive_expectation": "substantive deep dives where required by tier and setting"
       }
     ],
-    "lesson_sections": 9
+    "lesson_sections": 6
   },
   "evidence_map": [
     {
@@ -454,29 +449,25 @@
       "kind": "lesson section",
       "claim": "Understanding the Term 'Texican'",
       "source_ids": [
-        "s3",
-        "s6",
-        "s7"
+        "s7",
+        "s2"
       ],
       "source_titles": [
-        "facebook.com",
-        "everything-everywhere.com",
-        "lauriemooremoore.com"
+        "lauriemooremoore.com",
+        "jinxschwartz.com"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "lesson section",
-      "claim": "Cultural Background of the Texicans",
+      "claim": "Settlement Patterns and Lifestyle of the Texicans",
       "source_ids": [
-        "s6",
         "s7",
         "s8",
         "s9"
       ],
       "source_titles": [
-        "everything-everywhere.com",
         "lauriemooremoore.com",
         "tshaonline.org",
         "thestoryoftexas.com"
@@ -486,12 +477,14 @@
     },
     {
       "kind": "lesson section",
-      "claim": "Settlement Patterns and Lifestyle",
+      "claim": "Cultural Background and Interactions",
       "source_ids": [
+        "s2",
         "s7",
         "s8"
       ],
       "source_titles": [
+        "jinxschwartz.com",
         "lauriemooremoore.com",
         "tshaonline.org"
       ],
@@ -500,96 +493,42 @@
     },
     {
       "kind": "lesson section",
-      "claim": "Texicans in Early Texas History",
+      "claim": "Texicans in Early Texas History and the Texas Revolution",
       "source_ids": [
         "s2",
-        "s7",
+        "s15",
         "s16"
       ],
       "source_titles": [
         "jinxschwartz.com",
-        "lauriemooremoore.com",
-        "tsl.texas.gov"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "lesson section",
-      "claim": "Primary Sources and Historical Evidence",
-      "source_ids": [
-        "s10",
-        "s11",
-        "s12",
-        "s13"
-      ],
-      "source_titles": [
-        "libguides.fau.edu",
-        "kwlibguides.lonestar.edu",
-        "shsulibraryguides.org",
-        "libguides.tamusa.edu"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "lesson section",
-      "claim": "Terminology and Identity Evolution: Texican to Texian to Texan",
-      "source_ids": [
-        "s3",
-        "s6",
-        "s7"
-      ],
-      "source_titles": [
-        "facebook.com",
-        "everything-everywhere.com",
-        "lauriemooremoore.com"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "lesson section",
-      "claim": "Indigenous Peoples and Texican Interactions",
-      "source_ids": [
-        "s8",
-        "s9"
-      ],
-      "source_titles": [
         "tshaonline.org",
-        "thestoryoftexas.com"
+        "archives.gov"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "lesson section",
-      "claim": "Challenges and Gaps in Texican Historical Records",
+      "claim": "Evolution of Texican Identity Post-Revolution",
       "source_ids": [
         "s7",
-        "s10",
         "s16"
       ],
       "source_titles": [
         "lauriemooremoore.com",
-        "libguides.fau.edu",
-        "tsl.texas.gov"
+        "archives.gov"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "lesson section",
-      "claim": "Summary and Review",
+      "claim": "Review and Knowledge Check",
       "source_ids": [
-        "s2",
-        "s7",
-        "s16"
+        "s14"
       ],
       "source_titles": [
-        "jinxschwartz.com",
-        "lauriemooremoore.com",
-        "tsl.texas.gov"
+        "tea.texas.gov"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."

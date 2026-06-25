@@ -1,13 +1,13 @@
 # Presenter Script: Introduction to the Texicans
 
-Generated: 2026-06-25T16:52:37.839Z
+Generated: 2026-06-25T16:56:35.297Z
 Language setting: en
 Class tier: Standard class
 Pipeline: OpenAI staged generation
 
 ## Source Discipline
 Use the cited source paper sections as the boundary for factual claims. If a learner asks for something outside the source paper, say it needs more source review before teaching it as fact.
-Knowledge-base standard: 8 usable sources, including 2 primary sources. Current setup: 15 sources, including 7 primary sources.
+Knowledge-base standard: 8 usable sources, including 2 primary sources. Current setup: 15 sources, including 2 primary sources.
 
 ## Learning Objectives
 - TLO: Identify who the Texicans were and describe their cultural background
@@ -16,297 +16,317 @@ Knowledge-base standard: 8 usable sources, including 2 primary sources. Current 
 - ELO: Explain the role of the Texicans in early Texas history
 
 ## Slide Talk Track
-### 1. Texican Political Roles Before the Texas Revolution
-Say: Why this deserves a deeper look. Texicans were active participants in local governance, often mediating between Mexican authorities and Anglo settlers. Their political roles evolved as Mexico’s control weakened, leading to complex loyalties during the revolution [s2, s7]. Source boundary. Teach this point from jinxschwartz.com; lauriemooremoore.com; tsl.texas.gov. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Texicans held local political offices under Spanish and Mexican rule They negotiated land grants and represented settler interests Political allegiance shifted amid growing tensions with central Mexican government Worked example Texican leaders like Stephen F. Austin initially sought to work within Mexican political frameworks before supporting independence. Practice and transfer Identify how Texican political roles changed from cooperation with Mexico to rebellion. Common mistake to prevent. Assuming all Texicans uniformly supported independence from the start. Source anchor: jinxschwartz.com; lauriemooremoore.com; tsl.texas.gov [2] [7] [16]
+### 1. Who Were the Texicans?
+Say: Why this deserves a deeper look. The term 'Texican' refers to the people living in Texas during the Mexican period, blending Mexican and Anglo-American cultures. Understanding this group is key to grasping Texas's early history and identity formation (s2, s7). Source boundary. Teach this point from jinxschwartz.com; lauriemooremoore.com. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Texicans: early inhabitants of Texas with mixed cultural roots Distinct from 'Texians' and 'Texans' in historical context Influenced by Mexican governance and Anglo-American settlers Worked example Texicans often spoke Spanish and English, practiced Catholicism, and adapted frontier lifestyles blending Mexican and Anglo traditions. Practice and transfer Consider how cultural blending might affect identity and community cohesion in a frontier setting. Common mistake to prevent. Confusing 'Texican' with 'Texian' or 'Texan' without recognizing their distinct historical meanings. Source anchor: jinxschwartz.com; lauriemooremoore.com [2] [7]
 Key points:
-- Texicans held local political offices under Spanish and Mexican rule
-- They negotiated land grants and represented settler interests
-- Political allegiance shifted amid growing tensions with central Mexican government
-Sources: s2, s7, s16
-
-### 2. Military Contributions of Texicans in the Texas Revolution
-Say: Why this deserves a deeper look. Texicans were instrumental in organizing and fighting in early conflicts of the Texas Revolution, balancing defense of their homes with aspirations for political change [s2, s7]. Source boundary. Teach this point from jinxschwartz.com; lauriemooremoore.com. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Texicans formed militias and volunteer companies They played key roles in battles such as Gonzales and the Alamo Military efforts reflected both local defense and broader independence goals Worked example The Texican volunteer company at the Battle of Gonzales famously resisted Mexican troops, marking the revolution’s start. Practice and transfer Analyze how Texican military actions reflected their political and social priorities. Common mistake to prevent. Overlooking the diversity of Texican motivations in military engagements. Source anchor: jinxschwartz.com; lauriemooremoore.com [2] [7]
-Key points:
-- Texicans formed militias and volunteer companies
-- They played key roles in battles such as Gonzales and the Alamo
-- Military efforts reflected both local defense and broader independence goals
+- Texicans: early inhabitants of Texas with mixed cultural roots
+- Distinct from 'Texians' and 'Texans' in historical context
+- Influenced by Mexican governance and Anglo-American settlers
 Sources: s2, s7
 
-### 3. Shifting Allegiances: Spain, Mexico, and the United States
-Say: Why this deserves a deeper look. Texicans experienced multiple political transitions, complicating their sense of identity and allegiance. Their position between Spanish, Mexican, and American influences created contested loyalties [s2, s7, s16]. Source boundary. Teach this point from jinxschwartz.com; lauriemooremoore.com; tsl.texas.gov. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Texicans’ loyalties evolved from Spanish colonial subjects to Mexican citizens Increasing Anglo-American immigration complicated identity and allegiance Some Texicans favored annexation by the United States Worked example Many Texicans initially supported Mexican federalism but later aligned with U.S. interests as tensions escalated. Practice and transfer Trace the factors that influenced Texican allegiance shifts during early 19th century Texas. Common mistake to prevent. Assuming allegiance shifts were sudden or uniform across Texican communities. Source anchor: jinxschwartz.com; lauriemooremoore.com; tsl.texas.gov [2] [7] [16]
+### 2. Defining 'Texican' vs. 'Texian' and 'Texan'
+Say: Why this deserves a deeper look. Historical texts show 'Texican' used for Mexican-era inhabitants, while 'Texian' emerged during the revolution, and 'Texan' became common post-annexation (s7). Source boundary. Teach this point from lauriemooremoore.com; jinxschwartz.com. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize 'Texican': Mexican Texas residents, often of mixed heritage 'Texian': Anglo settlers during Texas Revolution era 'Texan': Modern term for all Texas residents Worked example A settler born in Mexican Texas before 1836 might be called a Texican, but after independence, Anglo settlers identified as Texians. Practice and transfer Identify which term fits a settler living in Texas in 1825 versus 1840. Common mistake to prevent. Assuming these terms are interchangeable across all periods. Source anchor: lauriemooremoore.com; jinxschwartz.com [7] [2]
 Key points:
-- Texicans’ loyalties evolved from Spanish colonial subjects to Mexican citizens
-- Increasing Anglo-American immigration complicated identity and allegiance
-- Some Texicans favored annexation by the United States
-Sources: s2, s7, s16
+- 'Texican': Mexican Texas residents, often of mixed heritage
+- 'Texian': Anglo settlers during Texas Revolution era
+- 'Texan': Modern term for all Texas residents
+Sources: s7, s2
 
-### 4. Interactive Timeline Activity: Key Texican Events
-Say: Why this deserves a deeper look. This interactive timeline helps learners visualize the sequence and context of Texican involvement in early Texas history, highlighting their evolving roles and allegiances [s2, s7, s16]. Source boundary. Teach this point from jinxschwartz.com; lauriemooremoore.com; tsl.texas.gov. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Learners place major Texican events on a timeline Events include political milestones, battles, and treaties Activity fosters understanding of Texican historical progression Worked example Placing the Battle of Gonzales (1835) before the Texas Declaration of Independence (1836) shows the build-up to revolution. Practice and transfer Arrange the following events in chronological order: Stephen F. Austin’s empresario contract, Battle of the Alamo, Texas Declaration of Independence. Common mistake to prevent. Misordering events due to overlapping political and military developments. Source anchor: jinxschwartz.com; lauriemooremoore.com; tsl.texas.gov [2] [7] [16]
+### 3. Origins of the Texican Term
+Say: Why this deserves a deeper look. The term 'Texican' has roots in Spanish language and was used to denote residents loyal to Mexican rule, highlighting their cultural identity (s7). Source boundary. Teach this point from lauriemooremoore.com. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Derived from Spanish 'Tejicano' meaning Texas resident Used during Mexican governance of Texas (1821-1836) Reflects cultural and political ties to Mexico Worked example Official Mexican documents referred to settlers as 'Tejanos' or 'Texicans' to distinguish them from Anglo immigrants. Practice and transfer Explore how language shapes identity in colonial and frontier settings. Common mistake to prevent. Ignoring the Spanish linguistic origin and cultural significance of 'Texican'. Source anchor: lauriemooremoore.com [7]
 Key points:
-- Learners place major Texican events on a timeline
-- Events include political milestones, battles, and treaties
-- Activity fosters understanding of Texican historical progression
-Sources: s2, s7, s16
+- Derived from Spanish 'Tejicano' meaning Texas resident
+- Used during Mexican governance of Texas (1821-1836)
+- Reflects cultural and political ties to Mexico
+Sources: s7
 
-### 5. Introduction to Texican Primary Sources
-Say: Why this deserves a deeper look. Primary sources are essential for understanding Texican history but must be critically evaluated for reliability and perspective, especially given linguistic and cultural complexities [s10, s11, s12]. Source boundary. Teach this point from libguides.fau.edu; kwlibguides.lonestar.edu; shsulibraryguides.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Primary sources include treaties, letters, government records, and military documents They offer direct insight into Texican experiences and perspectives Analyzing these sources requires attention to language, context, and bias Worked example A letter from a Texican militia leader reveals personal motivations and local concerns during the revolution. Practice and transfer Identify potential biases and limitations in a given Texican primary source excerpt. Common mistake to prevent. Taking primary sources at face value without considering context or author perspective. Source anchor: libguides.fau.edu; kwlibguides.lonestar.edu; shsulibraryguides.org [10] [11] [12]
+### 4. Where Did Texicans Settle?
+Say: Why this deserves a deeper look. Texicans settled in areas granted by Mexican authorities, often near rivers for agriculture, with empresarios acting as land agents to attract settlers (s7, s8). Source boundary. Teach this point from lauriemooremoore.com; tshaonline.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Primarily in Mexican Texas along rivers and fertile land Settlements encouraged by Mexican land grant system Empresarios facilitated Anglo and Mexican settlement Worked example Stephen F. Austin’s colony was a major empresario settlement attracting both Anglo and Mexican settlers. Practice and transfer Map key Texican settlements and discuss why location mattered. Common mistake to prevent. Assuming Texicans only lived in urban centers or ignoring Mexican land policies. Source anchor: lauriemooremoore.com; tshaonline.org [7] [8]
 Key points:
-- Primary sources include treaties, letters, government records, and military documents
-- They offer direct insight into Texican experiences and perspectives
-- Analyzing these sources requires attention to language, context, and bias
-Sources: s10, s11, s12
+- Primarily in Mexican Texas along rivers and fertile land
+- Settlements encouraged by Mexican land grant system
+- Empresarios facilitated Anglo and Mexican settlement
+Sources: s7, s8
 
-### 6. Analyzing Texican Treaties and Government Records
-Say: Why this deserves a deeper look. Treaties and government documents provide structured evidence of Texican interactions with Mexican authorities, illustrating legal frameworks and political tensions [s13, s14]. Source boundary. Teach this point from libguides.tamusa.edu; guides.library.yale.edu. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Treaties formalized land grants and political agreements Government records document legal status and administrative actions These sources reveal official policies and settler responses Worked example The 1824 Mexican Constitution influenced Texican rights and governance, as seen in official records. Practice and transfer Examine an excerpt from a land grant treaty and identify its implications for Texican settlers. Common mistake to prevent. Ignoring the legal language that shapes the meaning and impact of treaties. Source anchor: libguides.tamusa.edu; guides.library.yale.edu [13] [14]
+### 5. Texican Frontier Life
+Say: Why this deserves a deeper look. Texicans lived a frontier lifestyle combining Mexican traditions like ranching with Anglo farming methods, adapting to challenges such as conflicts and isolation (s8, s9). Source boundary. Teach this point from tshaonline.org; thestoryoftexas.com. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Agricultural economy with ranching and farming Blended Mexican and Anglo cultural practices Faced challenges from Native American tribes and frontier conditions Worked example Texican families often celebrated Mexican festivals while adopting Anglo-style homes and farming techniques. Practice and transfer Consider how frontier challenges influenced Texican daily life and culture. Common mistake to prevent. Overgeneralizing Texican culture as purely Mexican or Anglo. Source anchor: tshaonline.org; thestoryoftexas.com [8] [9]
 Key points:
-- Treaties formalized land grants and political agreements
-- Government records document legal status and administrative actions
-- These sources reveal official policies and settler responses
-Sources: s13, s14
+- Agricultural economy with ranching and farming
+- Blended Mexican and Anglo cultural practices
+- Faced challenges from Native American tribes and frontier conditions
+Sources: s8, s9
 
-### 7. Examining Texican Letters and Personal Accounts
-Say: Why this deserves a deeper look. Personal correspondence offers rich qualitative data on Texican life and attitudes, but requires careful reading to understand context and subtext [s15, s16]. Source boundary. Teach this point from guides.lib.berkeley.edu; tsl.texas.gov. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Letters reveal personal experiences, motivations, and social relations They provide perspectives often absent from official records Analyzing tone and language helps uncover underlying sentiments Worked example A letter from a Texican soldier expresses conflicted feelings about fighting Mexican troops. Practice and transfer Interpret the emotional tone and political stance in a Texican letter excerpt. Common mistake to prevent. Overlooking subtle cues or cultural references in personal documents. Source anchor: guides.lib.berkeley.edu; tsl.texas.gov [15] [16]
+### 6. Interactions with Native American Tribes
+Say: Why this deserves a deeper look. Texican settlements were often on contested lands, leading to both conflict and negotiation with Native tribes, affecting frontier stability (s7, s9). Source boundary. Teach this point from lauriemooremoore.com; thestoryoftexas.com. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Texicans faced conflicts and alliances with local tribes Native groups included Comanche, Apache, and others Relations influenced security and settlement patterns Worked example Some Texican communities formed trade relations with tribes, while others experienced raids disrupting settlement. Practice and transfer Analyze how Native American relations impacted Texican settlement success. Common mistake to prevent. Viewing Native tribes only as adversaries without recognizing complex relations. Source anchor: lauriemooremoore.com; thestoryoftexas.com [7] [9]
 Key points:
-- Letters reveal personal experiences, motivations, and social relations
-- They provide perspectives often absent from official records
-- Analyzing tone and language helps uncover underlying sentiments
-Sources: s15, s16
+- Texicans faced conflicts and alliances with local tribes
+- Native groups included Comanche, Apache, and others
+- Relations influenced security and settlement patterns
+Sources: s7, s9
 
-### 8. Document Analysis Activity: Treaty Excerpt
-Say: Why this deserves a deeper look. This activity develops skills in reading and interpreting primary legal documents, crucial for understanding Texican settlement and governance [s13]. Source boundary. Teach this point from libguides.tamusa.edu. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Learners analyze a selected treaty excerpt related to Texican land rights Focus on identifying key terms, parties involved, and implications Discuss how the treaty reflects political and social context Worked example Highlighting clauses granting land but requiring loyalty to Mexican laws. Practice and transfer What does this treaty reveal about Texican-Mexican relations and settler obligations? Common mistake to prevent. Failing to connect legal language to historical realities. Source anchor: libguides.tamusa.edu [13]
+### 7. Blending Mexican and Anglo Cultures
+Say: Why this deserves a deeper look. Texican culture was a fusion of Mexican governance and Anglo settler influences, creating unique social and cultural practices (s2, s7). Source boundary. Teach this point from jinxschwartz.com; lauriemooremoore.com. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Texicans adopted Mexican legal and religious traditions Anglo settlers introduced English language and customs Resulted in a hybrid Texican identity Worked example Texican towns held Catholic mass but also elected Anglo-style local officials. Practice and transfer Identify examples of cultural blending in Texican communities. Common mistake to prevent. Assuming cultural assimilation was one-way or uniform. Source anchor: jinxschwartz.com; lauriemooremoore.com [2] [7]
 Key points:
-- Learners analyze a selected treaty excerpt related to Texican land rights
-- Focus on identifying key terms, parties involved, and implications
-- Discuss how the treaty reflects political and social context
-Sources: s13
+- Texicans adopted Mexican legal and religious traditions
+- Anglo settlers introduced English language and customs
+- Resulted in a hybrid Texican identity
+Sources: s2, s7
 
-### 9. Document Analysis Activity: Texican Letter Excerpt
-Say: Why this deserves a deeper look. This exercise enhances learners’ ability to interpret subjective historical evidence and understand diverse Texican viewpoints [s15]. Source boundary. Teach this point from guides.lib.berkeley.edu. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Learners examine a personal letter from a Texican revolutionary Identify expressions of loyalty, conflict, and personal motivation Discuss how the letter complements or challenges official narratives Worked example Noting phrases that reveal ambivalence about fighting former Mexican allies. Practice and transfer What does this letter tell us about Texican identity and revolutionary sentiment? Common mistake to prevent. Ignoring the letter’s emotional and rhetorical nuances. Source anchor: guides.lib.berkeley.edu [15]
+### 8. Texicans in Early Texas History
+Say: Why this deserves a deeper look. Texicans played crucial roles in the political and military events leading to Texas independence, balancing complex loyalties (s2, s15). Source boundary. Teach this point from jinxschwartz.com; tshaonline.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Key participants in Texas Revolution (1835-1836) Negotiated between Mexican authorities and Anglo settlers Helped shape Texas’s political future Worked example Texican leaders signed the Texas Declaration of Independence alongside Anglo revolutionaries. Practice and transfer Discuss how Texican involvement influenced the revolution’s outcome. Common mistake to prevent. Overlooking Texican contributions in favor of Anglo narratives. Source anchor: jinxschwartz.com; tshaonline.org [2] [15]
 Key points:
-- Learners examine a personal letter from a Texican revolutionary
-- Identify expressions of loyalty, conflict, and personal motivation
-- Discuss how the letter complements or challenges official narratives
+- Key participants in Texas Revolution (1835-1836)
+- Negotiated between Mexican authorities and Anglo settlers
+- Helped shape Texas’s political future
+Sources: s2, s15
+
+### 9. Texas Declaration of Independence and Texicans
+Say: Why this deserves a deeper look. The Texas Declaration of Independence includes Texican leaders, showing their commitment to Texas’s political transformation (s15). Source boundary. Teach this point from tshaonline.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Texican signatories affirmed independence from Mexico Document reflects shared grievances of diverse settlers Highlights Texican political engagement Worked example Excerpts reveal Texicans’ concerns about Mexican governance and desire for self-rule. Practice and transfer Analyze a Texican signer’s statement and its significance. Common mistake to prevent. Ignoring Texican voices in revolutionary documents. Source anchor: tshaonline.org [15]
+Key points:
+- Texican signatories affirmed independence from Mexico
+- Document reflects shared grievances of diverse settlers
+- Highlights Texican political engagement
 Sources: s15
 
-### 10. Challenges in Interpreting Texican Historical Records
-Say: Why this deserves a deeper look. Interpreting Texican history demands awareness of linguistic, cultural, and archival challenges that affect source reliability and completeness [s10, s16]. Source boundary. Teach this point from libguides.fau.edu; tsl.texas.gov. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Language barriers: Spanish and English documents require translation and cultural understanding Bias and perspective: Sources reflect authors’ interests and social positions Incomplete records: Gaps and losses complicate historical reconstruction Worked example Some Texican voices, especially indigenous or lower-class, are underrepresented in surviving documents. Practice and transfer Identify potential limitations in a given primary source and suggest strategies to address them. Common mistake to prevent. Assuming historical records provide a complete or unbiased picture. Source anchor: libguides.fau.edu; tsl.texas.gov [10] [16]
+### 10. Tracing Texican Land Grants and Settlements
+Say: Why this deserves a deeper look. Mapping empresario land grants helps visualize where Texicans lived and how settlement patterns developed (s7, s8). Source boundary. Teach this point from lauriemooremoore.com; tshaonline.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Empresario grants shaped settlement geography Key settlements along Brazos and Colorado Rivers Mixed Mexican and Anglo populations in colonies Worked example Stephen F. Austin’s colony was a major settlement area with diverse inhabitants. Practice and transfer Locate major Texican settlements on a map and discuss geographic advantages. Common mistake to prevent. Assuming settlements were randomly distributed without policy influence. Source anchor: lauriemooremoore.com; tshaonline.org [7] [8]
 Key points:
-- Language barriers: Spanish and English documents require translation and cultural understanding
-- Bias and perspective: Sources reflect authors’ interests and social positions
-- Incomplete records: Gaps and losses complicate historical reconstruction
-Sources: s10, s16
+- Empresario grants shaped settlement geography
+- Key settlements along Brazos and Colorado Rivers
+- Mixed Mexican and Anglo populations in colonies
+Sources: s7, s8
 
-### 11. Practice Checkpoint: Evaluating a Texican Source
-Say: Why this deserves a deeper look. This checkpoint reinforces critical source evaluation skills essential for understanding Texican history [s10, s11]. Source boundary. Teach this point from libguides.fau.edu; kwlibguides.lonestar.edu. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Review a provided Texican primary source excerpt Identify author, purpose, and potential bias Assess the source’s reliability and usefulness for historical analysis Worked example Determining that a government record may understate settler grievances due to official bias. Practice and transfer Write a brief evaluation of the source’s strengths and limitations. Common mistake to prevent. Failing to consider the source’s context and intended audience. Source anchor: libguides.fau.edu; kwlibguides.lonestar.edu [10] [11]
+### 11. Identify Texican Characteristics
+Say: Why this deserves a deeper look. Practice identifying Texican features consolidates understanding and prepares learners for deeper analysis. Source boundary. Teach this point from jinxschwartz.com; lauriemooremoore.com. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Review key cultural, settlement, and historical traits Distinguish Texicans from related groups Apply knowledge to historical scenarios Worked example Given a settler’s background and time period, decide if they are Texican, Texian, or Texan. Practice and transfer Classify settlers based on descriptions of culture, location, and era. Common mistake to prevent. Relying on modern definitions rather than historical context. Source anchor: jinxschwartz.com; lauriemooremoore.com [2] [7]
 Key points:
-- Review a provided Texican primary source excerpt
-- Identify author, purpose, and potential bias
-- Assess the source’s reliability and usefulness for historical analysis
-Sources: s10, s11
+- Review key cultural, settlement, and historical traits
+- Distinguish Texicans from related groups
+- Apply knowledge to historical scenarios
+Sources: s2, s7
 
-### 12. Summary: Texican Roles and Sources in Early Texas History
-Say: Why this deserves a deeper look. This summary consolidates key insights on Texican historical roles and the importance of primary source analysis to grasp their multifaceted identity and legacy [s2, s7, s10, s16]. Source boundary. Teach this point from jinxschwartz.com; lauriemooremoore.com; libguides.fau.edu; tsl.texas.gov. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Texicans played complex political and military roles during the Texas Revolution Their allegiances shifted amid changing colonial and national powers Primary sources provide essential but challenging evidence for understanding their history Critical analysis of sources reveals contested narratives and gaps Worked example Recognizing how militia records and personal letters together illuminate Texican motivations. Practice and transfer Reflect on how primary sources shape your understanding of Texican history and identity. Common mistake to prevent. Overgeneralizing Texican experiences without acknowledging diversity and complexity. Source anchor: jinxschwartz.com; lauriemooremoore.com; libguides.fau.edu; tsl.texas.gov [2] [7] [10] [16]
+### 12. Quiz: Texican Identity and History
+Say: Why this deserves a deeper look. This quiz assesses comprehension of Texican identity, settlement, and historical significance based on prior slides. Source boundary. Teach this point from jinxschwartz.com; lauriemooremoore.com; tshaonline.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Multiple-choice questions on Texican definition and origins Map-based questions on settlement patterns Primary source interpretation on Texican roles Worked example Sample question: Which term best describes a Mexican Texas resident before 1836? Practice and transfer Complete the quiz to test your understanding and identify areas for review. Common mistake to prevent. Guessing without recalling key distinctions and historical context. Source anchor: jinxschwartz.com; lauriemooremoore.com; tshaonline.org [2] [7] [15]
 Key points:
-- Texicans played complex political and military roles during the Texas Revolution
-- Their allegiances shifted amid changing colonial and national powers
-- Primary sources provide essential but challenging evidence for understanding their history
-- Critical analysis of sources reveals contested narratives and gaps
-Sources: s2, s7, s10, s16
+- Multiple-choice questions on Texican definition and origins
+- Map-based questions on settlement patterns
+- Primary source interpretation on Texican roles
+Sources: s2, s7, s15
 
-### 13. Limitations in Demographic Data on Texicans
-Say: Why this deserves a deeper look. Historical demographic data on Texicans is limited due to incomplete census efforts and inconsistent record-keeping, especially regarding mixed-heritage populations. This scarcity complicates understanding population dynamics and social structures. Source boundary. Teach this point from lauriemooremoore.com; libguides.fau.edu; tsl.texas.gov. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Sparse and inconsistent census records from early Texas periods Underrepresentation of mixed-heritage individuals in official documents Challenges in tracking population movements and family lineages Worked example Many Texican families of mixed Spanish, Native American, and Anglo descent were often recorded under a single ethnic category, obscuring their true cultural identities. Practice and transfer Consider how incomplete demographic data might affect interpretations of Texican community size and diversity. Common mistake to prevent. Assuming census data fully represents the Texican population without accounting for underreporting or categorization biases. Source anchor: lauriemooremoore.com; libguides.fau.edu; tsl.texas.gov [7] [10] [16]
+### 13. Empresario Land Grants and Texican Settlements
+Say: Why this deserves a deeper look. The Mexican government incentivized settlement in Texas by granting land to empresarios, who then recruited settlers, including Texicans. These settlements were strategically located near water sources and fertile soil to support agriculture and community growth. Source boundary. Teach this point from lauriemooremoore.com; tshaonline.org; thestoryoftexas.com. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Mexican government used empresarios to attract settlers Land grants offered to empresarios to recruit families Texicans settled mainly along rivers and fertile lands Settlements formed hubs for trade and defense Worked example Stephen F. Austin, a famous empresario, brought hundreds of families to settle along the Brazos River, establishing one of the first major Texican communities. Practice and transfer Identify why rivers and fertile lands were preferred locations for Texican settlements. Common mistake to prevent. Assuming all settlers were Anglo-American; many Texicans were of Mexican heritage or mixed backgrounds. Source anchor: lauriemooremoore.com; tshaonline.org; thestoryoftexas.com [7] [8] [9]
 Key points:
-- Sparse and inconsistent census records from early Texas periods
-- Underrepresentation of mixed-heritage individuals in official documents
-- Challenges in tracking population movements and family lineages
-Sources: s7, s10, s16
+- Mexican government used empresarios to attract settlers
+- Land grants offered to empresarios to recruit families
+- Texicans settled mainly along rivers and fertile lands
+- Settlements formed hubs for trade and defense
+Sources: s7, s8, s9
 
-### 14. Uncertainties in Texican Cultural Practices
-Say: Why this deserves a deeper look. The sociocultural aspects of Texican life are underdocumented, with surviving sources often reflecting external perspectives that may misrepresent or oversimplify Texican customs and indigenous interactions. Source boundary. Teach this point from lauriemooremoore.com; tsl.texas.gov. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Limited firsthand accounts of daily life and customs Biases in Spanish and Anglo narratives about Texican culture Scarce documentation of indigenous influences on Texican traditions Worked example Spanish colonial reports sometimes portrayed Texicans as either loyal subjects or rebellious settlers, depending on political context, affecting cultural descriptions. Practice and transfer Reflect on how source bias might shape our understanding of Texican cultural identity. Common mistake to prevent. Taking colonial or settler accounts at face value without considering their political or cultural biases. Source anchor: lauriemooremoore.com; tsl.texas.gov [7] [16]
+### 14. Daily Life on the Texican Frontier
+Say: Why this deserves a deeper look. Texicans lived a frontier lifestyle focused on farming and cattle ranching. Their homes and communities reflected a blend of Mexican and Anglo influences, with missions playing a central role in social and religious life. Source boundary. Teach this point from lauriemooremoore.com; tshaonline.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Agriculture and ranching were primary livelihoods Homes built with local materials, often adobe or wood Community life centered around missions and churches Frontier life involved frequent Native American interactions Worked example A typical Texican family might raise cattle and crops while attending church services at a nearby mission, which also served as a community center. Practice and transfer Describe how the frontier environment shaped Texican daily routines and social structures. Common mistake to prevent. Overlooking the importance of missions beyond religion, including their role in education and community cohesion. Source anchor: lauriemooremoore.com; tshaonline.org [7] [8]
 Key points:
-- Limited firsthand accounts of daily life and customs
-- Biases in Spanish and Anglo narratives about Texican culture
-- Scarce documentation of indigenous influences on Texican traditions
-Sources: s7, s16
+- Agriculture and ranching were primary livelihoods
+- Homes built with local materials, often adobe or wood
+- Community life centered around missions and churches
+- Frontier life involved frequent Native American interactions
+Sources: s7, s8
 
-### 15. Gaps in Texican Economic Records
-Say: Why this deserves a deeper look. Economic documentation for Texicans is fragmented, with many land grants and trade records lost or poorly preserved, making it difficult to fully understand their economic roles and livelihoods. Source boundary. Teach this point from lauriemooremoore.com; libguides.fau.edu. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Incomplete records of land ownership and transactions Limited data on Texican trade and agricultural production Economic activities often overshadowed by political events Worked example Land grant records from the Mexican period sometimes lack details on actual land use or ownership disputes among Texicans. Practice and transfer Analyze how missing economic data might affect interpretations of Texican prosperity and social status. Common mistake to prevent. Assuming that surviving land records represent the full scope of Texican economic activity. Source anchor: lauriemooremoore.com; libguides.fau.edu [7] [10]
+### 15. Texican Relations with Native American Tribes
+Say: Why this deserves a deeper look. Texicans had complex relationships with Native American tribes, involving cooperation and conflict. These interactions influenced Texican culture and frontier survival strategies. Source boundary. Teach this point from lauriemooremoore.com; tshaonline.org; thestoryoftexas.com. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Interactions ranged from trade to conflict Some tribes allied with Texicans for mutual benefit Territorial disputes often led to violence Texicans adopted some Native customs and knowledge Worked example Texicans traded livestock and goods with tribes like the Comanche, while also defending settlements from raids. Practice and transfer Explain how Texican-Native American relations impacted settlement security and cultural exchange. Common mistake to prevent. Assuming all interactions were hostile; many were cooperative and involved cultural exchange. Source anchor: lauriemooremoore.com; tshaonline.org; thestoryoftexas.com [7] [8] [9]
 Key points:
-- Incomplete records of land ownership and transactions
-- Limited data on Texican trade and agricultural production
-- Economic activities often overshadowed by political events
-Sources: s7, s10
+- Interactions ranged from trade to conflict
+- Some tribes allied with Texicans for mutual benefit
+- Territorial disputes often led to violence
+- Texicans adopted some Native customs and knowledge
+Sources: s7, s8, s9
 
-### 16. How Data Gaps Affect Texican Historical Understanding
-Say: Why this deserves a deeper look. The gaps in demographic, sociocultural, and economic data create challenges for historians, potentially leading to incomplete or biased interpretations of Texican history and identity. Source boundary. Teach this point from lauriemooremoore.com; tsl.texas.gov. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Incomplete narratives risk oversimplifying Texican identity Potential marginalization of minority voices within Texican society Challenges in constructing accurate social, economic, and political histories Worked example Without full demographic data, the diversity within Texican communities may be underestimated, affecting cultural and political analyses. Practice and transfer Discuss how acknowledging these gaps can improve historical research and interpretation. Common mistake to prevent. Ignoring data limitations and presenting incomplete histories as definitive. Source anchor: lauriemooremoore.com; tsl.texas.gov [7] [16]
+### 16. Blending Mexican and Anglo Cultures in Texican Society
+Say: Why this deserves a deeper look. Texicans developed a unique cultural identity by blending Mexican heritage with Anglo-American settler customs, creating a hybrid society with shared and distinct practices. Source boundary. Teach this point from jinxschwartz.com; lauriemooremoore.com; tshaonline.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Texican culture combined Mexican traditions with Anglo influences Language, religion, and customs reflected this blend Texican identity was distinct from both Mexican and Anglo settlers Cultural tensions sometimes arose within communities Worked example Texican festivals might include Mexican Catholic rituals alongside Anglo-style dances and music. Practice and transfer Identify examples of cultural blending in Texican daily life and community events. Common mistake to prevent. Viewing Texican culture as purely Mexican or Anglo rather than a hybrid. Source anchor: jinxschwartz.com; lauriemooremoore.com; tshaonline.org [2] [7] [8]
 Key points:
-- Incomplete narratives risk oversimplifying Texican identity
-- Potential marginalization of minority voices within Texican society
-- Challenges in constructing accurate social, economic, and political histories
-Sources: s7, s16
+- Texican culture combined Mexican traditions with Anglo influences
+- Language, religion, and customs reflected this blend
+- Texican identity was distinct from both Mexican and Anglo settlers
+- Cultural tensions sometimes arose within communities
+Sources: s2, s7, s8
 
-### 17. Identifying Missing Topics in Texican History
-Say: Why this deserves a deeper look. Learners are invited to reflect on and suggest topics or questions they feel are missing or unclear in the study of Texican history, promoting critical engagement with source limitations. Source boundary. Teach this point from lauriemooremoore.com; libguides.fau.edu; tsl.texas.gov. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize What questions remain unanswered about Texican demographics? Which cultural aspects need further exploration? Where are economic records insufficient or unclear? Worked example A learner might question how Texican women’s roles are documented or inquire about indigenous-Texican trade relations. Practice and transfer Contribute at least two questions or topics you believe require more research or clarity regarding Texican history. Common mistake to prevent. Focusing only on well-documented topics and neglecting areas with sparse evidence. Source anchor: lauriemooremoore.com; libguides.fau.edu; tsl.texas.gov [7] [10] [16]
+### 17. Texicans in the Texas Revolution
+Say: Why this deserves a deeper look. Texicans were active participants in the Texas Revolution, contributing militarily and politically to the movement for independence from Mexico. Source boundary. Teach this point from jinxschwartz.com; tshaonline.org; archives.gov. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Texicans played key roles in the fight for independence Many Texicans supported breaking from Mexico They participated in battles and political assemblies Texican leaders helped draft the Texas Declaration of Independence Worked example Texican leaders like José Antonio Navarro signed the Texas Declaration of Independence in 1836. Practice and transfer Discuss why Texicans might have supported the revolution despite Mexican heritage. Common mistake to prevent. Assuming all Texicans opposed the revolution; some remained loyal to Mexico. Source anchor: jinxschwartz.com; tshaonline.org; archives.gov [2] [15] [16]
 Key points:
-- What questions remain unanswered about Texican demographics?
-- Which cultural aspects need further exploration?
-- Where are economic records insufficient or unclear?
-Sources: s7, s10, s16
+- Texicans played key roles in the fight for independence
+- Many Texicans supported breaking from Mexico
+- They participated in battles and political assemblies
+- Texican leaders helped draft the Texas Declaration of Independence
+Sources: s2, s15, s16
 
-### 18. Consolidating Texican Identity and History
-Say: Why this deserves a deeper look. This slide summarizes key points about Texican identity, culture, settlement, and historical roles, emphasizing the contested nature of some interpretations and the importance of source evaluation. Source boundary. Teach this point from jinxschwartz.com; lauriemooremoore.com; tsl.texas.gov. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Texicans as a culturally diverse group with complex origins Settlement shaped by legal, social, and geopolitical factors Central role in Texas Revolution and early statehood Worked example The transition from Texican to Texian to Texan reflects evolving political and cultural identities influenced by shifting sovereignties. Practice and transfer Summarize in your own words the main factors that defined Texican identity. Common mistake to prevent. Overlooking the fluidity and contested nature of Texican identity over time. Source anchor: jinxschwartz.com; lauriemooremoore.com; tsl.texas.gov [2] [7] [16]
+### 18. Examining the Texas Declaration of Independence
+Say: Why this deserves a deeper look. The Texas Declaration of Independence is a key primary source revealing Texican and settler motivations for revolution and their vision for Texas. Source boundary. Teach this point from archives.gov. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Document signed by Texican and Anglo leaders in 1836 Outlined grievances against Mexican government Declared Texas an independent republic Reflects Texican political aspirations and identity Worked example Analyze a passage expressing complaints about Mexican laws restricting immigration and trade. Practice and transfer Identify how the Declaration reflects Texican concerns and goals. Common mistake to prevent. Viewing the Declaration as solely Anglo settler document, ignoring Texican signatories. Source anchor: archives.gov [16]
 Key points:
-- Texicans as a culturally diverse group with complex origins
-- Settlement shaped by legal, social, and geopolitical factors
-- Central role in Texas Revolution and early statehood
-Sources: s2, s7, s16
-
-### 19. Quiz: Texican Terminology and Identity
-Say: Why this deserves a deeper look. This quiz assesses learners’ understanding of terminology, cultural background, and historical roles of Texicans, reinforcing key concepts and clarifying common confusions. Source boundary. Teach this point from facebook.com; everything-everywhere.com; lauriemooremoore.com. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Distinguish between 'Texican,' 'Texian,' and 'Texan' Identify key cultural influences on Texican identity Recall major historical events involving Texicans Worked example Question: Which term was primarily used during the Mexican period to describe settlers in Texas? Answer: Texican. Practice and transfer Complete the quiz questions to test your knowledge of Texican history and identity. Common mistake to prevent. Confusing the terms or assuming they are interchangeable without historical context. Source anchor: facebook.com; everything-everywhere.com; lauriemooremoore.com [3] [6] [7]
-Key points:
-- Distinguish between 'Texican,' 'Texian,' and 'Texan'
-- Identify key cultural influences on Texican identity
-- Recall major historical events involving Texicans
-Sources: s3, s6, s7
-
-### 20. Analyzing Primary Sources on Texicans
-Say: Why this deserves a deeper look. Learners practice critical analysis of primary sources, applying skills to evaluate evidence about Texican settlement, culture, and political roles. Source boundary. Teach this point from libguides.fau.edu; tsl.texas.gov. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Examine excerpts from land grants, letters, or government records Identify biases and limitations in the documents Interpret the documents’ significance for Texican history Worked example A land grant document may show legal ownership but omit details about indigenous displacement or settler conflicts. Practice and transfer Analyze the provided document excerpt and answer: What does it reveal about Texican life? What might it omit or obscure? Common mistake to prevent. Accepting primary sources as fully objective without considering context or bias. Source anchor: libguides.fau.edu; tsl.texas.gov [10] [16]
-Key points:
-- Examine excerpts from land grants, letters, or government records
-- Identify biases and limitations in the documents
-- Interpret the documents’ significance for Texican history
-Sources: s10, s16
-
-### 21. Connecting Texican History to Broader Themes
-Say: Why this deserves a deeper look. Learners extend their understanding by relating Texican history to wider historical and cultural processes, enhancing transfer of skills and knowledge. Source boundary. Teach this point from lauriemooremoore.com; tsl.texas.gov. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Consider how identity evolves in multicultural frontier societies Relate Texican experiences to other colonial and post-colonial contexts Apply critical source evaluation to other historical case studies Worked example Comparing Texican identity shifts with those of Cajuns in Louisiana or Métis in Canada highlights common patterns of cultural adaptation and political change. Practice and transfer Identify another historical group with a complex identity evolution and compare it to the Texicans. Common mistake to prevent. Assuming Texican history is unique without recognizing broader patterns. Source anchor: lauriemooremoore.com; tsl.texas.gov [7] [16]
-Key points:
-- Consider how identity evolves in multicultural frontier societies
-- Relate Texican experiences to other colonial and post-colonial contexts
-- Apply critical source evaluation to other historical case studies
-Sources: s7, s16
-
-### 22. Key Takeaways on Texican History
-Say: Why this deserves a deeper look. This slide recaps the most important points from the course, reinforcing the need for critical thinking and awareness of historical complexities. Source boundary. Teach this point from jinxschwartz.com; lauriemooremoore.com; tsl.texas.gov. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Texicans were a diverse group with evolving identities Historical records have significant gaps and biases Critical evaluation of sources is essential for accurate history Texican experiences reflect broader themes of cultural interaction and political change Worked example The contested meanings of 'Texican' illustrate how identity is shaped by historical context and power dynamics. Practice and transfer Review these takeaways and consider how they influence your understanding of Texican history. Common mistake to prevent. Overlooking the complexity and nuance in favor of simplified narratives. Source anchor: jinxschwartz.com; lauriemooremoore.com; tsl.texas.gov [2] [7] [16]
-Key points:
-- Texicans were a diverse group with evolving identities
-- Historical records have significant gaps and biases
-- Critical evaluation of sources is essential for accurate history
-- Texican experiences reflect broader themes of cultural interaction and political change
-Sources: s2, s7, s16
-
-### 23. Comprehensive Test on Texican History
-Say: Why this deserves a deeper look. This final test assesses mastery of all terminal and enabling objectives, ensuring learners can integrate knowledge and critically evaluate sources. Source boundary. Teach this point from jinxschwartz.com; lauriemooremoore.com; tsl.texas.gov. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Identify who the Texicans were and describe their cultural background Define the term 'Texican' and its origins Discuss settlement patterns and lifestyle of the Texicans Explain the role of Texicans in early Texas history Evaluate challenges and gaps in historical records Worked example Sample question: Explain how the term 'Texican' evolved and what it reveals about identity in early Texas. Practice and transfer Complete the test to demonstrate your understanding and critical thinking about Texican history. Common mistake to prevent. Providing superficial answers without addressing complexities or source limitations. Source anchor: jinxschwartz.com; lauriemooremoore.com; tsl.texas.gov [2] [7] [16]
-Key points:
-- Identify who the Texicans were and describe their cultural background
-- Define the term 'Texican' and its origins
-- Discuss settlement patterns and lifestyle of the Texicans
-- Explain the role of Texicans in early Texas history
-- Evaluate challenges and gaps in historical records
-Sources: s2, s7, s16
-
-### 24. Next Steps and Further Exploration
-Say: Why this deserves a deeper look. This concluding slide encourages learners to continue their study beyond the course, emphasizing ongoing research and critical engagement with history. Source boundary. Teach this point from libguides.fau.edu; tsl.texas.gov. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Explore additional primary source collections on Texican history Engage with scholarly debates on identity and historiography Apply critical historical methods to other regional histories Worked example Visiting archives or digital collections can uncover new perspectives on Texican life and identity. Practice and transfer Plan a research project or reading list to deepen your understanding of Texican or related histories. Common mistake to prevent. Assuming historical study ends with course completion rather than ongoing inquiry. Source anchor: libguides.fau.edu; tsl.texas.gov [10] [16]
-Key points:
-- Explore additional primary source collections on Texican history
-- Engage with scholarly debates on identity and historiography
-- Apply critical historical methods to other regional histories
-Sources: s10, s16
-
-### 25. Add depth for experienced learners
-Say: Why this deserves a deeper look. Add depth for experienced learners connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from thestoryoftexas.com. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Name a more nuanced version of the same decision. Compare the ordinary case with a harder edge case. Ask what additional evidence would change the answer. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Add depth for experienced learners" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Add depth for experienced learners" into a rule of thumb unless the knowledge base supports that claim. Source anchor: thestoryoftexas.com [9]
-Key points:
-- Name a more nuanced version of the same decision.
-- Compare the ordinary case with a harder edge case.
-- Ask what additional evidence would change the answer.
-Sources: s9
-
-### 26. Ask Bernard before moving on
-Say: Why this deserves a deeper look. Ask Bernard before moving on connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from libguides.fau.edu. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Pause for learner questions. Use Bernard for a plain-language explanation or an alternate example. Return to the slide when the class is ready to continue. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Ask Bernard before moving on" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Ask Bernard before moving on" into a rule of thumb unless the knowledge base supports that claim. Source anchor: libguides.fau.edu [10]
-Key points:
-- Pause for learner questions.
-- Use Bernard for a plain-language explanation or an alternate example.
-- Return to the slide when the class is ready to continue.
-Sources: s10
-
-### 27. Move from class to practice
-Say: Why this deserves a deeper look. Move from class to practice connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from kwlibguides.lonestar.edu. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Name where learners will use this skill next. Ask what they should check before acting alone. Tie the answer back to the source and objective. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Move from class to practice" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Move from class to practice" into a rule of thumb unless the knowledge base supports that claim. Source anchor: kwlibguides.lonestar.edu [11]
-Key points:
-- Name where learners will use this skill next.
-- Ask what they should check before acting alone.
-- Tie the answer back to the source and objective.
-Sources: s11
-
-### 28. Source checkpoint: shsulibraryguides.org
-Say: Why this deserves a deeper look. Source checkpoint: shsulibraryguides.org connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from shsulibraryguides.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Review what this source can safely support. Separate verified points from questions that need more evidence. Flag any statistic, date, or disputed point for corroboration. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Source checkpoint: shsulibraryguides.org" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Source checkpoint: shsulibraryguides.org" into a rule of thumb unless the knowledge base supports that claim. Source anchor: shsulibraryguides.org [12]
-Key points:
-- Review what this source can safely support.
-- Separate verified points from questions that need more evidence.
-- Flag any statistic, date, or disputed point for corroboration.
-Sources: s12
-
-### 29. Make the idea usable
-Say: Why this deserves a deeper look. Make the idea usable connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from libguides.tamusa.edu. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Connect this part of Introduction to the Texicans to the floor learner's starting point. Translate the key idea into plain language: Discuss the settlement patterns and lifestyle of the Texicans Ask learners to restate the idea before moving on. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Make the idea usable" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Make the idea usable" into a rule of thumb unless the knowledge base supports that claim. Source anchor: libguides.tamusa.edu [13]
-Key points:
-- Connect this part of Introduction to the Texicans to the floor learner's starting point.
-- Translate the key idea into plain language: Discuss the settlement patterns and lifestyle of the Texicans
-- Ask learners to restate the idea before moving on.
-Sources: s13
-
-### 30. Walk through a worked example
-Say: Why this deserves a deeper look. Walk through a worked example connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from guides.library.yale.edu. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Start with a realistic learner scenario. Model the first decision out loud. Show where the source supports the decision. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Walk through a worked example" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Walk through a worked example" into a rule of thumb unless the knowledge base supports that claim. Source anchor: guides.library.yale.edu [14]
-Key points:
-- Start with a realistic learner scenario.
-- Model the first decision out loud.
-- Show where the source supports the decision.
-Sources: s14
-
-### 31. Choose the next best move
-Say: Why this deserves a deeper look. Choose the next best move connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from guides.lib.berkeley.edu. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Present two or three plausible choices. Ask which choice best matches the objective. Use the answer to correct misunderstandings before the next section. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Choose the next best move" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Choose the next best move" into a rule of thumb unless the knowledge base supports that claim. Source anchor: guides.lib.berkeley.edu [15]
-Key points:
-- Present two or three plausible choices.
-- Ask which choice best matches the objective.
-- Use the answer to correct misunderstandings before the next section.
-Sources: s15
-
-### 32. Avoid the tempting wrong turn
-Say: Why this deserves a deeper look. Avoid the tempting wrong turn connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from tsl.texas.gov. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Name a mistake a new learner might make. Explain why the mistake is attractive. Give a safer replacement action or question. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Avoid the tempting wrong turn" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Avoid the tempting wrong turn" into a rule of thumb unless the knowledge base supports that claim. Source anchor: tsl.texas.gov [16]
-Key points:
-- Name a mistake a new learner might make.
-- Explain why the mistake is attractive.
-- Give a safer replacement action or question.
+- Document signed by Texican and Anglo leaders in 1836
+- Outlined grievances against Mexican government
+- Declared Texas an independent republic
+- Reflects Texican political aspirations and identity
 Sources: s16
 
-### 33. Try it in context
-Say: Why this deserves a deeper look. Try it in context connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from Class setup, learner profile, and research rules. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Apply the lesson to the terminal outcome: Identify who the Texicans were and describe their cultural background Require learners to cite what information they used. Ask what extra source would make the answer stronger. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Try it in context" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Try it in context" into a rule of thumb unless the knowledge base supports that claim. Source anchor: Class setup, learner profile, and research rules [1]
+### 19. Tracing Texican Land Grants and Settlements
+Say: Why this deserves a deeper look. Mapping Texican land grants helps visualize how settlements were distributed and how geography influenced community development and defense. Source boundary. Teach this point from lauriemooremoore.com; thestoryoftexas.com. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Empresario grants shaped settlement geography Settlements clustered near rivers and trade routes Mapping reveals cultural and economic hubs Patterns show strategic defense against threats Worked example Locate Stephen F. Austin’s colony on a map and identify nearby rivers and trails. Practice and transfer Use a map to identify why certain areas were chosen for settlement. Common mistake to prevent. Ignoring geographic factors like water access and terrain in settlement choices. Source anchor: lauriemooremoore.com; thestoryoftexas.com [7] [9]
 Key points:
-- Apply the lesson to the terminal outcome: Identify who the Texicans were and describe their cultural background
-- Require learners to cite what information they used.
-- Ask what extra source would make the answer stronger.
-Sources: s1
+- Empresario grants shaped settlement geography
+- Settlements clustered near rivers and trade routes
+- Mapping reveals cultural and economic hubs
+- Patterns show strategic defense against threats
+Sources: s7, s9
 
-### 34. Add depth for experienced learners
-Say: Why this deserves a deeper look. Add depth for experienced learners connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from jinxschwartz.com. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Name a more nuanced version of the same decision. Compare the ordinary case with a harder edge case. Ask what additional evidence would change the answer. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Add depth for experienced learners" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Add depth for experienced learners" into a rule of thumb unless the knowledge base supports that claim. Source anchor: jinxschwartz.com [2]
+### 20. Key Traits Defining Texican Identity
+Say: Why this deserves a deeper look. Texican identity is marked by cultural blending, frontier lifestyle, political activism, and community cohesion, distinguishing them within Texas history. Source boundary. Teach this point from jinxschwartz.com; lauriemooremoore.com; tshaonline.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Cultural hybridity blending Mexican and Anglo elements Frontier resilience and adaptability Political engagement in Texas independence Strong community ties through missions and settlements Worked example A Texican leader balancing Mexican heritage with revolutionary ideals exemplifies this identity. Practice and transfer List traits that make Texicans distinct from other Texas settlers. Common mistake to prevent. Reducing Texican identity to a single cultural or political aspect. Source anchor: jinxschwartz.com; lauriemooremoore.com; tshaonline.org [2] [7] [8]
 Key points:
-- Name a more nuanced version of the same decision.
-- Compare the ordinary case with a harder edge case.
-- Ask what additional evidence would change the answer.
-Sources: s2
+- Cultural hybridity blending Mexican and Anglo elements
+- Frontier resilience and adaptability
+- Political engagement in Texas independence
+- Strong community ties through missions and settlements
+Sources: s2, s7, s8
 
-### 35. Ask Bernard before moving on
-Say: Why this deserves a deeper look. Ask Bernard before moving on connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from facebook.com. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Pause for learner questions. Use Bernard for a plain-language explanation or an alternate example. Return to the slide when the class is ready to continue. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Ask Bernard before moving on" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Ask Bernard before moving on" into a rule of thumb unless the knowledge base supports that claim. Source anchor: facebook.com [3]
+### 21. Review: Texican Settlement and Culture
+Say: Why this deserves a deeper look. This checkpoint reinforces understanding of Texican settlement patterns, cultural identity, Native relations, and political roles. Source boundary. Teach this point from jinxschwartz.com; lauriemooremoore.com; tshaonline.org; thestoryoftexas.com. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Recall key features of Texican settlements Identify cultural influences shaping Texican life Explain Texican interactions with Native tribes Summarize Texican role in Texas independence Worked example N/A Practice and transfer Write a brief summary covering these four areas based on what you’ve learned. Common mistake to prevent. Mixing up terms like Texican, Texian, and Texan in explanations. Source anchor: jinxschwartz.com; lauriemooremoore.com; tshaonline.org; thestoryoftexas.com [2] [7] [8] [9]
 Key points:
-- Pause for learner questions.
-- Use Bernard for a plain-language explanation or an alternate example.
-- Return to the slide when the class is ready to continue.
-Sources: s3
+- Recall key features of Texican settlements
+- Identify cultural influences shaping Texican life
+- Explain Texican interactions with Native tribes
+- Summarize Texican role in Texas independence
+Sources: s2, s7, s8, s9
 
-### 36. Move from class to practice
-Say: Why this deserves a deeper look. Move from class to practice connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from en.wikipedia.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Name where learners will use this skill next. Ask what they should check before acting alone. Tie the answer back to the source and objective. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Move from class to practice" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Move from class to practice" into a rule of thumb unless the knowledge base supports that claim. Source anchor: en.wikipedia.org [4]
+### 22. Applying Texican History to Modern Identity
+Say: Why this deserves a deeper look. Studying Texican history helps learners connect past cultural blending and political struggles to contemporary Texas identity and diversity. Source boundary. Teach this point from jinxschwartz.com; lauriemooremoore.com. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Texican heritage influences modern Texan culture Understanding history aids in appreciating cultural diversity Historical identity shapes regional pride and narratives Recognizing complexity counters oversimplified views Worked example Modern festivals celebrating Texican heritage showcase blended traditions. Practice and transfer Reflect on how Texican history might influence your view of Texas culture today. Common mistake to prevent. Ignoring historical roots when considering modern cultural identities. Source anchor: jinxschwartz.com; lauriemooremoore.com [2] [7]
 Key points:
-- Name where learners will use this skill next.
-- Ask what they should check before acting alone.
-- Tie the answer back to the source and objective.
-Sources: s4
+- Texican heritage influences modern Texan culture
+- Understanding history aids in appreciating cultural diversity
+- Historical identity shapes regional pride and narratives
+- Recognizing complexity counters oversimplified views
+Sources: s2, s7
+
+### 23. Connecting Texican History to Broader Themes
+Say: Why this deserves a deeper look. Texican history offers insights into broader historical themes like cultural blending, colonization effects, and grassroots political movements. Source boundary. Teach this point from jinxschwartz.com; lauriemooremoore.com. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Texican experience illustrates cultural hybridity in borderlands Shows impact of colonization and migration on identity Highlights role of local agency in political change Provides case study for frontier community development Worked example Compare Texican cultural blending with other borderland regions globally. Practice and transfer Identify parallels between Texican history and other frontier or borderland histories you know. Common mistake to prevent. Viewing Texican history as isolated rather than part of global patterns. Source anchor: jinxschwartz.com; lauriemooremoore.com [2] [7]
+Key points:
+- Texican experience illustrates cultural hybridity in borderlands
+- Shows impact of colonization and migration on identity
+- Highlights role of local agency in political change
+- Provides case study for frontier community development
+Sources: s2, s7
+
+### 24. Quiz: Texican Identity and Historical Role
+Say: Why this deserves a deeper look. This quiz evaluates learner mastery of Texican identity, settlement patterns, cultural interactions, and historical contributions. Source boundary. Teach this point from tea.texas.gov. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Multiple-choice and short answer questions Assess understanding of Texican culture, settlement, and politics Includes primary source interpretation Designed to reinforce key learning objectives Worked example N/A Practice and transfer Complete the quiz to test your knowledge and identify areas for review. Common mistake to prevent. Rushing through questions without reflecting on source material. Source anchor: tea.texas.gov [14]
+Key points:
+- Multiple-choice and short answer questions
+- Assess understanding of Texican culture, settlement, and politics
+- Includes primary source interpretation
+- Designed to reinforce key learning objectives
+Sources: s14
+
+### 25. Empresario Land Grants and Texican Settlements
+Say: Why this deserves a deeper look. The Mexican government granted land to empresarios, who then recruited settlers, including Texicans, to populate Texas. These land grants determined where Texicans established communities, often near rivers for agriculture and trade. Source boundary. Teach this point from lauriemooremoore.com; tshaonline.org; thestoryoftexas.com. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Mexican government used empresarios to encourage settlement Empresarios received land grants to recruit settlers Texicans settled mainly along rivers and fertile lands Land grants shaped community locations and sizes Worked example Stephen F. Austin, a famous empresario, brought hundreds of families to settle along the Brazos River, creating one of the earliest Texican communities. Practice and transfer Identify how the empresario system influenced where Texicans settled and why location mattered. Common mistake to prevent. Assuming all settlers chose land freely without government incentives or restrictions. Source anchor: lauriemooremoore.com; tshaonline.org; thestoryoftexas.com [7] [8] [9]
+Key points:
+- Mexican government used empresarios to encourage settlement
+- Empresarios received land grants to recruit settlers
+- Texicans settled mainly along rivers and fertile lands
+- Land grants shaped community locations and sizes
+Sources: s7, s8, s9
+
+### 26. Daily Life on the Texican Frontier
+Say: Why this deserves a deeper look. Texican daily life was shaped by frontier conditions, with families relying on agriculture and livestock. Social life centered around community gatherings and religious practices, reflecting Mexican cultural influences. Source boundary. Teach this point from lauriemooremoore.com; tshaonline.org; thestoryoftexas.com. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Texicans lived in rural, often isolated communities Economy based on farming, ranching, and trade Homes were simple, built from local materials Community events and church played central roles Worked example A typical Texican family might cultivate corn and raise cattle, attending church on Sundays and participating in local festivals. Practice and transfer Describe how frontier conditions influenced Texican economic and social activities. Common mistake to prevent. Overestimating urban development or infrastructure in early Texican settlements. Source anchor: lauriemooremoore.com; tshaonline.org; thestoryoftexas.com [7] [8] [9]
+Key points:
+- Texicans lived in rural, often isolated communities
+- Economy based on farming, ranching, and trade
+- Homes were simple, built from local materials
+- Community events and church played central roles
+Sources: s7, s8, s9
+
+### 27. Texican Relations with Native American Tribes
+Say: Why this deserves a deeper look. Texicans navigated a frontier shared with Native American tribes, leading to varied interactions. While conflicts occurred, trade and alliances were also common, impacting Texican survival and culture. Source boundary. Teach this point from lauriemooremoore.com; tshaonline.org; thestoryoftexas.com. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Texicans had complex relationships with local tribes Interactions ranged from trade to conflict Native tribes influenced Texican defense and diplomacy Some Texicans adopted Native customs and alliances Worked example Texican settlers traded livestock and goods with tribes like the Comanche, sometimes forming alliances against common enemies. Practice and transfer Explain how Texican-Native American relations affected settlement security and culture. Common mistake to prevent. Viewing Native American relations as solely hostile or ignoring their diplomatic complexity. Source anchor: lauriemooremoore.com; tshaonline.org; thestoryoftexas.com [7] [8] [9]
+Key points:
+- Texicans had complex relationships with local tribes
+- Interactions ranged from trade to conflict
+- Native tribes influenced Texican defense and diplomacy
+- Some Texicans adopted Native customs and alliances
+Sources: s7, s8, s9
+
+### 28. Blending Mexican and Anglo Cultures in Texican Society
+Say: Why this deserves a deeper look. Texican culture was a fusion of Mexican heritage and Anglo-American settler customs, creating a distinct identity that influenced social norms, language use, and political attitudes. Source boundary. Teach this point from jinxschwartz.com; lauriemooremoore.com; tshaonline.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Texicans combined Mexican traditions with Anglo settler influences Language, religion, and customs reflected this blend Cultural tensions sometimes arose over governance and law This blend shaped a unique Texican identity Worked example Texican communities celebrated Catholic holidays while adopting Anglo-style town meetings for local governance. Practice and transfer Identify examples of cultural blending and tensions within Texican society. Common mistake to prevent. Assuming Texican culture was purely Mexican or purely Anglo without recognizing the hybrid nature. Source anchor: jinxschwartz.com; lauriemooremoore.com; tshaonline.org [2] [7] [8]
+Key points:
+- Texicans combined Mexican traditions with Anglo settler influences
+- Language, religion, and customs reflected this blend
+- Cultural tensions sometimes arose over governance and law
+- This blend shaped a unique Texican identity
+Sources: s2, s7, s8
+
+### 29. Texicans in the Texas Revolution
+Say: Why this deserves a deeper look. Texicans were central actors in the Texas Revolution, advocating for self-governance and participating in battles that led to Texas’ independence from Mexico. Source boundary. Teach this point from jinxschwartz.com; tshaonline.org; archives.gov. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Texicans played key roles in political and military actions They sought independence from Mexican central government Texican leaders drafted and signed the Texas Declaration of Independence Their actions led to the creation of the Republic of Texas Worked example Texican figures like Sam Houston led military campaigns culminating in the victory at San Jacinto. Practice and transfer Explain the motivations and contributions of Texicans during the revolution. Common mistake to prevent. Attributing the revolution solely to Anglo settlers, ignoring Texican involvement. Source anchor: jinxschwartz.com; tshaonline.org; archives.gov [2] [15] [16]
+Key points:
+- Texicans played key roles in political and military actions
+- They sought independence from Mexican central government
+- Texican leaders drafted and signed the Texas Declaration of Independence
+- Their actions led to the creation of the Republic of Texas
+Sources: s2, s15, s16
+
+### 30. Examining the Texas Declaration of Independence
+Say: Why this deserves a deeper look. The Texas Declaration of Independence is a primary source revealing Texican perspectives on Mexican rule and their justification for revolution. Source boundary. Teach this point from archives.gov. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Document drafted and signed by Texican leaders in 1836 Outlined grievances against Mexican government Asserted Texican right to self-governance Reflects Texican political and cultural concerns Worked example The declaration cites issues like lack of representation and violation of rights, echoing Texican demands for autonomy. Practice and transfer Identify key grievances in the declaration that reflect Texican interests. Common mistake to prevent. Reading the declaration as a purely Anglo document without Texican influence. Source anchor: archives.gov [16]
+Key points:
+- Document drafted and signed by Texican leaders in 1836
+- Outlined grievances against Mexican government
+- Asserted Texican right to self-governance
+- Reflects Texican political and cultural concerns
+Sources: s16
+
+### 31. Tracing Texican Land Grants and Settlements
+Say: Why this deserves a deeper look. Analyzing land grant locations helps understand Texican settlement strategies shaped by geography, politics, and security concerns. Source boundary. Teach this point from lauriemooremoore.com; tshaonline.org; thestoryoftexas.com. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Land grants concentrated along rivers and fertile plains Settlements served as hubs for trade and defense Patterns influenced by Mexican policies and Native presence Mapping grants reveals strategic settlement choices Worked example Austin’s colony along the Brazos River provided access to water and fertile soil, critical for farming and transport. Practice and transfer Map key Texican settlements and explain their geographic advantages. Common mistake to prevent. Ignoring environmental and political factors in settlement placement. Source anchor: lauriemooremoore.com; tshaonline.org; thestoryoftexas.com [7] [8] [9]
+Key points:
+- Land grants concentrated along rivers and fertile plains
+- Settlements served as hubs for trade and defense
+- Patterns influenced by Mexican policies and Native presence
+- Mapping grants reveals strategic settlement choices
+Sources: s7, s8, s9
+
+### 32. Key Traits Defining Texican Identity
+Say: Why this deserves a deeper look. Texican identity is multifaceted, shaped by cultural blending, frontier experiences, and political activism during Texas’ formative years. Source boundary. Teach this point from jinxschwartz.com; lauriemooremoore.com; tshaonline.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Hybrid cultural heritage blending Mexican and Anglo elements Strong ties to land and frontier lifestyle Political engagement in Texas independence Adaptability to diverse social and environmental challenges Worked example Texicans maintained Catholic traditions while embracing Anglo political ideas like self-governance. Practice and transfer Summarize the main characteristics that distinguish Texicans from other groups. Common mistake to prevent. Oversimplifying Texican identity as monolithic or static. Source anchor: jinxschwartz.com; lauriemooremoore.com; tshaonline.org [2] [7] [8]
+Key points:
+- Hybrid cultural heritage blending Mexican and Anglo elements
+- Strong ties to land and frontier lifestyle
+- Political engagement in Texas independence
+- Adaptability to diverse social and environmental challenges
+Sources: s2, s7, s8
+
+### 33. Review: Texican Settlement and Culture
+Say: Why this deserves a deeper look. This review consolidates key points about how Texicans settled, lived, and developed their culture on the Texas frontier. Source boundary. Teach this point from lauriemooremoore.com; tshaonline.org; thestoryoftexas.com. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Empresario system guided Texican settlement locations Texican lifestyle combined farming, ranching, and community life Relations with Native tribes were complex and varied Cultural blending created a unique Texican identity Worked example Recall how Stephen F. Austin’s colony exemplified empresario-led settlement and cultural blending. Practice and transfer Reflect on how settlement patterns influenced Texican culture and identity. Common mistake to prevent. Separating cultural and settlement factors instead of seeing their interconnection. Source anchor: lauriemooremoore.com; tshaonline.org; thestoryoftexas.com [7] [8] [9]
+Key points:
+- Empresario system guided Texican settlement locations
+- Texican lifestyle combined farming, ranching, and community life
+- Relations with Native tribes were complex and varied
+- Cultural blending created a unique Texican identity
+Sources: s7, s8, s9
+
+### 34. Applying Texican History to Modern Identity
+Say: Why this deserves a deeper look. Exploring Texican history helps learners connect past cultural blending and political struggles to present-day Texas identity and diversity. Source boundary. Teach this point from lauriemooremoore.com; jinxschwartz.com. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Texican heritage influences contemporary Texas culture Understanding Texican roots enriches appreciation of diversity Historical identity shapes modern political and social views Recognizing hybrid identities fosters inclusion Worked example Modern Texan festivals celebrate both Mexican and Anglo traditions, reflecting Texican cultural legacy. Practice and transfer Consider how Texican history informs your understanding of Texas today. Common mistake to prevent. Viewing historical identities as irrelevant to modern culture. Source anchor: lauriemooremoore.com; jinxschwartz.com [7] [2]
+Key points:
+- Texican heritage influences contemporary Texas culture
+- Understanding Texican roots enriches appreciation of diversity
+- Historical identity shapes modern political and social views
+- Recognizing hybrid identities fosters inclusion
+Sources: s7, s2
+
+### 35. Connecting Texican History to Broader Themes
+Say: Why this deserves a deeper look. Studying Texicans provides insight into universal historical themes like cultural blending, frontier life, and independence movements. Source boundary. Teach this point from jinxschwartz.com; lauriemooremoore.com. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Texican experience reflects themes of cultural hybridity Frontier settlement challenges are common in history Political struggles for autonomy appear worldwide Understanding Texicans aids global historical perspective Worked example Similar cultural blending occurred in other borderlands, such as the American Southwest and Latin America. Practice and transfer Identify parallels between Texican history and other global historical contexts. Common mistake to prevent. Isolating Texican history without recognizing its broader relevance. Source anchor: jinxschwartz.com; lauriemooremoore.com [2] [7]
+Key points:
+- Texican experience reflects themes of cultural hybridity
+- Frontier settlement challenges are common in history
+- Political struggles for autonomy appear worldwide
+- Understanding Texicans aids global historical perspective
+Sources: s2, s7
+
+### 36. Quiz: Texican Identity and Historical Role
+Say: Why this deserves a deeper look. This quiz evaluates learner mastery of Texican history, focusing on identity, settlement patterns, and political contributions. Source boundary. Teach this point from tea.texas.gov. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Multiple-choice and short answer questions Assess understanding of Texican culture, settlement, and revolution Reinforce key concepts from previous slides Provide feedback to correct misconceptions Worked example Sample question: What was the role of empresarios in Texican settlement? Practice and transfer Complete the quiz to test your knowledge and identify areas for review. Common mistake to prevent. Guessing answers without recalling key concepts. Source anchor: tea.texas.gov [14]
+Key points:
+- Multiple-choice and short answer questions
+- Assess understanding of Texican culture, settlement, and revolution
+- Reinforce key concepts from previous slides
+- Provide feedback to correct misconceptions
+Sources: s14
 
 ### 37. Source checkpoint: quizlet.com
 Say: Why this deserves a deeper look. Source checkpoint: quizlet.com connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from quizlet.com. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Review what this source can safely support. Separate verified points from questions that need more evidence. Flag any statistic, date, or disputed point for corroboration. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Source checkpoint: quizlet.com" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Source checkpoint: quizlet.com" into a rule of thumb unless the knowledge base supports that claim. Source anchor: quizlet.com [5]
@@ -349,7 +369,7 @@ Key points:
 Sources: s9
 
 ### 42. Try it in context
-Say: Why this deserves a deeper look. Try it in context connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from libguides.fau.edu. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Apply the lesson to the terminal outcome: Identify who the Texicans were and describe their cultural background Require learners to cite what information they used. Ask what extra source would make the answer stronger. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Try it in context" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Try it in context" into a rule of thumb unless the knowledge base supports that claim. Source anchor: libguides.fau.edu [10]
+Say: Why this deserves a deeper look. Try it in context connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from oercommons.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Apply the lesson to the terminal outcome: Identify who the Texicans were and describe their cultural background Require learners to cite what information they used. Ask what extra source would make the answer stronger. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Try it in context" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Try it in context" into a rule of thumb unless the knowledge base supports that claim. Source anchor: oercommons.org [10]
 Key points:
 - Apply the lesson to the terminal outcome: Identify who the Texicans were and describe their cultural background
 - Require learners to cite what information they used.
@@ -357,7 +377,7 @@ Key points:
 Sources: s10
 
 ### 43. Add depth for experienced learners
-Say: Why this deserves a deeper look. Add depth for experienced learners connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from kwlibguides.lonestar.edu. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Name a more nuanced version of the same decision. Compare the ordinary case with a harder edge case. Ask what additional evidence would change the answer. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Add depth for experienced learners" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Add depth for experienced learners" into a rule of thumb unless the knowledge base supports that claim. Source anchor: kwlibguides.lonestar.edu [11]
+Say: Why this deserves a deeper look. Add depth for experienced learners connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from texaspsp.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Name a more nuanced version of the same decision. Compare the ordinary case with a harder edge case. Ask what additional evidence would change the answer. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Add depth for experienced learners" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Add depth for experienced learners" into a rule of thumb unless the knowledge base supports that claim. Source anchor: texaspsp.org [11]
 Key points:
 - Name a more nuanced version of the same decision.
 - Compare the ordinary case with a harder edge case.
@@ -373,15 +393,15 @@ Key points:
 Sources: s12
 
 ### 45. Move from class to practice
-Say: Why this deserves a deeper look. Move from class to practice connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from libguides.tamusa.edu. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Name where learners will use this skill next. Ask what they should check before acting alone. Tie the answer back to the source and objective. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Move from class to practice" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Move from class to practice" into a rule of thumb unless the knowledge base supports that claim. Source anchor: libguides.tamusa.edu [13]
+Say: Why this deserves a deeper look. Move from class to practice connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from gilderlehrman.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Name where learners will use this skill next. Ask what they should check before acting alone. Tie the answer back to the source and objective. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Move from class to practice" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Move from class to practice" into a rule of thumb unless the knowledge base supports that claim. Source anchor: gilderlehrman.org [13]
 Key points:
 - Name where learners will use this skill next.
 - Ask what they should check before acting alone.
 - Tie the answer back to the source and objective.
 Sources: s13
 
-### 46. Source checkpoint: guides.library.yale.edu
-Say: Why this deserves a deeper look. Source checkpoint: guides.library.yale.edu connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from guides.library.yale.edu. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Review what this source can safely support. Separate verified points from questions that need more evidence. Flag any statistic, date, or disputed point for corroboration. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Source checkpoint: guides.library.yale.edu" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Source checkpoint: guides.library.yale.edu" into a rule of thumb unless the knowledge base supports that claim. Source anchor: guides.library.yale.edu [14]
+### 46. Source checkpoint: tea.texas.gov
+Say: Why this deserves a deeper look. Source checkpoint: tea.texas.gov connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from tea.texas.gov. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Review what this source can safely support. Separate verified points from questions that need more evidence. Flag any statistic, date, or disputed point for corroboration. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Source checkpoint: tea.texas.gov" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Source checkpoint: tea.texas.gov" into a rule of thumb unless the knowledge base supports that claim. Source anchor: tea.texas.gov [14]
 Key points:
 - Review what this source can safely support.
 - Separate verified points from questions that need more evidence.
@@ -389,7 +409,7 @@ Key points:
 Sources: s14
 
 ### 47. Make the idea usable
-Say: Why this deserves a deeper look. Make the idea usable connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from guides.lib.berkeley.edu. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Connect this part of Introduction to the Texicans to the floor learner's starting point. Translate the key idea into plain language: Discuss the settlement patterns and lifestyle of the Texicans Ask learners to restate the idea before moving on. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Make the idea usable" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Make the idea usable" into a rule of thumb unless the knowledge base supports that claim. Source anchor: guides.lib.berkeley.edu [15]
+Say: Why this deserves a deeper look. Make the idea usable connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from tshaonline.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Connect this part of Introduction to the Texicans to the floor learner's starting point. Translate the key idea into plain language: Discuss the settlement patterns and lifestyle of the Texicans Ask learners to restate the idea before moving on. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Make the idea usable" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Make the idea usable" into a rule of thumb unless the knowledge base supports that claim. Source anchor: tshaonline.org [15]
 Key points:
 - Connect this part of Introduction to the Texicans to the floor learner's starting point.
 - Translate the key idea into plain language: Discuss the settlement patterns and lifestyle of the Texicans
@@ -397,7 +417,7 @@ Key points:
 Sources: s15
 
 ### 48. Walk through a worked example
-Say: Why this deserves a deeper look. Walk through a worked example connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from tsl.texas.gov. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Start with a realistic learner scenario. Model the first decision out loud. Show where the source supports the decision. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Walk through a worked example" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Walk through a worked example" into a rule of thumb unless the knowledge base supports that claim. Source anchor: tsl.texas.gov [16]
+Say: Why this deserves a deeper look. Walk through a worked example connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from archives.gov. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Start with a realistic learner scenario. Model the first decision out loud. Show where the source supports the decision. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Walk through a worked example" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Walk through a worked example" into a rule of thumb unless the knowledge base supports that claim. Source anchor: archives.gov [16]
 Key points:
 - Start with a realistic learner scenario.
 - Model the first decision out loud.
@@ -477,7 +497,7 @@ Key points:
 Sources: s9
 
 ### 58. Choose the next best move
-Say: Why this deserves a deeper look. Choose the next best move connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from libguides.fau.edu. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Present two or three plausible choices. Ask which choice best matches the objective. Use the answer to correct misunderstandings before the next section. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Choose the next best move" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Choose the next best move" into a rule of thumb unless the knowledge base supports that claim. Source anchor: libguides.fau.edu [10]
+Say: Why this deserves a deeper look. Choose the next best move connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from oercommons.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Present two or three plausible choices. Ask which choice best matches the objective. Use the answer to correct misunderstandings before the next section. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Choose the next best move" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Choose the next best move" into a rule of thumb unless the knowledge base supports that claim. Source anchor: oercommons.org [10]
 Key points:
 - Present two or three plausible choices.
 - Ask which choice best matches the objective.
@@ -485,7 +505,7 @@ Key points:
 Sources: s10
 
 ### 59. Avoid the tempting wrong turn
-Say: Why this deserves a deeper look. Avoid the tempting wrong turn connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from kwlibguides.lonestar.edu. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Name a mistake a new learner might make. Explain why the mistake is attractive. Give a safer replacement action or question. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Avoid the tempting wrong turn" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Avoid the tempting wrong turn" into a rule of thumb unless the knowledge base supports that claim. Source anchor: kwlibguides.lonestar.edu [11]
+Say: Why this deserves a deeper look. Avoid the tempting wrong turn connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from texaspsp.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Name a mistake a new learner might make. Explain why the mistake is attractive. Give a safer replacement action or question. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Avoid the tempting wrong turn" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Avoid the tempting wrong turn" into a rule of thumb unless the knowledge base supports that claim. Source anchor: texaspsp.org [11]
 Key points:
 - Name a mistake a new learner might make.
 - Explain why the mistake is attractive.
@@ -501,7 +521,7 @@ Key points:
 Sources: s12
 
 ### 61. Add depth for experienced learners
-Say: Why this deserves a deeper look. Add depth for experienced learners connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from libguides.tamusa.edu. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Name a more nuanced version of the same decision. Compare the ordinary case with a harder edge case. Ask what additional evidence would change the answer. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Add depth for experienced learners" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Add depth for experienced learners" into a rule of thumb unless the knowledge base supports that claim. Source anchor: libguides.tamusa.edu [13]
+Say: Why this deserves a deeper look. Add depth for experienced learners connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from gilderlehrman.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Name a more nuanced version of the same decision. Compare the ordinary case with a harder edge case. Ask what additional evidence would change the answer. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Add depth for experienced learners" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Add depth for experienced learners" into a rule of thumb unless the knowledge base supports that claim. Source anchor: gilderlehrman.org [13]
 Key points:
 - Name a more nuanced version of the same decision.
 - Compare the ordinary case with a harder edge case.
@@ -509,7 +529,7 @@ Key points:
 Sources: s13
 
 ### 62. Ask Bernard before moving on
-Say: Why this deserves a deeper look. Ask Bernard before moving on connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from guides.library.yale.edu. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Pause for learner questions. Use Bernard for a plain-language explanation or an alternate example. Return to the slide when the class is ready to continue. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Ask Bernard before moving on" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Ask Bernard before moving on" into a rule of thumb unless the knowledge base supports that claim. Source anchor: guides.library.yale.edu [14]
+Say: Why this deserves a deeper look. Ask Bernard before moving on connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from tea.texas.gov. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Pause for learner questions. Use Bernard for a plain-language explanation or an alternate example. Return to the slide when the class is ready to continue. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Ask Bernard before moving on" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Ask Bernard before moving on" into a rule of thumb unless the knowledge base supports that claim. Source anchor: tea.texas.gov [14]
 Key points:
 - Pause for learner questions.
 - Use Bernard for a plain-language explanation or an alternate example.
@@ -517,15 +537,15 @@ Key points:
 Sources: s14
 
 ### 63. Move from class to practice
-Say: Why this deserves a deeper look. Move from class to practice connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from guides.lib.berkeley.edu. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Name where learners will use this skill next. Ask what they should check before acting alone. Tie the answer back to the source and objective. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Move from class to practice" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Move from class to practice" into a rule of thumb unless the knowledge base supports that claim. Source anchor: guides.lib.berkeley.edu [15]
+Say: Why this deserves a deeper look. Move from class to practice connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from tshaonline.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Name where learners will use this skill next. Ask what they should check before acting alone. Tie the answer back to the source and objective. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Move from class to practice" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Move from class to practice" into a rule of thumb unless the knowledge base supports that claim. Source anchor: tshaonline.org [15]
 Key points:
 - Name where learners will use this skill next.
 - Ask what they should check before acting alone.
 - Tie the answer back to the source and objective.
 Sources: s15
 
-### 64. Source checkpoint: tsl.texas.gov
-Say: Why this deserves a deeper look. Source checkpoint: tsl.texas.gov connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from tsl.texas.gov. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Review what this source can safely support. Separate verified points from questions that need more evidence. Flag any statistic, date, or disputed point for corroboration. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Source checkpoint: tsl.texas.gov" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Source checkpoint: tsl.texas.gov" into a rule of thumb unless the knowledge base supports that claim. Source anchor: tsl.texas.gov [16]
+### 64. Source checkpoint: archives.gov
+Say: Why this deserves a deeper look. Source checkpoint: archives.gov connects directly to the class goal for Introduction to the Texicans. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. Source boundary. Teach this point from archives.gov. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising. What to emphasize Review what this source can safely support. Separate verified points from questions that need more evidence. Flag any statistic, date, or disputed point for corroboration. Worked example Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision. Practice and transfer Practice: have learners restate "Source checkpoint: archives.gov" in their own words, choose a next action, and name the evidence they would need before acting. Common mistake to prevent. Caution: do not let learners turn "Source checkpoint: archives.gov" into a rule of thumb unless the knowledge base supports that claim. Source anchor: archives.gov [16]
 Key points:
 - Review what this source can safely support.
 - Separate verified points from questions that need more evidence.
@@ -568,8 +588,7 @@ Key points:
 Sources: s1, s2, s3, s4
 
 ## Research Gaps to Resolve
-- Detailed demographic and sociocultural data on the Texican population, including ethnic diversity, family structures, and daily life practices, are insufficiently covered in the current sources.
-- Comprehensive analysis of Texican interactions with specific Native American tribes beyond general conflict and settlement impact is lacking.
-- More primary source narratives or personal accounts from Texicans themselves to provide first-person perspectives are limited or not explicitly identified.
-- Clarification on the transition from 'Texican' to 'Texian' to 'Texan' in terms of identity and legal status needs further primary source corroboration.
-- Quantitative data on settlement patterns, land ownership distribution, and economic activities of Texicans during the Mexican Texas period are not fully detailed.
+- Lack of primary source documents or firsthand accounts directly from Texicans themselves detailing their personal experiences, cultural practices, and perspectives during the Mexican Texas period.
+- Limited detailed information on the daily lifestyle, social structures, and cultural traditions unique to Texicans beyond their political and settlement roles.
+- Insufficient exploration of the internal diversity among Texicans, including distinctions by ethnicity, class, or origin within the group.
+- Minimal coverage of contested historical interpretations or differing scholarly views on Texican identity and their role in Texas history.

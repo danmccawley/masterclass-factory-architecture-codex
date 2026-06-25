@@ -16,16 +16,16 @@
     },
     "counts": {
       "total": 15,
-      "primary": 7,
-      "secondary": 8,
+      "primary": 2,
+      "secondary": 13,
       "unknown": 0
     },
     "score": {
-      "score": 89,
+      "score": 85,
       "band": "excellent",
       "components": {
         "coverage": 100,
-        "authority": 79,
+        "authority": 65,
         "recency": 75
       },
       "weights": {
@@ -35,14 +35,14 @@
       },
       "detail": {
         "total": 15,
-        "primary": 7,
-        "secondary": 8,
+        "primary": 2,
+        "secondary": 13,
         "required_total": 8,
         "required_primary": 2,
         "dated_sources": 0,
         "recency_floor_year": 2024
       },
-      "summary": "Knowledge-base score 89/100 (excellent): coverage 100, authority 79, recency 75. 15/8 sources, 7/2 primary."
+      "summary": "Knowledge-base score 85/100 (excellent): coverage 100, authority 65, recency 75. 15/8 sources, 2/2 primary."
     },
     "required_sources": 8,
     "required_primary_sources": 2,
@@ -97,5 +97,5 @@
       "deep_dive_expectation": "substantive deep dives where required by tier and setting"
     }
   ],
-  "lesson_sections": 9
+  "lesson_sections": 6
 }

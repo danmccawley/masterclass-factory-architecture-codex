@@ -61,29 +61,25 @@
     "kind": "lesson section",
     "claim": "Understanding the Term 'Texican'",
     "source_ids": [
-      "s3",
-      "s6",
-      "s7"
+      "s7",
+      "s2"
     ],
     "source_titles": [
-      "facebook.com",
-      "everything-everywhere.com",
-      "lauriemooremoore.com"
+      "lauriemooremoore.com",
+      "jinxschwartz.com"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
     "kind": "lesson section",
-    "claim": "Cultural Background of the Texicans",
+    "claim": "Settlement Patterns and Lifestyle of the Texicans",
     "source_ids": [
-      "s6",
       "s7",
       "s8",
       "s9"
     ],
     "source_titles": [
-      "everything-everywhere.com",
       "lauriemooremoore.com",
       "tshaonline.org",
       "thestoryoftexas.com"
@@ -93,12 +89,14 @@
   },
   {
     "kind": "lesson section",
-    "claim": "Settlement Patterns and Lifestyle",
+    "claim": "Cultural Background and Interactions",
     "source_ids": [
+      "s2",
       "s7",
       "s8"
     ],
     "source_titles": [
+      "jinxschwartz.com",
       "lauriemooremoore.com",
       "tshaonline.org"
     ],
@@ -107,96 +105,42 @@
   },
   {
     "kind": "lesson section",
-    "claim": "Texicans in Early Texas History",
+    "claim": "Texicans in Early Texas History and the Texas Revolution",
     "source_ids": [
       "s2",
-      "s7",
+      "s15",
       "s16"
     ],
     "source_titles": [
       "jinxschwartz.com",
-      "lauriemooremoore.com",
-      "tsl.texas.gov"
-    ],
-    "status": "mapped",
-    "finding": "Mapped to approved source-paper sections for source verification."
-  },
-  {
-    "kind": "lesson section",
-    "claim": "Primary Sources and Historical Evidence",
-    "source_ids": [
-      "s10",
-      "s11",
-      "s12",
-      "s13"
-    ],
-    "source_titles": [
-      "libguides.fau.edu",
-      "kwlibguides.lonestar.edu",
-      "shsulibraryguides.org",
-      "libguides.tamusa.edu"
-    ],
-    "status": "mapped",
-    "finding": "Mapped to approved source-paper sections for source verification."
-  },
-  {
-    "kind": "lesson section",
-    "claim": "Terminology and Identity Evolution: Texican to Texian to Texan",
-    "source_ids": [
-      "s3",
-      "s6",
-      "s7"
-    ],
-    "source_titles": [
-      "facebook.com",
-      "everything-everywhere.com",
-      "lauriemooremoore.com"
-    ],
-    "status": "mapped",
-    "finding": "Mapped to approved source-paper sections for source verification."
-  },
-  {
-    "kind": "lesson section",
-    "claim": "Indigenous Peoples and Texican Interactions",
-    "source_ids": [
-      "s8",
-      "s9"
-    ],
-    "source_titles": [
       "tshaonline.org",
-      "thestoryoftexas.com"
+      "archives.gov"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
     "kind": "lesson section",
-    "claim": "Challenges and Gaps in Texican Historical Records",
+    "claim": "Evolution of Texican Identity Post-Revolution",
     "source_ids": [
       "s7",
-      "s10",
       "s16"
     ],
     "source_titles": [
       "lauriemooremoore.com",
-      "libguides.fau.edu",
-      "tsl.texas.gov"
+      "archives.gov"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
     "kind": "lesson section",
-    "claim": "Summary and Review",
+    "claim": "Review and Knowledge Check",
     "source_ids": [
-      "s2",
-      "s7",
-      "s16"
+      "s14"
     ],
     "source_titles": [
-      "jinxschwartz.com",
-      "lauriemooremoore.com",
-      "tsl.texas.gov"
+      "tea.texas.gov"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
