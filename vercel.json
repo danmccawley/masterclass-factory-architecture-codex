@@ -1,6 +1,6 @@
 {
   "functions": {
-    "api/generate.js": { "maxDuration": 300 },
+    "api/generate.js": { "maxDuration": 300, "includeFiles": "template/**" },
     "api/knowledge-base.js": { "maxDuration": 120 },
     "api/remediate.js": { "maxDuration": 120 }
   },
