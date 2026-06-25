@@ -4,10 +4,10 @@ Class tier: Standard class
 Bernard support: ask Bernard for clarification, examples, translation, quiz help, or a deeper explanation. Bernard must stay inside the approved source boundary.
 
 ## Learning Objectives
-- TLO: Identify who the Texicans were and describe their cultural background, historical role, and significance in early Texas history.
-- ELO: Define the term 'Texican' including its etymology and origins in early 19th-century Spanish Texas.
-- ELO: Discuss the settlement patterns, frontier lifestyle, and cultural identity of the Texicans within Spanish and Mexican Texas.
-- ELO: Explain the role and contributions of the Texicans in key historical events such as Mexico's independence movement, the Texas Revolution, and the Republic of Texas era.
+- TLO: Identify who the Texicans were and describe their cultural background within the context of early Texas history.
+- ELO: Define the term 'Texican' and distinguish it from related terms such as 'Texan' and 'Texasian' based on historical and cultural sources.
+- ELO: Discuss the settlement patterns, geographic context, and lifestyle characteristics of the Texicans in early 19th-century Texas.
+- ELO: Explain the political and military roles of the Texicans during the transition from Spanish to Mexican control and the Texas Revolution, including their divided loyalties.
 
 ## Course Blueprint
 - 1. Orientation and learner baseline (5 slides): Set the purpose, audience floor, assumptions, and mastery target.
@@ -18,14 +18,14 @@ Bernard support: ask Bernard for clarification, examples, translation, quiz help
 - 6. Assessment, transfer, and works cited (12 slides): Prove mastery, capture participation, and close with source transparency.
 
 ## Key Terms
-- texican: A cultural group originating from early 19th-century Spanish Texas settlers, combining Spanish colonial roots and Mexican national identity, involved in conflicts between Mexico and Spain and later tensions with Anglo-American settlers. Why it matters: Understanding 'Texican' clarifies the distinct cultural and historical identity of early Texas inhabitants who shaped the region's development and conflicts.
-- texian: A term historically used to describe Anglo-American settlers in Texas during the early 19th century, especially those involved in the Texas Revolution against Mexico. Why it matters: Distinguishing 'Texian' from 'Texican' helps learners grasp the cultural and political divisions in early Texas history.
-- texas revolution: The 1835-1836 armed conflict between Texan settlers (including Texicans and Texians) and the Mexican government, resulting in Texas gaining independence and forming the Republic of Texas. Why it matters: Knowing about the Texas Revolution is essential to understanding the pivotal role Texicans played in shaping Texas’s political future.
-- republic of texas: The independent nation established in 1836 after Texas won independence from Mexico, lasting until Texas joined the United States in 1845. Why it matters: The Republic period highlights Texican contributions to governance and identity during Texas’s early nationhood.
-- spanish texas: The territory of Texas under Spanish colonial rule before Mexican independence, where early Texican settlers established frontier communities. Why it matters: Recognizing Spanish Texas provides context for Texican origins and cultural influences.
-- anglo-american settlers: English-speaking settlers from the United States who migrated to Texas in the early 19th century, often creating cultural and political tensions with Texicans. Why it matters: Understanding this group explains the cultural conflicts that shaped Texican identity and Texas history.
-- etymology of 'texican': Derived from Native American words meaning 'friend' or 'ally,' the term evolved through Spanish and Mexican usage to describe early Texas settlers of Hispanic heritage. Why it matters: Knowing the etymology helps clarify the cultural roots and evolving identity of Texicans.
-- primary sources: Original historical documents, letters, artifacts, and records from the time of the Texicans, used to study their history and culture directly. Why it matters: Accessing primary sources is crucial for accurate, evidence-based understanding of Texican life and contributions.
+- texican: A historical term referring to residents of Texas in the early 19th century who had cultural ties to both Mexican and Anglo-American heritage, distinct from 'Texan' or 'Texasian'. Why it matters: Understanding 'Texican' clarifies the complex cultural identity and loyalties of early Texas settlers during periods of Spanish, Mexican, and American influence.
+- texan: A general term for residents of Texas, often used in modern contexts without the specific cultural and historical nuances associated with 'Texican'. Why it matters: Distinguishing 'Texan' from 'Texican' helps avoid conflating broad state identity with the unique frontier culture of early Texas settlers.
+- texasian: A less commonly used term sometimes applied to Texas residents, often conflated with 'Texican' and 'Texan' but lacking clear historical definition. Why it matters: Recognizing 'Texasian' as distinct prevents confusion in historical discussions about Texas identity and cultural heritage.
+- texas revolution: The armed conflict (1835–1836) between Texican settlers and the Mexican government that led to the independence of Texas from Mexico. Why it matters: The revolution was a pivotal event shaping Texican political and military roles and their divided loyalties during early Texas history.
+- spanish texas: The territory of Texas under Spanish colonial rule before Mexican independence, characterized by Spanish settlements and governance. Why it matters: Spanish Texas provides the cultural and political backdrop for the origins of the Texican community.
+- mexican texas: The period when Texas was governed by Mexico after its independence from Spain, marked by political changes and tensions leading to the Texas Revolution. Why it matters: Mexican Texas shaped the Texicans' experiences of governance, cultural blending, and conflict.
+- settlement patterns: The geographic distribution and community organization of Texican settlers, primarily in regions like the Gulf Coastal Plains and Great Plains. Why it matters: Settlement patterns influenced the Texicans' lifestyle, economy, and interactions with other cultural groups.
+- primary sources: Original historical documents such as letters, legal records, and newspapers that provide firsthand evidence of Texican life and history. Why it matters: Engaging with primary sources allows learners to analyze authentic perspectives and deepen understanding of Texican identity and roles.
 - terminal learning objective: The main capability learners should demonstrate by the end of the class. Why it matters: It anchors the lesson around outcomes instead of loose topic coverage.
 - enabling learning objective: A supporting skill or idea learners need before they can meet the terminal objective. Why it matters: It turns a big outcome into teachable steps.
 - source verification: An independent check that claims and citations are supported by the approved corpus. Why it matters: It keeps fabricated or unsupported material out of the class.
