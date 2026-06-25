@@ -15,8 +15,8 @@
       "standard": "Solid internal training with enough evidence for reliable instruction."
     },
     "counts": {
-      "total": 16,
-      "primary": 8,
+      "total": 15,
+      "primary": 7,
       "secondary": 8,
       "unknown": 0
     },
@@ -25,7 +25,7 @@
       "band": "excellent",
       "components": {
         "coverage": 100,
-        "authority": 80,
+        "authority": 79,
         "recency": 75
       },
       "weights": {
@@ -34,15 +34,15 @@
         "recency": 0.2
       },
       "detail": {
-        "total": 16,
-        "primary": 8,
+        "total": 15,
+        "primary": 7,
         "secondary": 8,
         "required_total": 8,
         "required_primary": 2,
         "dated_sources": 0,
         "recency_floor_year": 2024
       },
-      "summary": "Knowledge-base score 89/100 (excellent): coverage 100, authority 80, recency 75. 16/8 sources, 8/2 primary."
+      "summary": "Knowledge-base score 89/100 (excellent): coverage 100, authority 79, recency 75. 15/8 sources, 7/2 primary."
     },
     "required_sources": 8,
     "required_primary_sources": 2,
@@ -97,5 +97,5 @@
       "deep_dive_expectation": "substantive deep dives where required by tier and setting"
     }
   ],
-  "lesson_sections": 7
+  "lesson_sections": 9
 }

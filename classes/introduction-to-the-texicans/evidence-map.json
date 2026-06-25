@@ -61,43 +61,13 @@
     "kind": "lesson section",
     "claim": "Understanding the Term 'Texican'",
     "source_ids": [
-      "s7",
-      "s2"
-    ],
-    "source_titles": [
-      "lauriemooremoore.com",
-      "jinxschwartz.com"
-    ],
-    "status": "mapped",
-    "finding": "Mapped to approved source-paper sections for source verification."
-  },
-  {
-    "kind": "lesson section",
-    "claim": "Settlement Patterns and Lifestyle of the Texicans",
-    "source_ids": [
-      "s7",
-      "s8",
-      "s9",
-      "s2"
-    ],
-    "source_titles": [
-      "lauriemooremoore.com",
-      "tshaonline.org",
-      "thestoryoftexas.com",
-      "jinxschwartz.com"
-    ],
-    "status": "mapped",
-    "finding": "Mapped to approved source-paper sections for source verification."
-  },
-  {
-    "kind": "lesson section",
-    "claim": "Texicans’ Role in Early Texas History",
-    "source_ids": [
-      "s2",
+      "s3",
+      "s6",
       "s7"
     ],
     "source_titles": [
-      "jinxschwartz.com",
+      "facebook.com",
+      "everything-everywhere.com",
       "lauriemooremoore.com"
     ],
     "status": "mapped",
@@ -105,25 +75,89 @@
   },
   {
     "kind": "lesson section",
-    "claim": "Primary Sources and Historical Evidence on Texicans",
+    "claim": "Cultural Background of the Texicans",
     "source_ids": [
-      "s10",
-      "s11",
-      "s12",
-      "s15"
+      "s6",
+      "s7",
+      "s8",
+      "s9"
     ],
     "source_titles": [
-      "libguides.fau.edu",
-      "kwlibguides.lonestar.edu",
-      "legacy.education.texashistory.unt.edu",
-      "guides.library.yale.edu"
+      "everything-everywhere.com",
+      "lauriemooremoore.com",
+      "tshaonline.org",
+      "thestoryoftexas.com"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
     "kind": "lesson section",
-    "claim": "Interactions with Native American Groups",
+    "claim": "Settlement Patterns and Lifestyle",
+    "source_ids": [
+      "s7",
+      "s8"
+    ],
+    "source_titles": [
+      "lauriemooremoore.com",
+      "tshaonline.org"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Texicans in Early Texas History",
+    "source_ids": [
+      "s2",
+      "s7",
+      "s16"
+    ],
+    "source_titles": [
+      "jinxschwartz.com",
+      "lauriemooremoore.com",
+      "tsl.texas.gov"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Primary Sources and Historical Evidence",
+    "source_ids": [
+      "s10",
+      "s11",
+      "s12",
+      "s13"
+    ],
+    "source_titles": [
+      "libguides.fau.edu",
+      "kwlibguides.lonestar.edu",
+      "shsulibraryguides.org",
+      "libguides.tamusa.edu"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Terminology and Identity Evolution: Texican to Texian to Texan",
+    "source_ids": [
+      "s3",
+      "s6",
+      "s7"
+    ],
+    "source_titles": [
+      "facebook.com",
+      "everything-everywhere.com",
+      "lauriemooremoore.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Indigenous Peoples and Texican Interactions",
     "source_ids": [
       "s8",
       "s9"
@@ -137,32 +171,32 @@
   },
   {
     "kind": "lesson section",
-    "claim": "Evolving Identities: From Texican to Texian to Texan",
+    "claim": "Challenges and Gaps in Texican Historical Records",
     "source_ids": [
       "s7",
-      "s2"
+      "s10",
+      "s16"
     ],
     "source_titles": [
       "lauriemooremoore.com",
-      "jinxschwartz.com"
+      "libguides.fau.edu",
+      "tsl.texas.gov"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
     "kind": "lesson section",
-    "claim": "Challenges and Gaps in Texican Historical Research",
+    "claim": "Summary and Review",
     "source_ids": [
-      "s1",
       "s2",
-      "s3",
-      "s4"
+      "s7",
+      "s16"
     ],
     "source_titles": [
-      "Class setup, learner profile, and research rules",
       "jinxschwartz.com",
-      "facebook.com",
-      "en.wikipedia.org"
+      "lauriemooremoore.com",
+      "tsl.texas.gov"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."

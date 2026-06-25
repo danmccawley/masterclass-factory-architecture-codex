@@ -1,12 +1,12 @@
 # Quiz Answer Key
 
 ## Question 1
-What is the origin of the term 'Texican'?
-Answer: It referred to Mexican settlers living in Texas during the early 1800s
-Why: The term 'Texican' originally described Mexican settlers in Texas during the early 19th century, distinguishing them from Anglo settlers and later identities.
+Which of the following best defines the term 'Texican' in its original historical context?
+Answer: A Spanish-speaking resident of Mexican Texas with cultural ties to Mexico
+Why: The term 'Texican' originally referred to Spanish-speaking residents of Mexican Texas who had cultural and historical ties to Mexico, distinguishing them from Anglo settlers.
 
 ## Question 2
-Explain the role of Texicans in early Texas history and how their cultural background influenced their actions during the Texas Revolution.
+Explain how the settlement patterns and lifestyle of the Texicans were influenced by Mexican land grant policies and empresario contracts.
 Answer: undefined
-Rubric: Answer should identify Texicans as Mexican settlers in Texas, describe their cultural ties to Mexico, and explain their complex loyalties and contributions during the Texas Revolution, supported by examples from primary sources.
-Sample: Texicans were Mexican settlers in Texas who maintained cultural ties to Mexico but also adapted to frontier life. During the Texas Revolution, many Texicans had divided loyalties, with some supporting independence and others remaining loyal to Mexico. Their unique cultural background influenced their political and social roles in early Texas history.
+Rubric: A strong answer should describe the role of Mexican government land grants and empresario contracts in encouraging settlement, mention family and community life, and discuss frontier challenges faced by Texicans.
+Sample: Mexican land grant policies and empresario contracts, such as those given to Stephen F. Austin, facilitated the settlement of Texicans by providing legal land ownership and encouraging families to establish communities. These policies shaped their lifestyle by promoting agriculture and ranching, while settlers faced challenges like conflicts with Native Americans and adapting to frontier conditions.

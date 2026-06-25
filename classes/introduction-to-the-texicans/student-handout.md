@@ -18,16 +18,16 @@ Bernard support: ask Bernard for clarification, examples, translation, quiz help
 - 6. Assessment, transfer, and works cited (12 slides): Prove mastery, capture participation, and close with source transparency.
 
 ## Key Terms
-- texican: An Anglo-American settler living in Mexican Texas between approximately 1820 and 1836, during which Texas was part of Mexico and merged with Coahuila as Coahuila y Texas. Texicans were invited by the Mexican government to settle the region, often receiving land grants and pledging loyalty to Mexico. Why it matters: Understanding 'Texican' clarifies the distinct cultural and political identity of early settlers who shaped Texas before its independence, differentiating them from later Anglo-American Texans.
-- mexican texas: The period and region from 1821 to 1836 when Texas was a territory within Mexico, merged administratively with Coahuila as Coahuila y Texas, governed under Mexican law and policies. Why it matters: This context is essential to grasp the political environment Texicans lived in, including land grant policies and loyalty requirements.
-- land grant: A parcel of land given by the Mexican government to settlers, often managed through empresarios like Stephen F. Austin, as an incentive to populate and develop Texas. Why it matters: Land grants shaped settlement patterns and the economic foundation of Texican communities, influencing their lifestyle and relations with Native Americans.
-- empresario: An individual authorized by the Mexican government to recruit settlers and manage land grants in Texas, such as Stephen F. Austin. Why it matters: Empresarios were key facilitators of Texican settlement and helped organize communities under Mexican authority.
-- texas revolution: The armed conflict from 1835 to 1836 in which Texicans and other settlers fought for independence from Mexico, leading to the creation of the Republic of Texas. Why it matters: Texicans played a significant role in this pivotal event, and understanding it explains their shifting loyalties and cultural identity.
-- texian: A term used primarily during the Republic of Texas era (1836–1845) to describe residents of Texas, including former Texicans and other settlers. Why it matters: Recognizing the term 'Texian' helps trace the evolution of regional identity after independence from Mexico.
-- texan: The term that became standard after Texas joined the United States in 1845, referring broadly to residents of Texas regardless of origin. Why it matters: Understanding this term’s adoption highlights political and cultural shifts from Mexican Texas to U.S. statehood.
-- native american tribes in texas: Indigenous groups such as the Caddo and Comanche who inhabited Texas and interacted with Texicans through trade, conflict, and negotiation. Why it matters: Their presence influenced Texican settlement patterns and frontier dynamics, making their perspectives vital to a full historical understanding.
-- coahuila y texas: The Mexican state formed by merging Texas and Coahuila, governing Texas during the Mexican Texas period. Why it matters: This political unit framed the legal and administrative context for Texican settlers.
-- primary sources: Original documents from the Texican era such as government records, land grants, and personal letters preserved in archives and libraries. Why it matters: Primary sources provide authentic evidence for studying Texican history and require critical analysis to understand context and bias.
+- texican: An Anglo-American settler living in Mexican Texas between 1820 and 1836, who settled under Mexican governance and land grant policies, often pledging loyalty to Mexico and adopting Christianity. Why it matters: Understanding 'Texican' clarifies the cultural and political identity of early settlers in Texas before it became part of the United States, highlighting their role in shaping Texas history.
+- mexican texas: The period and region from 1821 to 1836 when Texas was governed by Mexico, during which settlement was encouraged through land grants and empresario contracts. Why it matters: Knowing about Mexican Texas provides context for the legal and social environment in which Texicans lived and settled.
+- empresario contract: A land grant agreement under Mexican law allowing individuals, like Stephen F. Austin, to settle families in Texas in exchange for recruiting settlers and managing the land. Why it matters: Empresario contracts were key to the organized settlement of Texas and the growth of the Texican population.
+- texian: A term that evolved from 'Texican' used during and after the Texas Revolution to describe residents of Texas, often emphasizing Anglo-American settlers' identity distinct from Mexican rule. Why it matters: Distinguishing 'Texian' from 'Texican' helps track shifts in political allegiance and identity during Texas's transition from Mexican territory to independent republic.
+- texas revolution: The 1835–1836 conflict in which Texicans and other settlers fought against Mexican authority to establish the Republic of Texas. Why it matters: The revolution was a pivotal event involving Texicans that shaped Texas's independence and future statehood.
+- indigenous peoples of texas: Native American tribes such as the Caddo and Comanche who inhabited Texas and influenced settlement patterns and conflicts with Texicans. Why it matters: Recognizing indigenous influence is essential to understanding the challenges and interactions Texicans faced on the frontier.
+- loyalty to mexico: The requirement for Texicans to swear allegiance to Mexico and adopt Christianity, typically Catholicism, as a condition for settlement during Mexican Texas. Why it matters: This loyalty shaped Texican legal status and cultural obligations, though enforcement varied, affecting their identity and relations with Mexican authorities.
+- primary sources: Original historical documents such as government records, treaties, letters, and personal narratives from the Texas and Mexican periods. Why it matters: Primary sources provide direct evidence about Texican history and are crucial for accurate teaching and understanding of contested historical points.
+- texan: The modern term for residents of Texas, which evolved from 'Texican' and 'Texian' as Texas became a U.S. state and developed its own identity. Why it matters: Understanding this evolution helps learners grasp how regional identity changed over time and the legacy of early settlers.
+- settlement patterns: The ways in which Texicans established communities in Texas, influenced by land grants, indigenous presence, and geopolitical factors. Why it matters: Studying settlement patterns reveals how Texicans adapted to frontier life and shaped Texas's demographic and cultural landscape.
 - terminal learning objective: The main capability learners should demonstrate by the end of the class. Why it matters: It anchors the lesson around outcomes instead of loose topic coverage.
 - enabling learning objective: A supporting skill or idea learners need before they can meet the terminal objective. Why it matters: It turns a big outcome into teachable steps.
 - source verification: An independent check that claims and citations are supported by the approved corpus. Why it matters: It keeps fabricated or unsupported material out of the class.
@@ -44,12 +44,11 @@ Bernard support: ask Bernard for clarification, examples, translation, quiz help
 - 9. thestoryoftexas.com
 - 10. libguides.fau.edu
 - 11. kwlibguides.lonestar.edu
-- 12. legacy.education.texashistory.unt.edu
-- 13. shsulibraryguides.org
-- 14. libguides.tamusa.edu
-- 15. guides.library.yale.edu
-- 16. guides.lib.berkeley.edu
-- 17. tsl.texas.gov
+- 12. shsulibraryguides.org
+- 13. libguides.tamusa.edu
+- 14. guides.library.yale.edu
+- 15. guides.lib.berkeley.edu
+- 16. tsl.texas.gov
 
 ## Source Suggestion
 At the end of the class, use the source-suggestion button to recommend additional sources for the knowledge base.
