@@ -1,12 +1,12 @@
 # Quiz Answer Key
 
 ## Question 1
-What is the origin of the term 'Texican'?
-Answer: A blend of Anglo-American and Tejano cultural identities
-Why: The term 'Texican' reflects the cultural blending of Anglo-American settlers and Tejanos in early Texas.
+Which language does the term 'Texican' derive from, and what does it mean?
+Answer: Caddo, meaning 'friend'
+Why: The term 'Texican' originates from the Caddo word 'táysha' meaning 'friend', reflecting indigenous roots rather than Spanish or English origins.
 
 ## Question 2
-Explain how the settlement patterns of the Texicans were influenced by geography and cultural exchange.
+Explain how the geography of Texas influenced the settlement patterns and lifestyle of the Texicans.
 Answer: undefined
-Rubric: A strong answer describes the role of Spanish missions, Mexican governance, geographic features like rivers and plains, and cultural blending in shaping where and how Texicans lived.
-Sample: Texicans settled near Spanish missions and fertile lands influenced by Mexican rule, blending Anglo and Tejano cultures, and adapting to Texas geography such as rivers and plains.
+Rubric: A complete answer should describe how Texas's diverse regions (plains, rivers, coasts) shaped where Texicans settled, their economic activities like ranching and farming, and how these factors influenced their community life and cultural blending.
+Sample: Texas's geography, including fertile river valleys and open plains, allowed Texicans to establish ranches and farms. The environment influenced their economy and lifestyle, leading to a blend of indigenous, Spanish, and Anglo-American cultural practices.

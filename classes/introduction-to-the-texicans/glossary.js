@@ -1,36 +1,36 @@
 /* Generated glossary. term -> {d, r}. */
 window.GLOSSARY = {
   "texican": {
-    "d": "A historical term referring to early settlers of Texas who embodied a cultural blend of Anglo-American and Tejano (Mexican-Texan) influences.",
-    "r": "Understanding 'Texican' is key to grasping the unique cultural identity and heritage that shaped early Texas society and its diverse population."
+    "d": "A cultural group historically referring to early settlers of Texas, including Anglo-American colonists and Tejanos (Mexican Texans). The term originates from the Caddo word 'táysha' meaning 'friend' or 'ally.'",
+    "r": "Understanding 'Texican' clarifies the blended cultural identity foundational to Texas history and highlights the indigenous roots of the region's name."
   },
   "tejano": {
-    "d": "A person of Mexican descent born or living in Texas, often associated with the Spanish-speaking communities before and during Texas' early history.",
-    "r": "Tejanos represent a foundational cultural group whose traditions and interactions influenced Texican identity and Texas history."
+    "d": "A Mexican Texan, typically a descendant of Spanish-speaking settlers in Texas before it became part of the United States.",
+    "r": "Recognizing Tejanos is essential to appreciating the multicultural makeup of early Texas and the Texican identity."
   },
   "texas revolution": {
-    "d": "The armed conflict (1835–1836) between Texan settlers and the Mexican government that led to Texas gaining independence and forming the Republic of Texas.",
-    "r": "The revolution was a pivotal event where Texicans played significant roles, shaping the political future and identity of Texas."
+    "d": "The 1835–1836 conflict in which Texicans fought for independence from Mexico, leading to the creation of the Republic of Texas.",
+    "r": "The revolution was a pivotal event defining Texican political and cultural roles in shaping Texas's future."
   },
   "republic of texas": {
-    "d": "An independent nation from 1836 to 1845 established after Texas won independence from Mexico, before joining the United States.",
-    "r": "The Republic era reflects Texican political aspirations and governance, marking a distinct period in Texas history."
-  },
-  "spanish missions": {
-    "d": "Religious and military outposts established by Spain in Texas to spread Christianity and secure territorial claims during colonial times.",
-    "r": "These missions influenced Texican settlement patterns and cultural exchanges between indigenous peoples, Mexicans, and settlers."
+    "d": "An independent nation from 1836 to 1845 formed after Texas gained independence from Mexico, before joining the United States.",
+    "r": "The Republic era represents a key period when Texicans established self-governance and a distinct political identity."
   },
   "treaty of guadalupe hidalgo": {
-    "d": "The 1848 treaty that ended the Mexican-American War, defining the U.S.-Mexico border and impacting territorial claims including Texas.",
-    "r": "This treaty legally shaped Texican identity and land ownership by formalizing borders and sovereignty."
+    "d": "The 1848 treaty that ended the Mexican-American War, ceded Texas and other territories to the U.S., and set the Rio Grande as Texas's border.",
+    "r": "This treaty reshaped Texican political status and territorial boundaries, impacting their identity and governance."
   },
-  "anglo-american settlers": {
-    "d": "English-speaking settlers from the United States who migrated to Texas during Mexican rule and contributed to its cultural and political landscape.",
-    "r": "Their migration and interactions with Tejanos helped form the Texican cultural blend and influenced Texas' path to independence."
+  "caddo language": {
+    "d": "The language of the indigenous Caddo people, from which the word 'Texican' derives, specifically the term 'táysha' meaning 'friend' or 'ally.'",
+    "r": "Knowing the Caddo linguistic roots highlights the indigenous influence on Texas's cultural and place names."
+  },
+  "settlement patterns": {
+    "d": "The ways in which Texicans established communities influenced by Texas's diverse geography, including ranching and farming economies.",
+    "r": "Settlement patterns explain how environment shaped Texican lifestyles and social structures."
   },
   "texas essential knowledge and skills (teks)": {
-    "d": "The official Texas state standards outlining educational objectives, including those related to Texas history and culture.",
-    "r": "TEKS provides a primary framework for teaching about Texicans and their historical context in Texas education."
+    "d": "The official educational standards outlining learning objectives for Texas history, including the study of Texican culture and history.",
+    "r": "TEKS provides a primary framework ensuring accurate and comprehensive teaching about Texicans."
   },
   "terminal learning objective": {
     "d": "The main capability learners should demonstrate by the end of the class.",
