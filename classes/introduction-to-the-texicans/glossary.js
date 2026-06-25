@@ -1,36 +1,44 @@
 /* Generated glossary. term -> {d, r}. */
 window.GLOSSARY = {
   "texican": {
-    "d": "An Anglo-American settler living in Mexican Texas between 1820 and 1836, invited by the Mexican government to settle the region under conditions such as loyalty oaths and land grants.",
-    "r": "Understanding 'Texican' clarifies the identity and political status of early settlers before Texas independence, distinguishing them from later Anglo settlers and Mexicans."
-  },
-  "texian": {
-    "d": "A resident of the Republic of Texas from 1836 to 1845, after Texas declared independence from Mexico but before joining the United States.",
-    "r": "Differentiating 'Texian' from 'Texican' helps track political changes and shifting identities during Texas's transition from Mexican territory to independent republic."
-  },
-  "texan": {
-    "d": "A person living in Texas after it became a U.S. state in 1845, encompassing all residents regardless of origin.",
-    "r": "The term 'Texan' reflects the modern political status and broader identity of Texas residents, distinct from earlier historical periods."
+    "d": "An Anglo-American settler living in Mexican Texas between approximately 1820 and 1836, during which Texas was part of Mexico and merged with Coahuila as Coahuila y Texas. Texicans were invited by the Mexican government to settle the region, often receiving land grants and pledging loyalty to Mexico.",
+    "r": "Understanding 'Texican' clarifies the distinct cultural and political identity of early settlers who shaped Texas before its independence, differentiating them from later Anglo-American Texans."
   },
   "mexican texas": {
-    "d": "The period and region when Texas was part of Mexico, roughly from 1821 (Mexican independence) to 1836 (Texas Revolution).",
-    "r": "This context is essential to understand the legal and cultural framework under which Texicans settled and lived."
+    "d": "The period and region from 1821 to 1836 when Texas was a territory within Mexico, merged administratively with Coahuila as Coahuila y Texas, governed under Mexican law and policies.",
+    "r": "This context is essential to grasp the political environment Texicans lived in, including land grant policies and loyalty requirements."
   },
   "land grant": {
-    "d": "A parcel of land given by the Mexican government to settlers, including Texicans, as an incentive to populate and develop Texas.",
-    "r": "Land grants shaped settlement patterns and economic life, influencing Texican loyalty and conflicts."
+    "d": "A parcel of land given by the Mexican government to settlers, often managed through empresarios like Stephen F. Austin, as an incentive to populate and develop Texas.",
+    "r": "Land grants shaped settlement patterns and the economic foundation of Texican communities, influencing their lifestyle and relations with Native Americans."
   },
-  "comanche": {
-    "d": "A Native American tribe that inhabited parts of Texas and frequently interacted, often conflictually, with Texican settlers.",
-    "r": "Recognizing Comanche relations highlights the frontier challenges and cultural dynamics Texicans faced."
+  "empresario": {
+    "d": "An individual authorized by the Mexican government to recruit settlers and manage land grants in Texas, such as Stephen F. Austin.",
+    "r": "Empresarios were key facilitators of Texican settlement and helped organize communities under Mexican authority."
   },
   "texas revolution": {
-    "d": "The armed conflict from 1835 to 1836 in which Texicans and other settlers fought for independence from Mexico.",
-    "r": "The revolution was a pivotal event defining Texican political roles and identity shifts."
+    "d": "The armed conflict from 1835 to 1836 in which Texicans and other settlers fought for independence from Mexico, leading to the creation of the Republic of Texas.",
+    "r": "Texicans played a significant role in this pivotal event, and understanding it explains their shifting loyalties and cultural identity."
   },
-  "caddo": {
-    "d": "An indigenous people of East Texas whose language contributed the word 'táysha,' meaning friend or ally, from which the name 'Texas' is derived.",
-    "r": "Understanding indigenous influence on Texas’s name enriches comprehension of regional history and cultural roots."
+  "texian": {
+    "d": "A term used primarily during the Republic of Texas era (1836–1845) to describe residents of Texas, including former Texicans and other settlers.",
+    "r": "Recognizing the term 'Texian' helps trace the evolution of regional identity after independence from Mexico."
+  },
+  "texan": {
+    "d": "The term that became standard after Texas joined the United States in 1845, referring broadly to residents of Texas regardless of origin.",
+    "r": "Understanding this term’s adoption highlights political and cultural shifts from Mexican Texas to U.S. statehood."
+  },
+  "native american tribes in texas": {
+    "d": "Indigenous groups such as the Caddo and Comanche who inhabited Texas and interacted with Texicans through trade, conflict, and negotiation.",
+    "r": "Their presence influenced Texican settlement patterns and frontier dynamics, making their perspectives vital to a full historical understanding."
+  },
+  "coahuila y texas": {
+    "d": "The Mexican state formed by merging Texas and Coahuila, governing Texas during the Mexican Texas period.",
+    "r": "This political unit framed the legal and administrative context for Texican settlers."
+  },
+  "primary sources": {
+    "d": "Original documents from the Texican era such as government records, land grants, and personal letters preserved in archives and libraries.",
+    "r": "Primary sources provide authentic evidence for studying Texican history and require critical analysis to understand context and bias."
   },
   "terminal learning objective": {
     "d": "The main capability learners should demonstrate by the end of the class.",
