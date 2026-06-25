@@ -3,6 +3,7 @@ const path = require("path");
 const { validateBrief } = require("../brief-validator.js");
 const template = require("../brief.template.json");
 const { readOpenAIUsage, createBudgetLedger } = require("./kb-budget.js");
+const TEMPLATE_EMBED = require("./template-embed.js");
 const { resolveThemeCss } = require("./theme.js")._internal;
 const llm = require("./llm.js");
 
@@ -740,33 +741,15 @@ function tavilyConfigured() {
   return Boolean(String(process.env.TAVILY_API_KEY || "").trim());
 }
 
-// Infer a source type + trust level from the host, URL path, and title/snippet.
-// Primary = authoritative originals: government / military / education /
-// international bodies, national & state archives, libraries, museums, recognized
-// primary-text repositories, and pages that are clearly an original document or
-// archival collection (an archival *structure* signal, not mere topical words —
-// so commentary "about" a treaty stays secondary while the treaty's text is primary).
-function classifySource(url, title, snippet) {
-  let host = "", path = "";
-  try { const u = new URL(url); host = u.hostname.toLowerCase(); path = (u.pathname || "").toLowerCase(); }
-  catch (e) { host = ""; path = ""; }
-  const hay = path + " " + String(title || "").toLowerCase() + " " + String(snippet || "").toLowerCase();
-
-  // Authoritative institutional hosts (government, military, education, intl bodies).
-  const govEdu = /(^|\.)gov(\.[a-z]{2})?$|\.gov\.|\.mil$|(^|\.)edu$|\.edu\.|(^|\.)ac\.[a-z]{2}$|europa\.eu$|who\.int$|un\.org$|iso\.org$|nist\.gov$|loc\.gov$|stlouisfed\.org$/.test(host);
-  // Archives / libraries / museums by host name, plus known primary repositories.
-  const archiveHost = /(^|\.)(archives?|library|libraries|museum|manuscripts?)\./.test(host)
-    || /(^|\.)(archive\.org|gutenberg\.org|loc\.gov|nara\.gov|hathitrust\.org|avalon\.law\.yale\.edu)$/.test(host);
-  // Archival / original-document structure signals (deliberately excludes bare
-  // "archive" in a path to avoid news/blog /archive/ false positives).
-  const docSignal = /(primary[-\s]?sources?|digital[-\s]?collections?|\bmanuscripts?\b|full[-\s]?text|\btranscript\b|papers[-\s]?of|official[-\s]?records|original[-\s]?document)/.test(hay);
-
-  const primary = govEdu || archiveHost || docSignal;
-
+// Infer a source type + trust level from the host. Government, standards, and
+// education domains are treated as primary; everything else as secondary.
+function classifyByHost(url) {
+  let host = "";
+  try { host = new URL(url).hostname.toLowerCase(); } catch (e) { host = ""; }
+  const primary = /\.gov(\.[a-z]{2})?$|\.gov\.|\.mil$|\.edu$|\.edu\.|europa\.eu$|who\.int$|un\.org$|iso\.org$|nist\.gov$|loc\.gov$|stlouisfed\.org$/.test(host);
   let type = "url";
   if (/\.gov|\.mil|iso\.org|nist|standard|regulat/.test(host)) type = "standard";
-  else if (/\.edu|\.ac\.[a-z]{2}/.test(host)) type = "certification training";
-  else if (archiveHost || docSignal) type = "data";
+  else if (/\.edu/.test(host)) type = "certification training";
   return { trust: primary ? "primary" : "secondary", type };
 }
 
@@ -795,7 +778,7 @@ async function tavilySearch(query, maxResults) {
     const results = Array.isArray(payload && payload.results) ? payload.results : [];
     return results.map((r) => {
       const url = text(r && r.url, "");
-      const klass = classifySource(url, r && r.title, r && r.content);
+      const klass = classifyByHost(url);
       return {
         title: text(r && r.title, url),
         url,
@@ -822,8 +805,7 @@ async function findSourceCandidates(prompt, brief, standard, needed) {
     if (title) {
       queries.push(`${title} overview key facts`);
       if (needed && needed.primary_sources_needed > 0) {
-        queries.push(`${title} primary source OR original document OR archive`);
-        queries.push(`${title} national archives OR library digital collection OR government records`);
+        queries.push(`${title} official source government OR standards OR primary documentation`);
       } else {
         queries.push(`${title} authoritative guide reference`);
       }
@@ -833,7 +815,7 @@ async function findSourceCandidates(prompt, brief, standard, needed) {
 
     const seen = new Set();
     const candidates = [];
-    for (const q of queries.slice(0, 4)) {
+    for (const q of queries.slice(0, 3)) {
       const batch = await tavilySearch(q, 8);
       batch.forEach((c) => {
         if (c.url && !seen.has(c.url)) { seen.add(c.url); candidates.push(c); }
@@ -1586,36 +1568,6 @@ function configuredModels() {
   return Array.from(new Set(models));
 }
 
-// Fast ladder for high-volume slide authoring (OpenAI): a smaller/faster model
-// first, with the full configured ladder kept as a quality fallback. Override
-// the fast model with AUTHOR_OPENAI_MODEL; defaults to a known fallback model.
-function fastAuthorModels() {
-  const fast = String(process.env.AUTHOR_OPENAI_MODEL || "gpt-4.1-mini").trim();
-  return Array.from(new Set([fast].concat(configuredModels()).filter(Boolean)));
-}
-
-// Pure: split the authored-slide budget into independent batches and assign each
-// a contiguous slice of the lesson plan, so batches can be authored in parallel
-// without seeing one another (the slide range + plan slice define the arc). The
-// batches always tile the full [1..authoredSlides] range with no gap or overlap.
-function planAuthorBatches(authoredSlides, batchSize, lessonSections) {
-  const sections = Array.isArray(lessonSections) ? lessonSections : [];
-  const size = Math.max(1, batchSize || 1);
-  const total = Math.max(0, authoredSlides || 0);
-  const specs = [];
-  for (let produced = 0; produced < total; produced += size) {
-    const batchCount = Math.min(size, total - produced);
-    specs.push({ fromIndex: produced + 1, toIndex: produced + batchCount, batchCount: batchCount, sections: [] });
-  }
-  const n = specs.length;
-  specs.forEach((spec, i) => {
-    const s = n > 0 ? Math.floor((i / n) * sections.length) : 0;
-    const e = n > 0 ? Math.floor(((i + 1) / n) * sections.length) : sections.length;
-    spec.sections = sections.slice(s, e);
-  });
-  return specs;
-}
-
 function safeErrorMessage(message) {
   const raw = String(message || "OpenAI API request failed.");
   if (/headers\.append|invalid header value/i.test(raw)) {
@@ -1655,7 +1607,7 @@ function parseJsonPayload(content) {
   }
 }
 
-async function requestOpenAIJson(stage, system, user, maxTokens, fast) {
+async function requestOpenAIJson(stage, system, user, maxTokens) {
   // Authoring now goes through the provider abstraction (api/llm.js). Default is
   // OpenAI, so behavior is unchanged unless the brief selects another provider.
   const providerWanted = _engine && _engine.provider ? _engine.provider : "openai";
@@ -1676,11 +1628,8 @@ async function requestOpenAIJson(stage, system, user, maxTokens, fast) {
     jsonMode: true
   };
   // Preserve the exact OpenAI model-fallback ladder when authoring on OpenAI;
-  // otherwise use the chosen/default model for the selected provider. High-volume
-  // slide drafting (fast=true) prefers a faster model, keeping the strong model
-  // as an automatic fallback for quality safety.
-  if (provider === "openai") opts.models = fast ? fastAuthorModels() : configuredModels();
-  else if (fast && String(process.env.AUTHOR_MODEL || "").trim()) opts.model = String(process.env.AUTHOR_MODEL).trim();
+  // otherwise use the chosen/default model for the selected provider.
+  if (provider === "openai") opts.models = configuredModels();
   else if (_engine && _engine.model) opts.model = _engine.model;
   if (_engineKey) opts.apiKey = _engineKey;
 
@@ -1782,124 +1731,107 @@ async function runOpenAIStages(brief, sourcePaper) {
   );
   reports.push({ stage: "curriculum", ok: true, model: curriculum.model });
 
-  // Author teaching slides as INDEPENDENT batches that run in parallel. Each
-  // batch owns a fixed slide range and a contiguous slice of the lesson plan, so
-  // batches never need to see each other (the plan + range define the arc). A
-  // failed batch is contained and the shortfall is safely expanded downstream, so
-  // the run always completes. Drafting uses the fast author model; reasoning
-  // stages above keep the strong model.
-  const lessonSections = (curriculum.data && Array.isArray(curriculum.data.lesson_sections)) ? curriculum.data.lesson_sections : [];
-  const batchSpecs = planAuthorBatches(authoredSlides, AUTHOR_BATCH_SIZE, lessonSections);
-  const totalBatches = batchSpecs.length;
-
-  async function authorAllSlides() {
-    const results = await Promise.all(batchSpecs.map(async (spec) => {
-      try {
-        const batch = await requestOpenAIJson(
-          "author",
-          `You are the Masterclass Factory lesson author. ${rules}`,
-          JSON.stringify({
-            task: `Draft teaching slides ${spec.fromIndex} through ${spec.toIndex} of a ${authoredSlides}-slide teaching deck (return exactly ${spec.batchCount} slides). You OWN only this slide range; other batches author the rest, so do NOT write slides outside it and do NOT restate other batches' material. Continue the lesson arc in order (orientation → source findings → concepts → examples → practice → checks → application → transfer) at the position slides ${spec.fromIndex}–${spec.toIndex} of ${authoredSlides} imply. Cite only source ids that exist. If evidence is thin, create source-safe practice/checkpoint slides instead of inventing facts. Deep-dive setting is ${deepDiveMode(brief)}; when high, every slide needs a substantive deep_dive body.`,
-            owned_lesson_sections: spec.sections,
-            source_ids: sourcePaper.sections.map((section) => section.id),
-            brief: compactBrief(brief),
-            curriculum: curriculum.data,
-            slide_budget_contract: {
-              requested_total_slide_count: requestedSlides,
-              teaching_slide_count_before_works_cited: teachingSlides,
-              authoring_batch: { from: spec.fromIndex, to: spec.toIndex, return_now: spec.batchCount, of_batches: totalBatches },
-              note: "Other batches cover the remaining slides; a final Knowledge Base / Works Cited slide is added automatically."
-            },
-            required_shape: {
-              slides: [{
-                id: "string",
-                eyebrow: "string",
-                title: "string",
-                bullets: ["string"],
-                explanation: "2-3 sentence source-grounded teaching explanation",
-                worked_example: "brief concrete example or application",
-                practice_prompt: "what learners should do or decide",
-                common_mistake: "mistake or caution to avoid",
-                speaker_notes: "presenter talk track with enough detail to teach the point",
-                deep_dive: { title: "string", body: "120-220 words of deeper explanation, source analysis, edge cases, and practice guidance", learner_prompts: ["string"] },
-                source_ids: ["s1"],
-                interaction: "none|poll|word|quiz"
-              }]
-            }
-          }, null, 2),
-          Math.min(9000, Math.max(3500, spec.batchCount * 520)),
-          true // fast author model
-        );
-        const slides = batch.data && Array.isArray(batch.data.slides) ? batch.data.slides : [];
-        return { fromIndex: spec.fromIndex, slides: slides, model: batch.model || "" };
-      } catch (error) {
-        // Contain a failed batch; downstream expansion fills the gap.
-        return { fromIndex: spec.fromIndex, slides: [], model: "", error: safeErrorMessage(error.message || error) };
-      }
-    }));
-    results.sort((a, b) => a.fromIndex - b.fromIndex);
-    const slides = [];
-    let model = "";
-    let ok = 0;
-    const errors = [];
-    results.forEach((r) => {
-      if (r.slides.length) { r.slides.forEach((s) => slides.push(s)); ok += 1; }
-      if (r.model) model = r.model;
-      if (r.error) errors.push(r.error);
-    });
-    return { model: model, slides: slides, batches: ok, errors: errors };
+  // Author teaching slides in small, fast batches under a wall-clock budget.
+  // Each batch is a short OpenAI call; we stop when the deck is complete, when a
+  // batch fails, or when the time budget is nearly used — whichever comes first.
+  // Any shortfall is safely expanded downstream, so the run ALWAYS completes.
+  const authoredSlideList = [];
+  let authorModel = "";
+  let authorBatches = 0;
+  for (let produced = 0; produced < authoredSlides; produced += AUTHOR_BATCH_SIZE) {
+    if (Date.now() - stageStart > AUTHOR_TIME_BUDGET_MS) {
+      reports.push({ stage: "author", ok: true, note: `Time budget reached after ${authoredSlideList.length} authored slides; remaining slides will be safely expanded.` });
+      break;
+    }
+    const batchCount = Math.min(AUTHOR_BATCH_SIZE, authoredSlides - produced);
+    const fromIndex = produced + 1;
+    const toIndex = produced + batchCount;
+    let batch;
+    try {
+      batch = await requestOpenAIJson(
+        "author",
+        `You are the Masterclass Factory lesson author. ${rules}`,
+        JSON.stringify({
+          task: `Draft teaching slides ${fromIndex} through ${toIndex} of a ${authoredSlides}-slide teaching deck (return exactly ${batchCount} slides for this batch). Keep bullets concise but make each slide complete enough to teach. Cite only source ids that exist. Continue the lesson arc in order (orientation → source findings → concepts → examples → practice → checks → application → transfer) at the position these slide numbers imply. Do NOT repeat slides already written. If evidence is thin, create source-safe practice/checkpoint slides instead of inventing facts. Deep-dive setting is ${deepDiveMode(brief)}; when high, every slide needs a substantive deep_dive body.`,
+          source_ids: sourcePaper.sections.map((section) => section.id),
+          brief: compactBrief(brief),
+          curriculum: curriculum.data,
+          already_authored_titles: authoredSlideList.map((s) => s && s.title).filter(Boolean),
+          slide_budget_contract: {
+            requested_total_slide_count: requestedSlides,
+            teaching_slide_count_before_works_cited: teachingSlides,
+            authoring_batch: { from: fromIndex, to: toIndex, return_now: batchCount },
+            note: "Other batches cover the remaining slides; a final Knowledge Base / Works Cited slide is added automatically."
+          },
+          required_shape: {
+            slides: [{
+              id: "string",
+              eyebrow: "string",
+              title: "string",
+              bullets: ["string"],
+              explanation: "2-3 sentence source-grounded teaching explanation",
+              worked_example: "brief concrete example or application",
+              practice_prompt: "what learners should do or decide",
+              common_mistake: "mistake or caution to avoid",
+              speaker_notes: "presenter talk track with enough detail to teach the point",
+              deep_dive: { title: "string", body: "120-220 words of deeper explanation, source analysis, edge cases, and practice guidance", learner_prompts: ["string"] },
+              source_ids: ["s1"],
+              interaction: "none|poll|word|quiz"
+            }]
+          }
+        }, null, 2),
+        Math.min(9000, Math.max(3500, batchCount * 520))
+      );
+    } catch (error) {
+      // A failed/slow batch must never dead-end the build. Keep what we have and
+      // let downstream expansion fill the requested budget.
+      reports.push({ stage: "author", ok: true, note: `Authoring stopped early after ${authoredSlideList.length} slides (${safeErrorMessage(error.message || error)}); remaining slides will be safely expanded.` });
+      break;
+    }
+    authorModel = batch.model || authorModel;
+    const batchSlides = batch.data && Array.isArray(batch.data.slides) ? batch.data.slides : [];
+    if (!batchSlides.length) {
+      reports.push({ stage: "author", ok: true, note: `Batch ${authorBatches + 1} returned no slides; stopping authoring and expanding the remainder.` });
+      break;
+    }
+    batchSlides.forEach((s) => authoredSlideList.push(s));
+    authorBatches += 1;
   }
+  const author = { model: authorModel, data: { slides: authoredSlideList } };
+  reports.push({ stage: "author", ok: true, model: author.model, authored_slides: authoredSlideList.length, batches: authorBatches });
 
-  function glossaryCall() {
-    return requestOpenAIJson(
-      "glossary",
-      `You are the Masterclass Factory glossary specialist. ${rules}`,
-      JSON.stringify({
-        task: "Create concise glossary entries for terms learners need.",
-        brief: compactBrief(brief),
-        research: research.data,
-        curriculum: curriculum.data,
-        required_shape: { terms: [{ term: "string", d: "definition", r: "why it matters" }] }
-      }, null, 2),
-      1300
-    );
-  }
-
-  function assessmentCall() {
-    return requestOpenAIJson(
-      "assessment",
-      `You are the Masterclass Factory assessment specialist. ${rules}`,
-      JSON.stringify({
-        task: "Create interactions that test only taught material.",
-        brief: compactBrief(brief),
-        curriculum: curriculum.data,
-        required_shape: {
-          polls: [{ id: "string", q: "string", desc: "string", opts: ["string"] }],
-          words: [{ id: "string", q: "string", desc: "string" }],
-          quizzes: [
-            { type: "mc", level: 2, q: "string", options: ["string"], answer: 0, why: "string" },
-            { type: "sa", level: 3, q: "string", rubric: "string", sample: "string", accept: ["string"] }
-          ]
-        }
-      }, null, 2),
-      2200
-    );
-  }
-
-  // Authoring, glossary, and assessment are independent of one another (glossary
-  // and assessment only need research + curriculum, which already exist). Run all
-  // three concurrently instead of one after another.
-  const [authorResult, glossary, assessment] = await Promise.all([
-    authorAllSlides(),
-    glossaryCall(),
-    assessmentCall()
-  ]);
-  const author = { model: authorResult.model, data: { slides: authorResult.slides } };
-  reports.push({ stage: "author", ok: true, model: author.model, authored_slides: authorResult.slides.length, batches: authorResult.batches, parallel: totalBatches });
-  if (authorResult.errors && authorResult.errors.length) {
-    reports.push({ stage: "author", ok: true, note: `${authorResult.errors.length} batch(es) fell short and will be safely expanded downstream.` });
-  }
+  const glossary = await requestOpenAIJson(
+    "glossary",
+    `You are the Masterclass Factory glossary specialist. ${rules}`,
+    JSON.stringify({
+      task: "Create concise glossary entries for terms learners need.",
+      brief: compactBrief(brief),
+      research: research.data,
+      curriculum: curriculum.data,
+      required_shape: { terms: [{ term: "string", d: "definition", r: "why it matters" }] }
+    }, null, 2),
+    1300
+  );
   reports.push({ stage: "glossary", ok: true, model: glossary.model });
+
+  const assessment = await requestOpenAIJson(
+    "assessment",
+    `You are the Masterclass Factory assessment specialist. ${rules}`,
+    JSON.stringify({
+      task: "Create interactions that test only taught material.",
+      brief: compactBrief(brief),
+      curriculum: curriculum.data,
+      required_shape: {
+        polls: [{ id: "string", q: "string", desc: "string", opts: ["string"] }],
+        words: [{ id: "string", q: "string", desc: "string" }],
+        quizzes: [
+          { type: "mc", level: 2, q: "string", options: ["string"], answer: 0, why: "string" },
+          { type: "sa", level: 3, q: "string", rubric: "string", sample: "string", accept: ["string"] }
+        ]
+      }
+    }, null, 2),
+    2200
+  );
   reports.push({ stage: "assessment", ok: true, model: assessment.model });
 
   return {
@@ -3366,6 +3298,13 @@ function applyReplacements(content, brief) {
 }
 
 function readTemplateFile(name) {
+  // Prefer the embedded copy: require() guarantees template-embed.js (and thus
+  // every template) is in the serverless bundle, so this never hits ENOENT even
+  // when Vercel's file tracer / includeFiles does not ship template/**.
+  if (TEMPLATE_EMBED && typeof TEMPLATE_EMBED[name] === "string") {
+    return Buffer.from(TEMPLATE_EMBED[name], "base64").toString("utf8");
+  }
+  // Fallback: read from disk (local dev, or a template not yet embedded).
   return fs.readFileSync(path.join(__dirname, "..", "template", name), "utf8");
 }
 
@@ -3839,16 +3778,6 @@ module.exports = async function generateHandler(req, res) {
       advancement_opportunity: advancementOpportunity
     });
   } catch (error) {
-    // DIAGNOSTIC (GENFAIL): the outer catch returns 400, but the cause was
-    // invisible in logs (it only went into the response body). Surface the
-    // message + stage + top of the stack so a single failed run pinpoints the line.
-    try {
-      console.error("GENFAIL " + JSON.stringify({
-        message: safeErrorMessage(error && (error.message || error)),
-        stage: (error && error.stage) || "",
-        stack: String((error && error.stack) || "").split("\n").slice(0, 6).join(" | ")
-      }));
-    } catch (logErr) { /* never let logging mask the original error */ }
     send(res, 400, { ok: false, errors: [safeErrorMessage(error.message || error)] });
   }
 };
@@ -3864,9 +3793,6 @@ module.exports._internal = {
   // real implementations (never mirrored), for the interactive round-based KB build:
   findSourceCandidates,
   normalizeDiscoveredSources,
-  classifySource,
-  planAuthorBatches,
-  fastAuthorModels,
   fetchUrlText,
   sourceCounts,
   researchOwner,
