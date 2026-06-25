@@ -1,36 +1,36 @@
 /* Generated glossary. term -> {d, r}. */
 window.GLOSSARY = {
   "texican": {
-    "d": "A term used primarily between 1820 and 1836 to describe Anglo settlers living in Mexican Texas, who swore loyalty to Mexico and settled under empresario contracts during the period when Texas was part of Mexico.",
-    "r": "Understanding 'Texican' clarifies the cultural and political identity of early settlers caught between Mexican authority and Anglo-American immigration, key to Texas's path to independence."
+    "d": "An Anglo-American settler in Mexican Texas between 1820 and 1836 who settled under Mexican land grant policies, often required to swear loyalty to Mexico and adopt Christianity.",
+    "r": "Understanding 'Texican' clarifies the identity and cultural background of early settlers who influenced Texas's political and social development before its independence."
   },
-  "texian": {
-    "d": "A historical term that evolved from 'Texican' during and after the Texas Revolution, referring to residents of Texas who supported independence from Mexico before Texas became a U.S. state.",
-    "r": "Recognizing 'Texian' helps trace the political and cultural shifts in Texas identity from Mexican rule to the Republic of Texas."
-  },
-  "texan": {
-    "d": "The modern term for residents of Texas, which replaced 'Texian' after Texas joined the United States, reflecting the state's integration into the U.S.",
-    "r": "Knowing 'Texan' situates Texas's identity in its current political and cultural context, distinguishing it from earlier historical periods."
-  },
-  "empresario contract": {
-    "d": "A land grant agreement under Mexican rule allowing individuals (empresarios) to settle families in Texas in exchange for loyalty to Mexico and development of the land.",
-    "r": "Empresario contracts shaped settlement patterns and demographics of early Texas, influencing Texican lifestyles and political tensions."
-  },
-  "stephen f. austin": {
-    "d": "A prominent empresario who led the settlement of many Anglo families in Mexican Texas under empresario contracts, often called the 'Father of Texas.'",
-    "r": "Austin's role exemplifies how Texicans were settled and governed, providing insight into early Texas colonization and loyalty dynamics."
-  },
-  "coahuila y texas": {
-    "d": "The Mexican state formed by merging Coahuila and Texas during the period when Texas was part of Mexico (1820-1836).",
-    "r": "This political entity contextualizes the governance framework under which Texicans lived and the legal restrictions they faced."
-  },
-  "indigenous peoples of texas": {
-    "d": "Native groups such as the Caddo, Karankawa, Coahuiltecan, and Jumano who inhabited Texas before and during European colonization.",
-    "r": "Their cultures and interactions influenced Texas's identity and the environment in which Texicans settled."
+  "mexican texas": {
+    "d": "The period and region from 1821 to 1836 when Texas was part of Mexico, governed under Mexican laws and policies including land grants to settlers.",
+    "r": "Knowing Mexican Texas provides context for the political and cultural environment in which Texicans lived and acted."
   },
   "texas revolution": {
-    "d": "The armed conflict (1835-1836) between Texicans and Mexican authorities that led to Texas's independence from Mexico.",
-    "r": "Understanding the revolution is essential to grasp the Texicans' complex loyalties and their role in shaping Texas history."
+    "d": "The armed conflict from 1835 to 1836 in which Texicans and other settlers fought against Mexican rule to establish the Republic of Texas.",
+    "r": "The Texas Revolution was a pivotal event involving Texicans that shaped the region's history and identity."
+  },
+  "mexican land grant": {
+    "d": "A policy by the Mexican government offering land to settlers, including Texicans, to encourage colonization and development of Texas.",
+    "r": "Land grants influenced settlement patterns and were central to Texican livelihoods and political tensions."
+  },
+  "caddo": {
+    "d": "A Native American tribe whose language contributed the word 'táysha,' meaning friend or ally, from which the name 'Texas' is derived.",
+    "r": "Recognizing Caddo influence highlights indigenous contributions to regional identity and place names."
+  },
+  "anglo-american settlers": {
+    "d": "People of English-speaking American origin who migrated to Mexican Texas and became known as Texicans during the early 19th century.",
+    "r": "Their migration and settlement shaped Texas's demographic and cultural landscape before independence."
+  },
+  "native american tribes in texas": {
+    "d": "Indigenous groups living in Texas during the Mexican Texas period, interacting with Texicans through trade, conflict, and cultural exchange.",
+    "r": "Understanding these tribes provides insight into the complex social dynamics and challenges faced by Texicans."
+  },
+  "republic of texas": {
+    "d": "The independent nation established in 1836 after the Texas Revolution, succeeding Mexican Texas and preceding Texas's statehood in the USA.",
+    "r": "The Republic era marks the political outcome of Texican efforts and the region's transition to independence."
   },
   "terminal learning objective": {
     "d": "The main capability learners should demonstrate by the end of the class.",
