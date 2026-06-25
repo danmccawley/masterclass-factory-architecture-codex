@@ -1,12 +1,12 @@
 # Quiz Answer Key
 
 ## Question 1
-Which of the following best describes the origin of the term 'Texican'?
-Answer: It referred to Hispanic residents of Mexican Texas between 1820 and 1836.
-Why: The term 'Texican' specifically refers to Hispanic residents of Mexican Texas during that period, distinguishing them from later Anglo settlers and other groups.
+Which of the following best defines the term 'Texican' as used in early Texas history?
+Answer: A name for the original Spanish settlers and their descendants in Texas before independence
+Why: The term 'Texican' historically referred to Spanish settlers and their descendants in Texas prior to independence, distinguishing them from later Anglo settlers.
 
 ## Question 2
-Explain how Texican settlements functioned as a buffer in early Texas history and describe their interactions with Native American tribes.
+Explain how the cultural background of the Texicans was shaped by their interactions with Anglo-American settlers, Mexican authorities, and Native American tribes.
 Answer: undefined
-Rubric: A complete answer should identify that Texican settlements were strategically located to protect Mexican Texas from Native American raids, describe their frontier lifestyle, and mention the complex cultural interactions including both conflict and alliances.
-Sample: Texican settlements were established along frontier areas to serve as a buffer against Native American tribes. They engaged in farming and ranching while maintaining defensive roles. Their interactions with Native Americans included both hostile encounters and occasional alliances, reflecting the complex dynamics of the region.
+Rubric: A strong answer should describe the blending of Spanish, Mexican, Anglo-American, and Native American cultural influences, including frontier lifestyle adaptations and political dynamics. It should mention cultural hybridity and the impact of settlement patterns and political tensions.
+Sample: The Texicans' cultural background was a blend of Spanish and Mexican heritage influenced by Anglo-American settlers moving into Texas and interactions with Native American tribes. Their frontier lifestyle combined traditions from these groups, shaped by Mexican governance and conflicts leading up to Texas independence.

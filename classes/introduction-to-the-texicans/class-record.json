@@ -1,7 +1,7 @@
 {
   "title": "Introduction to the Texicans",
   "slug": "introduction-to-the-texicans",
-  "generated_at": "2026-06-25T16:30:17.870Z",
+  "generated_at": "2026-06-25T16:32:05.301Z",
   "class_tier": {
     "level": "standard",
     "label": "Standard class",
@@ -57,17 +57,7 @@
         "trust": "secondary"
       },
       {
-        "path": "https://libguides.tamusa.edu/c.php?g=72427&p=467768",
-        "type": "certification training",
-        "trust": "primary"
-      },
-      {
-        "path": "https://texasstudies.org/about-teachers/primary-sources-in-texas-history",
-        "type": "data",
-        "trust": "primary"
-      },
-      {
-        "path": "https://legacy.education.texashistory.unt.edu/lessons/primary%20source%20sets/index.html",
+        "path": "https://libguides.fau.edu/primary-sources-american-west/texas",
         "type": "certification training",
         "trust": "primary"
       },
@@ -77,9 +67,9 @@
         "trust": "primary"
       },
       {
-        "path": "https://texasarchive.org/education",
-        "type": "url",
-        "trust": "secondary"
+        "path": "https://legacy.education.texashistory.unt.edu/lessons/primary%20source%20sets/index.html",
+        "type": "certification training",
+        "trust": "primary"
       },
       {
         "path": "https://shsulibraryguides.org/txprimary",
@@ -87,13 +77,23 @@
         "trust": "primary"
       },
       {
-        "path": "https://libguides.uta.edu/c.php?g=109852&p=8758093",
+        "path": "https://libguides.tamusa.edu/c.php?g=794236&p=5679601",
         "type": "certification training",
         "trust": "primary"
       },
       {
         "path": "https://guides.library.yale.edu/c.php?g=295904&p=8723537",
         "type": "certification training",
+        "trust": "primary"
+      },
+      {
+        "path": "https://guides.lib.berkeley.edu/cs/primary",
+        "type": "certification training",
+        "trust": "primary"
+      },
+      {
+        "path": "http://www.tsl.texas.gov/ref/republicoftexasresources",
+        "type": "standard",
         "trust": "primary"
       }
     ],
@@ -118,16 +118,16 @@
     },
     "counts": {
       "total": 16,
-      "primary": 7,
-      "secondary": 9,
+      "primary": 8,
+      "secondary": 8,
       "unknown": 0
     },
     "score": {
-      "score": 88,
+      "score": 89,
       "band": "excellent",
       "components": {
         "coverage": 100,
-        "authority": 78,
+        "authority": 80,
         "recency": 75
       },
       "weights": {
@@ -137,14 +137,14 @@
       },
       "detail": {
         "total": 16,
-        "primary": 7,
-        "secondary": 9,
+        "primary": 8,
+        "secondary": 8,
         "required_total": 8,
         "required_primary": 2,
         "dated_sources": 0,
         "recency_floor_year": 2024
       },
-      "summary": "Knowledge-base score 88/100 (excellent): coverage 100, authority 78, recency 75. 16/8 sources, 7/2 primary."
+      "summary": "Knowledge-base score 89/100 (excellent): coverage 100, authority 80, recency 75. 16/8 sources, 8/2 primary."
     },
     "required_sources": 8,
     "required_primary_sources": 2,
@@ -159,7 +159,7 @@
   "deep_dive_count": 67,
   "required_deep_dive_count": 67,
   "quality": {
-    "score": 98,
+    "score": 97,
     "status": "excellent",
     "scores": {
       "slide_budget": 100,
@@ -170,8 +170,8 @@
       "objective_alignment": 83,
       "content_density": 100,
       "deep_dive_depth": 100,
-      "participation_design": 99,
-      "assessment": 90,
+      "participation_design": 95,
+      "assessment": 80,
       "transparency": 100,
       "schema_qa": 100
     },
@@ -256,12 +256,12 @@
       {
         "id": "s10",
         "num": "10",
-        "title": "libguides.tamusa.edu"
+        "title": "libguides.fau.edu"
       },
       {
         "id": "s11",
         "num": "11",
-        "title": "texasstudies.org"
+        "title": "kwlibguides.lonestar.edu"
       },
       {
         "id": "s12",
@@ -271,27 +271,27 @@
       {
         "id": "s13",
         "num": "13",
-        "title": "kwlibguides.lonestar.edu"
+        "title": "shsulibraryguides.org"
       },
       {
         "id": "s14",
         "num": "14",
-        "title": "texasarchive.org"
+        "title": "libguides.tamusa.edu"
       },
       {
         "id": "s15",
         "num": "15",
-        "title": "shsulibraryguides.org"
+        "title": "guides.library.yale.edu"
       },
       {
         "id": "s16",
         "num": "16",
-        "title": "libguides.uta.edu"
+        "title": "guides.lib.berkeley.edu"
       },
       {
         "id": "s17",
         "num": "17",
-        "title": "guides.library.yale.edu"
+        "title": "tsl.texas.gov"
       }
     ]
   },
@@ -313,16 +313,16 @@
       },
       "counts": {
         "total": 16,
-        "primary": 7,
-        "secondary": 9,
+        "primary": 8,
+        "secondary": 8,
         "unknown": 0
       },
       "score": {
-        "score": 88,
+        "score": 89,
         "band": "excellent",
         "components": {
           "coverage": 100,
-          "authority": 78,
+          "authority": 80,
           "recency": 75
         },
         "weights": {
@@ -332,14 +332,14 @@
         },
         "detail": {
           "total": 16,
-          "primary": 7,
-          "secondary": 9,
+          "primary": 8,
+          "secondary": 8,
           "required_total": 8,
           "required_primary": 2,
           "dated_sources": 0,
           "recency_floor_year": 2024
         },
-        "summary": "Knowledge-base score 88/100 (excellent): coverage 100, authority 78, recency 75. 16/8 sources, 7/2 primary."
+        "summary": "Knowledge-base score 89/100 (excellent): coverage 100, authority 80, recency 75. 16/8 sources, 8/2 primary."
       },
       "required_sources": 8,
       "required_primary_sources": 2,
@@ -394,7 +394,7 @@
         "deep_dive_expectation": "substantive deep dives where required by tier and setting"
       }
     ],
-    "lesson_sections": 7
+    "lesson_sections": 10
   },
   "evidence_map": [
     {
@@ -415,7 +415,7 @@
     },
     {
       "kind": "enabling objective",
-      "claim": "Define the term 'Texican' and explain its origins within Mexican Texas from 1820 to 1836",
+      "claim": "Define the term 'Texican' and its origins",
       "source_ids": [
         "s2",
         "s3",
@@ -431,7 +431,7 @@
     },
     {
       "kind": "enabling objective",
-      "claim": "Discuss the settlement patterns, lifestyle, and economic activities of the Texicans",
+      "claim": "Discuss the settlement patterns and lifestyle of the Texicans",
       "source_ids": [
         "s3",
         "s4"
@@ -445,7 +445,7 @@
     },
     {
       "kind": "enabling objective",
-      "claim": "Explain the role of the Texicans in early Texas history, including their involvement in conflicts and cultural interactions",
+      "claim": "Explain the role of the Texicans in early Texas history",
       "source_ids": [
         "s4"
       ],
@@ -457,15 +457,31 @@
     },
     {
       "kind": "lesson section",
-      "claim": "Introduction to Texican Identity and Origins",
+      "claim": "Defining the Texicans: Origins and Terminology",
       "source_ids": [
         "s7",
-        "s6",
+        "s2",
+        "s6"
+      ],
+      "source_titles": [
+        "lauriemooremoore.com",
+        "jinxschwartz.com",
+        "everything-everywhere.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Historical Context: Texas under Mexican Rule (1820-1836)",
+      "source_ids": [
+        "s7",
+        "s3",
         "s8"
       ],
       "source_titles": [
         "lauriemooremoore.com",
-        "everything-everywhere.com",
+        "facebook.com",
         "tshaonline.org"
       ],
       "status": "mapped",
@@ -477,13 +493,11 @@
       "source_ids": [
         "s7",
         "s2",
-        "s6",
         "s8"
       ],
       "source_titles": [
         "lauriemooremoore.com",
         "jinxschwartz.com",
-        "everything-everywhere.com",
         "tshaonline.org"
       ],
       "status": "mapped",
@@ -491,23 +505,39 @@
     },
     {
       "kind": "lesson section",
-      "claim": "Cultural Background and Interactions",
+      "claim": "Cultural Background and Identity of the Texicans",
       "source_ids": [
         "s2",
-        "s6",
-        "s8"
+        "s8",
+        "s6"
       ],
       "source_titles": [
         "jinxschwartz.com",
-        "everything-everywhere.com",
-        "tshaonline.org"
+        "tshaonline.org",
+        "everything-everywhere.com"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "lesson section",
-      "claim": "Texicans’ Role in Early Texas History",
+      "claim": "Political Tensions and the Road to the Texas Revolution",
+      "source_ids": [
+        "s7",
+        "s2",
+        "s3"
+      ],
+      "source_titles": [
+        "lauriemooremoore.com",
+        "jinxschwartz.com",
+        "facebook.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Texicans’ Role in Early Texas History and Independence",
       "source_ids": [
         "s2",
         "s7"
@@ -521,7 +551,7 @@
     },
     {
       "kind": "lesson section",
-      "claim": "Primary Sources and Research Methods",
+      "claim": "Primary Sources: Voices of the Texicans",
       "source_ids": [
         "s10",
         "s11",
@@ -529,31 +559,31 @@
         "s13"
       ],
       "source_titles": [
-        "libguides.tamusa.edu",
-        "texasstudies.org",
+        "libguides.fau.edu",
+        "kwlibguides.lonestar.edu",
         "legacy.education.texashistory.unt.edu",
-        "kwlibguides.lonestar.edu"
+        "shsulibraryguides.org"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "lesson section",
-      "claim": "Etymology and Indigenous Influence on Texican Identity",
+      "claim": "Terminological Evolution: From Texican to Texian to Texan",
       "source_ids": [
-        "s6",
-        "s8"
+        "s7",
+        "s6"
       ],
       "source_titles": [
-        "everything-everywhere.com",
-        "tshaonline.org"
+        "lauriemooremoore.com",
+        "everything-everywhere.com"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "lesson section",
-      "claim": "Summary and Review",
+      "claim": "Addressing Gaps and Contested Points in Texican History",
       "source_ids": [
         "s2",
         "s7",
@@ -562,7 +592,21 @@
       "source_titles": [
         "jinxschwartz.com",
         "lauriemooremoore.com",
-        "libguides.tamusa.edu"
+        "libguides.fau.edu"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Summary and Review: Understanding the Texicans",
+      "source_ids": [
+        "s2",
+        "s7"
+      ],
+      "source_titles": [
+        "jinxschwartz.com",
+        "lauriemooremoore.com"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."

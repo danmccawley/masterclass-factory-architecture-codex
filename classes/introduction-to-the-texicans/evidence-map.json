@@ -17,7 +17,7 @@
   },
   {
     "kind": "enabling objective",
-    "claim": "Define the term 'Texican' and explain its origins within Mexican Texas from 1820 to 1836",
+    "claim": "Define the term 'Texican' and its origins",
     "source_ids": [
       "s2",
       "s3",
@@ -33,7 +33,7 @@
   },
   {
     "kind": "enabling objective",
-    "claim": "Discuss the settlement patterns, lifestyle, and economic activities of the Texicans",
+    "claim": "Discuss the settlement patterns and lifestyle of the Texicans",
     "source_ids": [
       "s3",
       "s4"
@@ -47,7 +47,7 @@
   },
   {
     "kind": "enabling objective",
-    "claim": "Explain the role of the Texicans in early Texas history, including their involvement in conflicts and cultural interactions",
+    "claim": "Explain the role of the Texicans in early Texas history",
     "source_ids": [
       "s4"
     ],
@@ -59,15 +59,31 @@
   },
   {
     "kind": "lesson section",
-    "claim": "Introduction to Texican Identity and Origins",
+    "claim": "Defining the Texicans: Origins and Terminology",
     "source_ids": [
       "s7",
-      "s6",
+      "s2",
+      "s6"
+    ],
+    "source_titles": [
+      "lauriemooremoore.com",
+      "jinxschwartz.com",
+      "everything-everywhere.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Historical Context: Texas under Mexican Rule (1820-1836)",
+    "source_ids": [
+      "s7",
+      "s3",
       "s8"
     ],
     "source_titles": [
       "lauriemooremoore.com",
-      "everything-everywhere.com",
+      "facebook.com",
       "tshaonline.org"
     ],
     "status": "mapped",
@@ -79,13 +95,11 @@
     "source_ids": [
       "s7",
       "s2",
-      "s6",
       "s8"
     ],
     "source_titles": [
       "lauriemooremoore.com",
       "jinxschwartz.com",
-      "everything-everywhere.com",
       "tshaonline.org"
     ],
     "status": "mapped",
@@ -93,23 +107,39 @@
   },
   {
     "kind": "lesson section",
-    "claim": "Cultural Background and Interactions",
+    "claim": "Cultural Background and Identity of the Texicans",
     "source_ids": [
       "s2",
-      "s6",
-      "s8"
+      "s8",
+      "s6"
     ],
     "source_titles": [
       "jinxschwartz.com",
-      "everything-everywhere.com",
-      "tshaonline.org"
+      "tshaonline.org",
+      "everything-everywhere.com"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
     "kind": "lesson section",
-    "claim": "Texicans’ Role in Early Texas History",
+    "claim": "Political Tensions and the Road to the Texas Revolution",
+    "source_ids": [
+      "s7",
+      "s2",
+      "s3"
+    ],
+    "source_titles": [
+      "lauriemooremoore.com",
+      "jinxschwartz.com",
+      "facebook.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Texicans’ Role in Early Texas History and Independence",
     "source_ids": [
       "s2",
       "s7"
@@ -123,7 +153,7 @@
   },
   {
     "kind": "lesson section",
-    "claim": "Primary Sources and Research Methods",
+    "claim": "Primary Sources: Voices of the Texicans",
     "source_ids": [
       "s10",
       "s11",
@@ -131,31 +161,31 @@
       "s13"
     ],
     "source_titles": [
-      "libguides.tamusa.edu",
-      "texasstudies.org",
+      "libguides.fau.edu",
+      "kwlibguides.lonestar.edu",
       "legacy.education.texashistory.unt.edu",
-      "kwlibguides.lonestar.edu"
+      "shsulibraryguides.org"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
     "kind": "lesson section",
-    "claim": "Etymology and Indigenous Influence on Texican Identity",
+    "claim": "Terminological Evolution: From Texican to Texian to Texan",
     "source_ids": [
-      "s6",
-      "s8"
+      "s7",
+      "s6"
     ],
     "source_titles": [
-      "everything-everywhere.com",
-      "tshaonline.org"
+      "lauriemooremoore.com",
+      "everything-everywhere.com"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
     "kind": "lesson section",
-    "claim": "Summary and Review",
+    "claim": "Addressing Gaps and Contested Points in Texican History",
     "source_ids": [
       "s2",
       "s7",
@@ -164,7 +194,21 @@
     "source_titles": [
       "jinxschwartz.com",
       "lauriemooremoore.com",
-      "libguides.tamusa.edu"
+      "libguides.fau.edu"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Summary and Review: Understanding the Texicans",
+    "source_ids": [
+      "s2",
+      "s7"
+    ],
+    "source_titles": [
+      "jinxschwartz.com",
+      "lauriemooremoore.com"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
