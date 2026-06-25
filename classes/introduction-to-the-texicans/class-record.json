@@ -1,0 +1,601 @@
+{
+  "title": "Introduction to the Texicans",
+  "slug": "introduction-to-the-texicans",
+  "generated_at": "2026-06-25T16:06:47.316Z",
+  "class_tier": {
+    "level": "standard",
+    "label": "Standard class",
+    "source_floor": 8,
+    "primary_source_floor": 2,
+    "slide_floor": 40,
+    "standard": "Solid internal training with enough evidence for reliable instruction."
+  },
+  "research_owner": "ai",
+  "source_discovery": {
+    "owner": "ai",
+    "attempted": true,
+    "model": "tavily-search",
+    "added_sources": [
+      {
+        "path": "https://jinxschwartz.com/books/the-texicans",
+        "type": "url",
+        "trust": "secondary"
+      },
+      {
+        "path": "https://en.wikipedia.org/wiki/Texas",
+        "type": "url",
+        "trust": "secondary"
+      },
+      {
+        "path": "https://kids.nationalgeographic.com/geography/states/article/texas",
+        "type": "url",
+        "trust": "secondary"
+      },
+      {
+        "path": "https://www.youtube.com/watch?v=7shDjqM-_9M",
+        "type": "url",
+        "trust": "secondary"
+      },
+      {
+        "path": "https://www.facebook.com/tejanovolunteercompany/posts/texonians-texasians-and-texicanstoday-we-may-know-them-simply-as-texans-but-deci/741437638004245",
+        "type": "url",
+        "trust": "secondary"
+      },
+      {
+        "path": "https://everything-everywhere.com/a-brief-history-of-texas",
+        "type": "url",
+        "trust": "secondary"
+      },
+      {
+        "path": "https://www.britannica.com/topic/Texas-Revolution",
+        "type": "url",
+        "trust": "secondary"
+      },
+      {
+        "path": "https://www.thestoryoftexas.com/learn/texas-history-timeline",
+        "type": "url",
+        "trust": "secondary"
+      },
+      {
+        "path": "https://libguides.tamusa.edu/c.php?g=72427&p=467768",
+        "type": "certification training",
+        "trust": "primary"
+      },
+      {
+        "path": "https://texasstudies.org/about-teachers/primary-sources-in-texas-history",
+        "type": "data",
+        "trust": "primary"
+      },
+      {
+        "path": "https://legacy.education.texashistory.unt.edu/lessons/primary%20source%20sets/index.html",
+        "type": "certification training",
+        "trust": "primary"
+      },
+      {
+        "path": "https://kwlibguides.lonestar.edu/PrimarySources-History/texas",
+        "type": "certification training",
+        "trust": "primary"
+      },
+      {
+        "path": "https://texasarchive.org/education",
+        "type": "url",
+        "trust": "secondary"
+      },
+      {
+        "path": "https://shsulibraryguides.org/txprimary",
+        "type": "data",
+        "trust": "primary"
+      },
+      {
+        "path": "https://libguides.uta.edu/c.php?g=109852&p=8758093",
+        "type": "certification training",
+        "trust": "primary"
+      },
+      {
+        "path": "https://guides.library.yale.edu/c.php?g=295904&p=8723537",
+        "type": "certification training",
+        "trust": "primary"
+      }
+    ],
+    "rejected_sources": [],
+    "gaps": [],
+    "notes": [
+      "Round 1: Bernard found 24 new candidates and checked 16 URLs for readability."
+    ],
+    "rounds": 1
+  },
+  "knowledge_standard": {
+    "ok": true,
+    "floor_met": true,
+    "evidence_limited": false,
+    "tier": {
+      "level": "standard",
+      "label": "Standard class",
+      "source_floor": 8,
+      "primary_source_floor": 2,
+      "slide_floor": 40,
+      "standard": "Solid internal training with enough evidence for reliable instruction."
+    },
+    "counts": {
+      "total": 16,
+      "primary": 7,
+      "secondary": 9,
+      "unknown": 0
+    },
+    "score": {
+      "score": 88,
+      "band": "excellent",
+      "components": {
+        "coverage": 100,
+        "authority": 78,
+        "recency": 75
+      },
+      "weights": {
+        "coverage": 0.5,
+        "authority": 0.3,
+        "recency": 0.2
+      },
+      "detail": {
+        "total": 16,
+        "primary": 7,
+        "secondary": 9,
+        "required_total": 8,
+        "required_primary": 2,
+        "dated_sources": 0,
+        "recency_floor_year": 2024
+      },
+      "summary": "Knowledge-base score 88/100 (excellent): coverage 100, authority 78, recency 75. 16/8 sources, 7/2 primary."
+    },
+    "required_sources": 8,
+    "required_primary_sources": 2,
+    "source_gap": 0,
+    "primary_source_gap": 0,
+    "messages": [
+      "Knowledge base meets the selected Standard class floor."
+    ]
+  },
+  "slide_count": 68,
+  "teaching_slide_count": 67,
+  "deep_dive_count": 67,
+  "required_deep_dive_count": 67,
+  "quality": {
+    "score": 96,
+    "status": "excellent",
+    "scores": {
+      "slide_budget": 100,
+      "research_rigor": 100,
+      "source_grounding": 100,
+      "evidence_map": 100,
+      "blueprint": 100,
+      "objective_alignment": 83,
+      "content_density": 100,
+      "deep_dive_depth": 100,
+      "participation_design": 69,
+      "assessment": 90,
+      "transparency": 100,
+      "schema_qa": 100
+    },
+    "rubric": [
+      "slide budget fidelity",
+      "research rigor",
+      "source grounding",
+      "evidence-map coverage",
+      "course blueprint completeness",
+      "objective alignment",
+      "content density",
+      "deep-dive coverage",
+      "participation design",
+      "assessment coverage",
+      "works-cited transparency",
+      "schema QA"
+    ]
+  },
+  "pipeline_mode": "openai",
+  "bernard": {
+    "embedded": true,
+    "wake_word": "Bernard",
+    "voice_note": "English accent when supported by the browser and configured TTS."
+  },
+  "exports": [
+    "student-handout.md",
+    "facilitator-guide.md",
+    "quiz-answer-key.md",
+    "evidence-map.json",
+    "class-blueprint.json",
+    "class-record.json"
+  ],
+  "source_paper": {
+    "title": "Student Reader - Introduction to the Texicans",
+    "section_count": 17,
+    "sections": [
+      {
+        "id": "s1",
+        "num": "1",
+        "title": "Class setup, learner profile, and research rules"
+      },
+      {
+        "id": "s2",
+        "num": "2",
+        "title": "jinxschwartz.com"
+      },
+      {
+        "id": "s3",
+        "num": "3",
+        "title": "en.wikipedia.org"
+      },
+      {
+        "id": "s4",
+        "num": "4",
+        "title": "kids.nationalgeographic.com"
+      },
+      {
+        "id": "s5",
+        "num": "5",
+        "title": "youtube.com"
+      },
+      {
+        "id": "s6",
+        "num": "6",
+        "title": "facebook.com"
+      },
+      {
+        "id": "s7",
+        "num": "7",
+        "title": "everything-everywhere.com"
+      },
+      {
+        "id": "s8",
+        "num": "8",
+        "title": "britannica.com"
+      },
+      {
+        "id": "s9",
+        "num": "9",
+        "title": "thestoryoftexas.com"
+      },
+      {
+        "id": "s10",
+        "num": "10",
+        "title": "libguides.tamusa.edu"
+      },
+      {
+        "id": "s11",
+        "num": "11",
+        "title": "texasstudies.org"
+      },
+      {
+        "id": "s12",
+        "num": "12",
+        "title": "legacy.education.texashistory.unt.edu"
+      },
+      {
+        "id": "s13",
+        "num": "13",
+        "title": "kwlibguides.lonestar.edu"
+      },
+      {
+        "id": "s14",
+        "num": "14",
+        "title": "texasarchive.org"
+      },
+      {
+        "id": "s15",
+        "num": "15",
+        "title": "shsulibraryguides.org"
+      },
+      {
+        "id": "s16",
+        "num": "16",
+        "title": "libguides.uta.edu"
+      },
+      {
+        "id": "s17",
+        "num": "17",
+        "title": "guides.library.yale.edu"
+      }
+    ]
+  },
+  "course_blueprint": {
+    "tier": "Standard class",
+    "slide_target": 68,
+    "teaching_slide_target": 67,
+    "knowledge_standard": {
+      "ok": true,
+      "floor_met": true,
+      "evidence_limited": false,
+      "tier": {
+        "level": "standard",
+        "label": "Standard class",
+        "source_floor": 8,
+        "primary_source_floor": 2,
+        "slide_floor": 40,
+        "standard": "Solid internal training with enough evidence for reliable instruction."
+      },
+      "counts": {
+        "total": 16,
+        "primary": 7,
+        "secondary": 9,
+        "unknown": 0
+      },
+      "score": {
+        "score": 88,
+        "band": "excellent",
+        "components": {
+          "coverage": 100,
+          "authority": 78,
+          "recency": 75
+        },
+        "weights": {
+          "coverage": 0.5,
+          "authority": 0.3,
+          "recency": 0.2
+        },
+        "detail": {
+          "total": 16,
+          "primary": 7,
+          "secondary": 9,
+          "required_total": 8,
+          "required_primary": 2,
+          "dated_sources": 0,
+          "recency_floor_year": 2024
+        },
+        "summary": "Knowledge-base score 88/100 (excellent): coverage 100, authority 78, recency 75. 16/8 sources, 7/2 primary."
+      },
+      "required_sources": 8,
+      "required_primary_sources": 2,
+      "source_gap": 0,
+      "primary_source_gap": 0,
+      "messages": [
+        "Knowledge base meets the selected Standard class floor."
+      ]
+    },
+    "approved_before_generation": true,
+    "modules": [
+      {
+        "order": 1,
+        "title": "Orientation and learner baseline",
+        "slide_budget": 5,
+        "goal": "Set the purpose, audience floor, assumptions, and mastery target.",
+        "deep_dive_expectation": "substantive deep dives where required by tier and setting"
+      },
+      {
+        "order": 2,
+        "title": "Knowledge base and source boundary",
+        "slide_budget": 8,
+        "goal": "Show what the approved sources support, what is missing, and what must not be invented.",
+        "deep_dive_expectation": "substantive deep dives where required by tier and setting"
+      },
+      {
+        "order": 3,
+        "title": "Core concepts and vocabulary",
+        "slide_budget": 12,
+        "goal": "Teach the essential terms, mental models, and decision points.",
+        "deep_dive_expectation": "substantive deep dives where required by tier and setting"
+      },
+      {
+        "order": 4,
+        "title": "Guided practice and examples",
+        "slide_budget": 15,
+        "goal": "Work through realistic cases, common mistakes, checks, and facilitator prompts.",
+        "deep_dive_expectation": "substantive deep dives where required by tier and setting"
+      },
+      {
+        "order": 5,
+        "title": "Deep dives, edge cases, and quality risks",
+        "slide_budget": 15,
+        "goal": "Add expert detail, safety cautions, disagreements, and advanced transfer examples.",
+        "deep_dive_expectation": "substantive deep dives where required by tier and setting"
+      },
+      {
+        "order": 6,
+        "title": "Assessment, transfer, and works cited",
+        "slide_budget": 12,
+        "goal": "Prove mastery, capture participation, and close with source transparency.",
+        "deep_dive_expectation": "substantive deep dives where required by tier and setting"
+      }
+    ],
+    "lesson_sections": 7
+  },
+  "evidence_map": [
+    {
+      "kind": "terminal objective",
+      "claim": "Identify who the Texicans were and their significance in Texas history",
+      "source_ids": [
+        "s1",
+        "s2",
+        "s3"
+      ],
+      "source_titles": [
+        "Class setup, learner profile, and research rules",
+        "jinxschwartz.com",
+        "en.wikipedia.org"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "enabling objective",
+      "claim": "Define the term 'Texicans' with historical context and clarify distinctions from 'Texians' and 'Texans'",
+      "source_ids": [
+        "s2",
+        "s3",
+        "s4"
+      ],
+      "source_titles": [
+        "jinxschwartz.com",
+        "en.wikipedia.org",
+        "kids.nationalgeographic.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "enabling objective",
+      "claim": "Describe the origins and early settlement patterns of the Texicans in Spanish Texas",
+      "source_ids": [
+        "s3",
+        "s4"
+      ],
+      "source_titles": [
+        "en.wikipedia.org",
+        "kids.nationalgeographic.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "enabling objective",
+      "claim": "Explain the socio-political context of the Texicans during the Mexican War of Independence and Texas Revolution, including their interactions with Mexican authorities and Anglo settlers",
+      "source_ids": [
+        "s4"
+      ],
+      "source_titles": [
+        "kids.nationalgeographic.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Introduction to Texas and Early Inhabitants",
+      "source_ids": [
+        "s3",
+        "s4",
+        "s7",
+        "s9"
+      ],
+      "source_titles": [
+        "en.wikipedia.org",
+        "kids.nationalgeographic.com",
+        "everything-everywhere.com",
+        "thestoryoftexas.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Defining the Texicans: Identity and Terminology",
+      "source_ids": [
+        "s2",
+        "s6"
+      ],
+      "source_titles": [
+        "jinxschwartz.com",
+        "facebook.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Origins and Settlement of the Texicans",
+      "source_ids": [
+        "s2"
+      ],
+      "source_titles": [
+        "jinxschwartz.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Socio-Political Context: Texicans in Mexican Texas",
+      "source_ids": [
+        "s2",
+        "s7",
+        "s9"
+      ],
+      "source_titles": [
+        "jinxschwartz.com",
+        "everything-everywhere.com",
+        "thestoryoftexas.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Texicans and Anglo Settlers: Cultural and Political Tensions",
+      "source_ids": [
+        "s2",
+        "s6",
+        "s7"
+      ],
+      "source_titles": [
+        "jinxschwartz.com",
+        "facebook.com",
+        "everything-everywhere.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Primary Sources and Research Methods on Texican History",
+      "source_ids": [
+        "s10",
+        "s11",
+        "s12",
+        "s13"
+      ],
+      "source_titles": [
+        "libguides.tamusa.edu",
+        "texasstudies.org",
+        "legacy.education.texashistory.unt.edu",
+        "kwlibguides.lonestar.edu"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Summary and Significance of the Texicans in Texas History",
+      "source_ids": [
+        "s2",
+        "s7",
+        "s9"
+      ],
+      "source_titles": [
+        "jinxschwartz.com",
+        "everything-everywhere.com",
+        "thestoryoftexas.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "safety / quality claims",
+      "claim": "Statistics, standards, safety procedures, contested points, and forward-looking claims require corroboration.",
+      "source_ids": [
+        "s1",
+        "s2",
+        "s3",
+        "s4"
+      ],
+      "source_titles": [
+        "Class setup, learner profile, and research rules",
+        "jinxschwartz.com",
+        "en.wikipedia.org",
+        "kids.nationalgeographic.com"
+      ],
+      "status": "corroboration-required",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "out of scope",
+      "claim": "Claims not supported by the approved knowledge base.; Advanced side topics that do not serve the learner profile.",
+      "source_ids": [
+        "s1",
+        "s2"
+      ],
+      "source_titles": [
+        "Class setup, learner profile, and research rules",
+        "jinxschwartz.com"
+      ],
+      "status": "scope-boundary",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    }
+  ]
+}

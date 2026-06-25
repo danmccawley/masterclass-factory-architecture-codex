@@ -1,0 +1,202 @@
+[
+  {
+    "kind": "terminal objective",
+    "claim": "Identify who the Texicans were and their significance in Texas history",
+    "source_ids": [
+      "s1",
+      "s2",
+      "s3"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "jinxschwartz.com",
+      "en.wikipedia.org"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "enabling objective",
+    "claim": "Define the term 'Texicans' with historical context and clarify distinctions from 'Texians' and 'Texans'",
+    "source_ids": [
+      "s2",
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "jinxschwartz.com",
+      "en.wikipedia.org",
+      "kids.nationalgeographic.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "enabling objective",
+    "claim": "Describe the origins and early settlement patterns of the Texicans in Spanish Texas",
+    "source_ids": [
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "en.wikipedia.org",
+      "kids.nationalgeographic.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "enabling objective",
+    "claim": "Explain the socio-political context of the Texicans during the Mexican War of Independence and Texas Revolution, including their interactions with Mexican authorities and Anglo settlers",
+    "source_ids": [
+      "s4"
+    ],
+    "source_titles": [
+      "kids.nationalgeographic.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Introduction to Texas and Early Inhabitants",
+    "source_ids": [
+      "s3",
+      "s4",
+      "s7",
+      "s9"
+    ],
+    "source_titles": [
+      "en.wikipedia.org",
+      "kids.nationalgeographic.com",
+      "everything-everywhere.com",
+      "thestoryoftexas.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Defining the Texicans: Identity and Terminology",
+    "source_ids": [
+      "s2",
+      "s6"
+    ],
+    "source_titles": [
+      "jinxschwartz.com",
+      "facebook.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Origins and Settlement of the Texicans",
+    "source_ids": [
+      "s2"
+    ],
+    "source_titles": [
+      "jinxschwartz.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Socio-Political Context: Texicans in Mexican Texas",
+    "source_ids": [
+      "s2",
+      "s7",
+      "s9"
+    ],
+    "source_titles": [
+      "jinxschwartz.com",
+      "everything-everywhere.com",
+      "thestoryoftexas.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Texicans and Anglo Settlers: Cultural and Political Tensions",
+    "source_ids": [
+      "s2",
+      "s6",
+      "s7"
+    ],
+    "source_titles": [
+      "jinxschwartz.com",
+      "facebook.com",
+      "everything-everywhere.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Primary Sources and Research Methods on Texican History",
+    "source_ids": [
+      "s10",
+      "s11",
+      "s12",
+      "s13"
+    ],
+    "source_titles": [
+      "libguides.tamusa.edu",
+      "texasstudies.org",
+      "legacy.education.texashistory.unt.edu",
+      "kwlibguides.lonestar.edu"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Summary and Significance of the Texicans in Texas History",
+    "source_ids": [
+      "s2",
+      "s7",
+      "s9"
+    ],
+    "source_titles": [
+      "jinxschwartz.com",
+      "everything-everywhere.com",
+      "thestoryoftexas.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "safety / quality claims",
+    "claim": "Statistics, standards, safety procedures, contested points, and forward-looking claims require corroboration.",
+    "source_ids": [
+      "s1",
+      "s2",
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "jinxschwartz.com",
+      "en.wikipedia.org",
+      "kids.nationalgeographic.com"
+    ],
+    "status": "corroboration-required",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "out of scope",
+    "claim": "Claims not supported by the approved knowledge base.; Advanced side topics that do not serve the learner profile.",
+    "source_ids": [
+      "s1",
+      "s2"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "jinxschwartz.com"
+    ],
+    "status": "scope-boundary",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  }
+]
