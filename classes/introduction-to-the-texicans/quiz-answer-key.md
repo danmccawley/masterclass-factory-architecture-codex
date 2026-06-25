@@ -2,11 +2,11 @@
 
 ## Question 1
 Which of the following best defines the term 'Texican'?
-Answer: A person of mixed Mexican and Texan heritage
-Why: The term 'Texican' specifically refers to people of mixed Mexican and Texan heritage, reflecting the cultural blending in early Texas history.
+Answer: A cultural identity blending Mexican and Texan heritage
+Why: The term 'Texican' specifically refers to people of Mexican-Texan heritage, distinct from Anglo 'Texans' and indigenous groups.
 
 ## Question 2
-Explain the role of Texicans in the Texas Revolution and the formation of the Republic of Texas.
+Explain how Texican settlement patterns influenced their lifestyle and community structure in early Texas.
 Answer: undefined
-Rubric: Response should include key contributions of Texicans to the Texas Revolution, mention of their cultural background, and how they influenced the Republic's formation.
-Sample: Texicans played a crucial role in the Texas Revolution by fighting for independence from Mexico. Their mixed cultural heritage helped shape the political and social landscape of the new Republic of Texas.
+Rubric: Response should describe geographic locations of Texican communities, how environment shaped their daily life, and social organization aspects, supported by historical context.
+Sample: Texicans settled primarily in southern and central Texas near rivers and fertile land, which supported ranching and farming. Their communities were often tight-knit with strong family ties and blended cultural traditions from Mexican and indigenous influences.
