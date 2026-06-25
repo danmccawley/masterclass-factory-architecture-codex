@@ -1,7 +1,7 @@
 {
   "title": "Introduction to the Texicans",
   "slug": "introduction-to-the-texicans",
-  "generated_at": "2026-06-25T16:58:49.251Z",
+  "generated_at": "2026-06-25T17:01:59.465Z",
   "class_tier": {
     "level": "standard",
     "label": "Standard class",
@@ -16,11 +16,6 @@
     "attempted": true,
     "model": "tavily-search",
     "added_sources": [
-      {
-        "path": "https://jinxschwartz.com/books/the-texicans",
-        "type": "url",
-        "trust": "secondary"
-      },
       {
         "path": "https://www.facebook.com/tejanovolunteercompany/posts/texonians-texasians-and-texicanstoday-we-may-know-them-simply-as-texans-but-deci/741437638004245",
         "type": "url",
@@ -37,22 +32,27 @@
         "trust": "secondary"
       },
       {
+        "path": "https://www.thestoryoftexas.com/resources/texas-facts",
+        "type": "url",
+        "trust": "secondary"
+      },
+      {
+        "path": "https://www.youtube.com/watch?v=ck6ngwjhmzQ",
+        "type": "url",
+        "trust": "secondary"
+      },
+      {
+        "path": "https://kids.nationalgeographic.com/geography/states/article/texas",
+        "type": "url",
+        "trust": "secondary"
+      },
+      {
         "path": "https://everything-everywhere.com/a-brief-history-of-texas",
         "type": "url",
         "trust": "secondary"
       },
       {
-        "path": "https://lauriemooremoore.com/texican-texian-or-texan-it-depends",
-        "type": "url",
-        "trust": "secondary"
-      },
-      {
-        "path": "https://www.tshaonline.org/handbook/entries/indians",
-        "type": "url",
-        "trust": "secondary"
-      },
-      {
-        "path": "https://www.thestoryoftexas.com/learn/texas-history-timeline",
+        "path": "https://www.britannica.com/topic/Texas-Revolution",
         "type": "url",
         "trust": "secondary"
       },
@@ -154,7 +154,7 @@
   "deep_dive_count": 67,
   "required_deep_dive_count": 67,
   "quality": {
-    "score": 96,
+    "score": 97,
     "status": "excellent",
     "scores": {
       "slide_budget": 100,
@@ -165,7 +165,7 @@
       "objective_alignment": 83,
       "content_density": 100,
       "deep_dive_depth": 100,
-      "participation_design": 69,
+      "participation_design": 82,
       "assessment": 90,
       "transparency": 100,
       "schema_qa": 100
@@ -211,42 +211,42 @@
       {
         "id": "s2",
         "num": "2",
-        "title": "jinxschwartz.com"
+        "title": "facebook.com"
       },
       {
         "id": "s3",
         "num": "3",
-        "title": "facebook.com"
+        "title": "en.wikipedia.org"
       },
       {
         "id": "s4",
         "num": "4",
-        "title": "en.wikipedia.org"
+        "title": "quizlet.com"
       },
       {
         "id": "s5",
         "num": "5",
-        "title": "quizlet.com"
+        "title": "thestoryoftexas.com"
       },
       {
         "id": "s6",
         "num": "6",
-        "title": "everything-everywhere.com"
+        "title": "youtube.com"
       },
       {
         "id": "s7",
         "num": "7",
-        "title": "lauriemooremoore.com"
+        "title": "kids.nationalgeographic.com"
       },
       {
         "id": "s8",
         "num": "8",
-        "title": "tshaonline.org"
+        "title": "everything-everywhere.com"
       },
       {
         "id": "s9",
         "num": "9",
-        "title": "thestoryoftexas.com"
+        "title": "britannica.com"
       },
       {
         "id": "s10",
@@ -384,7 +384,7 @@
         "deep_dive_expectation": "substantive deep dives where required by tier and setting"
       }
     ],
-    "lesson_sections": 8
+    "lesson_sections": 9
   },
   "evidence_map": [
     {
@@ -397,8 +397,8 @@
       ],
       "source_titles": [
         "Class setup, learner profile, and research rules",
-        "jinxschwartz.com",
-        "facebook.com"
+        "facebook.com",
+        "en.wikipedia.org"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
@@ -412,9 +412,9 @@
         "s4"
       ],
       "source_titles": [
-        "jinxschwartz.com",
         "facebook.com",
-        "en.wikipedia.org"
+        "en.wikipedia.org",
+        "quizlet.com"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
@@ -427,8 +427,8 @@
         "s4"
       ],
       "source_titles": [
-        "facebook.com",
-        "en.wikipedia.org"
+        "en.wikipedia.org",
+        "quizlet.com"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
@@ -440,100 +440,96 @@
         "s4"
       ],
       "source_titles": [
-        "en.wikipedia.org"
+        "quizlet.com"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "lesson section",
-      "claim": "Understanding the Term 'Texican'",
-      "source_ids": [
-        "s7",
-        "s2"
-      ],
-      "source_titles": [
-        "lauriemooremoore.com",
-        "jinxschwartz.com"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "lesson section",
-      "claim": "Cultural Background of the Texicans",
+      "claim": "Understanding the Term 'Texican' and Its Origins",
       "source_ids": [
         "s2",
-        "s7",
-        "s8",
-        "s15"
-      ],
-      "source_titles": [
-        "jinxschwartz.com",
-        "lauriemooremoore.com",
-        "tshaonline.org",
-        "tshaonline.org"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "lesson section",
-      "claim": "Settlement Patterns and Lifestyle",
-      "source_ids": [
-        "s7",
-        "s8"
-      ],
-      "source_titles": [
-        "lauriemooremoore.com",
-        "tshaonline.org"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "lesson section",
-      "claim": "Texicans and Native American Tribes",
-      "source_ids": [
-        "s8",
-        "s2"
-      ],
-      "source_titles": [
-        "tshaonline.org",
-        "jinxschwartz.com"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "lesson section",
-      "claim": "Political Role of Texicans in Early Texas History",
-      "source_ids": [
-        "s15",
-        "s13"
-      ],
-      "source_titles": [
-        "tshaonline.org",
-        "gilderlehrman.org"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "lesson section",
-      "claim": "Transition of Texican Identity Over Time",
-      "source_ids": [
+        "s3",
+        "s5",
         "s7"
       ],
       "source_titles": [
-        "lauriemooremoore.com"
+        "facebook.com",
+        "en.wikipedia.org",
+        "thestoryoftexas.com",
+        "kids.nationalgeographic.com"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "lesson section",
-      "claim": "Impact of the Treaty of Guadalupe Hidalgo",
+      "claim": "Geography and Settlement Patterns of the Texicans",
+      "source_ids": [
+        "s5",
+        "s7",
+        "s8",
+        "s11"
+      ],
+      "source_titles": [
+        "thestoryoftexas.com",
+        "kids.nationalgeographic.com",
+        "everything-everywhere.com",
+        "texaspsp.org"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Cultural Background and Lifestyle of the Texicans",
+      "source_ids": [
+        "s5",
+        "s7",
+        "s8",
+        "s11"
+      ],
+      "source_titles": [
+        "thestoryoftexas.com",
+        "kids.nationalgeographic.com",
+        "everything-everywhere.com",
+        "texaspsp.org"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Texicans in Early Texas History and the Texas Revolution",
+      "source_ids": [
+        "s9",
+        "s13",
+        "s15"
+      ],
+      "source_titles": [
+        "britannica.com",
+        "gilderlehrman.org",
+        "tshaonline.org"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Political and Social Composition of the Republic of Texas",
+      "source_ids": [
+        "s15"
+      ],
+      "source_titles": [
+        "tshaonline.org"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Impact of the Treaty of Guadalupe Hidalgo on Texican Identity",
       "source_ids": [
         "s16"
       ],
@@ -545,15 +541,41 @@
     },
     {
       "kind": "lesson section",
-      "claim": "Summary and Review",
+      "claim": "Educational Frameworks: TEKS and Understanding Texicans",
+      "source_ids": [
+        "s14"
+      ],
+      "source_titles": [
+        "tea.texas.gov"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Cultural Geography and Immigration Influences on Texican Identity",
+      "source_ids": [
+        "s11"
+      ],
+      "source_titles": [
+        "texaspsp.org"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Summary and Review of Texican Identity and History",
       "source_ids": [
         "s2",
-        "s7",
+        "s5",
+        "s9",
         "s15"
       ],
       "source_titles": [
-        "jinxschwartz.com",
-        "lauriemooremoore.com",
+        "facebook.com",
+        "thestoryoftexas.com",
+        "britannica.com",
         "tshaonline.org"
       ],
       "status": "mapped",
@@ -570,9 +592,9 @@
       ],
       "source_titles": [
         "Class setup, learner profile, and research rules",
-        "jinxschwartz.com",
         "facebook.com",
-        "en.wikipedia.org"
+        "en.wikipedia.org",
+        "quizlet.com"
       ],
       "status": "corroboration-required",
       "finding": "Mapped to approved source-paper sections for source verification."
@@ -586,7 +608,7 @@
       ],
       "source_titles": [
         "Class setup, learner profile, and research rules",
-        "jinxschwartz.com"
+        "facebook.com"
       ],
       "status": "scope-boundary",
       "finding": "Mapped to approved source-paper sections for source verification."

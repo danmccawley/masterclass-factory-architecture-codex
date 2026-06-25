@@ -18,28 +18,28 @@ Bernard support: ask Bernard for clarification, examples, translation, quiz help
 - 6. Assessment, transfer, and works cited (12 slides): Prove mastery, capture participation, and close with source transparency.
 
 ## Key Terms
-- texican: An Anglo-American settler living in Mexican Texas between 1820 and 1836, invited by the Mexican government to settle the region as a buffer against Native American tribes and to promote economic development. Texicans swore loyalty to Mexico and received land grants during this period. Why it matters: Understanding 'Texican' clarifies the early cultural and political identity of settlers in Texas before its independence, highlighting their unique position between Mexican authorities and later Anglo-American settlers.
-- texian: The term used for residents of Texas during the Republic of Texas period (1836–1846), following independence from Mexico and before Texas joined the United States. Why it matters: Recognizing 'Texian' helps trace the evolution of Texan identity and the political changes Texas underwent after independence.
-- texan: The common term for residents of Texas after it became a U.S. state in 1846, replacing earlier terms like Texican and Texian. Why it matters: Knowing 'Texan' situates the modern identity of Texas residents within its historical context and political transitions.
-- empresario: A land agent or contractor, such as Stephen F. Austin, authorized by the Mexican government to recruit and settle families in Texas by managing land grants. Why it matters: Understanding the role of empresarios explains how settlement patterns and population growth in Texas were organized and incentivized.
-- coahuila y texas: The Mexican province that included Texas from 1824 to 1836, under which Texicans settled and were governed before Texas declared independence. Why it matters: Knowing this province situates Texican settlement within the political geography of Mexico before Texas became independent.
-- texas declaration of independence: The 1836 document drafted and signed at Washington-on-the-Brazos declaring Texas independent from Mexico, involving key Texican political participation. Why it matters: This declaration marks a pivotal moment in Texas history and highlights the political role Texicans played in shaping the region’s future.
-- treaty of guadalupe hidalgo: The 1848 treaty that ended the Mexican-American War, resulting in Mexico ceding Texas and other territories to the United States. Why it matters: The treaty significantly impacted Texicans by changing Texas’s political status and territorial boundaries, shaping its integration into the U.S.
-- native american tribes (caddo, comanche): Indigenous peoples inhabiting Texas during the Texican period, whose presence influenced settlement patterns, security, and frontier life. Why it matters: Understanding these tribes is essential to grasp the challenges Texicans faced and the complex cultural interactions on the Texas frontier.
+- texican: A historical term referring to early settlers of Texas, including both Anglo-American colonists and Tejanos (Mexican Texans), representing a mixed cultural heritage. Why it matters: Understanding 'Texican' clarifies the diverse cultural roots of Texas and highlights the blended identities that shaped early Texas history.
+- tejano: A Mexican Texan, typically a descendant of Spanish-speaking settlers in Texas before it became part of the United States. Why it matters: Recognizing Tejanos is essential to appreciating the Mexican influence within Texican culture and Texas history.
+- texas: The name derives from the Caddo word 'táysha,' meaning 'friend' or 'ally,' which influenced the cultural identity of the region's inhabitants. Why it matters: Knowing the origin of 'Texas' helps learners connect indigenous roots to the state's identity and the Texicans' sense of community.
+- texas revolution: A conflict from 1835 to 1836 in which Texicans fought for independence from Mexico, leading to the creation of the Republic of Texas. Why it matters: The revolution was a pivotal event defining Texican political and cultural identity and shaping Texas's future.
+- republic of texas: An independent nation formed in 1836 after Texas declared independence from Mexico, governed by a diverse group of settlers including Texicans. Why it matters: Understanding the Republic highlights the political diversity and challenges faced by early Texicans in self-governance.
+- treaty of guadalupe hidalgo: The 1848 treaty that ended the Mexican-American War, recognizing Texas as part of the United States and affecting Texican territorial and cultural identity. Why it matters: This treaty marks a major shift in Texican identity and territorial boundaries, influencing Texas's integration into the U.S.
+- settlement patterns: The ways Texicans established communities influenced by Texas's diverse geography, including coastal plains, interior lowlands, and plains, affecting their lifestyle and economy. Why it matters: Settlement patterns explain how geography shaped Texican daily life, economic activities like ranching and farming, and cultural development.
+- texas essential knowledge and skills (teks): The official educational standards outlining what students in Texas should know about Texas history, including the role of Texicans. Why it matters: TEKS provides a structured framework for teaching and understanding Texican history in schools, ensuring consistent knowledge.
 - terminal learning objective: The main capability learners should demonstrate by the end of the class. Why it matters: It anchors the lesson around outcomes instead of loose topic coverage.
 - enabling learning objective: A supporting skill or idea learners need before they can meet the terminal objective. Why it matters: It turns a big outcome into teachable steps.
 - source verification: An independent check that claims and citations are supported by the approved corpus. Why it matters: It keeps fabricated or unsupported material out of the class.
 
 ## Works Cited
 - 1. Class setup, learner profile, and research rules
-- 2. jinxschwartz.com
-- 3. facebook.com
-- 4. en.wikipedia.org
-- 5. quizlet.com
-- 6. everything-everywhere.com
-- 7. lauriemooremoore.com
-- 8. tshaonline.org
-- 9. thestoryoftexas.com
+- 2. facebook.com
+- 3. en.wikipedia.org
+- 4. quizlet.com
+- 5. thestoryoftexas.com
+- 6. youtube.com
+- 7. kids.nationalgeographic.com
+- 8. everything-everywhere.com
+- 9. britannica.com
 - 10. oercommons.org
 - 11. texaspsp.org
 - 12. shsulibraryguides.org
