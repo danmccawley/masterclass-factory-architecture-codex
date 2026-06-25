@@ -1,7 +1,7 @@
 {
   "title": "Introduction to the Texicans",
   "slug": "introduction-to-the-texicans",
-  "generated_at": "2026-06-25T16:32:05.301Z",
+  "generated_at": "2026-06-25T16:33:38.180Z",
   "class_tier": {
     "level": "standard",
     "label": "Standard class",
@@ -159,7 +159,7 @@
   "deep_dive_count": 67,
   "required_deep_dive_count": 67,
   "quality": {
-    "score": 97,
+    "score": 95,
     "status": "excellent",
     "scores": {
       "slide_budget": 100,
@@ -170,7 +170,7 @@
       "objective_alignment": 83,
       "content_density": 100,
       "deep_dive_depth": 100,
-      "participation_design": 95,
+      "participation_design": 69,
       "assessment": 80,
       "transparency": 100,
       "schema_qa": 100
@@ -190,7 +190,7 @@
       "schema QA"
     ]
   },
-  "pipeline_mode": "openai",
+  "pipeline_mode": "deterministic",
   "bernard": {
     "embedded": true,
     "wake_word": "Bernard",
@@ -394,7 +394,7 @@
         "deep_dive_expectation": "substantive deep dives where required by tier and setting"
       }
     ],
-    "lesson_sections": 10
+    "lesson_sections": 68
   },
   "evidence_map": [
     {
@@ -457,156 +457,146 @@
     },
     {
       "kind": "lesson section",
-      "claim": "Defining the Texicans: Origins and Terminology",
+      "claim": "Introduction to the Texicans",
       "source_ids": [
-        "s7",
-        "s2",
-        "s6"
+        "s1"
       ],
       "source_titles": [
-        "lauriemooremoore.com",
-        "jinxschwartz.com",
-        "everything-everywhere.com"
+        "Class setup, learner profile, and research rules"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "lesson section",
-      "claim": "Historical Context: Texas under Mexican Rule (1820-1836)",
+      "claim": "What the generator could verify",
       "source_ids": [
-        "s7",
-        "s3",
-        "s8"
+        "s1",
+        "s2"
       ],
       "source_titles": [
-        "lauriemooremoore.com",
-        "facebook.com",
-        "tshaonline.org"
+        "Class setup, learner profile, and research rules",
+        "jinxschwartz.com"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "lesson section",
-      "claim": "Settlement Patterns and Lifestyle of the Texicans",
+      "claim": "Design for the floor learner",
       "source_ids": [
-        "s7",
-        "s2",
-        "s8"
+        "s1"
       ],
       "source_titles": [
-        "lauriemooremoore.com",
-        "jinxschwartz.com",
-        "tshaonline.org"
+        "Class setup, learner profile, and research rules"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "lesson section",
-      "claim": "Cultural Background and Identity of the Texicans",
+      "claim": "Terminal learning objectives",
       "source_ids": [
-        "s2",
-        "s8",
-        "s6"
+        "s1"
       ],
       "source_titles": [
-        "jinxschwartz.com",
-        "tshaonline.org",
-        "everything-everywhere.com"
+        "Class setup, learner profile, and research rules"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "lesson section",
-      "claim": "Political Tensions and the Road to the Texas Revolution",
+      "claim": "Enabling learning objectives",
       "source_ids": [
-        "s7",
-        "s2",
-        "s3"
+        "s1"
       ],
       "source_titles": [
-        "lauriemooremoore.com",
-        "jinxschwartz.com",
-        "facebook.com"
+        "Class setup, learner profile, and research rules"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "lesson section",
-      "claim": "Texicans’ Role in Early Texas History and Independence",
+      "claim": "Practice path",
       "source_ids": [
-        "s2",
-        "s7"
+        "s1"
       ],
       "source_titles": [
-        "jinxschwartz.com",
-        "lauriemooremoore.com"
+        "Class setup, learner profile, and research rules"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "lesson section",
-      "claim": "Primary Sources: Voices of the Texicans",
+      "claim": "Guardrails for quality",
       "source_ids": [
-        "s10",
-        "s11",
-        "s12",
-        "s13"
+        "s1"
       ],
       "source_titles": [
-        "libguides.fau.edu",
-        "kwlibguides.lonestar.edu",
-        "legacy.education.texashistory.unt.edu",
-        "shsulibraryguides.org"
+        "Class setup, learner profile, and research rules"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "lesson section",
-      "claim": "Terminological Evolution: From Texican to Texian to Texan",
+      "claim": "Check understanding",
       "source_ids": [
-        "s7",
-        "s6"
+        "s1"
       ],
       "source_titles": [
-        "lauriemooremoore.com",
-        "everything-everywhere.com"
+        "Class setup, learner profile, and research rules"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "lesson section",
-      "claim": "Addressing Gaps and Contested Points in Texican History",
+      "claim": "What the facilitator should say",
       "source_ids": [
-        "s2",
-        "s7",
-        "s10"
+        "s1"
       ],
       "source_titles": [
-        "jinxschwartz.com",
-        "lauriemooremoore.com",
-        "libguides.fau.edu"
+        "Class setup, learner profile, and research rules"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "lesson section",
-      "claim": "Summary and Review: Understanding the Texicans",
+      "claim": "Ready to teach, then improve",
       "source_ids": [
-        "s2",
-        "s7"
+        "s1"
       ],
       "source_titles": [
-        "jinxschwartz.com",
-        "lauriemooremoore.com"
+        "Class setup, learner profile, and research rules"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Make the idea usable",
+      "source_ids": [
+        "s11"
+      ],
+      "source_titles": [
+        "kwlibguides.lonestar.edu"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Walk through a worked example",
+      "source_ids": [
+        "s12"
+      ],
+      "source_titles": [
+        "legacy.education.texashistory.unt.edu"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
