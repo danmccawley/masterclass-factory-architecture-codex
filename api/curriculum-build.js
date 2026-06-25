@@ -220,12 +220,32 @@ module.exports = async function curriculumBuildHandler(req, res) {
   res.setHeader("access-control-allow-headers", "content-type");
   if (req.method === "OPTIONS") { res.statusCode = 204; res.end(); return; }
 
+  // Read a query param from req.query (Vercel) or fall back to parsing req.url.
+  function qparam(name) {
+    if (req.query && req.query[name] != null) return String(req.query[name]);
+    var marker = name + "=";
+    var raw = req.url && req.url.indexOf(marker) >= 0
+      ? (req.url.split(marker)[1] || "").split("&")[0]
+      : "";
+    return raw;
+  }
+
   try {
     if (req.method === "GET") {
-      var slug = (req.query && req.query.slug) || (req.url && (req.url.split("slug=")[1] || "").split("&")[0]) || "";
+      var slug = qparam("slug");
       if (!slug) { send(res, 400, { ok: false, errors: ["Provide ?slug=<curriculum>."] }); return; }
       var read = await store.readManifest(decodeURIComponent(slug));
       if (!read) { send(res, 404, { ok: false, errors: ["No curriculum with that slug."] }); return; }
+      // Brief-by-slug mode: ?slug=<curriculum>&class=<classSlug> returns just that
+      // one class's full brief. The parallel scheduler calls this as each worker
+      // starts a class, so the polled view stays light (no briefs in the payload).
+      var classSlug = qparam("class");
+      if (classSlug) {
+        var brief = briefForClass(read.manifest, decodeURIComponent(classSlug));
+        if (!brief) { send(res, 404, { ok: false, errors: ["No class with that slug in this curriculum."] }); return; }
+        send(res, 200, { ok: true, sha: read.sha, class: decodeURIComponent(classSlug), brief: brief });
+        return;
+      }
       send(res, 200, Object.assign({ ok: true, sha: read.sha }, view(read.manifest)));
       return;
     }
