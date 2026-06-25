@@ -1,44 +1,36 @@
 /* Generated glossary. term -> {d, r}. */
 window.GLOSSARY = {
   "texican": {
-    "d": "An Anglo settler living in Mexican Texas between 1820 and 1836, during which Texas was part of the Mexican province of Coahuila y Texas. These settlers were attracted by land grants and required to pledge loyalty to Mexico and Christianity.",
-    "r": "Understanding 'Texican' clarifies the identity and political context of early Anglo settlers before Texas independence, highlighting their role in cultural and political dynamics."
+    "d": "A term used primarily between 1820 and 1836 to describe Anglo settlers living in Mexican Texas, who swore loyalty to Mexico and settled under empresario contracts during the period when Texas was part of Mexico.",
+    "r": "Understanding 'Texican' clarifies the cultural and political identity of early settlers caught between Mexican authority and Anglo-American immigration, key to Texas's path to independence."
   },
   "texian": {
-    "d": "A term used for residents of Texas during the Republic of Texas period (1836–1845), following independence from Mexico but before joining the United States.",
-    "r": "Recognizing 'Texian' helps distinguish the political and cultural identity shift after Texas gained independence, separating it from the Mexican-era 'Texican.'"
+    "d": "A historical term that evolved from 'Texican' during and after the Texas Revolution, referring to residents of Texas who supported independence from Mexico before Texas became a U.S. state.",
+    "r": "Recognizing 'Texian' helps trace the political and cultural shifts in Texas identity from Mexican rule to the Republic of Texas."
   },
   "texan": {
-    "d": "The term for residents of Texas after it became a U.S. state in 1845, reflecting integration into the United States.",
-    "r": "Knowing 'Texan' situates Texas residents within the American political framework and marks the final stage of identity evolution from Texican to Texian to Texan."
+    "d": "The modern term for residents of Texas, which replaced 'Texian' after Texas joined the United States, reflecting the state's integration into the U.S.",
+    "r": "Knowing 'Texan' situates Texas's identity in its current political and cultural context, distinguishing it from earlier historical periods."
   },
-  "empresario": {
-    "d": "A land agent or contractor authorized by the Mexican government to settle families in Texas by distributing land grants, notably Stephen F. Austin.",
-    "r": "Empresarios shaped settlement patterns and population growth in Texas, directly influencing Texican community development and frontier expansion."
+  "empresario contract": {
+    "d": "A land grant agreement under Mexican rule allowing individuals (empresarios) to settle families in Texas in exchange for loyalty to Mexico and development of the land.",
+    "r": "Empresario contracts shaped settlement patterns and demographics of early Texas, influencing Texican lifestyles and political tensions."
   },
-  "land grant": {
-    "d": "A parcel of land given by the Mexican government to settlers or empresarios to encourage colonization and development of Texas.",
-    "r": "Land grants were the primary incentive attracting Texicans, shaping settlement locations and economic opportunities in early Texas."
-  },
-  "texas revolution": {
-    "d": "The armed conflict (1835–1836) between Texican settlers and the Mexican government that led to Texas gaining independence and forming the Republic of Texas.",
-    "r": "The revolution was a pivotal event involving Texicans, marking their political break from Mexico and shaping Texas history."
+  "stephen f. austin": {
+    "d": "A prominent empresario who led the settlement of many Anglo families in Mexican Texas under empresario contracts, often called the 'Father of Texas.'",
+    "r": "Austin's role exemplifies how Texicans were settled and governed, providing insight into early Texas colonization and loyalty dynamics."
   },
   "coahuila y texas": {
-    "d": "The Mexican province combining present-day Texas and Coahuila during the early 19th century, under which Texicans lived before independence.",
-    "r": "Understanding this political entity provides context for Texican governance, legal obligations, and cultural influences under Mexican rule."
+    "d": "The Mexican state formed by merging Coahuila and Texas during the period when Texas was part of Mexico (1820-1836).",
+    "r": "This political entity contextualizes the governance framework under which Texicans lived and the legal restrictions they faced."
   },
-  "comanche": {
-    "d": "A powerful Native American tribe in Texas during the Texican period, known for their equestrian culture and military resistance.",
-    "r": "The Comanche significantly influenced frontier dynamics, conflicts, and cultural interactions with Texicans."
+  "indigenous peoples of texas": {
+    "d": "Native groups such as the Caddo, Karankawa, Coahuiltecan, and Jumano who inhabited Texas before and during European colonization.",
+    "r": "Their cultures and interactions influenced Texas's identity and the environment in which Texicans settled."
   },
-  "caddo": {
-    "d": "A Native American group in East Texas with established villages and complex social structures during the Texican era.",
-    "r": "The Caddo represent indigenous cultural presence and political influence in Texas, impacting Texican settlement and relations."
-  },
-  "primary sources": {
-    "d": "Original documents and records from the period, such as letters, treaties, and government archives related to Texicans and early Texas history.",
-    "r": "Primary sources provide direct evidence for understanding Texican life and verifying historical narratives beyond secondary interpretations."
+  "texas revolution": {
+    "d": "The armed conflict (1835-1836) between Texicans and Mexican authorities that led to Texas's independence from Mexico.",
+    "r": "Understanding the revolution is essential to grasp the Texicans' complex loyalties and their role in shaping Texas history."
   },
   "terminal learning objective": {
     "d": "The main capability learners should demonstrate by the end of the class.",

@@ -1,7 +1,7 @@
 {
   "title": "Introduction to the Texicans",
   "slug": "introduction-to-the-texicans",
-  "generated_at": "2026-06-25T16:35:54.711Z",
+  "generated_at": "2026-06-25T16:37:46.236Z",
   "class_tier": {
     "level": "standard",
     "label": "Standard class",
@@ -159,7 +159,7 @@
   "deep_dive_count": 67,
   "required_deep_dive_count": 67,
   "quality": {
-    "score": 97,
+    "score": 96,
     "status": "excellent",
     "scores": {
       "slide_budget": 100,
@@ -170,7 +170,7 @@
       "objective_alignment": 83,
       "content_density": 100,
       "deep_dive_depth": 100,
-      "participation_design": 79,
+      "participation_design": 69,
       "assessment": 90,
       "transparency": 100,
       "schema_qa": 100
@@ -394,12 +394,12 @@
         "deep_dive_expectation": "substantive deep dives where required by tier and setting"
       }
     ],
-    "lesson_sections": 10
+    "lesson_sections": 7
   },
   "evidence_map": [
     {
       "kind": "terminal objective",
-      "claim": "Identify who the Texicans were and describe their cultural background within the context of early 19th-century Texas.",
+      "claim": "Identify who the Texicans were and describe their cultural background",
       "source_ids": [
         "s1",
         "s2",
@@ -415,7 +415,7 @@
     },
     {
       "kind": "enabling objective",
-      "claim": "Define the term 'Texican' and explain its historical origins and evolution through the Mexican, Republic, and U.S. periods.",
+      "claim": "Define the term 'Texican' and its origins",
       "source_ids": [
         "s2",
         "s3",
@@ -431,7 +431,7 @@
     },
     {
       "kind": "enabling objective",
-      "claim": "Discuss the settlement patterns, lifestyle, and cultural influences shaping the Texican community, including land grant systems and frontier dynamics.",
+      "claim": "Discuss the settlement patterns and lifestyle of the Texicans",
       "source_ids": [
         "s3",
         "s4"
@@ -445,7 +445,7 @@
     },
     {
       "kind": "enabling objective",
-      "claim": "Explain the role of the Texicans in early Texas history, focusing on their interactions with Native American tribes, Mexican authorities, and their participation in the Texas Revolution.",
+      "claim": "Explain the role of the Texicans in early Texas history",
       "source_ids": [
         "s4"
       ],
@@ -457,14 +457,30 @@
     },
     {
       "kind": "lesson section",
-      "claim": "Understanding the Term 'Texican' and Its Origins",
+      "claim": "Introduction to Texas and the Texican Identity",
+      "source_ids": [
+        "s6",
+        "s8",
+        "s7"
+      ],
+      "source_titles": [
+        "everything-everywhere.com",
+        "tshaonline.org",
+        "lauriemooremoore.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Defining 'Texican': Origins and Terminology Evolution",
       "source_ids": [
         "s7",
-        "s6"
+        "s2"
       ],
       "source_titles": [
         "lauriemooremoore.com",
-        "everything-everywhere.com"
+        "jinxschwartz.com"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
@@ -473,103 +489,19 @@
       "kind": "lesson section",
       "claim": "Settlement Patterns and Lifestyle of the Texicans",
       "source_ids": [
-        "s2",
         "s7",
-        "s8"
-      ],
-      "source_titles": [
-        "jinxschwartz.com",
-        "lauriemooremoore.com",
-        "tshaonline.org"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "lesson section",
-      "claim": "Cultural Background and Influences of the Texicans",
-      "source_ids": [
-        "s2",
-        "s7",
-        "s8",
-        "s9"
-      ],
-      "source_titles": [
-        "jinxschwartz.com",
-        "lauriemooremoore.com",
-        "tshaonline.org",
-        "thestoryoftexas.com"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "lesson section",
-      "claim": "Texicans’ Role in Early Texas History and Conflicts",
-      "source_ids": [
-        "s7",
-        "s8",
-        "s9",
-        "s10"
+        "s2"
       ],
       "source_titles": [
         "lauriemooremoore.com",
-        "tshaonline.org",
-        "thestoryoftexas.com",
-        "libguides.fau.edu"
+        "jinxschwartz.com"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "lesson section",
-      "claim": "Primary Sources Illuminating Texican History",
-      "source_ids": [
-        "s10",
-        "s11",
-        "s12",
-        "s15"
-      ],
-      "source_titles": [
-        "libguides.fau.edu",
-        "kwlibguides.lonestar.edu",
-        "legacy.education.texashistory.unt.edu",
-        "guides.library.yale.edu"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "lesson section",
-      "claim": "Terminology Evolution: From Texican to Texian to Texan",
-      "source_ids": [
-        "s7",
-        "s6"
-      ],
-      "source_titles": [
-        "lauriemooremoore.com",
-        "everything-everywhere.com"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "lesson section",
-      "claim": "Native American Influence and Interactions with Texicans",
-      "source_ids": [
-        "s8",
-        "s9"
-      ],
-      "source_titles": [
-        "tshaonline.org",
-        "thestoryoftexas.com"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "lesson section",
-      "claim": "Cultural Identity and Assimilation Processes",
+      "claim": "Texicans in Early Texas History and the Texas Revolution",
       "source_ids": [
         "s2",
         "s7"
@@ -583,17 +515,13 @@
     },
     {
       "kind": "lesson section",
-      "claim": "Critical Evaluation of Secondary and Primary Sources",
+      "claim": "Indigenous Peoples and Their Influence on Texican Identity",
       "source_ids": [
-        "s2",
-        "s3",
-        "s4",
+        "s8",
         "s6"
       ],
       "source_titles": [
-        "jinxschwartz.com",
-        "facebook.com",
-        "en.wikipedia.org",
+        "tshaonline.org",
         "everything-everywhere.com"
       ],
       "status": "mapped",
@@ -601,18 +529,34 @@
     },
     {
       "kind": "lesson section",
-      "claim": "Summary and Integration of Texican Historical Context",
+      "claim": "Primary Sources and Research on the Texicans",
+      "source_ids": [
+        "s10",
+        "s11",
+        "s12",
+        "s17"
+      ],
+      "source_titles": [
+        "libguides.fau.edu",
+        "kwlibguides.lonestar.edu",
+        "legacy.education.texashistory.unt.edu",
+        "tsl.texas.gov"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Summary and Review of Texican Identity and Historical Role",
       "source_ids": [
         "s2",
         "s7",
-        "s8",
-        "s9"
+        "s8"
       ],
       "source_titles": [
         "jinxschwartz.com",
         "lauriemooremoore.com",
-        "tshaonline.org",
-        "thestoryoftexas.com"
+        "tshaonline.org"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
