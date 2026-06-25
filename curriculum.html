@@ -67,6 +67,17 @@
   .kb-opt input{width:auto;margin-right:6px;}
   .kb-opt:has(input:checked){border-color:var(--teal);box-shadow:0 0 0 1px var(--teal) inset;}
   @media(max-width:640px){.kb-owner{grid-template-columns:1fr;}}
+  .biblio{margin-top:18px;border-top:1px solid var(--line);padding-top:14px;}
+  .biblio-head{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:10px;}
+  .src{display:flex;gap:8px;align-items:baseline;padding:6px 0;border-bottom:1px solid var(--line);font-size:13px;}
+  .src:last-child{border-bottom:none;}
+  .src .tier{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;padding:1px 7px;border-radius:999px;border:1px solid var(--line);color:var(--dim);white-space:nowrap;}
+  .src .tier.primary{color:var(--good);border-color:var(--good);}
+  .src .tier.secondary{color:var(--teal);border-color:var(--teal);}
+  .src .body{flex:1;min-width:0;}
+  .src .ttl{color:var(--ink);text-decoration:none;border-bottom:1px solid transparent;word-break:break-word;}
+  .src .ttl:hover{border-bottom-color:var(--teal);}
+  .src .meta2{color:var(--faint);font-size:11px;font-family:var(--mono);margin-top:2px;}
   .badge{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:var(--dim);}
   .badge[data-state="built"]{color:var(--good);border-color:var(--good);}
   .badge[data-state="building"]{color:var(--teal);border-color:var(--teal);}
@@ -206,6 +217,7 @@
     html += "</div>";
     html += "<div id='coherence'></div>";
     html += "<div id='build'></div>";
+    html += "<div id='biblio'></div>";
     html += "</div>";
     $("result").innerHTML = html;
 
@@ -293,6 +305,7 @@
           setStatus("Saved as \u201C"+res.j.manifest.slug+"\u201D. Coherence checked below.");
           renderCoherence(res.j.coherence);
           renderBuild(res.j.manifest, res.j.coherence);
+          renderBibliography(res.j);
         } else {
           var err = (res.j && res.j.errors && res.j.errors.join("; ")) || (res.j && res.j.error) || "save failed";
           setStatus("Save: "+err, true);
@@ -332,6 +345,33 @@
   }
 
   function rowFor(slug){ return document.querySelector(".brow[data-slug=\""+slug+"\"]"); }
+
+  // The shared knowledge core, made visible: every source Bernard verified while
+  // building, deduped across classes, with who cites it. Refreshes as classes build.
+  function renderBibliography(v){
+    var box = $("biblio"); if(!box) return;
+    var sources = (v && v.bibliography) || [];
+    var sum = (v && v.bibliography_summary) || { total:0, primary:0, secondary:0, unknown:0 };
+    if(!sources.length){
+      box.innerHTML = "<div class='biblio'><div class='biblio-head'>Curriculum bibliography</div><p class='hint'>Sources appear here as Bernard builds each class.</p></div>";
+      return;
+    }
+    var titleBySlug = {};
+    if(v.manifest && v.manifest.classes) v.manifest.classes.forEach(function(c){ titleBySlug[c.slug] = c.title; });
+    var rows = sources.map(function(s){
+      var tier = s.primary ? "primary" : (s.trust==="secondary" ? "secondary" : "unverified");
+      var cites = (s.cited_by||[]).map(function(sl){ return titleBySlug[sl] || sl; });
+      var meta = [s.published, cites.length ? ("cited by "+cites.join(", ")) : ""].filter(Boolean).join(" \u00b7 ");
+      var ttl = s.path
+        ? "<a class='ttl' href='"+esc(s.path)+"' target='_blank' rel='noopener'>"+esc(s.title||s.path)+"</a>"
+        : esc(s.title||"");
+      return "<div class='src'><span class='tier "+(tier==="unverified"?"":tier)+"'>"+tier+"</span>"+
+        "<span class='body'>"+ttl+(meta?("<div class='meta2'>"+esc(meta)+"</div>"):"")+"</span></div>";
+    }).join("");
+    var head = "Curriculum bibliography \u00b7 "+sum.total+" source"+(sum.total===1?"":"s")+
+      " ("+sum.primary+" primary, "+sum.secondary+" secondary"+(sum.unknown?(", "+sum.unknown+" unverified"):"")+")";
+    box.innerHTML = "<div class='biblio'><div class='biblio-head'>"+esc(head)+"</div>"+rows+"</div>";
+  }
 
   function setRow(slug, st, opts){
     opts = opts || {};
@@ -421,6 +461,7 @@
     getView(slug).then(function(v){
       if(!v || !v.ok){ finishBuild("Couldn't read the curriculum state.", true); return; }
       v.manifest.classes.forEach(function(c){ if(c.status!=="building") setRow(c.slug, c.status, {url:c.class_url}); });
+      renderBibliography(v);
       if(!v.next){
         if(v.progress.done) finishBuild("All "+v.progress.total+" classes built. \uD83C\uDF89");
         else if(failures.length) escalateFailures(slug, v);
