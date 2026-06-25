@@ -1,7 +1,7 @@
 [
   {
     "kind": "terminal objective",
-    "claim": "Identify who the Texicans were and describe their cultural background, settlement patterns, and historical role in early Texas.",
+    "claim": "Identify who the Texicans were and describe their cultural background, settlement patterns, and role in early Texas history using primary and secondary sources.",
     "source_ids": [
       "s1",
       "s2",
@@ -17,7 +17,7 @@
   },
   {
     "kind": "enabling objective",
-    "claim": "Define the term 'Texican' and explain its origins and distinction from related terms such as 'Texan' and 'Texian'.",
+    "claim": "Define the term 'Texican' with reference to its historical and linguistic origins and explain its evolution over time.",
     "source_ids": [
       "s2",
       "s3",
@@ -33,7 +33,7 @@
   },
   {
     "kind": "enabling objective",
-    "claim": "Describe the settlement patterns, lifestyle, and cultural practices of the Texicans in frontier Texas.",
+    "claim": "Discuss the settlement patterns, lifestyle, and daily activities of the Texicans under Spanish and Mexican rule.",
     "source_ids": [
       "s3",
       "s4"
@@ -47,11 +47,65 @@
   },
   {
     "kind": "enabling objective",
-    "claim": "Analyze the role of the Texicans in early Texas history, including their participation in the Texas Revolution and their complex political allegiances.",
+    "claim": "Explain the cultural background of the Texicans, highlighting Spanish colonial, Mexican, indigenous, and Anglo-American influences.",
     "source_ids": [
       "s4"
     ],
     "source_titles": [
+      "kids.nationalgeographic.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "enabling objective",
+    "claim": "Analyze the political and military roles of the Texicans in early Texas history, including their participation in the Texas Revolution and conflicts with Anglo settlers.",
+    "source_ids": [
+      "s1",
+      "s2",
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "jinxschwartz.com",
+      "en.wikipedia.org",
+      "kids.nationalgeographic.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "enabling objective",
+    "claim": "Interpret primary source documents and artifacts to illustrate Texican life, identity, and perspectives.",
+    "source_ids": [
+      "s1",
+      "s2",
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "jinxschwartz.com",
+      "en.wikipedia.org",
+      "kids.nationalgeographic.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "enabling objective",
+    "claim": "Evaluate differing historical perspectives and field disagreements regarding Texican identity and history.",
+    "source_ids": [
+      "s1",
+      "s2",
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "jinxschwartz.com",
+      "en.wikipedia.org",
       "kids.nationalgeographic.com"
     ],
     "status": "mapped",
@@ -59,16 +113,18 @@
   },
   {
     "kind": "lesson section",
-    "claim": "Understanding the Term 'Texican': Origins and Identity",
+    "claim": "Introduction to Texas and the Origins of the Texicans",
     "source_ids": [
       "s2",
-      "s6",
-      "s7"
+      "s4",
+      "s7",
+      "s11"
     ],
     "source_titles": [
       "jinxschwartz.com",
-      "facebook.com",
-      "everything-everywhere.com"
+      "kids.nationalgeographic.com",
+      "everything-everywhere.com",
+      "texasstudies.org"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
@@ -78,11 +134,33 @@
     "claim": "Settlement Patterns and Lifestyle of the Texicans",
     "source_ids": [
       "s2",
-      "s7"
+      "s11",
+      "s10",
+      "s12"
     ],
     "source_titles": [
       "jinxschwartz.com",
-      "everything-everywhere.com"
+      "texasstudies.org",
+      "libguides.tamusa.edu",
+      "legacy.education.texashistory.unt.edu"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Cultural Background and Identity of the Texicans",
+    "source_ids": [
+      "s2",
+      "s11",
+      "s17",
+      "s13"
+    ],
+    "source_titles": [
+      "jinxschwartz.com",
+      "texasstudies.org",
+      "guides.library.yale.edu",
+      "kwlibguides.lonestar.edu"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
@@ -92,13 +170,13 @@
     "claim": "Texicans in Early Texas History and the Texas Revolution",
     "source_ids": [
       "s2",
-      "s7",
+      "s4",
       "s8",
       "s9"
     ],
     "source_titles": [
       "jinxschwartz.com",
-      "everything-everywhere.com",
+      "kids.nationalgeographic.com",
       "britannica.com",
       "thestoryoftexas.com"
     ],
@@ -107,7 +185,7 @@
   },
   {
     "kind": "lesson section",
-    "claim": "Primary Sources and Research Methods for Studying Texican History",
+    "claim": "Primary Source Exploration: Voices of the Texicans",
     "source_ids": [
       "s10",
       "s11",
@@ -125,16 +203,36 @@
   },
   {
     "kind": "lesson section",
-    "claim": "Challenges and Gaps in Texican Historical Research",
+    "claim": "Field Disagreements and Evolving Definitions of Texican Identity",
     "source_ids": [
-      "s1",
       "s2",
-      "s6"
+      "s6",
+      "s11",
+      "s17"
     ],
     "source_titles": [
-      "Class setup, learner profile, and research rules",
       "jinxschwartz.com",
-      "facebook.com"
+      "facebook.com",
+      "texasstudies.org",
+      "guides.library.yale.edu"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Review and Knowledge Check",
+    "source_ids": [
+      "s2",
+      "s4",
+      "s8",
+      "s10"
+    ],
+    "source_titles": [
+      "jinxschwartz.com",
+      "kids.nationalgeographic.com",
+      "britannica.com",
+      "libguides.tamusa.edu"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
