@@ -740,15 +740,33 @@ function tavilyConfigured() {
   return Boolean(String(process.env.TAVILY_API_KEY || "").trim());
 }
 
-// Infer a source type + trust level from the host. Government, standards, and
-// education domains are treated as primary; everything else as secondary.
-function classifyByHost(url) {
-  let host = "";
-  try { host = new URL(url).hostname.toLowerCase(); } catch (e) { host = ""; }
-  const primary = /\.gov(\.[a-z]{2})?$|\.gov\.|\.mil$|\.edu$|\.edu\.|europa\.eu$|who\.int$|un\.org$|iso\.org$|nist\.gov$|loc\.gov$|stlouisfed\.org$/.test(host);
+// Infer a source type + trust level from the host, URL path, and title/snippet.
+// Primary = authoritative originals: government / military / education /
+// international bodies, national & state archives, libraries, museums, recognized
+// primary-text repositories, and pages that are clearly an original document or
+// archival collection (an archival *structure* signal, not mere topical words —
+// so commentary "about" a treaty stays secondary while the treaty's text is primary).
+function classifySource(url, title, snippet) {
+  let host = "", path = "";
+  try { const u = new URL(url); host = u.hostname.toLowerCase(); path = (u.pathname || "").toLowerCase(); }
+  catch (e) { host = ""; path = ""; }
+  const hay = path + " " + String(title || "").toLowerCase() + " " + String(snippet || "").toLowerCase();
+
+  // Authoritative institutional hosts (government, military, education, intl bodies).
+  const govEdu = /(^|\.)gov(\.[a-z]{2})?$|\.gov\.|\.mil$|(^|\.)edu$|\.edu\.|(^|\.)ac\.[a-z]{2}$|europa\.eu$|who\.int$|un\.org$|iso\.org$|nist\.gov$|loc\.gov$|stlouisfed\.org$/.test(host);
+  // Archives / libraries / museums by host name, plus known primary repositories.
+  const archiveHost = /(^|\.)(archives?|library|libraries|museum|manuscripts?)\./.test(host)
+    || /(^|\.)(archive\.org|gutenberg\.org|loc\.gov|nara\.gov|hathitrust\.org|avalon\.law\.yale\.edu)$/.test(host);
+  // Archival / original-document structure signals (deliberately excludes bare
+  // "archive" in a path to avoid news/blog /archive/ false positives).
+  const docSignal = /(primary[-\s]?sources?|digital[-\s]?collections?|\bmanuscripts?\b|full[-\s]?text|\btranscript\b|papers[-\s]?of|official[-\s]?records|original[-\s]?document)/.test(hay);
+
+  const primary = govEdu || archiveHost || docSignal;
+
   let type = "url";
   if (/\.gov|\.mil|iso\.org|nist|standard|regulat/.test(host)) type = "standard";
-  else if (/\.edu/.test(host)) type = "certification training";
+  else if (/\.edu|\.ac\.[a-z]{2}/.test(host)) type = "certification training";
+  else if (archiveHost || docSignal) type = "data";
   return { trust: primary ? "primary" : "secondary", type };
 }
 
@@ -777,7 +795,7 @@ async function tavilySearch(query, maxResults) {
     const results = Array.isArray(payload && payload.results) ? payload.results : [];
     return results.map((r) => {
       const url = text(r && r.url, "");
-      const klass = classifyByHost(url);
+      const klass = classifySource(url, r && r.title, r && r.content);
       return {
         title: text(r && r.title, url),
         url,
@@ -804,7 +822,8 @@ async function findSourceCandidates(prompt, brief, standard, needed) {
     if (title) {
       queries.push(`${title} overview key facts`);
       if (needed && needed.primary_sources_needed > 0) {
-        queries.push(`${title} official source government OR standards OR primary documentation`);
+        queries.push(`${title} primary source OR original document OR archive`);
+        queries.push(`${title} national archives OR library digital collection OR government records`);
       } else {
         queries.push(`${title} authoritative guide reference`);
       }
@@ -814,7 +833,7 @@ async function findSourceCandidates(prompt, brief, standard, needed) {
 
     const seen = new Set();
     const candidates = [];
-    for (const q of queries.slice(0, 3)) {
+    for (const q of queries.slice(0, 4)) {
       const batch = await tavilySearch(q, 8);
       batch.forEach((c) => {
         if (c.url && !seen.has(c.url)) { seen.add(c.url); candidates.push(c); }
@@ -3785,6 +3804,7 @@ module.exports._internal = {
   // real implementations (never mirrored), for the interactive round-based KB build:
   findSourceCandidates,
   normalizeDiscoveredSources,
+  classifySource,
   fetchUrlText,
   sourceCounts,
   researchOwner,
