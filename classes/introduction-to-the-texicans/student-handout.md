@@ -4,10 +4,10 @@ Class tier: Standard class
 Bernard support: ask Bernard for clarification, examples, translation, quiz help, or a deeper explanation. Bernard must stay inside the approved source boundary.
 
 ## Learning Objectives
-- TLO: Identify who the Texicans were and describe their cultural background, settlement patterns, and historical role in early Texas.
-- ELO: Define the term 'Texican' and explain its origins and etymological context.
-- ELO: Discuss the settlement patterns, geographical environment, and lifestyle of the Texicans in early 19th-century Texas.
-- ELO: Explain the role of the Texicans in early Texas history, including their political loyalties and participation in conflicts such as the Texas Revolution.
+- TLO: Identify who the Texicans were and describe their cultural background
+- ELO: Define the term 'Texican' and explain its origins within Mexican Texas from 1820 to 1836
+- ELO: Discuss the settlement patterns, lifestyle, and economic activities of the Texicans
+- ELO: Explain the role of the Texicans in early Texas history, including their involvement in conflicts and cultural interactions
 
 ## Course Blueprint
 - 1. Orientation and learner baseline (5 slides): Set the purpose, audience floor, assumptions, and mastery target.
@@ -18,14 +18,14 @@ Bernard support: ask Bernard for clarification, examples, translation, quiz help
 - 6. Assessment, transfer, and works cited (12 slides): Prove mastery, capture participation, and close with source transparency.
 
 ## Key Terms
-- texican: An early settler of Spanish Texas, often of mixed Spanish, Mexican, and indigenous heritage, who lived in the region before and during the Texas Revolution. Why it matters: Understanding who the Texicans were is essential to grasp the cultural and political complexities of early Texas history and the region's diverse identity.
-- texas (etymology): Derived from the Caddo word 'táysha', meaning friend or ally, this name reflects the indigenous linguistic roots of the region. Why it matters: Knowing the origin of 'Texas' helps contextualize the cultural and historical background of the land inhabited by the Texicans.
-- spanish texas: The territory controlled by Spain from the late 17th century until Mexican independence in 1821, encompassing present-day Texas. Why it matters: Spanish Texas was the initial political and cultural setting where the Texicans emerged and developed their identity.
-- texas revolution: The armed conflict (1835–1836) between Texican settlers and the Mexican government that led to the independence of Texas. Why it matters: The Texicans played a key role in this conflict, and understanding it is crucial to studying their political loyalties and historical impact.
-- settlement patterns: The geographic and demographic distribution of Texican communities in early 19th-century Texas, often in frontier and rural areas. Why it matters: Settlement patterns reveal how the Texicans adapted to environmental challenges and influenced Texas's development.
-- cultural heritage of the texicans: A blend of Spanish colonial traditions, Mexican national identity, and frontier family experiences shaping Texican social life and values. Why it matters: This heritage explains the Texicans' unique cultural identity and their complex loyalties during political upheavals.
-- primary sources (texas history): Original documents such as letters, legal papers, photographs, and newspapers from Texas archives that provide firsthand accounts of Texican life. Why it matters: Primary sources are vital for authentic research and understanding of the Texicans beyond secondary interpretations.
-- frontier lifestyle: The way of life characterized by self-reliance, agriculture, and community in the often isolated and challenging environment of early Texas. Why it matters: Recognizing the frontier lifestyle helps explain the social and economic conditions experienced by the Texicans.
+- texican: An Anglo settler living in Mexican Texas between 1820 and 1836, invited by the Mexican government to settle the region, pledge loyalty to Mexico, and act as a buffer against Native American tribes. Why it matters: Understanding 'Texican' clarifies the distinct cultural and political identity of early settlers before Texas became independent, highlighting their role in shaping Texas history.
+- coahuila y texas: The Mexican province that included Texas from 1824 to 1836, under which Texicans settled and received land grants. Why it matters: Knowing this province situates Texican settlement within the political boundaries and governance of Mexico during that period.
+- texian: A term used primarily during and after the Texas Revolution to describe residents of Texas, often Anglo settlers who identified with the independence movement. Why it matters: Differentiating 'Texian' from 'Texican' helps track shifting identities and political allegiances in early Texas history.
+- texas revolution: The armed conflict from 1835 to 1836 in which Texicans and other settlers fought for independence from Mexico. Why it matters: Recognizing the Texas Revolution's impact explains the complex loyalties and cultural tensions involving Texicans.
+- land grants: Parcels of land given by the Mexican government to Texicans as incentives to settle and develop the region. Why it matters: Land grants were central to Texican settlement patterns and economic activities, shaping the demographic and social landscape.
+- caddo 'táysha': A Caddo indigenous word meaning 'friend' or 'ally,' from which the name 'Texas' is derived. Why it matters: This etymology highlights indigenous influence on regional identity and the importance of Native American contributions to Texican history.
+- native american tribes: Indigenous peoples living in and around Texas who interacted with Texicans through trade, conflict, and alliances. Why it matters: Understanding these interactions is vital to grasp the cultural dynamics and frontier challenges faced by Texicans.
+- primary sources: Original documents and artifacts from the Texican period, such as letters, legal records, and photographs. Why it matters: Primary sources provide direct evidence of Texican experiences and are essential for accurate historical analysis.
 - terminal learning objective: The main capability learners should demonstrate by the end of the class. Why it matters: It anchors the lesson around outcomes instead of loose topic coverage.
 - enabling learning objective: A supporting skill or idea learners need before they can meet the terminal objective. Why it matters: It turns a big outcome into teachable steps.
 - source verification: An independent check that claims and citations are supported by the approved corpus. Why it matters: It keeps fabricated or unsupported material out of the class.
@@ -33,12 +33,12 @@ Bernard support: ask Bernard for clarification, examples, translation, quiz help
 ## Works Cited
 - 1. Class setup, learner profile, and research rules
 - 2. jinxschwartz.com
-- 3. en.wikipedia.org
-- 4. kids.nationalgeographic.com
-- 5. youtube.com
-- 6. facebook.com
-- 7. everything-everywhere.com
-- 8. britannica.com
+- 3. facebook.com
+- 4. en.wikipedia.org
+- 5. quizlet.com
+- 6. everything-everywhere.com
+- 7. lauriemooremoore.com
+- 8. tshaonline.org
 - 9. thestoryoftexas.com
 - 10. libguides.tamusa.edu
 - 11. texasstudies.org

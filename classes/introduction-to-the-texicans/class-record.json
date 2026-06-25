@@ -1,7 +1,7 @@
 {
   "title": "Introduction to the Texicans",
   "slug": "introduction-to-the-texicans",
-  "generated_at": "2026-06-25T16:28:33.833Z",
+  "generated_at": "2026-06-25T16:30:17.870Z",
   "class_tier": {
     "level": "standard",
     "label": "Standard class",
@@ -22,22 +22,17 @@
         "trust": "secondary"
       },
       {
+        "path": "https://www.facebook.com/tejanovolunteercompany/posts/texonians-texasians-and-texicanstoday-we-may-know-them-simply-as-texans-but-deci/741437638004245",
+        "type": "url",
+        "trust": "secondary"
+      },
+      {
         "path": "https://en.wikipedia.org/wiki/Texas",
         "type": "url",
         "trust": "secondary"
       },
       {
-        "path": "https://kids.nationalgeographic.com/geography/states/article/texas",
-        "type": "url",
-        "trust": "secondary"
-      },
-      {
-        "path": "https://www.youtube.com/watch?v=7shDjqM-_9M",
-        "type": "url",
-        "trust": "secondary"
-      },
-      {
-        "path": "https://www.facebook.com/tejanovolunteercompany/posts/texonians-texasians-and-texicanstoday-we-may-know-them-simply-as-texans-but-deci/741437638004245",
+        "path": "https://quizlet.com/562752387/ch-1-the-first-texans-flash-cards",
         "type": "url",
         "trust": "secondary"
       },
@@ -47,7 +42,12 @@
         "trust": "secondary"
       },
       {
-        "path": "https://www.britannica.com/topic/Texas-Revolution",
+        "path": "https://lauriemooremoore.com/texican-texian-or-texan-it-depends",
+        "type": "url",
+        "trust": "secondary"
+      },
+      {
+        "path": "https://www.tshaonline.org/handbook/entries/indians",
         "type": "url",
         "trust": "secondary"
       },
@@ -170,7 +170,7 @@
       "objective_alignment": 83,
       "content_density": 100,
       "deep_dive_depth": 100,
-      "participation_design": 100,
+      "participation_design": 99,
       "assessment": 90,
       "transparency": 100,
       "schema_qa": 100
@@ -221,32 +221,32 @@
       {
         "id": "s3",
         "num": "3",
-        "title": "en.wikipedia.org"
+        "title": "facebook.com"
       },
       {
         "id": "s4",
         "num": "4",
-        "title": "kids.nationalgeographic.com"
+        "title": "en.wikipedia.org"
       },
       {
         "id": "s5",
         "num": "5",
-        "title": "youtube.com"
+        "title": "quizlet.com"
       },
       {
         "id": "s6",
         "num": "6",
-        "title": "facebook.com"
+        "title": "everything-everywhere.com"
       },
       {
         "id": "s7",
         "num": "7",
-        "title": "everything-everywhere.com"
+        "title": "lauriemooremoore.com"
       },
       {
         "id": "s8",
         "num": "8",
-        "title": "britannica.com"
+        "title": "tshaonline.org"
       },
       {
         "id": "s9",
@@ -394,12 +394,12 @@
         "deep_dive_expectation": "substantive deep dives where required by tier and setting"
       }
     ],
-    "lesson_sections": 6
+    "lesson_sections": 7
   },
   "evidence_map": [
     {
       "kind": "terminal objective",
-      "claim": "Identify who the Texicans were and describe their cultural background, settlement patterns, and historical role in early Texas.",
+      "claim": "Identify who the Texicans were and describe their cultural background",
       "source_ids": [
         "s1",
         "s2",
@@ -408,6 +408,22 @@
       "source_titles": [
         "Class setup, learner profile, and research rules",
         "jinxschwartz.com",
+        "facebook.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "enabling objective",
+      "claim": "Define the term 'Texican' and explain its origins within Mexican Texas from 1820 to 1836",
+      "source_ids": [
+        "s2",
+        "s3",
+        "s4"
+      ],
+      "source_titles": [
+        "jinxschwartz.com",
+        "facebook.com",
         "en.wikipedia.org"
       ],
       "status": "mapped",
@@ -415,74 +431,42 @@
     },
     {
       "kind": "enabling objective",
-      "claim": "Define the term 'Texican' and explain its origins and etymological context.",
-      "source_ids": [
-        "s2",
-        "s3",
-        "s4"
-      ],
-      "source_titles": [
-        "jinxschwartz.com",
-        "en.wikipedia.org",
-        "kids.nationalgeographic.com"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "enabling objective",
-      "claim": "Discuss the settlement patterns, geographical environment, and lifestyle of the Texicans in early 19th-century Texas.",
+      "claim": "Discuss the settlement patterns, lifestyle, and economic activities of the Texicans",
       "source_ids": [
         "s3",
         "s4"
       ],
       "source_titles": [
-        "en.wikipedia.org",
-        "kids.nationalgeographic.com"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "enabling objective",
-      "claim": "Explain the role of the Texicans in early Texas history, including their political loyalties and participation in conflicts such as the Texas Revolution.",
-      "source_ids": [
-        "s4"
-      ],
-      "source_titles": [
-        "kids.nationalgeographic.com"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "lesson section",
-      "claim": "Introduction to the Texicans: Definition and Origins",
-      "source_ids": [
-        "s2",
-        "s4",
-        "s6",
-        "s7"
-      ],
-      "source_titles": [
-        "jinxschwartz.com",
-        "kids.nationalgeographic.com",
         "facebook.com",
-        "everything-everywhere.com"
+        "en.wikipedia.org"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "enabling objective",
+      "claim": "Explain the role of the Texicans in early Texas history, including their involvement in conflicts and cultural interactions",
+      "source_ids": [
+        "s4"
+      ],
+      "source_titles": [
+        "en.wikipedia.org"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "lesson section",
-      "claim": "Cultural Background of the Texicans",
+      "claim": "Introduction to Texican Identity and Origins",
       "source_ids": [
-        "s2",
-        "s6"
+        "s7",
+        "s6",
+        "s8"
       ],
       "source_titles": [
-        "jinxschwartz.com",
-        "facebook.com"
+        "lauriemooremoore.com",
+        "everything-everywhere.com",
+        "tshaonline.org"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
@@ -491,39 +475,53 @@
       "kind": "lesson section",
       "claim": "Settlement Patterns and Lifestyle of the Texicans",
       "source_ids": [
-        "s2",
-        "s4",
         "s7",
-        "s9"
+        "s2",
+        "s6",
+        "s8"
       ],
       "source_titles": [
+        "lauriemooremoore.com",
         "jinxschwartz.com",
-        "kids.nationalgeographic.com",
         "everything-everywhere.com",
-        "thestoryoftexas.com"
+        "tshaonline.org"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "lesson section",
-      "claim": "The Texicans in Early Texas History",
+      "claim": "Cultural Background and Interactions",
       "source_ids": [
         "s2",
-        "s7",
+        "s6",
         "s8"
       ],
       "source_titles": [
         "jinxschwartz.com",
         "everything-everywhere.com",
-        "britannica.com"
+        "tshaonline.org"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "lesson section",
-      "claim": "Primary Sources and Research on the Texicans",
+      "claim": "Texicans’ Role in Early Texas History",
+      "source_ids": [
+        "s2",
+        "s7"
+      ],
+      "source_titles": [
+        "jinxschwartz.com",
+        "lauriemooremoore.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Primary Sources and Research Methods",
       "source_ids": [
         "s10",
         "s11",
@@ -541,18 +539,30 @@
     },
     {
       "kind": "lesson section",
-      "claim": "Synthesis and Review: Understanding the Texicans Today",
+      "claim": "Etymology and Indigenous Influence on Texican Identity",
+      "source_ids": [
+        "s6",
+        "s8"
+      ],
+      "source_titles": [
+        "everything-everywhere.com",
+        "tshaonline.org"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Summary and Review",
       "source_ids": [
         "s2",
-        "s4",
         "s7",
-        "s9"
+        "s10"
       ],
       "source_titles": [
         "jinxschwartz.com",
-        "kids.nationalgeographic.com",
-        "everything-everywhere.com",
-        "thestoryoftexas.com"
+        "lauriemooremoore.com",
+        "libguides.tamusa.edu"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
@@ -569,8 +579,8 @@
       "source_titles": [
         "Class setup, learner profile, and research rules",
         "jinxschwartz.com",
-        "en.wikipedia.org",
-        "kids.nationalgeographic.com"
+        "facebook.com",
+        "en.wikipedia.org"
       ],
       "status": "corroboration-required",
       "finding": "Mapped to approved source-paper sections for source verification."

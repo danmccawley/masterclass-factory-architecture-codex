@@ -1,12 +1,12 @@
 # Quiz Answer Key
 
 ## Question 1
-Which of the following best describes the cultural background of the Texicans?
-Answer: They had Spanish colonial roots and Mexican identity blended with frontier experiences.
-Why: The Texicans' cultural background is a blend of Spanish colonial heritage, Mexican identity, and frontier family experiences, as covered in the course.
+Which of the following best describes the origin of the term 'Texican'?
+Answer: It referred to Hispanic residents of Mexican Texas between 1820 and 1836.
+Why: The term 'Texican' specifically refers to Hispanic residents of Mexican Texas during that period, distinguishing them from later Anglo settlers and other groups.
 
 ## Question 2
-Explain the role of the Texicans in early Texas history, including their political loyalties and participation in conflicts.
+Explain how Texican settlements functioned as a buffer in early Texas history and describe their interactions with Native American tribes.
 Answer: undefined
-Rubric: A complete answer should mention the Texicans' complex loyalties, their participation in conflicts such as the Texas Revolution, and their position between Spanish, Mexican, and Anglo interests.
-Sample: The Texicans were early settlers of Spanish and Mexican descent who played a significant role in early Texas history. They had complex political loyalties, often supporting Mexico but sometimes conflicted during the Texas Revolution. They participated in military and political events that shaped Texas's path to independence.
+Rubric: A complete answer should identify that Texican settlements were strategically located to protect Mexican Texas from Native American raids, describe their frontier lifestyle, and mention the complex cultural interactions including both conflict and alliances.
+Sample: Texican settlements were established along frontier areas to serve as a buffer against Native American tribes. They engaged in farming and ranching while maintaining defensive roles. Their interactions with Native Americans included both hostile encounters and occasional alliances, reflecting the complex dynamics of the region.

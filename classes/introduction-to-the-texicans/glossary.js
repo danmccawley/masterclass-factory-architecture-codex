@@ -1,36 +1,36 @@
 /* Generated glossary. term -> {d, r}. */
 window.GLOSSARY = {
   "texican": {
-    "d": "An early settler of Spanish Texas, often of mixed Spanish, Mexican, and indigenous heritage, who lived in the region before and during the Texas Revolution.",
-    "r": "Understanding who the Texicans were is essential to grasp the cultural and political complexities of early Texas history and the region's diverse identity."
+    "d": "An Anglo settler living in Mexican Texas between 1820 and 1836, invited by the Mexican government to settle the region, pledge loyalty to Mexico, and act as a buffer against Native American tribes.",
+    "r": "Understanding 'Texican' clarifies the distinct cultural and political identity of early settlers before Texas became independent, highlighting their role in shaping Texas history."
   },
-  "texas (etymology)": {
-    "d": "Derived from the Caddo word 'táysha', meaning friend or ally, this name reflects the indigenous linguistic roots of the region.",
-    "r": "Knowing the origin of 'Texas' helps contextualize the cultural and historical background of the land inhabited by the Texicans."
+  "coahuila y texas": {
+    "d": "The Mexican province that included Texas from 1824 to 1836, under which Texicans settled and received land grants.",
+    "r": "Knowing this province situates Texican settlement within the political boundaries and governance of Mexico during that period."
   },
-  "spanish texas": {
-    "d": "The territory controlled by Spain from the late 17th century until Mexican independence in 1821, encompassing present-day Texas.",
-    "r": "Spanish Texas was the initial political and cultural setting where the Texicans emerged and developed their identity."
+  "texian": {
+    "d": "A term used primarily during and after the Texas Revolution to describe residents of Texas, often Anglo settlers who identified with the independence movement.",
+    "r": "Differentiating 'Texian' from 'Texican' helps track shifting identities and political allegiances in early Texas history."
   },
   "texas revolution": {
-    "d": "The armed conflict (1835–1836) between Texican settlers and the Mexican government that led to the independence of Texas.",
-    "r": "The Texicans played a key role in this conflict, and understanding it is crucial to studying their political loyalties and historical impact."
+    "d": "The armed conflict from 1835 to 1836 in which Texicans and other settlers fought for independence from Mexico.",
+    "r": "Recognizing the Texas Revolution's impact explains the complex loyalties and cultural tensions involving Texicans."
   },
-  "settlement patterns": {
-    "d": "The geographic and demographic distribution of Texican communities in early 19th-century Texas, often in frontier and rural areas.",
-    "r": "Settlement patterns reveal how the Texicans adapted to environmental challenges and influenced Texas's development."
+  "land grants": {
+    "d": "Parcels of land given by the Mexican government to Texicans as incentives to settle and develop the region.",
+    "r": "Land grants were central to Texican settlement patterns and economic activities, shaping the demographic and social landscape."
   },
-  "cultural heritage of the texicans": {
-    "d": "A blend of Spanish colonial traditions, Mexican national identity, and frontier family experiences shaping Texican social life and values.",
-    "r": "This heritage explains the Texicans' unique cultural identity and their complex loyalties during political upheavals."
+  "caddo 'táysha'": {
+    "d": "A Caddo indigenous word meaning 'friend' or 'ally,' from which the name 'Texas' is derived.",
+    "r": "This etymology highlights indigenous influence on regional identity and the importance of Native American contributions to Texican history."
   },
-  "primary sources (texas history)": {
-    "d": "Original documents such as letters, legal papers, photographs, and newspapers from Texas archives that provide firsthand accounts of Texican life.",
-    "r": "Primary sources are vital for authentic research and understanding of the Texicans beyond secondary interpretations."
+  "native american tribes": {
+    "d": "Indigenous peoples living in and around Texas who interacted with Texicans through trade, conflict, and alliances.",
+    "r": "Understanding these interactions is vital to grasp the cultural dynamics and frontier challenges faced by Texicans."
   },
-  "frontier lifestyle": {
-    "d": "The way of life characterized by self-reliance, agriculture, and community in the often isolated and challenging environment of early Texas.",
-    "r": "Recognizing the frontier lifestyle helps explain the social and economic conditions experienced by the Texicans."
+  "primary sources": {
+    "d": "Original documents and artifacts from the Texican period, such as letters, legal records, and photographs.",
+    "r": "Primary sources provide direct evidence of Texican experiences and are essential for accurate historical analysis."
   },
   "terminal learning objective": {
     "d": "The main capability learners should demonstrate by the end of the class.",
