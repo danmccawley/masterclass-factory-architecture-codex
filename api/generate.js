@@ -3839,6 +3839,16 @@ module.exports = async function generateHandler(req, res) {
       advancement_opportunity: advancementOpportunity
     });
   } catch (error) {
+    // DIAGNOSTIC (GENFAIL): the outer catch returns 400, but the cause was
+    // invisible in logs (it only went into the response body). Surface the
+    // message + stage + top of the stack so a single failed run pinpoints the line.
+    try {
+      console.error("GENFAIL " + JSON.stringify({
+        message: safeErrorMessage(error && (error.message || error)),
+        stage: (error && error.stage) || "",
+        stack: String((error && error.stack) || "").split("\n").slice(0, 6).join(" | ")
+      }));
+    } catch (logErr) { /* never let logging mask the original error */ }
     send(res, 400, { ok: false, errors: [safeErrorMessage(error.message || error)] });
   }
 };
