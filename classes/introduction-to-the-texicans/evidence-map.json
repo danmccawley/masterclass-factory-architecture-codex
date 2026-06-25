@@ -1,7 +1,7 @@
 [
   {
     "kind": "terminal objective",
-    "claim": "Identify who the Texicans were and describe their cultural background within the historical context of Mexican Texas from 1820 to 1836.",
+    "claim": "Identify who the Texicans were and describe their cultural background",
     "source_ids": [
       "s1",
       "s2",
@@ -17,7 +17,7 @@
   },
   {
     "kind": "enabling objective",
-    "claim": "Define the term 'Texican' and explain its origins and usage during the Mexican Texas period.",
+    "claim": "Define the term 'Texican' and explain its origins within the Mexican province of Coahuila y Texas between 1820 and 1836",
     "source_ids": [
       "s2",
       "s3",
@@ -33,7 +33,7 @@
   },
   {
     "kind": "enabling objective",
-    "claim": "Discuss the settlement patterns, lifestyle, and cultural influences of the Texicans, including their interactions with Native American tribes.",
+    "claim": "Discuss the settlement patterns, including land grant systems and empresario roles, and describe the lifestyle and frontier challenges faced by the Texicans",
     "source_ids": [
       "s3",
       "s4"
@@ -47,7 +47,7 @@
   },
   {
     "kind": "enabling objective",
-    "claim": "Explain the role of the Texicans in early Texas history, focusing on their political, social, and military involvement leading up to and during the Texas Revolution.",
+    "claim": "Explain the political and cultural role of the Texicans in early Texas history, including their alliances, conflicts, and contributions to the Texas Revolution",
     "source_ids": [
       "s4"
     ],
@@ -61,14 +61,12 @@
     "kind": "lesson section",
     "claim": "Understanding the Term 'Texican' and Its Origins",
     "source_ids": [
-      "s7",
-      "s6",
-      "s8"
+      "s2",
+      "s7"
     ],
     "source_titles": [
-      "lauriemooremoore.com",
-      "everything-everywhere.com",
-      "tshaonline.org"
+      "jinxschwartz.com",
+      "lauriemooremoore.com"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
@@ -77,21 +75,21 @@
     "kind": "lesson section",
     "claim": "Settlement Patterns and Lifestyle of the Texicans",
     "source_ids": [
-      "s2",
       "s7",
-      "s8"
+      "s8",
+      "s9"
     ],
     "source_titles": [
-      "jinxschwartz.com",
       "lauriemooremoore.com",
-      "tshaonline.org"
+      "tshaonline.org",
+      "thestoryoftexas.com"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
     "kind": "lesson section",
-    "claim": "The Role of Texicans in Early Texas History",
+    "claim": "Cultural Background and Identity of the Texicans",
     "source_ids": [
       "s2",
       "s7"
@@ -105,7 +103,21 @@
   },
   {
     "kind": "lesson section",
-    "claim": "Primary Sources and Historical Evidence",
+    "claim": "Political Role and Historical Impact of the Texicans",
+    "source_ids": [
+      "s2",
+      "s7"
+    ],
+    "source_titles": [
+      "jinxschwartz.com",
+      "lauriemooremoore.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Primary Source Exploration and Critical Source Evaluation",
     "source_ids": [
       "s10",
       "s11",
@@ -117,36 +129,6 @@
       "kwlibguides.lonestar.edu",
       "legacy.education.texashistory.unt.edu",
       "shsulibraryguides.org"
-    ],
-    "status": "mapped",
-    "finding": "Mapped to approved source-paper sections for source verification."
-  },
-  {
-    "kind": "lesson section",
-    "claim": "Indigenous Influence and the Origin of 'Texas'",
-    "source_ids": [
-      "s6",
-      "s8"
-    ],
-    "source_titles": [
-      "everything-everywhere.com",
-      "tshaonline.org"
-    ],
-    "status": "mapped",
-    "finding": "Mapped to approved source-paper sections for source verification."
-  },
-  {
-    "kind": "lesson section",
-    "claim": "Review and Integration",
-    "source_ids": [
-      "s2",
-      "s7",
-      "s10"
-    ],
-    "source_titles": [
-      "jinxschwartz.com",
-      "lauriemooremoore.com",
-      "libguides.fau.edu"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
@@ -171,7 +153,7 @@
   },
   {
     "kind": "out of scope",
-    "claim": "Detailed demographic statistics of the Texican population due to insufficient data in the knowledge base.; Comprehensive perspectives and detailed cultural practices of Native American groups contemporaneous with the Texicans.; Comparative analysis of the terms 'Texican,' 'Texian,' and 'Texan' beyond the Mexican Texas period.",
+    "claim": "Claims not supported by the approved knowledge base.; Advanced side topics that do not serve the learner profile.",
     "source_ids": [
       "s1",
       "s2"

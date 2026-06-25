@@ -1,12 +1,12 @@
 # Quiz Answer Key
 
 ## Question 1
-What is the origin of the term 'Texican' as used during the Mexican Texas period?
-Answer: It described Mexican residents of Texas blending Spanish and indigenous cultures
-Why: The term 'Texican' historically referred to Mexican residents of Texas who embodied a cultural blend of Spanish colonial and indigenous influences during the Mexican Texas era.
+Which of the following best defines the term 'Texican' during the Mexican Texas period?
+Answer: A Mexican citizen living in Texas between 1820 and 1836
+Why: The term 'Texican' specifically referred to Mexican citizens residing in Texas during the Mexican provincial period before Texas independence.
 
 ## Question 2
-Explain how the settlement patterns and lifestyle of the Texicans reflected their cultural background and interactions with Native American tribes.
+Explain the role of empresarios like Stephen F. Austin in the settlement patterns of Texicans and how this influenced their lifestyle.
 Answer: undefined
-Rubric: A strong answer will describe the Texicans' settlement in Mexican Texas through land grants, their agricultural and ranching lifestyle, and how their culture was influenced by Spanish, Mexican, and indigenous traditions, including interactions that ranged from trade to conflict with Native American tribes.
-Sample: Texicans settled primarily through Mexican land grant policies, establishing ranches and farms that reflected Spanish colonial traditions. Their lifestyle combined Mexican customs with indigenous influences, and they interacted with Native American tribes through both cooperation and conflict, shaping a unique cultural identity.
+Rubric: Response should describe empresarios as land agents authorized by the Mexican government to bring settlers, mention Stephen F. Austin's key role, and explain how this led to Anglo-Mexican cultural blending and frontier challenges.
+Sample: Empresarios such as Stephen F. Austin were granted land by the Mexican government to recruit settlers, mainly Anglo-Americans, to colonize Texas. This system shaped Texican settlement patterns by creating communities that blended Mexican and Anglo cultures and faced frontier hardships like conflicts with Native Americans and isolation.

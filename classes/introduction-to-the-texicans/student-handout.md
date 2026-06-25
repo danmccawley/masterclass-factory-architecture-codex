@@ -4,10 +4,10 @@ Class tier: Standard class
 Bernard support: ask Bernard for clarification, examples, translation, quiz help, or a deeper explanation. Bernard must stay inside the approved source boundary.
 
 ## Learning Objectives
-- TLO: Identify who the Texicans were and describe their cultural background within the historical context of Mexican Texas from 1820 to 1836.
-- ELO: Define the term 'Texican' and explain its origins and usage during the Mexican Texas period.
-- ELO: Discuss the settlement patterns, lifestyle, and cultural influences of the Texicans, including their interactions with Native American tribes.
-- ELO: Explain the role of the Texicans in early Texas history, focusing on their political, social, and military involvement leading up to and during the Texas Revolution.
+- TLO: Identify who the Texicans were and describe their cultural background
+- ELO: Define the term 'Texican' and explain its origins within the Mexican province of Coahuila y Texas between 1820 and 1836
+- ELO: Discuss the settlement patterns, including land grant systems and empresario roles, and describe the lifestyle and frontier challenges faced by the Texicans
+- ELO: Explain the political and cultural role of the Texicans in early Texas history, including their alliances, conflicts, and contributions to the Texas Revolution
 
 ## Course Blueprint
 - 1. Orientation and learner baseline (5 slides): Set the purpose, audience floor, assumptions, and mastery target.
@@ -18,14 +18,14 @@ Bernard support: ask Bernard for clarification, examples, translation, quiz help
 - 6. Assessment, transfer, and works cited (12 slides): Prove mastery, capture participation, and close with source transparency.
 
 ## Key Terms
-- texican: An Anglo-American settler in Mexican Texas between 1820 and 1836 who settled under Mexican land grant policies, often required to swear loyalty to Mexico and adopt Christianity. Why it matters: Understanding 'Texican' clarifies the identity and cultural background of early settlers who influenced Texas's political and social development before its independence.
-- mexican texas: The period and region from 1821 to 1836 when Texas was part of Mexico, governed under Mexican laws and policies including land grants to settlers. Why it matters: Knowing Mexican Texas provides context for the political and cultural environment in which Texicans lived and acted.
-- texas revolution: The armed conflict from 1835 to 1836 in which Texicans and other settlers fought against Mexican rule to establish the Republic of Texas. Why it matters: The Texas Revolution was a pivotal event involving Texicans that shaped the region's history and identity.
-- mexican land grant: A policy by the Mexican government offering land to settlers, including Texicans, to encourage colonization and development of Texas. Why it matters: Land grants influenced settlement patterns and were central to Texican livelihoods and political tensions.
-- caddo: A Native American tribe whose language contributed the word 'táysha,' meaning friend or ally, from which the name 'Texas' is derived. Why it matters: Recognizing Caddo influence highlights indigenous contributions to regional identity and place names.
-- anglo-american settlers: People of English-speaking American origin who migrated to Mexican Texas and became known as Texicans during the early 19th century. Why it matters: Their migration and settlement shaped Texas's demographic and cultural landscape before independence.
-- native american tribes in texas: Indigenous groups living in Texas during the Mexican Texas period, interacting with Texicans through trade, conflict, and cultural exchange. Why it matters: Understanding these tribes provides insight into the complex social dynamics and challenges faced by Texicans.
-- republic of texas: The independent nation established in 1836 after the Texas Revolution, succeeding Mexican Texas and preceding Texas's statehood in the USA. Why it matters: The Republic era marks the political outcome of Texican efforts and the region's transition to independence.
+- texican: An Anglo settler living in the Mexican province of Coahuila y Texas between 1820 and 1836 who pledged loyalty to Mexico and settled under Mexican land grant policies. Why it matters: Understanding 'Texican' clarifies the identity and political status of early settlers before Texas independence, highlighting their unique cultural and historical context.
+- texian: A term used after the Texas Revolution to describe residents of the Republic of Texas, reflecting the political shift from Mexican province to independent republic. Why it matters: Distinguishing 'Texian' from 'Texican' helps track the evolution of Texas identity and political sovereignty.
+- texan: A resident of Texas after it became a U.S. state, representing the modern identity following annexation and statehood. Why it matters: Recognizing 'Texan' situates Texas history within the broader United States context and current cultural identity.
+- empresario: An individual granted the right by the Mexican government to settle families in Texas by managing land grants, such as Stephen F. Austin. Why it matters: Empresarios were key agents in shaping Texican settlement patterns and demographic growth.
+- land grant: A parcel of land given by the Mexican government to settlers or empresarios to encourage colonization of Texas. Why it matters: Land grants explain how Texicans acquired property and established communities under Mexican law.
+- coahuila y texas: The Mexican province that included present-day Texas during the early 19th century, before Texas independence. Why it matters: Knowing this political entity provides context for Texican allegiance and governance.
+- texas revolution: The armed conflict (1835–1836) between Texican settlers and the Mexican government that led to Texas independence. Why it matters: The revolution marks a pivotal moment in Texican history and identity transformation.
+- native american tribes (caddo, comanche): Indigenous peoples inhabiting Texas who influenced frontier dynamics through alliances and conflicts with Texicans. Why it matters: Their presence shaped settlement challenges and cultural interactions on the Texas frontier.
 - terminal learning objective: The main capability learners should demonstrate by the end of the class. Why it matters: It anchors the lesson around outcomes instead of loose topic coverage.
 - enabling learning objective: A supporting skill or idea learners need before they can meet the terminal objective. Why it matters: It turns a big outcome into teachable steps.
 - source verification: An independent check that claims and citations are supported by the approved corpus. Why it matters: It keeps fabricated or unsupported material out of the class.
