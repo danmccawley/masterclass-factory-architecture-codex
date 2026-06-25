@@ -1,7 +1,7 @@
 {
   "title": "Introduction to the Texicans",
   "slug": "introduction-to-the-texicans",
-  "generated_at": "2026-06-25T16:56:35.300Z",
+  "generated_at": "2026-06-25T16:58:49.251Z",
   "class_tier": {
     "level": "standard",
     "label": "Standard class",
@@ -154,7 +154,7 @@
   "deep_dive_count": 67,
   "required_deep_dive_count": 67,
   "quality": {
-    "score": 97,
+    "score": 96,
     "status": "excellent",
     "scores": {
       "slide_budget": 100,
@@ -165,7 +165,7 @@
       "objective_alignment": 83,
       "content_density": 100,
       "deep_dive_depth": 100,
-      "participation_design": 79,
+      "participation_design": 69,
       "assessment": 90,
       "transparency": 100,
       "schema_qa": 100
@@ -384,7 +384,7 @@
         "deep_dive_expectation": "substantive deep dives where required by tier and setting"
       }
     ],
-    "lesson_sections": 6
+    "lesson_sections": 8
   },
   "evidence_map": [
     {
@@ -461,30 +461,30 @@
     },
     {
       "kind": "lesson section",
-      "claim": "Settlement Patterns and Lifestyle of the Texicans",
+      "claim": "Cultural Background of the Texicans",
       "source_ids": [
+        "s2",
         "s7",
         "s8",
-        "s9"
+        "s15"
       ],
       "source_titles": [
+        "jinxschwartz.com",
         "lauriemooremoore.com",
         "tshaonline.org",
-        "thestoryoftexas.com"
+        "tshaonline.org"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "lesson section",
-      "claim": "Cultural Background and Interactions",
+      "claim": "Settlement Patterns and Lifestyle",
       "source_ids": [
-        "s2",
         "s7",
         "s8"
       ],
       "source_titles": [
-        "jinxschwartz.com",
         "lauriemooremoore.com",
         "tshaonline.org"
       ],
@@ -493,42 +493,68 @@
     },
     {
       "kind": "lesson section",
-      "claim": "Texicans in Early Texas History and the Texas Revolution",
+      "claim": "Texicans and Native American Tribes",
+      "source_ids": [
+        "s8",
+        "s2"
+      ],
+      "source_titles": [
+        "tshaonline.org",
+        "jinxschwartz.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Political Role of Texicans in Early Texas History",
+      "source_ids": [
+        "s15",
+        "s13"
+      ],
+      "source_titles": [
+        "tshaonline.org",
+        "gilderlehrman.org"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Transition of Texican Identity Over Time",
+      "source_ids": [
+        "s7"
+      ],
+      "source_titles": [
+        "lauriemooremoore.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Impact of the Treaty of Guadalupe Hidalgo",
+      "source_ids": [
+        "s16"
+      ],
+      "source_titles": [
+        "archives.gov"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Summary and Review",
       "source_ids": [
         "s2",
-        "s15",
-        "s16"
+        "s7",
+        "s15"
       ],
       "source_titles": [
         "jinxschwartz.com",
-        "tshaonline.org",
-        "archives.gov"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "lesson section",
-      "claim": "Evolution of Texican Identity Post-Revolution",
-      "source_ids": [
-        "s7",
-        "s16"
-      ],
-      "source_titles": [
         "lauriemooremoore.com",
-        "archives.gov"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "lesson section",
-      "claim": "Review and Knowledge Check",
-      "source_ids": [
-        "s14"
-      ],
-      "source_titles": [
-        "tea.texas.gov"
+        "tshaonline.org"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."

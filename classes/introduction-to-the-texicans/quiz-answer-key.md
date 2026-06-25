@@ -1,12 +1,12 @@
 # Quiz Answer Key
 
 ## Question 1
-Which of the following best distinguishes a 'Texican' from a 'Texian'?
-Answer: Texicans were Mexican settlers in Texas; Texians were Anglo-American settlers.
-Why: The term 'Texican' refers to Mexican settlers in Texas, while 'Texian' typically refers to Anglo-American settlers during the Mexican Texas period.
+Which of the following best defines the term 'Texican' in its historical context?
+Answer: A person of Mexican heritage living in Texas during early settlement
+Why: Historically, 'Texican' referred to people of Mexican heritage living in Texas during the early settlement period, reflecting their cultural and political identity.
 
 ## Question 2
-Describe the cultural background of the Texicans and how it influenced their role in early Texas history.
+Explain how the Treaty of Guadalupe Hidalgo impacted the Texicans and the territory of Texas.
 Answer: undefined
-Rubric: Response should include definition of Texicans as Mexican settlers, mention of blended Mexican and Anglo cultural influences, discussion of settlement patterns, and their political/military role in the Texas Revolution.
-Sample: Texicans were Mexican settlers in Texas who blended Mexican and Anglo cultures. Their lifestyle on the frontier involved land grants and interaction with Native tribes. They played a key role in early Texas history by participating in the Texas Revolution and shaping the region's identity.
+Rubric: Answer should describe the treaty's role in ending the Mexican-American War, transferring Texas and other territories to the United States, and its effects on Texican political status and land ownership.
+Sample: The Treaty of Guadalupe Hidalgo ended the Mexican-American War in 1848, ceding Texas and other lands to the U.S. This changed the political status of Texicans, who became U.S. citizens, and affected land rights and governance in the region.
