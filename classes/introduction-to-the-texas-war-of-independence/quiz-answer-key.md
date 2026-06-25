@@ -1,12 +1,12 @@
 # Quiz Answer Key
 
 ## Question 1
-Which event directly triggered the start of the Texas War of Independence?
-Answer: The Battle of Gonzales
-Why: The Battle of Gonzales was the first military engagement and marked the start of the conflict.
+Which battle is considered a turning point that led to Texas gaining independence?
+Answer: Battle of San Jacinto
+Why: The Battle of San Jacinto was decisive in defeating Mexican forces and securing Texas independence.
 
 ## Question 2
-Describe the geopolitical situation in Texas prior to the revolution and how it contributed to the conflict.
+Describe the geopolitical situation in Texas prior to the war and how it contributed to the conflict.
 Answer: undefined
-Rubric: Response should explain Mexican governance policies, Anglo-American settlement patterns, and tensions arising from cultural and political differences.
-Sample: Before the revolution, Texas was under Mexican control, which imposed restrictions on immigration and governance. Anglo-American settlers moved into Texas seeking land and autonomy, leading to tensions with Mexican authorities over laws and cultural differences.
+Rubric: Response should include mention of Mexican laws on settlement and slavery, tensions between settlers and Mexican authorities, and the role of indigenous peoples. A strong answer explains how these factors combined to create conflict.
+Sample: Before the war, Texas was part of Mexico, but many settlers from the U.S. moved there. Mexican laws restricted slavery and settlement patterns, causing tension. Indigenous groups were also affected by these changes. These issues led to growing conflict between settlers and Mexican government.

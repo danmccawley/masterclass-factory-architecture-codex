@@ -2,7 +2,7 @@
 window.CLASS_TITLE = "Introduction to the Texas War of Independence";
 window.DECK_META = {
   "slug": "introduction-to-the-texas-war-of-independence",
-  "generated": "2026-06-25T14:34:30.053Z",
+  "generated": "2026-06-25T14:36:28.197Z",
   "language": "en",
   "class_tier": "Quick briefing"
 };
@@ -155,12 +155,12 @@ window.CLASS_BLUEPRINT = {
       "deep_dive_expectation": "substantive deep dives where required by tier and setting"
     }
   ],
-  "lesson_sections": 6
+  "lesson_sections": 7
 };
 window.EVIDENCE_MAP = [
   {
     "kind": "terminal objective",
-    "claim": "Describe the historical context of the Texas War of Independence, including its causes, major events, and outcomes.",
+    "claim": "Describe the historical context and key events of the Texas War of Independence, including its causes, major battles, and outcomes.",
     "source_ids": [
       "s1",
       "s2",
@@ -176,7 +176,7 @@ window.EVIDENCE_MAP = [
   },
   {
     "kind": "enabling objective",
-    "claim": "Explain the geopolitical situation in Texas prior to the war, including Mexican policies and Anglo-American settlement.",
+    "claim": "Explain the geopolitical situation in Texas prior to the war, including settlement patterns, Mexican laws, and tensions over slavery.",
     "source_ids": [
       "s2",
       "s3",
@@ -192,7 +192,7 @@ window.EVIDENCE_MAP = [
   },
   {
     "kind": "enabling objective",
-    "claim": "List and characterize major political and military figures involved in the Texas Revolution, such as Stephen F. Austin and Sam Houston.",
+    "claim": "Identify and describe major political and military figures involved in the conflict, such as Sam Houston and Antonio López de Santa Anna.",
     "source_ids": [
       "s3",
       "s4"
@@ -206,7 +206,7 @@ window.EVIDENCE_MAP = [
   },
   {
     "kind": "enabling objective",
-    "claim": "Discuss the roles and perspectives of settlers, Tejanos, indigenous peoples, and Mexican authorities during the conflict.",
+    "claim": "Discuss the roles and perspectives of settlers, indigenous peoples, and other groups during the Texas War of Independence.",
     "source_ids": [
       "s4"
     ],
@@ -217,8 +217,78 @@ window.EVIDENCE_MAP = [
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
+    "kind": "enabling objective",
+    "claim": "Analyze the significance of the Texas Declaration of Independence and the formation of the Republic of Texas.",
+    "source_ids": [
+      "s1",
+      "s2",
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "youtube.com",
+      "britannica.com",
+      "battlefields.org"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "enabling objective",
+    "claim": "Evaluate contested issues such as the role of slavery, racial discrimination, and differing narratives from Texian, Mexican, and indigenous viewpoints.",
+    "source_ids": [
+      "s1",
+      "s2",
+      "s3",
+      "s4"
+    ],
+    "source_titles": [
+      "Class setup, learner profile, and research rules",
+      "youtube.com",
+      "britannica.com",
+      "battlefields.org"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
     "kind": "lesson section",
-    "claim": "Introduction and Historical Background",
+    "claim": "Introduction and Historical Context",
+    "source_ids": [
+      "s4",
+      "s7",
+      "s10",
+      "s12"
+    ],
+    "source_titles": [
+      "battlefields.org",
+      "billofrightsinstitute.org",
+      "dp.la",
+      "en.wikipedia.org"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Key Figures of the Texas War of Independence",
+    "source_ids": [
+      "s7",
+      "s10",
+      "s12"
+    ],
+    "source_titles": [
+      "billofrightsinstitute.org",
+      "dp.la",
+      "en.wikipedia.org"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Settlers, Indigenous Peoples, and Social Dynamics",
     "source_ids": [
       "s7",
       "s10",
@@ -234,27 +304,15 @@ window.EVIDENCE_MAP = [
   },
   {
     "kind": "lesson section",
-    "claim": "Key Figures of the Texas Revolution",
-    "source_ids": [
-      "s7",
-      "s10"
-    ],
-    "source_titles": [
-      "billofrightsinstitute.org",
-      "dp.la"
-    ],
-    "status": "mapped",
-    "finding": "Mapped to approved source-paper sections for source verification."
-  },
-  {
-    "kind": "lesson section",
     "claim": "Major Battles and Military Campaigns",
     "source_ids": [
+      "s4",
       "s10",
       "s12",
       "s13"
     ],
     "source_titles": [
+      "battlefields.org",
       "dp.la",
       "en.wikipedia.org",
       "tshaonline.org"
@@ -264,7 +322,7 @@ window.EVIDENCE_MAP = [
   },
   {
     "kind": "lesson section",
-    "claim": "Political Developments and the Texas Declaration of Independence",
+    "claim": "Texas Declaration of Independence and Republic Formation",
     "source_ids": [
       "s10",
       "s11"
@@ -278,13 +336,15 @@ window.EVIDENCE_MAP = [
   },
   {
     "kind": "lesson section",
-    "claim": "Settlers, Indigenous Peoples, and Mexican Authorities",
+    "claim": "Contested Narratives and Legacy",
     "source_ids": [
       "s7",
+      "s10",
       "s13"
     ],
     "source_titles": [
       "billofrightsinstitute.org",
+      "dp.la",
       "tshaonline.org"
     ],
     "status": "mapped",
@@ -292,14 +352,18 @@ window.EVIDENCE_MAP = [
   },
   {
     "kind": "lesson section",
-    "claim": "Aftermath and Legacy of the Texas War of Independence",
+    "claim": "Review and Knowledge Check",
     "source_ids": [
-      "s10",
-      "s11"
+      "s1",
+      "s2",
+      "s3",
+      "s4"
     ],
     "source_titles": [
-      "dp.la",
-      "shafr.org"
+      "Class setup, learner profile, and research rules",
+      "youtube.com",
+      "britannica.com",
+      "battlefields.org"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
@@ -376,7 +440,7 @@ window.SLIDES = [
       "h": "Deep dive: Design for the floor learner",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Design for the floor learner connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from Class setup, learner profile, and research rules. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Typical learner: not specified.</li><li>Floor learner: new learners.</li><li>Tone: plain; reading grade cap: 9.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Design for the floor learner\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Design for the floor learner\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> Class setup, learner profile, and research rules <sup class=\"cite\" data-src=\"s1\">[1]</sup></p>"
     },
-    "words": "word1"
+    "words": "word1-settlers"
   },
   {
     "id": "terminal-objectives",
@@ -388,7 +452,7 @@ window.SLIDES = [
       "h": "Deep dive: Terminal learning objectives",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Terminal learning objectives connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from Class setup, learner profile, and research rules. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Describe the historical context of the Texas War of Independence</li><li>Identify key figures involved in the conflict</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Terminal learning objectives\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Terminal learning objectives\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> Class setup, learner profile, and research rules <sup class=\"cite\" data-src=\"s1\">[1]</sup></p>"
     },
-    "poll": "poll2"
+    "poll": "poll2-figures"
   },
   {
     "id": "enabling-objectives",
@@ -411,7 +475,7 @@ window.SLIDES = [
       "h": "Deep dive: Practice path",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Practice path connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from Class setup, learner profile, and research rules. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Name the decision or action learners must perform.</li><li>Show a clean example with the key vocabulary.</li><li>Ask learners to apply the same pattern to a realistic scenario.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Practice path\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Practice path\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> Class setup, learner profile, and research rules <sup class=\"cite\" data-src=\"s1\">[1]</sup></p>"
     },
-    "poll": "poll1"
+    "poll": "poll1-context"
   },
   {
     "id": "guardrails",
@@ -423,14 +487,14 @@ window.SLIDES = [
       "h": "Deep dive: Guardrails for quality",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Guardrails for quality connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from Class setup, learner profile, and research rules. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>No fabricated sources, URLs, dates, or statistics.</li><li>No out-of-scope side trips.</li><li>No final claim unless the source paper supports it.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Guardrails for quality\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Guardrails for quality\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> Class setup, learner profile, and research rules <sup class=\"cite\" data-src=\"s1\">[1]</sup></p>"
     },
-    "poll": "poll2",
-    "words": "word3"
+    "poll": "poll2-figures",
+    "words": "word3-declaration"
   },
   {
     "id": "knowledge-check",
     "eyebrow": "Knowledge Check",
     "num": "08",
-    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">08</span><span class=\"bar\"></span>Knowledge Check</div><h2 class=\"head anim\">Check understanding</h2><ul><li>Answer the questions below before moving to final practice.</li></ul><p class=\"lede anim\">Check understanding connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Check understanding\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Check understanding\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-final-check\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which event directly triggered the start of the Texas War of Independence?&quot;,&quot;options&quot;:[&quot;The Battle of Gonzales&quot;,&quot;The signing of the Texas Declaration of Independence&quot;,&quot;The Battle of San Jacinto&quot;,&quot;The arrival of Stephen F. Austin&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;The Battle of Gonzales was the first military engagement and marked the start of the conflict.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Describe the geopolitical situation in Texas prior to the revolution and how it contributed to the conflict.&quot;,&quot;rubric&quot;:&quot;Response should explain Mexican governance policies, Anglo-American settlement patterns, and tensions arising from cultural and political differences.&quot;,&quot;sample&quot;:&quot;Before the revolution, Texas was under Mexican control, which imposed restrictions on immigration and governance. Anglo-American settlers moved into Texas seeking land and autonomy, leading to tensions with Mexican authorities over laws and cultural differences.&quot;,&quot;accept&quot;:[&quot;Mexican policies limited settlers&#39; rights and caused unrest&quot;,&quot;Anglo settlers wanted more control and resisted Mexican rule&quot;,&quot;Tensions arose from cultural and political conflicts between settlers and Mexico&quot;]}]\" data-pop=\"1\"></div></div>",
+    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">08</span><span class=\"bar\"></span>Knowledge Check</div><h2 class=\"head anim\">Check understanding</h2><ul><li>Answer the questions below before moving to final practice.</li></ul><p class=\"lede anim\">Check understanding connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Check understanding\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Check understanding\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-final-check\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which battle is considered a turning point that led to Texas gaining independence?&quot;,&quot;options&quot;:[&quot;Battle of San Jacinto&quot;,&quot;Battle of Gonzales&quot;,&quot;Battle of the Alamo&quot;,&quot;Battle of Goliad&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;The Battle of San Jacinto was decisive in defeating Mexican forces and securing Texas independence.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Describe the geopolitical situation in Texas prior to the war and how it contributed to the conflict.&quot;,&quot;rubric&quot;:&quot;Response should include mention of Mexican laws on settlement and slavery, tensions between settlers and Mexican authorities, and the role of indigenous peoples. A strong answer explains how these factors combined to create conflict.&quot;,&quot;sample&quot;:&quot;Before the war, Texas was part of Mexico, but many settlers from the U.S. moved there. Mexican laws restricted slavery and settlement patterns, causing tension. Indigenous groups were also affected by these changes. These issues led to growing conflict between settlers and Mexican government.&quot;,&quot;accept&quot;:[&quot;Mexican laws restricting settlers and slavery caused tensions&quot;,&quot;Settlers from the U.S. clashed with Mexican authorities over governance&quot;,&quot;Indigenous peoples were impacted by settlement and conflict&quot;,&quot;Geopolitical tensions arose from cultural and legal differences&quot;]}]\" data-pop=\"1\"></div></div>",
     "paper": {
       "secnum": "Deep Dive 08",
       "h": "Deep dive: Check understanding",
@@ -441,7 +505,7 @@ window.SLIDES = [
     "id": "facilitator-script",
     "eyebrow": "Presenter",
     "num": "09",
-    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">09</span><span class=\"bar\"></span>Presenter</div><h2 class=\"head anim\">What the facilitator should say</h2><ul><li>Explain why the knowledge base comes before final objectives.</li><li>Tell learners which claims are supported and which need more evidence.</li><li>Use the practice path to keep the class active.</li></ul><p class=\"lede anim\">What the facilitator should say connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"What the facilitator should say\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"What the facilitator should say\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-facilitator-script\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which event directly triggered the start of the Texas War of Independence?&quot;,&quot;options&quot;:[&quot;The Battle of Gonzales&quot;,&quot;The signing of the Texas Declaration of Independence&quot;,&quot;The Battle of San Jacinto&quot;,&quot;The arrival of Stephen F. Austin&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;The Battle of Gonzales was the first military engagement and marked the start of the conflict.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Describe the geopolitical situation in Texas prior to the revolution and how it contributed to the conflict.&quot;,&quot;rubric&quot;:&quot;Response should explain Mexican governance policies, Anglo-American settlement patterns, and tensions arising from cultural and political differences.&quot;,&quot;sample&quot;:&quot;Before the revolution, Texas was under Mexican control, which imposed restrictions on immigration and governance. Anglo-American settlers moved into Texas seeking land and autonomy, leading to tensions with Mexican authorities over laws and cultural differences.&quot;,&quot;accept&quot;:[&quot;Mexican policies limited settlers&#39; rights and caused unrest&quot;,&quot;Anglo settlers wanted more control and resisted Mexican rule&quot;,&quot;Tensions arose from cultural and political conflicts between settlers and Mexico&quot;]}]\" data-pop=\"1\"></div></div>",
+    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">09</span><span class=\"bar\"></span>Presenter</div><h2 class=\"head anim\">What the facilitator should say</h2><ul><li>Explain why the knowledge base comes before final objectives.</li><li>Tell learners which claims are supported and which need more evidence.</li><li>Use the practice path to keep the class active.</li></ul><p class=\"lede anim\">What the facilitator should say connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"What the facilitator should say\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"What the facilitator should say\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-facilitator-script\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which battle is considered a turning point that led to Texas gaining independence?&quot;,&quot;options&quot;:[&quot;Battle of San Jacinto&quot;,&quot;Battle of Gonzales&quot;,&quot;Battle of the Alamo&quot;,&quot;Battle of Goliad&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;The Battle of San Jacinto was decisive in defeating Mexican forces and securing Texas independence.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Describe the geopolitical situation in Texas prior to the war and how it contributed to the conflict.&quot;,&quot;rubric&quot;:&quot;Response should include mention of Mexican laws on settlement and slavery, tensions between settlers and Mexican authorities, and the role of indigenous peoples. A strong answer explains how these factors combined to create conflict.&quot;,&quot;sample&quot;:&quot;Before the war, Texas was part of Mexico, but many settlers from the U.S. moved there. Mexican laws restricted slavery and settlement patterns, causing tension. Indigenous groups were also affected by these changes. These issues led to growing conflict between settlers and Mexican government.&quot;,&quot;accept&quot;:[&quot;Mexican laws restricting settlers and slavery caused tensions&quot;,&quot;Settlers from the U.S. clashed with Mexican authorities over governance&quot;,&quot;Indigenous peoples were impacted by settlement and conflict&quot;,&quot;Geopolitical tensions arose from cultural and legal differences&quot;]}]\" data-pop=\"1\"></div></div>",
     "paper": {
       "secnum": "Deep Dive 09",
       "h": "Deep dive: What the facilitator should say",
@@ -502,7 +566,7 @@ window.SLIDES = [
       "h": "Deep dive: Avoid the tempting wrong turn",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Avoid the tempting wrong turn connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from briscoecenter.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Name a mistake a new learner might make.</li><li>Explain why the mistake is attractive.</li><li>Give a safer replacement action or question.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Avoid the tempting wrong turn\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Avoid the tempting wrong turn\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> briscoecenter.org <sup class=\"cite\" data-src=\"s14\">[14]</sup></p>"
     },
-    "poll": "poll2"
+    "poll": "poll2-figures"
   },
   {
     "id": "application-15",
@@ -536,7 +600,7 @@ window.SLIDES = [
       "h": "Deep dive: Ask Bernard before moving on",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Ask Bernard before moving on connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from britannica.com. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Pause for learner questions.</li><li>Use Bernard for a plain-language explanation or an alternate example.</li><li>Return to the slide when the class is ready to continue.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Ask Bernard before moving on\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Ask Bernard before moving on\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> britannica.com <sup class=\"cite\" data-src=\"s3\">[3]</sup></p>"
     },
-    "words": "word1"
+    "words": "word1-settlers"
   },
   {
     "id": "transfer-18",
@@ -575,7 +639,7 @@ window.SLIDES = [
     "id": "guided-practice-21",
     "eyebrow": "Guided Practice",
     "num": "21",
-    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">21</span><span class=\"bar\"></span>Guided Practice</div><h2 class=\"head anim\">Walk through a worked example</h2><ul><li>Start with a realistic learner scenario.</li><li>Model the first decision out loud.</li><li>Show where the source supports the decision.</li></ul><p class=\"lede anim\">Walk through a worked example connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s7\">[7]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Walk through a worked example\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Walk through a worked example\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-guided-practice-21\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which event directly triggered the start of the Texas War of Independence?&quot;,&quot;options&quot;:[&quot;The Battle of Gonzales&quot;,&quot;The signing of the Texas Declaration of Independence&quot;,&quot;The Battle of San Jacinto&quot;,&quot;The arrival of Stephen F. Austin&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;The Battle of Gonzales was the first military engagement and marked the start of the conflict.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Describe the geopolitical situation in Texas prior to the revolution and how it contributed to the conflict.&quot;,&quot;rubric&quot;:&quot;Response should explain Mexican governance policies, Anglo-American settlement patterns, and tensions arising from cultural and political differences.&quot;,&quot;sample&quot;:&quot;Before the revolution, Texas was under Mexican control, which imposed restrictions on immigration and governance. Anglo-American settlers moved into Texas seeking land and autonomy, leading to tensions with Mexican authorities over laws and cultural differences.&quot;,&quot;accept&quot;:[&quot;Mexican policies limited settlers&#39; rights and caused unrest&quot;,&quot;Anglo settlers wanted more control and resisted Mexican rule&quot;,&quot;Tensions arose from cultural and political conflicts between settlers and Mexico&quot;]}]\" data-pop=\"1\"></div></div>",
+    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">21</span><span class=\"bar\"></span>Guided Practice</div><h2 class=\"head anim\">Walk through a worked example</h2><ul><li>Start with a realistic learner scenario.</li><li>Model the first decision out loud.</li><li>Show where the source supports the decision.</li></ul><p class=\"lede anim\">Walk through a worked example connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s7\">[7]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Walk through a worked example\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Walk through a worked example\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-guided-practice-21\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which battle is considered a turning point that led to Texas gaining independence?&quot;,&quot;options&quot;:[&quot;Battle of San Jacinto&quot;,&quot;Battle of Gonzales&quot;,&quot;Battle of the Alamo&quot;,&quot;Battle of Goliad&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;The Battle of San Jacinto was decisive in defeating Mexican forces and securing Texas independence.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Describe the geopolitical situation in Texas prior to the war and how it contributed to the conflict.&quot;,&quot;rubric&quot;:&quot;Response should include mention of Mexican laws on settlement and slavery, tensions between settlers and Mexican authorities, and the role of indigenous peoples. A strong answer explains how these factors combined to create conflict.&quot;,&quot;sample&quot;:&quot;Before the war, Texas was part of Mexico, but many settlers from the U.S. moved there. Mexican laws restricted slavery and settlement patterns, causing tension. Indigenous groups were also affected by these changes. These issues led to growing conflict between settlers and Mexican government.&quot;,&quot;accept&quot;:[&quot;Mexican laws restricting settlers and slavery caused tensions&quot;,&quot;Settlers from the U.S. clashed with Mexican authorities over governance&quot;,&quot;Indigenous peoples were impacted by settlement and conflict&quot;,&quot;Geopolitical tensions arose from cultural and legal differences&quot;]}]\" data-pop=\"1\"></div></div>",
     "paper": {
       "secnum": "Deep Dive 21",
       "h": "Deep dive: Walk through a worked example",
@@ -614,7 +678,7 @@ window.SLIDES = [
       "h": "Deep dive: Try it in context",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Try it in context connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from dp.la. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Apply the lesson to the terminal outcome: Identify key figures involved in the conflict</li><li>Require learners to cite what information they used.</li><li>Ask what extra source would make the answer stronger.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Try it in context\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Try it in context\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> dp.la <sup class=\"cite\" data-src=\"s10\">[10]</sup></p>"
     },
-    "poll": "poll2"
+    "poll": "poll2-figures"
   },
   {
     "id": "advanced-extension-25",
@@ -648,7 +712,7 @@ window.SLIDES = [
       "h": "Deep dive: Move from class to practice",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Move from class to practice connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from tshaonline.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Name where learners will use this skill next.</li><li>Ask what they should check before acting alone.</li><li>Tie the answer back to the source and objective.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Move from class to practice\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Move from class to practice\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> tshaonline.org <sup class=\"cite\" data-src=\"s13\">[13]</sup></p>"
     },
-    "words": "word3"
+    "words": "word3-declaration"
   },
   {
     "id": "evidence-28",
@@ -709,7 +773,7 @@ window.SLIDES = [
     "id": "application-33",
     "eyebrow": "Application",
     "num": "33",
-    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">33</span><span class=\"bar\"></span>Application</div><h2 class=\"head anim\">Try it in context</h2><ul><li>Apply the lesson to the terminal outcome: Describe the historical context of the Texas War of Independence</li><li>Require learners to cite what information they used.</li><li>Ask what extra source would make the answer stronger.</li></ul><p class=\"lede anim\">Try it in context connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s5\">[5]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Try it in context\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Try it in context\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-application-33\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which event directly triggered the start of the Texas War of Independence?&quot;,&quot;options&quot;:[&quot;The Battle of Gonzales&quot;,&quot;The signing of the Texas Declaration of Independence&quot;,&quot;The Battle of San Jacinto&quot;,&quot;The arrival of Stephen F. Austin&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;The Battle of Gonzales was the first military engagement and marked the start of the conflict.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Describe the geopolitical situation in Texas prior to the revolution and how it contributed to the conflict.&quot;,&quot;rubric&quot;:&quot;Response should explain Mexican governance policies, Anglo-American settlement patterns, and tensions arising from cultural and political differences.&quot;,&quot;sample&quot;:&quot;Before the revolution, Texas was under Mexican control, which imposed restrictions on immigration and governance. Anglo-American settlers moved into Texas seeking land and autonomy, leading to tensions with Mexican authorities over laws and cultural differences.&quot;,&quot;accept&quot;:[&quot;Mexican policies limited settlers&#39; rights and caused unrest&quot;,&quot;Anglo settlers wanted more control and resisted Mexican rule&quot;,&quot;Tensions arose from cultural and political conflicts between settlers and Mexico&quot;]}]\" data-pop=\"1\"></div></div>",
+    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">33</span><span class=\"bar\"></span>Application</div><h2 class=\"head anim\">Try it in context</h2><ul><li>Apply the lesson to the terminal outcome: Describe the historical context of the Texas War of Independence</li><li>Require learners to cite what information they used.</li><li>Ask what extra source would make the answer stronger.</li></ul><p class=\"lede anim\">Try it in context connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s5\">[5]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Try it in context\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Try it in context\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-application-33\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which battle is considered a turning point that led to Texas gaining independence?&quot;,&quot;options&quot;:[&quot;Battle of San Jacinto&quot;,&quot;Battle of Gonzales&quot;,&quot;Battle of the Alamo&quot;,&quot;Battle of Goliad&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;The Battle of San Jacinto was decisive in defeating Mexican forces and securing Texas independence.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Describe the geopolitical situation in Texas prior to the war and how it contributed to the conflict.&quot;,&quot;rubric&quot;:&quot;Response should include mention of Mexican laws on settlement and slavery, tensions between settlers and Mexican authorities, and the role of indigenous peoples. A strong answer explains how these factors combined to create conflict.&quot;,&quot;sample&quot;:&quot;Before the war, Texas was part of Mexico, but many settlers from the U.S. moved there. Mexican laws restricted slavery and settlement patterns, causing tension. Indigenous groups were also affected by these changes. These issues led to growing conflict between settlers and Mexican government.&quot;,&quot;accept&quot;:[&quot;Mexican laws restricting settlers and slavery caused tensions&quot;,&quot;Settlers from the U.S. clashed with Mexican authorities over governance&quot;,&quot;Indigenous peoples were impacted by settlement and conflict&quot;,&quot;Geopolitical tensions arose from cultural and legal differences&quot;]}]\" data-pop=\"1\"></div></div>",
     "paper": {
       "secnum": "Deep Dive 33",
       "h": "Deep dive: Try it in context",
@@ -726,7 +790,7 @@ window.SLIDES = [
       "h": "Deep dive: Add depth for experienced learners",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Add depth for experienced learners connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from alamopecan.com. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Name a more nuanced version of the same decision.</li><li>Compare the ordinary case with a harder edge case.</li><li>Ask what additional evidence would change the answer.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Add depth for experienced learners\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Add depth for experienced learners\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> alamopecan.com <sup class=\"cite\" data-src=\"s6\">[6]</sup></p>"
     },
-    "poll": "poll2"
+    "poll": "poll2-figures"
   },
   {
     "id": "bernard-check-35",
@@ -760,7 +824,7 @@ window.SLIDES = [
       "h": "Deep dive: Source checkpoint: study.com",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Source checkpoint: study.com connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from study.com. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Review what this source can safely support.</li><li>Separate verified points from questions that need more evidence.</li><li>Flag any statistic, date, or disputed point for corroboration.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Source checkpoint: study.com\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Source checkpoint: study.com\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> study.com <sup class=\"cite\" data-src=\"s9\">[9]</sup></p>"
     },
-    "words": "word1"
+    "words": "word1-settlers"
   },
   {
     "id": "concept-38",
@@ -838,13 +902,13 @@ window.SLIDES = [
       "h": "Deep dive: Ask Bernard before moving on",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Ask Bernard before moving on connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from youtube.com. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Pause for learner questions.</li><li>Use Bernard for a plain-language explanation or an alternate example.</li><li>Return to the slide when the class is ready to continue.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Ask Bernard before moving on\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Ask Bernard before moving on\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> youtube.com <sup class=\"cite\" data-src=\"s2\">[2]</sup></p>"
     },
-    "poll": "poll2"
+    "poll": "poll2-figures"
   },
   {
     "id": "transfer-45",
     "eyebrow": "Transfer",
     "num": "45",
-    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">45</span><span class=\"bar\"></span>Transfer</div><h2 class=\"head anim\">Move from class to practice</h2><ul><li>Name where learners will use this skill next.</li><li>Ask what they should check before acting alone.</li><li>Tie the answer back to the source and objective.</li></ul><p class=\"lede anim\">Move from class to practice connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s3\">[3]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Move from class to practice\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Move from class to practice\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-transfer-45\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which event directly triggered the start of the Texas War of Independence?&quot;,&quot;options&quot;:[&quot;The Battle of Gonzales&quot;,&quot;The signing of the Texas Declaration of Independence&quot;,&quot;The Battle of San Jacinto&quot;,&quot;The arrival of Stephen F. Austin&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;The Battle of Gonzales was the first military engagement and marked the start of the conflict.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Describe the geopolitical situation in Texas prior to the revolution and how it contributed to the conflict.&quot;,&quot;rubric&quot;:&quot;Response should explain Mexican governance policies, Anglo-American settlement patterns, and tensions arising from cultural and political differences.&quot;,&quot;sample&quot;:&quot;Before the revolution, Texas was under Mexican control, which imposed restrictions on immigration and governance. Anglo-American settlers moved into Texas seeking land and autonomy, leading to tensions with Mexican authorities over laws and cultural differences.&quot;,&quot;accept&quot;:[&quot;Mexican policies limited settlers&#39; rights and caused unrest&quot;,&quot;Anglo settlers wanted more control and resisted Mexican rule&quot;,&quot;Tensions arose from cultural and political conflicts between settlers and Mexico&quot;]}]\" data-pop=\"1\"></div></div>",
+    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">45</span><span class=\"bar\"></span>Transfer</div><h2 class=\"head anim\">Move from class to practice</h2><ul><li>Name where learners will use this skill next.</li><li>Ask what they should check before acting alone.</li><li>Tie the answer back to the source and objective.</li></ul><p class=\"lede anim\">Move from class to practice connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s3\">[3]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Move from class to practice\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Move from class to practice\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-transfer-45\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which battle is considered a turning point that led to Texas gaining independence?&quot;,&quot;options&quot;:[&quot;Battle of San Jacinto&quot;,&quot;Battle of Gonzales&quot;,&quot;Battle of the Alamo&quot;,&quot;Battle of Goliad&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;The Battle of San Jacinto was decisive in defeating Mexican forces and securing Texas independence.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Describe the geopolitical situation in Texas prior to the war and how it contributed to the conflict.&quot;,&quot;rubric&quot;:&quot;Response should include mention of Mexican laws on settlement and slavery, tensions between settlers and Mexican authorities, and the role of indigenous peoples. A strong answer explains how these factors combined to create conflict.&quot;,&quot;sample&quot;:&quot;Before the war, Texas was part of Mexico, but many settlers from the U.S. moved there. Mexican laws restricted slavery and settlement patterns, causing tension. Indigenous groups were also affected by these changes. These issues led to growing conflict between settlers and Mexican government.&quot;,&quot;accept&quot;:[&quot;Mexican laws restricting settlers and slavery caused tensions&quot;,&quot;Settlers from the U.S. clashed with Mexican authorities over governance&quot;,&quot;Indigenous peoples were impacted by settlement and conflict&quot;,&quot;Geopolitical tensions arose from cultural and legal differences&quot;]}]\" data-pop=\"1\"></div></div>",
     "paper": {
       "secnum": "Deep Dive 45",
       "h": "Deep dive: Move from class to practice",
@@ -872,7 +936,7 @@ window.SLIDES = [
       "h": "Deep dive: Make the idea usable",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Make the idea usable connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from thc.texas.gov. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Connect this part of Introduction to the Texas War of Independence to the floor learner's starting point.</li><li>Translate the key idea into plain language: List major political and military figures</li><li>Ask learners to restate the idea before moving on.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Make the idea usable\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Make the idea usable\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> thc.texas.gov <sup class=\"cite\" data-src=\"s5\">[5]</sup></p>"
     },
-    "words": "word3"
+    "words": "word3-declaration"
   },
   {
     "id": "guided-practice-48",
@@ -950,7 +1014,7 @@ window.SLIDES = [
       "h": "Deep dive: Move from class to practice",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Move from class to practice connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from en.wikipedia.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Name where learners will use this skill next.</li><li>Ask what they should check before acting alone.</li><li>Tie the answer back to the source and objective.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Move from class to practice\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Move from class to practice\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> en.wikipedia.org <sup class=\"cite\" data-src=\"s12\">[12]</sup></p>"
     },
-    "poll": "poll2"
+    "poll": "poll2-figures"
   },
   {
     "id": "evidence-55",
@@ -978,7 +1042,7 @@ window.SLIDES = [
     "id": "guided-practice-57",
     "eyebrow": "Guided Practice",
     "num": "57",
-    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">57</span><span class=\"bar\"></span>Guided Practice</div><h2 class=\"head anim\">Walk through a worked example</h2><ul><li>Start with a realistic learner scenario.</li><li>Model the first decision out loud.</li><li>Show where the source supports the decision.</li></ul><p class=\"lede anim\">Walk through a worked example connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Walk through a worked example\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Walk through a worked example\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-guided-practice-57\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which event directly triggered the start of the Texas War of Independence?&quot;,&quot;options&quot;:[&quot;The Battle of Gonzales&quot;,&quot;The signing of the Texas Declaration of Independence&quot;,&quot;The Battle of San Jacinto&quot;,&quot;The arrival of Stephen F. Austin&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;The Battle of Gonzales was the first military engagement and marked the start of the conflict.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Describe the geopolitical situation in Texas prior to the revolution and how it contributed to the conflict.&quot;,&quot;rubric&quot;:&quot;Response should explain Mexican governance policies, Anglo-American settlement patterns, and tensions arising from cultural and political differences.&quot;,&quot;sample&quot;:&quot;Before the revolution, Texas was under Mexican control, which imposed restrictions on immigration and governance. Anglo-American settlers moved into Texas seeking land and autonomy, leading to tensions with Mexican authorities over laws and cultural differences.&quot;,&quot;accept&quot;:[&quot;Mexican policies limited settlers&#39; rights and caused unrest&quot;,&quot;Anglo settlers wanted more control and resisted Mexican rule&quot;,&quot;Tensions arose from cultural and political conflicts between settlers and Mexico&quot;]}]\" data-pop=\"1\"></div></div>",
+    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">57</span><span class=\"bar\"></span>Guided Practice</div><h2 class=\"head anim\">Walk through a worked example</h2><ul><li>Start with a realistic learner scenario.</li><li>Model the first decision out loud.</li><li>Show where the source supports the decision.</li></ul><p class=\"lede anim\">Walk through a worked example connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Walk through a worked example\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Walk through a worked example\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-guided-practice-57\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which battle is considered a turning point that led to Texas gaining independence?&quot;,&quot;options&quot;:[&quot;Battle of San Jacinto&quot;,&quot;Battle of Gonzales&quot;,&quot;Battle of the Alamo&quot;,&quot;Battle of Goliad&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;The Battle of San Jacinto was decisive in defeating Mexican forces and securing Texas independence.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Describe the geopolitical situation in Texas prior to the war and how it contributed to the conflict.&quot;,&quot;rubric&quot;:&quot;Response should include mention of Mexican laws on settlement and slavery, tensions between settlers and Mexican authorities, and the role of indigenous peoples. A strong answer explains how these factors combined to create conflict.&quot;,&quot;sample&quot;:&quot;Before the war, Texas was part of Mexico, but many settlers from the U.S. moved there. Mexican laws restricted slavery and settlement patterns, causing tension. Indigenous groups were also affected by these changes. These issues led to growing conflict between settlers and Mexican government.&quot;,&quot;accept&quot;:[&quot;Mexican laws restricting settlers and slavery caused tensions&quot;,&quot;Settlers from the U.S. clashed with Mexican authorities over governance&quot;,&quot;Indigenous peoples were impacted by settlement and conflict&quot;,&quot;Geopolitical tensions arose from cultural and legal differences&quot;]}]\" data-pop=\"1\"></div></div>",
     "paper": {
       "secnum": "Deep Dive 57",
       "h": "Deep dive: Walk through a worked example",
@@ -1061,7 +1125,7 @@ window.SLIDES = [
       "h": "Deep dive: Source checkpoint: gilderlehrman.org",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Source checkpoint: gilderlehrman.org connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from gilderlehrman.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Review what this source can safely support.</li><li>Separate verified points from questions that need more evidence.</li><li>Flag any statistic, date, or disputed point for corroboration.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Source checkpoint: gilderlehrman.org\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Source checkpoint: gilderlehrman.org\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> gilderlehrman.org <sup class=\"cite\" data-src=\"s8\">[8]</sup></p>"
     },
-    "poll": "poll2"
+    "poll": "poll2-figures"
   },
   {
     "id": "concept-65",
@@ -1095,7 +1159,7 @@ window.SLIDES = [
       "h": "Deep dive: Choose the next best move",
       "body": "<p><strong>Why this deserves a deeper look.</strong> Choose the next best move connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice.</p><p><strong>Source boundary.</strong> Teach this point from shafr.org. If a learner asks for a statistic, date, standard, or local procedure that is not in the knowledge base, Bernard and the presenter should mark it as a research gap instead of improvising.</p><h3>What to emphasize</h3><ul><li>Present two or three plausible choices.</li><li>Ask which choice best matches the objective.</li><li>Use the answer to correct misunderstandings before the next section.</li></ul><h3>Worked example</h3><p>Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><h3>Practice and transfer</h3><p>Practice: have learners restate \"Choose the next best move\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Common mistake to prevent.</strong> Caution: do not let learners turn \"Choose the next best move\" into a rule of thumb unless the knowledge base supports that claim.</p><p class=\"ref\"><strong>Source anchor:</strong> shafr.org <sup class=\"cite\" data-src=\"s11\">[11]</sup></p>"
     },
-    "words": "word3"
+    "words": "word3-declaration"
   },
   {
     "id": "knowledge-base-works-cited",
@@ -1105,42 +1169,42 @@ window.SLIDES = [
   }
 ];
 window.POLLS = {
-  "poll1": {
-    "q": "Which factor was a major cause of the Texas War of Independence?",
-    "desc": "Select the primary cause that led to tensions between settlers and Mexican authorities.",
+  "poll1-context": {
+    "q": "What was a primary geopolitical tension in Texas before the War of Independence?",
+    "desc": "Choose the main factor that contributed to rising tensions in Texas prior to the war.",
     "opts": [
-      "Mexican restrictions on immigration and governance",
-      "Discovery of gold in Texas",
-      "Conflict over fishing rights",
-      "Disputes over railroad construction"
+      "Mexican laws restricting settlement and slavery",
+      "Disputes over fishing rights in the Gulf",
+      "Conflicts between European powers",
+      "Trade disagreements with Native tribes"
     ]
   },
-  "poll2": {
-    "q": "Who was a key military leader for Texas during the revolution?",
-    "desc": "Choose the individual known for leading Texan forces to victory.",
+  "poll2-figures": {
+    "q": "Which figure was a key leader for the Texian forces during the Texas War of Independence?",
+    "desc": "Select the major political or military leader from the Texian side.",
     "opts": [
       "Sam Houston",
       "Antonio López de Santa Anna",
       "Stephen F. Austin",
-      "James Bowie"
+      "Juan Seguín"
     ]
   }
 };
 window.WORDS = {
-  "word1": {
-    "q": "Define 'Tejanos' in the context of the Texas Revolution.",
-    "desc": "Explain who the Tejanos were and their role in the conflict."
+  "word1-settlers": {
+    "q": "What role did settlers play in the Texas War of Independence?",
+    "desc": "Briefly describe the settlers' involvement and perspective during the conflict."
   },
-  "word2": {
-    "q": "What does 'Texas Declaration of Independence' refer to?",
-    "desc": "Describe the significance of this document in the Texas Revolution."
+  "word2-indigenous": {
+    "q": "How were indigenous peoples affected by or involved in the Texas War of Independence?",
+    "desc": "Summarize the perspectives or roles of indigenous groups during the war."
   },
-  "word3": {
-    "q": "Explain the term 'Anglo-American settlers' as used in the course.",
-    "desc": "Clarify who these settlers were and their impact on Texas before the war."
+  "word3-declaration": {
+    "q": "What was the significance of the Texas Declaration of Independence?",
+    "desc": "Explain why this document was important in the context of the war."
   },
-  "word4": {
-    "q": "What was the significance of the Battle of the Alamo?",
-    "desc": "Summarize why this battle is important in the Texas War of Independence."
+  "word4-slavery": {
+    "q": "How did slavery contribute to tensions leading to the Texas War of Independence?",
+    "desc": "Discuss the role of slavery in the geopolitical and social dynamics before the war."
   }
 };
