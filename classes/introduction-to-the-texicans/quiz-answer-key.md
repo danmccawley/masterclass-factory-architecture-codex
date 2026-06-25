@@ -2,11 +2,11 @@
 
 ## Question 1
 Which of the following best defines the term 'Texican' as used historically?
-Answer: A person of mixed Mexican and Anglo heritage living in Texas before 1836
-Why: The term 'Texican' historically referred to people of mixed Mexican and Anglo heritage or Mexican settlers in Texas before independence, distinguishing them from later 'Texians' and 'Texans'.
+Answer: A settler of Mexican heritage living in Texas during the Mexican period
+Why: The term 'Texican' historically refers to settlers of Mexican heritage in Texas during the Mexican period, distinguishing them from Anglo settlers and later Texans.
 
 ## Question 2
-Explain how Mexican land grant policies influenced the settlement patterns and lifestyle of the Texicans.
+Explain how the settlement patterns and lifestyle of the Texicans reflected their cultural background and the political environment of Mexican Texas.
 Answer: undefined
-Rubric: Response should describe the role of Mexican land grants and empresarios like Stephen F. Austin in attracting settlers, shaping community layouts, and influencing economic activities such as ranching and farming. It should mention how these policies created a unique Texican identity blending Mexican and Anglo-American elements.
-Sample: Mexican land grant policies, administered through empresarios like Stephen F. Austin, provided land to settlers which encouraged migration and settlement in Texas. These grants shaped where Texicans lived and how they organized their communities, often blending Mexican legal and cultural traditions with Anglo-American practices, influencing their ranching and farming lifestyle.
+Rubric: A strong answer will describe the Mexican land grant system, family and community life, interactions with indigenous peoples, and how these factors illustrate Texican cultural identity and adaptation to frontier conditions.
+Sample: Texicans settled primarily through Mexican land grants, establishing ranches and farms that reflected Mexican traditions. Their lifestyle included close-knit family units and cooperation with indigenous groups, showing a blend of cultural heritage and frontier adaptation under Mexican governance.

@@ -1,36 +1,36 @@
 /* Generated glossary. term -> {d, r}. */
 window.GLOSSARY = {
   "texican": {
-    "d": "An Anglo-American settler in Mexican Texas between 1820 and 1836 who received land grants from the Mexican government under conditions of loyalty to Mexico and Christian faith, often Catholicism. The term reflects a cultural identity caught between Mexican and Anglo-American influences during a turbulent historical period.",
-    "r": "Understanding 'Texican' clarifies the origins of early Texas settlers and their complex loyalties, which shaped the political and cultural landscape leading to Texas independence."
+    "d": "An Anglo settler living in Mexican Texas between 1820 and 1836, during the period when Texas was part of Mexico. These settlers obtained land grants from the Mexican government and were required to swear loyalty to Mexico and adopt Christian faith, often Catholicism.",
+    "r": "Understanding 'Texican' clarifies the identity and cultural background of early settlers who influenced Texas's political and social development before the Texas Revolution."
   },
   "texian": {
-    "d": "A term that emerged after the Texas Revolution to describe residents of the Republic of Texas, reflecting a shift in political status from Mexican territory to an independent republic.",
-    "r": "Recognizing 'Texian' helps trace the evolution of Texican identity as Texas moved from Mexican control to independence."
+    "d": "A term used after the Texas Revolution (post-1836) to describe residents of the Republic of Texas, evolving from the earlier 'Texican' designation as political control shifted.",
+    "r": "Recognizing the term 'Texian' helps track the political and cultural shifts in Texas history from Mexican rule to independent republic status."
   },
   "texan": {
-    "d": "The modern term for residents of Texas, used especially after Texas joined the United States, representing a broader and more inclusive identity beyond the original Texicans and Texians.",
-    "r": "Knowing 'Texan' situates the historical progression of identity from early settlers to present-day inhabitants."
+    "d": "The modern term for residents of Texas, especially after Texas became a U.S. state in 1845, reflecting the final stage in the evolution of regional identity from 'Texican' and 'Texian'.",
+    "r": "Knowing 'Texan' situates learners in the current identity of Texas residents and connects historical terms to present-day usage."
   },
-  "land grant policy": {
-    "d": "Mexican government programs that allocated land to settlers, often through empresarios like Stephen F. Austin, who facilitated Anglo-American immigration to Texas under conditions of loyalty and cultural assimilation.",
-    "r": "Land grants were central to Texican settlement patterns and economic development, influencing demographic and political dynamics."
-  },
-  "empresario": {
-    "d": "A land agent or contractor authorized by the Mexican government to bring settlers to Texas and manage land grants, with Stephen F. Austin being the most notable example.",
-    "r": "Empresarios shaped the settlement and growth of Texican communities, acting as intermediaries between settlers and Mexican authorities."
+  "mexican land grant": {
+    "d": "A legal grant of land given by the Mexican government to settlers, including Texicans, often requiring loyalty oaths and adherence to Mexican laws and religion to encourage settlement.",
+    "r": "This term explains how Texicans acquired land and why their settlement patterns were tied to Mexican political and cultural conditions."
   },
   "texas revolution": {
-    "d": "The armed conflict (1835-1836) between Texican settlers and the Mexican government that resulted in Texas gaining independence and forming the Republic of Texas.",
-    "r": "The revolution was a pivotal event involving Texicans that redefined political boundaries and identities in the region."
+    "d": "The armed conflict from 1835 to 1836 in which Texicans and other settlers fought against Mexican rule, leading to the independence of Texas as the Republic of Texas.",
+    "r": "Understanding the Texas Revolution is key to grasping the political role and military involvement of Texicans in shaping Texas history."
   },
-  "native american tribes in texas": {
-    "d": "Indigenous groups such as the Caddo and Comanche who inhabited Texas and influenced settlement patterns, conflicts, and alliances with Texicans and Mexican authorities.",
-    "r": "Understanding these tribes is essential to grasp the complex social and political environment Texicans navigated."
+  "native american tribes of texas": {
+    "d": "Indigenous groups such as the Caddo and Comanche who inhabited Texas and interacted with Texicans through trade, conflict, and cultural exchange.",
+    "r": "Recognizing these tribes is essential to understanding the multicultural frontier environment and the complexities of Texican settlement and relations."
+  },
+  "multicultural frontier": {
+    "d": "The diverse social and cultural environment of early Texas involving Spanish, Mexican, Anglo settlers (Texicans), and multiple Native American tribes.",
+    "r": "This term highlights the complex interactions and identities that shaped Texican life and early Texas history."
   },
   "primary sources": {
-    "d": "Original documents and records from the period, including land grants, letters, government records, and military documents that provide firsthand evidence of Texican life and historical events.",
-    "r": "Primary sources enable accurate and nuanced study of Texican history, supporting critical analysis and deeper understanding."
+    "d": "Original historical documents such as land grants, government records, and personal letters from the Texican era, preserved in archives and digital collections.",
+    "r": "Primary sources provide direct evidence about Texican life and history, enabling critical analysis and deeper understanding beyond secondary interpretations."
   },
   "terminal learning objective": {
     "d": "The main capability learners should demonstrate by the end of the class.",
