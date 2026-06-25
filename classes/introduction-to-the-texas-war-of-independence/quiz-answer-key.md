@@ -1,12 +1,12 @@
 # Quiz Answer Key
 
 ## Question 1
-Which of the following best describes the role of settlers in the Texas Revolution?
-Answer: They sought independence due to conflicts with Mexican governance and cultural differences.
-Why: Settlers were motivated by dissatisfaction with Mexican policies and cultural clashes, leading them to support independence.
+Which event directly triggered the start of the Texas War of Independence?
+Answer: The Battle of Gonzales
+Why: The Battle of Gonzales was the first military engagement and marked the start of the conflict.
 
 ## Question 2
-Describe the significance of Sam Houston in the Texas War of Independence.
+Describe the geopolitical situation in Texas prior to the revolution and how it contributed to the conflict.
 Answer: undefined
-Rubric: Response should identify Sam Houston as a key military and political leader, mention his leadership at the Battle of San Jacinto, and his role in securing Texas independence.
-Sample: Sam Houston was the commander of Texian forces who led them to victory at the Battle of San Jacinto, which was decisive in winning independence from Mexico. He later became the first president of the Republic of Texas.
+Rubric: Response should explain Mexican governance policies, Anglo-American settlement patterns, and tensions arising from cultural and political differences.
+Sample: Before the revolution, Texas was under Mexican control, which imposed restrictions on immigration and governance. Anglo-American settlers moved into Texas seeking land and autonomy, leading to tensions with Mexican authorities over laws and cultural differences.

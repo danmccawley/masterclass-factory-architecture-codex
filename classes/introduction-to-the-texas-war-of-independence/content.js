@@ -2,7 +2,7 @@
 window.CLASS_TITLE = "Introduction to the Texas War of Independence";
 window.DECK_META = {
   "slug": "introduction-to-the-texas-war-of-independence",
-  "generated": "2026-06-25T14:32:20.266Z",
+  "generated": "2026-06-25T14:34:30.053Z",
   "language": "en",
   "class_tier": "Quick briefing"
 };
@@ -155,12 +155,12 @@ window.CLASS_BLUEPRINT = {
       "deep_dive_expectation": "substantive deep dives where required by tier and setting"
     }
   ],
-  "lesson_sections": 7
+  "lesson_sections": 6
 };
 window.EVIDENCE_MAP = [
   {
     "kind": "terminal objective",
-    "claim": "Describe the historical context and key events of the Texas War of Independence, including its causes, major battles, and outcomes.",
+    "claim": "Describe the historical context of the Texas War of Independence, including its causes, major events, and outcomes.",
     "source_ids": [
       "s1",
       "s2",
@@ -176,7 +176,7 @@ window.EVIDENCE_MAP = [
   },
   {
     "kind": "enabling objective",
-    "claim": "Explain the geopolitical situation in Texas prior to the war, including Mexican governance and Anglo-American settlement patterns.",
+    "claim": "Explain the geopolitical situation in Texas prior to the war, including Mexican policies and Anglo-American settlement.",
     "source_ids": [
       "s2",
       "s3",
@@ -192,7 +192,7 @@ window.EVIDENCE_MAP = [
   },
   {
     "kind": "enabling objective",
-    "claim": "Identify and describe major political and military figures involved in the conflict, such as Sam Houston and other Texian leaders.",
+    "claim": "List and characterize major political and military figures involved in the Texas Revolution, such as Stephen F. Austin and Sam Houston.",
     "source_ids": [
       "s3",
       "s4"
@@ -206,47 +206,11 @@ window.EVIDENCE_MAP = [
   },
   {
     "kind": "enabling objective",
-    "claim": "Discuss the roles and perspectives of settlers, Tejanos, and indigenous peoples during the Texas Revolution.",
+    "claim": "Discuss the roles and perspectives of settlers, Tejanos, indigenous peoples, and Mexican authorities during the conflict.",
     "source_ids": [
       "s4"
     ],
     "source_titles": [
-      "battlefields.org"
-    ],
-    "status": "mapped",
-    "finding": "Mapped to approved source-paper sections for source verification."
-  },
-  {
-    "kind": "enabling objective",
-    "claim": "Analyze the Texas Declaration of Independence and its significance in the broader independence movement.",
-    "source_ids": [
-      "s1",
-      "s2",
-      "s3",
-      "s4"
-    ],
-    "source_titles": [
-      "Class setup, learner profile, and research rules",
-      "youtube.com",
-      "britannica.com",
-      "battlefields.org"
-    ],
-    "status": "mapped",
-    "finding": "Mapped to approved source-paper sections for source verification."
-  },
-  {
-    "kind": "enabling objective",
-    "claim": "Evaluate contested points and differing perspectives regarding motivations, treatment of Tejanos, and political implications of independence.",
-    "source_ids": [
-      "s1",
-      "s2",
-      "s3",
-      "s4"
-    ],
-    "source_titles": [
-      "Class setup, learner profile, and research rules",
-      "youtube.com",
-      "britannica.com",
       "battlefields.org"
     ],
     "status": "mapped",
@@ -254,14 +218,14 @@ window.EVIDENCE_MAP = [
   },
   {
     "kind": "lesson section",
-    "claim": "Geopolitical Background of Texas Before the Revolution",
+    "claim": "Introduction and Historical Background",
     "source_ids": [
-      "s4",
+      "s7",
       "s10",
       "s13"
     ],
     "source_titles": [
-      "battlefields.org",
+      "billofrightsinstitute.org",
       "dp.la",
       "tshaonline.org"
     ],
@@ -273,13 +237,11 @@ window.EVIDENCE_MAP = [
     "claim": "Key Figures of the Texas Revolution",
     "source_ids": [
       "s7",
-      "s10",
-      "s12"
+      "s10"
     ],
     "source_titles": [
       "billofrightsinstitute.org",
-      "dp.la",
-      "en.wikipedia.org"
+      "dp.la"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
@@ -288,13 +250,11 @@ window.EVIDENCE_MAP = [
     "kind": "lesson section",
     "claim": "Major Battles and Military Campaigns",
     "source_ids": [
-      "s4",
       "s10",
       "s12",
       "s13"
     ],
     "source_titles": [
-      "battlefields.org",
       "dp.la",
       "en.wikipedia.org",
       "tshaonline.org"
@@ -304,7 +264,7 @@ window.EVIDENCE_MAP = [
   },
   {
     "kind": "lesson section",
-    "claim": "The Texas Declaration of Independence",
+    "claim": "Political Developments and the Texas Declaration of Independence",
     "source_ids": [
       "s10",
       "s11"
@@ -318,46 +278,28 @@ window.EVIDENCE_MAP = [
   },
   {
     "kind": "lesson section",
-    "claim": "Roles of Settlers, Tejanos, and Indigenous Peoples",
+    "claim": "Settlers, Indigenous Peoples, and Mexican Authorities",
     "source_ids": [
-      "s10",
-      "s13"
-    ],
-    "source_titles": [
-      "dp.la",
-      "tshaonline.org"
-    ],
-    "status": "mapped",
-    "finding": "Mapped to approved source-paper sections for source verification."
-  },
-  {
-    "kind": "lesson section",
-    "claim": "Contested Issues and Historical Perspectives",
-    "source_ids": [
-      "s10",
-      "s12",
-      "s13"
-    ],
-    "source_titles": [
-      "dp.la",
-      "en.wikipedia.org",
-      "tshaonline.org"
-    ],
-    "status": "mapped",
-    "finding": "Mapped to approved source-paper sections for source verification."
-  },
-  {
-    "kind": "lesson section",
-    "claim": "Summary and Review",
-    "source_ids": [
-      "s4",
       "s7",
-      "s10"
+      "s13"
     ],
     "source_titles": [
-      "battlefields.org",
       "billofrightsinstitute.org",
-      "dp.la"
+      "tshaonline.org"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Aftermath and Legacy of the Texas War of Independence",
+    "source_ids": [
+      "s10",
+      "s11"
+    ],
+    "source_titles": [
+      "dp.la",
+      "shafr.org"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
@@ -488,7 +430,7 @@ window.SLIDES = [
     "id": "knowledge-check",
     "eyebrow": "Knowledge Check",
     "num": "08",
-    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">08</span><span class=\"bar\"></span>Knowledge Check</div><h2 class=\"head anim\">Check understanding</h2><ul><li>Answer the questions below before moving to final practice.</li></ul><p class=\"lede anim\">Check understanding connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Check understanding\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Check understanding\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-final-check\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which of the following best describes the role of settlers in the Texas Revolution?&quot;,&quot;options&quot;:[&quot;They sought independence due to conflicts with Mexican governance and cultural differences.&quot;,&quot;They supported Mexican rule and opposed independence.&quot;,&quot;They were neutral and did not participate in the conflict.&quot;,&quot;They allied exclusively with indigenous groups against Mexico.&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;Settlers were motivated by dissatisfaction with Mexican policies and cultural clashes, leading them to support independence.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Describe the significance of Sam Houston in the Texas War of Independence.&quot;,&quot;rubric&quot;:&quot;Response should identify Sam Houston as a key military and political leader, mention his leadership at the Battle of San Jacinto, and his role in securing Texas independence.&quot;,&quot;sample&quot;:&quot;Sam Houston was the commander of Texian forces who led them to victory at the Battle of San Jacinto, which was decisive in winning independence from Mexico. He later became the first president of the Republic of Texas.&quot;,&quot;accept&quot;:[&quot;Sam Houston was a major Texian military leader and president who secured independence.&quot;,&quot;He led Texian troops to victory at San Jacinto and was a key figure in the revolution.&quot;,&quot;Houston played a crucial role in the military and political success of Texas independence.&quot;]}]\" data-pop=\"1\"></div></div>",
+    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">08</span><span class=\"bar\"></span>Knowledge Check</div><h2 class=\"head anim\">Check understanding</h2><ul><li>Answer the questions below before moving to final practice.</li></ul><p class=\"lede anim\">Check understanding connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Check understanding\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Check understanding\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-final-check\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which event directly triggered the start of the Texas War of Independence?&quot;,&quot;options&quot;:[&quot;The Battle of Gonzales&quot;,&quot;The signing of the Texas Declaration of Independence&quot;,&quot;The Battle of San Jacinto&quot;,&quot;The arrival of Stephen F. Austin&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;The Battle of Gonzales was the first military engagement and marked the start of the conflict.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Describe the geopolitical situation in Texas prior to the revolution and how it contributed to the conflict.&quot;,&quot;rubric&quot;:&quot;Response should explain Mexican governance policies, Anglo-American settlement patterns, and tensions arising from cultural and political differences.&quot;,&quot;sample&quot;:&quot;Before the revolution, Texas was under Mexican control, which imposed restrictions on immigration and governance. Anglo-American settlers moved into Texas seeking land and autonomy, leading to tensions with Mexican authorities over laws and cultural differences.&quot;,&quot;accept&quot;:[&quot;Mexican policies limited settlers&#39; rights and caused unrest&quot;,&quot;Anglo settlers wanted more control and resisted Mexican rule&quot;,&quot;Tensions arose from cultural and political conflicts between settlers and Mexico&quot;]}]\" data-pop=\"1\"></div></div>",
     "paper": {
       "secnum": "Deep Dive 08",
       "h": "Deep dive: Check understanding",
@@ -499,7 +441,7 @@ window.SLIDES = [
     "id": "facilitator-script",
     "eyebrow": "Presenter",
     "num": "09",
-    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">09</span><span class=\"bar\"></span>Presenter</div><h2 class=\"head anim\">What the facilitator should say</h2><ul><li>Explain why the knowledge base comes before final objectives.</li><li>Tell learners which claims are supported and which need more evidence.</li><li>Use the practice path to keep the class active.</li></ul><p class=\"lede anim\">What the facilitator should say connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"What the facilitator should say\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"What the facilitator should say\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-facilitator-script\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which of the following best describes the role of settlers in the Texas Revolution?&quot;,&quot;options&quot;:[&quot;They sought independence due to conflicts with Mexican governance and cultural differences.&quot;,&quot;They supported Mexican rule and opposed independence.&quot;,&quot;They were neutral and did not participate in the conflict.&quot;,&quot;They allied exclusively with indigenous groups against Mexico.&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;Settlers were motivated by dissatisfaction with Mexican policies and cultural clashes, leading them to support independence.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Describe the significance of Sam Houston in the Texas War of Independence.&quot;,&quot;rubric&quot;:&quot;Response should identify Sam Houston as a key military and political leader, mention his leadership at the Battle of San Jacinto, and his role in securing Texas independence.&quot;,&quot;sample&quot;:&quot;Sam Houston was the commander of Texian forces who led them to victory at the Battle of San Jacinto, which was decisive in winning independence from Mexico. He later became the first president of the Republic of Texas.&quot;,&quot;accept&quot;:[&quot;Sam Houston was a major Texian military leader and president who secured independence.&quot;,&quot;He led Texian troops to victory at San Jacinto and was a key figure in the revolution.&quot;,&quot;Houston played a crucial role in the military and political success of Texas independence.&quot;]}]\" data-pop=\"1\"></div></div>",
+    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">09</span><span class=\"bar\"></span>Presenter</div><h2 class=\"head anim\">What the facilitator should say</h2><ul><li>Explain why the knowledge base comes before final objectives.</li><li>Tell learners which claims are supported and which need more evidence.</li><li>Use the practice path to keep the class active.</li></ul><p class=\"lede anim\">What the facilitator should say connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"What the facilitator should say\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"What the facilitator should say\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-facilitator-script\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which event directly triggered the start of the Texas War of Independence?&quot;,&quot;options&quot;:[&quot;The Battle of Gonzales&quot;,&quot;The signing of the Texas Declaration of Independence&quot;,&quot;The Battle of San Jacinto&quot;,&quot;The arrival of Stephen F. Austin&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;The Battle of Gonzales was the first military engagement and marked the start of the conflict.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Describe the geopolitical situation in Texas prior to the revolution and how it contributed to the conflict.&quot;,&quot;rubric&quot;:&quot;Response should explain Mexican governance policies, Anglo-American settlement patterns, and tensions arising from cultural and political differences.&quot;,&quot;sample&quot;:&quot;Before the revolution, Texas was under Mexican control, which imposed restrictions on immigration and governance. Anglo-American settlers moved into Texas seeking land and autonomy, leading to tensions with Mexican authorities over laws and cultural differences.&quot;,&quot;accept&quot;:[&quot;Mexican policies limited settlers&#39; rights and caused unrest&quot;,&quot;Anglo settlers wanted more control and resisted Mexican rule&quot;,&quot;Tensions arose from cultural and political conflicts between settlers and Mexico&quot;]}]\" data-pop=\"1\"></div></div>",
     "paper": {
       "secnum": "Deep Dive 09",
       "h": "Deep dive: What the facilitator should say",
@@ -633,7 +575,7 @@ window.SLIDES = [
     "id": "guided-practice-21",
     "eyebrow": "Guided Practice",
     "num": "21",
-    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">21</span><span class=\"bar\"></span>Guided Practice</div><h2 class=\"head anim\">Walk through a worked example</h2><ul><li>Start with a realistic learner scenario.</li><li>Model the first decision out loud.</li><li>Show where the source supports the decision.</li></ul><p class=\"lede anim\">Walk through a worked example connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s7\">[7]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Walk through a worked example\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Walk through a worked example\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-guided-practice-21\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which of the following best describes the role of settlers in the Texas Revolution?&quot;,&quot;options&quot;:[&quot;They sought independence due to conflicts with Mexican governance and cultural differences.&quot;,&quot;They supported Mexican rule and opposed independence.&quot;,&quot;They were neutral and did not participate in the conflict.&quot;,&quot;They allied exclusively with indigenous groups against Mexico.&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;Settlers were motivated by dissatisfaction with Mexican policies and cultural clashes, leading them to support independence.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Describe the significance of Sam Houston in the Texas War of Independence.&quot;,&quot;rubric&quot;:&quot;Response should identify Sam Houston as a key military and political leader, mention his leadership at the Battle of San Jacinto, and his role in securing Texas independence.&quot;,&quot;sample&quot;:&quot;Sam Houston was the commander of Texian forces who led them to victory at the Battle of San Jacinto, which was decisive in winning independence from Mexico. He later became the first president of the Republic of Texas.&quot;,&quot;accept&quot;:[&quot;Sam Houston was a major Texian military leader and president who secured independence.&quot;,&quot;He led Texian troops to victory at San Jacinto and was a key figure in the revolution.&quot;,&quot;Houston played a crucial role in the military and political success of Texas independence.&quot;]}]\" data-pop=\"1\"></div></div>",
+    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">21</span><span class=\"bar\"></span>Guided Practice</div><h2 class=\"head anim\">Walk through a worked example</h2><ul><li>Start with a realistic learner scenario.</li><li>Model the first decision out loud.</li><li>Show where the source supports the decision.</li></ul><p class=\"lede anim\">Walk through a worked example connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s7\">[7]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Walk through a worked example\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Walk through a worked example\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-guided-practice-21\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which event directly triggered the start of the Texas War of Independence?&quot;,&quot;options&quot;:[&quot;The Battle of Gonzales&quot;,&quot;The signing of the Texas Declaration of Independence&quot;,&quot;The Battle of San Jacinto&quot;,&quot;The arrival of Stephen F. Austin&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;The Battle of Gonzales was the first military engagement and marked the start of the conflict.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Describe the geopolitical situation in Texas prior to the revolution and how it contributed to the conflict.&quot;,&quot;rubric&quot;:&quot;Response should explain Mexican governance policies, Anglo-American settlement patterns, and tensions arising from cultural and political differences.&quot;,&quot;sample&quot;:&quot;Before the revolution, Texas was under Mexican control, which imposed restrictions on immigration and governance. Anglo-American settlers moved into Texas seeking land and autonomy, leading to tensions with Mexican authorities over laws and cultural differences.&quot;,&quot;accept&quot;:[&quot;Mexican policies limited settlers&#39; rights and caused unrest&quot;,&quot;Anglo settlers wanted more control and resisted Mexican rule&quot;,&quot;Tensions arose from cultural and political conflicts between settlers and Mexico&quot;]}]\" data-pop=\"1\"></div></div>",
     "paper": {
       "secnum": "Deep Dive 21",
       "h": "Deep dive: Walk through a worked example",
@@ -767,7 +709,7 @@ window.SLIDES = [
     "id": "application-33",
     "eyebrow": "Application",
     "num": "33",
-    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">33</span><span class=\"bar\"></span>Application</div><h2 class=\"head anim\">Try it in context</h2><ul><li>Apply the lesson to the terminal outcome: Describe the historical context of the Texas War of Independence</li><li>Require learners to cite what information they used.</li><li>Ask what extra source would make the answer stronger.</li></ul><p class=\"lede anim\">Try it in context connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s5\">[5]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Try it in context\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Try it in context\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-application-33\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which of the following best describes the role of settlers in the Texas Revolution?&quot;,&quot;options&quot;:[&quot;They sought independence due to conflicts with Mexican governance and cultural differences.&quot;,&quot;They supported Mexican rule and opposed independence.&quot;,&quot;They were neutral and did not participate in the conflict.&quot;,&quot;They allied exclusively with indigenous groups against Mexico.&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;Settlers were motivated by dissatisfaction with Mexican policies and cultural clashes, leading them to support independence.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Describe the significance of Sam Houston in the Texas War of Independence.&quot;,&quot;rubric&quot;:&quot;Response should identify Sam Houston as a key military and political leader, mention his leadership at the Battle of San Jacinto, and his role in securing Texas independence.&quot;,&quot;sample&quot;:&quot;Sam Houston was the commander of Texian forces who led them to victory at the Battle of San Jacinto, which was decisive in winning independence from Mexico. He later became the first president of the Republic of Texas.&quot;,&quot;accept&quot;:[&quot;Sam Houston was a major Texian military leader and president who secured independence.&quot;,&quot;He led Texian troops to victory at San Jacinto and was a key figure in the revolution.&quot;,&quot;Houston played a crucial role in the military and political success of Texas independence.&quot;]}]\" data-pop=\"1\"></div></div>",
+    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">33</span><span class=\"bar\"></span>Application</div><h2 class=\"head anim\">Try it in context</h2><ul><li>Apply the lesson to the terminal outcome: Describe the historical context of the Texas War of Independence</li><li>Require learners to cite what information they used.</li><li>Ask what extra source would make the answer stronger.</li></ul><p class=\"lede anim\">Try it in context connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s5\">[5]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Try it in context\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Try it in context\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-application-33\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which event directly triggered the start of the Texas War of Independence?&quot;,&quot;options&quot;:[&quot;The Battle of Gonzales&quot;,&quot;The signing of the Texas Declaration of Independence&quot;,&quot;The Battle of San Jacinto&quot;,&quot;The arrival of Stephen F. Austin&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;The Battle of Gonzales was the first military engagement and marked the start of the conflict.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Describe the geopolitical situation in Texas prior to the revolution and how it contributed to the conflict.&quot;,&quot;rubric&quot;:&quot;Response should explain Mexican governance policies, Anglo-American settlement patterns, and tensions arising from cultural and political differences.&quot;,&quot;sample&quot;:&quot;Before the revolution, Texas was under Mexican control, which imposed restrictions on immigration and governance. Anglo-American settlers moved into Texas seeking land and autonomy, leading to tensions with Mexican authorities over laws and cultural differences.&quot;,&quot;accept&quot;:[&quot;Mexican policies limited settlers&#39; rights and caused unrest&quot;,&quot;Anglo settlers wanted more control and resisted Mexican rule&quot;,&quot;Tensions arose from cultural and political conflicts between settlers and Mexico&quot;]}]\" data-pop=\"1\"></div></div>",
     "paper": {
       "secnum": "Deep Dive 33",
       "h": "Deep dive: Try it in context",
@@ -902,7 +844,7 @@ window.SLIDES = [
     "id": "transfer-45",
     "eyebrow": "Transfer",
     "num": "45",
-    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">45</span><span class=\"bar\"></span>Transfer</div><h2 class=\"head anim\">Move from class to practice</h2><ul><li>Name where learners will use this skill next.</li><li>Ask what they should check before acting alone.</li><li>Tie the answer back to the source and objective.</li></ul><p class=\"lede anim\">Move from class to practice connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s3\">[3]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Move from class to practice\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Move from class to practice\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-transfer-45\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which of the following best describes the role of settlers in the Texas Revolution?&quot;,&quot;options&quot;:[&quot;They sought independence due to conflicts with Mexican governance and cultural differences.&quot;,&quot;They supported Mexican rule and opposed independence.&quot;,&quot;They were neutral and did not participate in the conflict.&quot;,&quot;They allied exclusively with indigenous groups against Mexico.&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;Settlers were motivated by dissatisfaction with Mexican policies and cultural clashes, leading them to support independence.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Describe the significance of Sam Houston in the Texas War of Independence.&quot;,&quot;rubric&quot;:&quot;Response should identify Sam Houston as a key military and political leader, mention his leadership at the Battle of San Jacinto, and his role in securing Texas independence.&quot;,&quot;sample&quot;:&quot;Sam Houston was the commander of Texian forces who led them to victory at the Battle of San Jacinto, which was decisive in winning independence from Mexico. He later became the first president of the Republic of Texas.&quot;,&quot;accept&quot;:[&quot;Sam Houston was a major Texian military leader and president who secured independence.&quot;,&quot;He led Texian troops to victory at San Jacinto and was a key figure in the revolution.&quot;,&quot;Houston played a crucial role in the military and political success of Texas independence.&quot;]}]\" data-pop=\"1\"></div></div>",
+    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">45</span><span class=\"bar\"></span>Transfer</div><h2 class=\"head anim\">Move from class to practice</h2><ul><li>Name where learners will use this skill next.</li><li>Ask what they should check before acting alone.</li><li>Tie the answer back to the source and objective.</li></ul><p class=\"lede anim\">Move from class to practice connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s3\">[3]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Move from class to practice\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Move from class to practice\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-transfer-45\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which event directly triggered the start of the Texas War of Independence?&quot;,&quot;options&quot;:[&quot;The Battle of Gonzales&quot;,&quot;The signing of the Texas Declaration of Independence&quot;,&quot;The Battle of San Jacinto&quot;,&quot;The arrival of Stephen F. Austin&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;The Battle of Gonzales was the first military engagement and marked the start of the conflict.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Describe the geopolitical situation in Texas prior to the revolution and how it contributed to the conflict.&quot;,&quot;rubric&quot;:&quot;Response should explain Mexican governance policies, Anglo-American settlement patterns, and tensions arising from cultural and political differences.&quot;,&quot;sample&quot;:&quot;Before the revolution, Texas was under Mexican control, which imposed restrictions on immigration and governance. Anglo-American settlers moved into Texas seeking land and autonomy, leading to tensions with Mexican authorities over laws and cultural differences.&quot;,&quot;accept&quot;:[&quot;Mexican policies limited settlers&#39; rights and caused unrest&quot;,&quot;Anglo settlers wanted more control and resisted Mexican rule&quot;,&quot;Tensions arose from cultural and political conflicts between settlers and Mexico&quot;]}]\" data-pop=\"1\"></div></div>",
     "paper": {
       "secnum": "Deep Dive 45",
       "h": "Deep dive: Move from class to practice",
@@ -1036,7 +978,7 @@ window.SLIDES = [
     "id": "guided-practice-57",
     "eyebrow": "Guided Practice",
     "num": "57",
-    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">57</span><span class=\"bar\"></span>Guided Practice</div><h2 class=\"head anim\">Walk through a worked example</h2><ul><li>Start with a realistic learner scenario.</li><li>Model the first decision out loud.</li><li>Show where the source supports the decision.</li></ul><p class=\"lede anim\">Walk through a worked example connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Walk through a worked example\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Walk through a worked example\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-guided-practice-57\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which of the following best describes the role of settlers in the Texas Revolution?&quot;,&quot;options&quot;:[&quot;They sought independence due to conflicts with Mexican governance and cultural differences.&quot;,&quot;They supported Mexican rule and opposed independence.&quot;,&quot;They were neutral and did not participate in the conflict.&quot;,&quot;They allied exclusively with indigenous groups against Mexico.&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;Settlers were motivated by dissatisfaction with Mexican policies and cultural clashes, leading them to support independence.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Describe the significance of Sam Houston in the Texas War of Independence.&quot;,&quot;rubric&quot;:&quot;Response should identify Sam Houston as a key military and political leader, mention his leadership at the Battle of San Jacinto, and his role in securing Texas independence.&quot;,&quot;sample&quot;:&quot;Sam Houston was the commander of Texian forces who led them to victory at the Battle of San Jacinto, which was decisive in winning independence from Mexico. He later became the first president of the Republic of Texas.&quot;,&quot;accept&quot;:[&quot;Sam Houston was a major Texian military leader and president who secured independence.&quot;,&quot;He led Texian troops to victory at San Jacinto and was a key figure in the revolution.&quot;,&quot;Houston played a crucial role in the military and political success of Texas independence.&quot;]}]\" data-pop=\"1\"></div></div>",
+    "deck": "<div class=\"wrap\"><div class=\"eyebrow anim\"><span class=\"num\">57</span><span class=\"bar\"></span>Guided Practice</div><h2 class=\"head anim\">Walk through a worked example</h2><ul><li>Start with a realistic learner scenario.</li><li>Model the first decision out loud.</li><li>Show where the source supports the decision.</li></ul><p class=\"lede anim\">Walk through a worked example connects directly to the class goal for Introduction to the Texas War of Independence. Teach it slowly enough that the floor learner can name the decision, explain why it matters, and point back to the source boundary before moving into practice. <sup class=\"cite\" data-src=\"s1\">[1]</sup></p><div class=\"lesson-detail anim\"><p><strong>Example:</strong> Example: ask a mixed to apply this point to a realistic work situation, then explain which source-supported detail guided the decision.</p><p><strong>Practice:</strong> Practice: have learners restate \"Walk through a worked example\" in their own words, choose a next action, and name the evidence they would need before acting.</p><p><strong>Watch for:</strong> Caution: do not let learners turn \"Walk through a worked example\" into a rule of thumb unless the knowledge base supports that claim.</p></div><div id=\"quiz-guided-practice-57\" class=\"quizbox popquiz anim\" data-quiz=\"[{&quot;type&quot;:&quot;mc&quot;,&quot;level&quot;:2,&quot;q&quot;:&quot;Which event directly triggered the start of the Texas War of Independence?&quot;,&quot;options&quot;:[&quot;The Battle of Gonzales&quot;,&quot;The signing of the Texas Declaration of Independence&quot;,&quot;The Battle of San Jacinto&quot;,&quot;The arrival of Stephen F. Austin&quot;],&quot;answer&quot;:0,&quot;why&quot;:&quot;The Battle of Gonzales was the first military engagement and marked the start of the conflict.&quot;},{&quot;type&quot;:&quot;sa&quot;,&quot;level&quot;:3,&quot;q&quot;:&quot;Describe the geopolitical situation in Texas prior to the revolution and how it contributed to the conflict.&quot;,&quot;rubric&quot;:&quot;Response should explain Mexican governance policies, Anglo-American settlement patterns, and tensions arising from cultural and political differences.&quot;,&quot;sample&quot;:&quot;Before the revolution, Texas was under Mexican control, which imposed restrictions on immigration and governance. Anglo-American settlers moved into Texas seeking land and autonomy, leading to tensions with Mexican authorities over laws and cultural differences.&quot;,&quot;accept&quot;:[&quot;Mexican policies limited settlers&#39; rights and caused unrest&quot;,&quot;Anglo settlers wanted more control and resisted Mexican rule&quot;,&quot;Tensions arose from cultural and political conflicts between settlers and Mexico&quot;]}]\" data-pop=\"1\"></div></div>",
     "paper": {
       "secnum": "Deep Dive 57",
       "h": "Deep dive: Walk through a worked example",
@@ -1164,41 +1106,41 @@ window.SLIDES = [
 ];
 window.POLLS = {
   "poll1": {
-    "q": "Which factor most contributed to rising tensions leading to the Texas War of Independence?",
-    "desc": "Choose the primary cause of conflict between settlers and Mexican authorities before the war.",
+    "q": "Which factor was a major cause of the Texas War of Independence?",
+    "desc": "Select the primary cause that led to tensions between settlers and Mexican authorities.",
     "opts": [
-      "Mexican settlement policies and governance",
-      "Economic competition with indigenous peoples",
-      "Foreign invasion threats",
-      "Religious differences"
+      "Mexican restrictions on immigration and governance",
+      "Discovery of gold in Texas",
+      "Conflict over fishing rights",
+      "Disputes over railroad construction"
     ]
   },
   "poll2": {
-    "q": "Who was a key military leader for the Texian forces during the Texas Revolution?",
-    "desc": "Select the major figure known for leading Texian troops to victory.",
+    "q": "Who was a key military leader for Texas during the revolution?",
+    "desc": "Choose the individual known for leading Texan forces to victory.",
     "opts": [
       "Sam Houston",
       "Antonio López de Santa Anna",
       "Stephen F. Austin",
-      "William B. Travis"
+      "James Bowie"
     ]
   }
 };
 window.WORDS = {
   "word1": {
-    "q": "What does 'Tejano' refer to in the context of the Texas Revolution?",
-    "desc": "Define the term 'Tejano' as used during the Texas War of Independence."
+    "q": "Define 'Tejanos' in the context of the Texas Revolution.",
+    "desc": "Explain who the Tejanos were and their role in the conflict."
   },
   "word2": {
-    "q": "Explain the significance of the Texas Declaration of Independence.",
-    "desc": "Describe why this document was important in the independence movement."
+    "q": "What does 'Texas Declaration of Independence' refer to?",
+    "desc": "Describe the significance of this document in the Texas Revolution."
   },
   "word3": {
-    "q": "What was the Battle of the Alamo?",
-    "desc": "Summarize the role and outcome of the Alamo in the Texas Revolution."
+    "q": "Explain the term 'Anglo-American settlers' as used in the course.",
+    "desc": "Clarify who these settlers were and their impact on Texas before the war."
   },
   "word4": {
-    "q": "Define the geopolitical situation in Texas prior to the war.",
-    "desc": "Explain the political and cultural conditions under Mexican rule before the revolution."
+    "q": "What was the significance of the Battle of the Alamo?",
+    "desc": "Summarize why this battle is important in the Texas War of Independence."
   }
 };

@@ -1,6 +1,6 @@
 # Presenter Script: Introduction to the Texas War of Independence
 
-Generated: 2026-06-25T14:32:20.284Z
+Generated: 2026-06-25T14:34:30.062Z
 Language setting: en
 Class tier: Quick briefing
 Pipeline: OpenAI staged generation
@@ -10,12 +10,10 @@ Use the cited source paper sections as the boundary for factual claims. If a lea
 Knowledge-base standard: 4 usable sources, including 1 primary sources. Current setup: 13 sources, including 1 primary sources.
 
 ## Learning Objectives
-- TLO: Describe the historical context and key events of the Texas War of Independence, including its causes, major battles, and outcomes.
-- ELO: Explain the geopolitical situation in Texas prior to the war, including Mexican governance and Anglo-American settlement patterns.
-- ELO: Identify and describe major political and military figures involved in the conflict, such as Sam Houston and other Texian leaders.
-- ELO: Discuss the roles and perspectives of settlers, Tejanos, and indigenous peoples during the Texas Revolution.
-- ELO: Analyze the Texas Declaration of Independence and its significance in the broader independence movement.
-- ELO: Evaluate contested points and differing perspectives regarding motivations, treatment of Tejanos, and political implications of independence.
+- TLO: Describe the historical context of the Texas War of Independence, including its causes, major events, and outcomes.
+- ELO: Explain the geopolitical situation in Texas prior to the war, including Mexican policies and Anglo-American settlement.
+- ELO: List and characterize major political and military figures involved in the Texas Revolution, such as Stephen F. Austin and Sam Houston.
+- ELO: Discuss the roles and perspectives of settlers, Tejanos, indigenous peoples, and Mexican authorities during the conflict.
 
 ## Slide Talk Track
 ### 1. Introduction to the Texas War of Independence
@@ -565,8 +563,8 @@ Key points:
 Sources: s1, s2, s3, s4
 
 ## Research Gaps to Resolve
-- Detailed perspectives and roles of indigenous peoples during the Texas War of Independence are insufficiently covered in the available sources.
-- Limited direct quotations or primary documents from Mexican government or military leaders to balance the Texian narrative.
-- Insufficient coverage of the internal political divisions among settlers and Tejanos regarding independence and annexation.
-- Lack of detailed demographic and statistical data on settlers, casualties, and military strength with corroborated sources.
-- Minimal exploration of the international diplomatic context, especially U.S. and foreign powers' reactions to Texas independence.
+- Limited detailed primary source material directly from indigenous perspectives or Mexican authorities on the conflict and its causes.
+- Insufficient extractable text from some secondary sources (e.g., Britannica, Alamo Pecan blog) limits corroboration of certain claims.
+- Lack of nuanced discussion on the internal divisions among settlers, including Tejanos who did not support the rebellion.
+- Limited coverage of the broader international diplomatic context and the role of the United States government beyond annexation rhetoric.
+- Sparse information on the social and cultural impacts of the war on women and enslaved persons beyond legal mentions.

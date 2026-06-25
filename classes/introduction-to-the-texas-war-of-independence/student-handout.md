@@ -4,12 +4,10 @@ Class tier: Quick briefing
 Bernard support: ask Bernard for clarification, examples, translation, quiz help, or a deeper explanation. Bernard must stay inside the approved source boundary.
 
 ## Learning Objectives
-- TLO: Describe the historical context and key events of the Texas War of Independence, including its causes, major battles, and outcomes.
-- ELO: Explain the geopolitical situation in Texas prior to the war, including Mexican governance and Anglo-American settlement patterns.
-- ELO: Identify and describe major political and military figures involved in the conflict, such as Sam Houston and other Texian leaders.
-- ELO: Discuss the roles and perspectives of settlers, Tejanos, and indigenous peoples during the Texas Revolution.
-- ELO: Analyze the Texas Declaration of Independence and its significance in the broader independence movement.
-- ELO: Evaluate contested points and differing perspectives regarding motivations, treatment of Tejanos, and political implications of independence.
+- TLO: Describe the historical context of the Texas War of Independence, including its causes, major events, and outcomes.
+- ELO: Explain the geopolitical situation in Texas prior to the war, including Mexican policies and Anglo-American settlement.
+- ELO: List and characterize major political and military figures involved in the Texas Revolution, such as Stephen F. Austin and Sam Houston.
+- ELO: Discuss the roles and perspectives of settlers, Tejanos, indigenous peoples, and Mexican authorities during the conflict.
 
 ## Course Blueprint
 - 1. Orientation and learner baseline (5 slides): Set the purpose, audience floor, assumptions, and mastery target.
@@ -20,16 +18,20 @@ Bernard support: ask Bernard for clarification, examples, translation, quiz help
 - 6. Assessment, transfer, and works cited (12 slides): Prove mastery, capture participation, and close with source transparency.
 
 ## Key Terms
-- texas war of independence: A conflict from October 1835 to April 1836 in which Texian settlers and allies fought to gain independence from Mexico, culminating in the Battle of San Jacinto and the creation of the Republic of Texas. Why it matters: Understanding this war explains how Texas separated from Mexico and shaped its future as an independent republic and later U.S. state.
-- sam houston: A key military and political leader who commanded Texian forces to victory at the Battle of San Jacinto and became the first president of the Republic of Texas. Why it matters: Houston’s leadership was crucial to Texian success and the establishment of Texas as an independent nation.
-- empresario contracts: Agreements under Mexican law allowing Anglo-American settlers to colonize Texas by fulfilling conditions like Mexican citizenship and Catholic conversion. Why it matters: These contracts shaped settlement patterns and contributed to tensions leading to the revolution.
-- texas declaration of independence: A document adopted in March 1836 declaring Texas independent from Mexico, inspired partly by the U.S. Declaration of Independence. Why it matters: It formalized Texian claims to sovereignty and justified the revolution’s cause.
-- tejanos: Texans of Mexican heritage who lived in Texas before and during the revolution, some of whom supported independence while others remained loyal to Mexico. Why it matters: Their diverse roles highlight the complex social and political dynamics within Texas during the conflict.
-- battle of gonzales: The first military engagement of the Texas War of Independence in October 1835, where Texians resisted Mexican troops attempting to retrieve a cannon. Why it matters: This battle marked the start of open armed conflict and symbolized Texian resistance.
-- battle of the alamo: A 13-day siege in early 1836 where a small Texian force was defeated by the Mexican army, becoming a rallying symbol for Texian independence. Why it matters: The Alamo’s legacy inspired Texian determination despite the defeat.
-- battle of san jacinto: The decisive April 1836 battle where Texian forces led by Sam Houston defeated Mexican troops, securing Texas independence. Why it matters: This victory ended the war and established the Republic of Texas.
-- indigenous peoples in texas revolution: Native groups whose involvement and perspectives during the Texas War of Independence were varied and complex, often underrepresented in historical accounts. Why it matters: Recognizing their role provides a fuller understanding of the conflict’s social landscape.
-- republic of texas: The independent nation established after the Texas War of Independence, existing from 1836 to 1845 before joining the United States. Why it matters: Its formation marked a new political era and influenced U.S.-Mexico relations.
+- texas war of independence: A conflict from October 1835 to April 1836 in which Texian settlers fought to gain independence from Mexico, culminating in the creation of the Republic of Texas. Why it matters: Understanding this war explains how Texas separated from Mexico and became an independent republic, shaping regional history.
+- stephen f. austin: Known as the 'Father of Texas,' he was the first empresario who led Anglo-American settlers into Mexican Texas under land grants. Why it matters: Austin’s leadership was crucial in early colonization and set the stage for tensions that led to the revolution.
+- sam houston: A key military and political leader who commanded Texian forces to victory at the Battle of San Jacinto and became the first president of the Republic of Texas. Why it matters: Houston’s role was pivotal in securing Texas independence and shaping its early government.
+- battle of gonzales: The first military engagement of the Texas War of Independence in October 1835, marking the start of armed conflict. Why it matters: This battle symbolizes the beginning of Texian resistance against Mexican authority.
+- battle of the alamo: A 13-day siege in early 1836 where Texian defenders were defeated by Mexican forces, becoming a symbol of Texian bravery and sacrifice. Why it matters: The Alamo inspired Texian forces and supporters, galvanizing the independence movement.
+- battle of san jacinto: The decisive battle in April 1836 where Texian forces defeated the Mexican army, effectively ending the war and securing independence. Why it matters: This victory led directly to the establishment of the Republic of Texas.
+- texas declaration of independence: A document adopted in March 1836 declaring Texas independent from Mexico and establishing a new government. Why it matters: It formalized the Texian break from Mexico and outlined the political foundation of the Republic of Texas.
+- anglo-american settlers: Primarily English-speaking settlers from the United States who moved into Mexican Texas under land grants. Why it matters: Their settlement and cultural differences with Mexican authorities were central causes of the revolution.
+- mexican citizenship requirements: Laws requiring settlers to become Mexican citizens, convert to Catholicism, and emancipate enslaved persons. Why it matters: Many settlers resisted these rules, contributing to tensions that led to rebellion.
+- tejanos: Mexican residents of Texas who had lived there before Anglo-American settlement and had varied loyalties during the revolution. Why it matters: Their perspectives complicate the narrative of the war and highlight internal divisions.
+- indigenous peoples: Native groups living in Texas whose roles during the revolution are less documented but were affected by the conflict. Why it matters: Including their perspectives is important for a full understanding of the war’s impact and regional dynamics.
+- republic of texas: The independent nation established after the Texas War of Independence, existing from 1836 until annexation by the U.S. in 1845. Why it matters: It represents the political outcome of the revolution and a key phase in Texas history.
+- empresario: A person granted the right by the Mexican government to settle families in Texas, responsible for recruiting and managing settlers. Why it matters: Empresarios like Stephen F. Austin facilitated Anglo-American colonization that led to demographic and political changes.
+- mexican frontier policy: Mexico’s strategy to encourage settlement in northern Texas to secure its border but which led to cultural and political conflicts. Why it matters: This policy set the stage for tensions between settlers and Mexican authorities.
 - terminal learning objective: The main capability learners should demonstrate by the end of the class. Why it matters: It anchors the lesson around outcomes instead of loose topic coverage.
 - enabling learning objective: A supporting skill or idea learners need before they can meet the terminal objective. Why it matters: It turns a big outcome into teachable steps.
 - source verification: An independent check that claims and citations are supported by the approved corpus. Why it matters: It keeps fabricated or unsupported material out of the class.
