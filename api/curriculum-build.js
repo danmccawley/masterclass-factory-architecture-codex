@@ -196,6 +196,7 @@ function readBody(req) {
 
 function view(manifest) {
   var next = nextBuildable(manifest);
+  var ready = readyBuildable(manifest);
   var biblio = bib.bibliography(manifest);
   return {
     manifest: manifest,
@@ -203,8 +204,13 @@ function view(manifest) {
     coherence: coherence.analyzeCoherence(manifest),
     bibliography: biblio,
     bibliography_summary: bib.summarize(biblio),
+    // next/next_brief: the single next class, kept for the serial client path.
     next: next,
-    next_brief: next ? briefForClass(manifest, next) : null
+    next_brief: next ? briefForClass(manifest, next) : null,
+    // ready: ALL classes buildable right now, dependency-correct order. The
+    // parallel scheduler fills its worker slots from this; briefs are fetched
+    // per-slug as each worker starts (keeps this payload light). ready[0]===next.
+    ready: ready
   };
 }
 
