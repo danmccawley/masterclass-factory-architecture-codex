@@ -537,7 +537,7 @@
   // visually distinct, and anything that needs the human links straight to it.
   var slugTitles = {};
   var runStart = 0;
-  var AVG_MIN = 2.5; // honest rough per-class estimate; /api/generate streams no progress
+  var AVG_MIN = 3; // rough per-class estimate (parallel authoring + fast model); /api/generate streams no progress, so this is a guide, not a countdown
   function titleOf(slug){ return slugTitles[slug] || slug; }
   function setBuildButton(label, disabled){ var ba=$("buildAll"); if(!ba) return; ba.disabled=!!disabled; ba.textContent=label; }
   function setPhase(phase, msg, action){
