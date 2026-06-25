@@ -6,9 +6,9 @@
   "subject": "texas war of independence",
   "audience": "",
   "level": "introductory",
-  "program_outcome": "This syllabus introduces learners to the Texas War of Independence, covering its causes, key political events, major battles, significant historical figures, and the aftermath, including the establishment of the Republic of Texas.",
-  "created": "2026-06-25T14:52:43.696Z",
-  "updated": "2026-06-25T15:23:23.041Z",
+  "program_outcome": "This syllabus provides an overview of the Texas War of Independence, focusing on the people, causes, key battles, historical figures, and cultural elements.",
+  "created": "2026-06-25T15:25:51.030Z",
+  "updated": "2026-06-25T15:25:51.033Z",
   "knowledge_core": {
     "shared": true,
     "sealed": false,
@@ -17,22 +17,23 @@
   },
   "classes": [
     {
-      "id": "introduction-to-the-texas-war-of-independence",
-      "slug": "introduction-to-the-texas-war-of-independence",
+      "id": "introduction-to-the-texicans",
+      "slug": "introduction-to-the-texicans",
       "order": 1,
-      "title": "Introduction to the Texas War of Independence",
-      "summary": "Overview of the Texas War of Independence, its significance, and historical context.",
+      "title": "Introduction to the Texicans",
+      "summary": "This class introduces the Texicans, the settlers and inhabitants of Texas before and during the war.",
       "terminal": [
-        "Explain the significance of the Texas War of Independence"
+        "Identify key characteristics of the Texican population before the war"
       ],
       "enabling": [
-        "Identify the geopolitical context of early 19th-century North America",
-        "Describe the initial settlement of Texas by American colonists"
+        "Define who the Texicans were",
+        "Describe the demographics and cultural influences on the Texicans",
+        "Explain the Texicans' role in Texas society"
       ],
       "prerequisites": [],
       "assessment": "",
       "suggested_minutes": 45,
-      "status": "failed",
+      "status": "planned",
       "class_url": "",
       "sources": []
     },
@@ -41,60 +42,17 @@
       "slug": "causes-of-the-texas-war-of-independence",
       "order": 2,
       "title": "Causes of the Texas War of Independence",
-      "summary": "Examine the political, social, and economic causes leading to the Texas War of Independence.",
+      "summary": "This class covers the political and social causes leading to the Texas War of Independence.",
       "terminal": [
-        "Identify and explain the main causes of the Texas War of Independence"
+        "List the primary causes of the Texas War of Independence"
       ],
       "enabling": [
-        "Discuss the role of Mexican policies in Texas unrest",
-        "Analyze the impact of cultural differences between settlers and Mexican authorities"
+        "Identify tensions between Texicans and the Mexican government",
+        "Describe the impact of Mexican laws on Texican settlers",
+        "Explain the role of cultural differences in escalating tensions"
       ],
       "prerequisites": [
-        "introduction-to-the-texas-war-of-independence"
-      ],
-      "assessment": "",
-      "suggested_minutes": 45,
-      "status": "planned",
-      "class_url": "",
-      "sources": []
-    },
-    {
-      "id": "key-political-events-and-figures",
-      "slug": "key-political-events-and-figures",
-      "order": 3,
-      "title": "Key Political Events and Figures",
-      "summary": "Explore the political landscape and key figures involved in the Texas War of Independence.",
-      "terminal": [
-        "Identify major political events and figures in the Texas War of Independence"
-      ],
-      "enabling": [
-        "Describe the role of Stephen F. Austin and Sam Houston",
-        "Explain the significance of the Texas Declaration of Independence"
-      ],
-      "prerequisites": [
-        "causes-of-the-texas-war-of-independence"
-      ],
-      "assessment": "",
-      "suggested_minutes": 45,
-      "status": "planned",
-      "class_url": "",
-      "sources": []
-    },
-    {
-      "id": "major-battles-of-the-texas-war-of-independence",
-      "slug": "major-battles-of-the-texas-war-of-independence",
-      "order": 4,
-      "title": "Major Battles of the Texas War of Independence",
-      "summary": "Detailed examination of the major battles during the Texas War of Independence.",
-      "terminal": [
-        "Summarize the outcomes of key battles in the Texas War of Independence"
-      ],
-      "enabling": [
-        "Describe the events of the Battle of the Alamo",
-        "Explain the significance of the Battle of San Jacinto"
-      ],
-      "prerequisites": [
-        "key-political-events-and-figures"
+        "introduction-to-the-texicans"
       ],
       "assessment": "",
       "suggested_minutes": 60,
@@ -103,17 +61,41 @@
       "sources": []
     },
     {
-      "id": "historical-figures-and-folklore",
-      "slug": "historical-figures-and-folklore",
-      "order": 5,
-      "title": "Historical Figures and Folklore",
-      "summary": "Study of notable historical figures and folklore from the Texas War of Independence.",
+      "id": "major-battles-of-the-texas-war-of-independence",
+      "slug": "major-battles-of-the-texas-war-of-independence",
+      "order": 3,
+      "title": "Major Battles of the Texas War of Independence",
+      "summary": "This class outlines the major battles and their outcomes during the Texas War of Independence.",
       "terminal": [
-        "Identify and describe key figures and folklore associated with the Texas War of Independence"
+        "Summarize the key battles of the Texas War of Independence"
       ],
       "enabling": [
-        "Discuss the legacy of Davy Crockett and Jim Bowie",
-        "Analyze the role of folklore in shaping public perception"
+        "Identify major battles such as the Battle of the Alamo and the Battle of San Jacinto",
+        "Describe the strategies used in these battles",
+        "Explain the outcomes and significance of each battle"
+      ],
+      "prerequisites": [
+        "causes-of-the-texas-war-of-independence"
+      ],
+      "assessment": "",
+      "suggested_minutes": 60,
+      "status": "planned",
+      "class_url": "",
+      "sources": []
+    },
+    {
+      "id": "historical-figures-of-the-texas-war-of-independence",
+      "slug": "historical-figures-of-the-texas-war-of-independence",
+      "order": 4,
+      "title": "Historical Figures of the Texas War of Independence",
+      "summary": "This class introduces key figures in the Texas War of Independence and their contributions.",
+      "terminal": [
+        "Identify and describe the contributions of key figures in the Texas War of Independence"
+      ],
+      "enabling": [
+        "List significant figures such as Sam Houston and Stephen F. Austin",
+        "Explain the roles these figures played in the war",
+        "Discuss their impact on the outcome of the war"
       ],
       "prerequisites": [
         "major-battles-of-the-texas-war-of-independence"
@@ -125,20 +107,44 @@
       "sources": []
     },
     {
-      "id": "the-rough-riders-and-sam-houston",
-      "slug": "the-rough-riders-and-sam-houston",
-      "order": 6,
-      "title": "The Rough Riders and Sam Houston",
-      "summary": "Examine the contributions of the Rough Riders and Sam Houston to Texas' independence and legacy.",
+      "id": "the-yellow-rose-of-texas-and-cultural-impact",
+      "slug": "the-yellow-rose-of-texas-and-cultural-impact",
+      "order": 5,
+      "title": "The Yellow Rose of Texas and Cultural Impact",
+      "summary": "This class explores the cultural elements of the Texas War of Independence, including the legend of the Yellow Rose of Texas.",
       "terminal": [
-        "Explain the contributions of the Rough Riders and Sam Houston to the Texas War of Independence"
+        "Explain the cultural impact of the Texas War of Independence"
       ],
       "enabling": [
-        "Discuss the leadership style of Sam Houston",
-        "Describe the role of the Rough Riders in the war"
+        "Discuss the legend of the Yellow Rose of Texas",
+        "Analyze the war's influence on Texas culture",
+        "Identify cultural symbols and their meanings"
       ],
       "prerequisites": [
-        "historical-figures-and-folklore"
+        "historical-figures-of-the-texas-war-of-independence"
+      ],
+      "assessment": "",
+      "suggested_minutes": 45,
+      "status": "planned",
+      "class_url": "",
+      "sources": []
+    },
+    {
+      "id": "sam-houston-and-the-rough-riders",
+      "slug": "sam-houston-and-the-rough-riders",
+      "order": 6,
+      "title": "Sam Houston and the Rough Riders",
+      "summary": "This class focuses on Sam Houston's leadership and the role of the Rough Riders.",
+      "terminal": [
+        "Describe Sam Houston's leadership and the role of the Rough Riders"
+      ],
+      "enabling": [
+        "Analyze Sam Houston's strategies during the war",
+        "Explain the contributions of the Rough Riders",
+        "Discuss the legacy of these figures in Texas history"
+      ],
+      "prerequisites": [
+        "historical-figures-of-the-texas-war-of-independence"
       ],
       "assessment": "",
       "suggested_minutes": 45,
@@ -151,19 +157,21 @@
       "slug": "the-republic-of-texas",
       "order": 7,
       "title": "The Republic of Texas",
-      "summary": "Explore the establishment and challenges of the Republic of Texas post-independence.",
+      "summary": "This class covers the establishment and challenges of the Republic of Texas post-independence.",
       "terminal": [
-        "Describe the formation and early challenges of the Republic of Texas"
+        "Summarize the formation and challenges of the Republic of Texas"
       ],
       "enabling": [
-        "Explain the political structure of the Republic of Texas",
-        "Analyze the Republic's relations with Mexico and the United States"
+        "Describe the political structure of the Republic of Texas",
+        "Identify challenges faced by the new republic",
+        "Explain how the Republic of Texas influenced future statehood"
       ],
       "prerequisites": [
-        "the-rough-riders-and-sam-houston"
+        "the-yellow-rose-of-texas-and-cultural-impact",
+        "sam-houston-and-the-rough-riders"
       ],
       "assessment": "",
-      "suggested_minutes": 45,
+      "suggested_minutes": 60,
       "status": "planned",
       "class_url": "",
       "sources": []
