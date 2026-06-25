@@ -1,7 +1,7 @@
 {
   "title": "Introduction to the Texicans",
   "slug": "introduction-to-the-texicans",
-  "generated_at": "2026-06-25T16:41:26.058Z",
+  "generated_at": "2026-06-25T16:43:51.796Z",
   "class_tier": {
     "level": "standard",
     "label": "Standard class",
@@ -16,11 +16,6 @@
     "attempted": true,
     "model": "tavily-search",
     "added_sources": [
-      {
-        "path": "https://jinxschwartz.com/books/the-texicans",
-        "type": "url",
-        "trust": "secondary"
-      },
       {
         "path": "https://www.facebook.com/tejanovolunteercompany/posts/texonians-texasians-and-texicanstoday-we-may-know-them-simply-as-texans-but-deci/741437638004245",
         "type": "url",
@@ -97,7 +92,12 @@
         "trust": "primary"
       }
     ],
-    "rejected_sources": [],
+    "rejected_sources": [
+      {
+        "path": "https://jinxschwartz.com/books/the-texicans",
+        "reason": "This operation was aborted"
+      }
+    ],
     "gaps": [],
     "notes": [
       "Round 1: Bernard found 24 new candidates and checked 16 URLs for readability."
@@ -117,9 +117,9 @@
       "standard": "Solid internal training with enough evidence for reliable instruction."
     },
     "counts": {
-      "total": 16,
+      "total": 15,
       "primary": 8,
-      "secondary": 8,
+      "secondary": 7,
       "unknown": 0
     },
     "score": {
@@ -127,7 +127,7 @@
       "band": "excellent",
       "components": {
         "coverage": 100,
-        "authority": 80,
+        "authority": 81,
         "recency": 75
       },
       "weights": {
@@ -136,15 +136,15 @@
         "recency": 0.2
       },
       "detail": {
-        "total": 16,
+        "total": 15,
         "primary": 8,
-        "secondary": 8,
+        "secondary": 7,
         "required_total": 8,
         "required_primary": 2,
         "dated_sources": 0,
         "recency_floor_year": 2024
       },
-      "summary": "Knowledge-base score 89/100 (excellent): coverage 100, authority 80, recency 75. 16/8 sources, 8/2 primary."
+      "summary": "Knowledge-base score 89/100 (excellent): coverage 100, authority 81, recency 75. 15/8 sources, 8/2 primary."
     },
     "required_sources": 8,
     "required_primary_sources": 2,
@@ -159,7 +159,7 @@
   "deep_dive_count": 67,
   "required_deep_dive_count": 67,
   "quality": {
-    "score": 98,
+    "score": 96,
     "status": "excellent",
     "scores": {
       "slide_budget": 100,
@@ -170,7 +170,7 @@
       "objective_alignment": 83,
       "content_density": 100,
       "deep_dive_depth": 100,
-      "participation_design": 95,
+      "participation_design": 66,
       "assessment": 90,
       "transparency": 100,
       "schema_qa": 100
@@ -206,7 +206,7 @@
   ],
   "source_paper": {
     "title": "Student Reader - Introduction to the Texicans",
-    "section_count": 17,
+    "section_count": 16,
     "sections": [
       {
         "id": "s1",
@@ -216,81 +216,76 @@
       {
         "id": "s2",
         "num": "2",
-        "title": "jinxschwartz.com"
+        "title": "facebook.com"
       },
       {
         "id": "s3",
         "num": "3",
-        "title": "facebook.com"
+        "title": "en.wikipedia.org"
       },
       {
         "id": "s4",
         "num": "4",
-        "title": "en.wikipedia.org"
+        "title": "quizlet.com"
       },
       {
         "id": "s5",
         "num": "5",
-        "title": "quizlet.com"
+        "title": "everything-everywhere.com"
       },
       {
         "id": "s6",
         "num": "6",
-        "title": "everything-everywhere.com"
+        "title": "lauriemooremoore.com"
       },
       {
         "id": "s7",
         "num": "7",
-        "title": "lauriemooremoore.com"
+        "title": "tshaonline.org"
       },
       {
         "id": "s8",
         "num": "8",
-        "title": "tshaonline.org"
+        "title": "thestoryoftexas.com"
       },
       {
         "id": "s9",
         "num": "9",
-        "title": "thestoryoftexas.com"
+        "title": "libguides.fau.edu"
       },
       {
         "id": "s10",
         "num": "10",
-        "title": "libguides.fau.edu"
+        "title": "kwlibguides.lonestar.edu"
       },
       {
         "id": "s11",
         "num": "11",
-        "title": "kwlibguides.lonestar.edu"
+        "title": "legacy.education.texashistory.unt.edu"
       },
       {
         "id": "s12",
         "num": "12",
-        "title": "legacy.education.texashistory.unt.edu"
+        "title": "shsulibraryguides.org"
       },
       {
         "id": "s13",
         "num": "13",
-        "title": "shsulibraryguides.org"
+        "title": "libguides.tamusa.edu"
       },
       {
         "id": "s14",
         "num": "14",
-        "title": "libguides.tamusa.edu"
+        "title": "guides.library.yale.edu"
       },
       {
         "id": "s15",
         "num": "15",
-        "title": "guides.library.yale.edu"
+        "title": "guides.lib.berkeley.edu"
       },
       {
         "id": "s16",
         "num": "16",
-        "title": "guides.lib.berkeley.edu"
-      },
-      {
-        "id": "s17",
-        "num": "17",
         "title": "tsl.texas.gov"
       }
     ]
@@ -312,9 +307,9 @@
         "standard": "Solid internal training with enough evidence for reliable instruction."
       },
       "counts": {
-        "total": 16,
+        "total": 15,
         "primary": 8,
-        "secondary": 8,
+        "secondary": 7,
         "unknown": 0
       },
       "score": {
@@ -322,7 +317,7 @@
         "band": "excellent",
         "components": {
           "coverage": 100,
-          "authority": 80,
+          "authority": 81,
           "recency": 75
         },
         "weights": {
@@ -331,15 +326,15 @@
           "recency": 0.2
         },
         "detail": {
-          "total": 16,
+          "total": 15,
           "primary": 8,
-          "secondary": 8,
+          "secondary": 7,
           "required_total": 8,
           "required_primary": 2,
           "dated_sources": 0,
           "recency_floor_year": 2024
         },
-        "summary": "Knowledge-base score 89/100 (excellent): coverage 100, authority 80, recency 75. 16/8 sources, 8/2 primary."
+        "summary": "Knowledge-base score 89/100 (excellent): coverage 100, authority 81, recency 75. 15/8 sources, 8/2 primary."
       },
       "required_sources": 8,
       "required_primary_sources": 2,
@@ -394,7 +389,7 @@
         "deep_dive_expectation": "substantive deep dives where required by tier and setting"
       }
     ],
-    "lesson_sections": 5
+    "lesson_sections": 10
   },
   "evidence_map": [
     {
@@ -407,63 +402,61 @@
       ],
       "source_titles": [
         "Class setup, learner profile, and research rules",
-        "jinxschwartz.com",
-        "facebook.com"
+        "facebook.com",
+        "en.wikipedia.org"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "enabling objective",
-      "claim": "Define the term 'Texican' and explain its origins within the Mexican province of Coahuila y Texas between 1820 and 1836",
+      "claim": "Define the term 'Texican' and its origins",
       "source_ids": [
         "s2",
         "s3",
         "s4"
       ],
       "source_titles": [
-        "jinxschwartz.com",
         "facebook.com",
-        "en.wikipedia.org"
+        "en.wikipedia.org",
+        "quizlet.com"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "enabling objective",
-      "claim": "Discuss the settlement patterns, including land grant systems and empresario roles, and describe the lifestyle and frontier challenges faced by the Texicans",
+      "claim": "Discuss the settlement patterns and lifestyle of the Texicans",
       "source_ids": [
         "s3",
         "s4"
       ],
       "source_titles": [
-        "facebook.com",
-        "en.wikipedia.org"
+        "en.wikipedia.org",
+        "quizlet.com"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "enabling objective",
-      "claim": "Explain the political and cultural role of the Texicans in early Texas history, including their alliances, conflicts, and contributions to the Texas Revolution",
+      "claim": "Explain the role of the Texicans in early Texas history",
       "source_ids": [
         "s4"
       ],
       "source_titles": [
-        "en.wikipedia.org"
+        "quizlet.com"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "lesson section",
-      "claim": "Understanding the Term 'Texican' and Its Origins",
+      "claim": "Defining 'Texican': Origins and Terminology",
       "source_ids": [
-        "s2",
-        "s7"
+        "s6"
       ],
       "source_titles": [
-        "jinxschwartz.com",
         "lauriemooremoore.com"
       ],
       "status": "mapped",
@@ -471,11 +464,39 @@
     },
     {
       "kind": "lesson section",
-      "claim": "Settlement Patterns and Lifestyle of the Texicans",
+      "claim": "Historical Context: Mexican Texas and Settlement Policies",
       "source_ids": [
+        "s6",
+        "s7"
+      ],
+      "source_titles": [
+        "lauriemooremoore.com",
+        "tshaonline.org"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Texican Settlement Patterns and Lifestyle",
+      "source_ids": [
+        "s6",
+        "s7"
+      ],
+      "source_titles": [
+        "lauriemooremoore.com",
+        "tshaonline.org"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Native American Influence and Relations",
+      "source_ids": [
+        "s6",
         "s7",
-        "s8",
-        "s9"
+        "s8"
       ],
       "source_titles": [
         "lauriemooremoore.com",
@@ -487,13 +508,11 @@
     },
     {
       "kind": "lesson section",
-      "claim": "Cultural Background and Identity of the Texicans",
+      "claim": "Evolution of Texican Identity and Terminology",
       "source_ids": [
-        "s2",
-        "s7"
+        "s6"
       ],
       "source_titles": [
-        "jinxschwartz.com",
         "lauriemooremoore.com"
       ],
       "status": "mapped",
@@ -501,13 +520,11 @@
     },
     {
       "kind": "lesson section",
-      "claim": "Political Role and Historical Impact of the Texicans",
+      "claim": "Texicans’ Role in Early Texas History and the Texas Revolution",
       "source_ids": [
-        "s2",
-        "s7"
+        "s6"
       ],
       "source_titles": [
-        "jinxschwartz.com",
         "lauriemooremoore.com"
       ],
       "status": "mapped",
@@ -515,18 +532,64 @@
     },
     {
       "kind": "lesson section",
-      "claim": "Primary Source Exploration and Critical Source Evaluation",
+      "claim": "Primary Sources for Studying Texican History",
       "source_ids": [
+        "s9",
         "s10",
         "s11",
-        "s12",
-        "s13"
+        "s12"
       ],
       "source_titles": [
         "libguides.fau.edu",
         "kwlibguides.lonestar.edu",
         "legacy.education.texashistory.unt.edu",
         "shsulibraryguides.org"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Cultural Background and Identity of the Texicans",
+      "source_ids": [
+        "s6",
+        "s7",
+        "s8"
+      ],
+      "source_titles": [
+        "lauriemooremoore.com",
+        "tshaonline.org",
+        "thestoryoftexas.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Challenges and Contested Interpretations in Texican History",
+      "source_ids": [
+        "s6",
+        "s7"
+      ],
+      "source_titles": [
+        "lauriemooremoore.com",
+        "tshaonline.org"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "lesson section",
+      "claim": "Summary and Review: Understanding the Texicans",
+      "source_ids": [
+        "s6",
+        "s7",
+        "s9"
+      ],
+      "source_titles": [
+        "lauriemooremoore.com",
+        "tshaonline.org",
+        "libguides.fau.edu"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
@@ -542,9 +605,9 @@
       ],
       "source_titles": [
         "Class setup, learner profile, and research rules",
-        "jinxschwartz.com",
         "facebook.com",
-        "en.wikipedia.org"
+        "en.wikipedia.org",
+        "quizlet.com"
       ],
       "status": "corroboration-required",
       "finding": "Mapped to approved source-paper sections for source verification."
@@ -558,7 +621,7 @@
       ],
       "source_titles": [
         "Class setup, learner profile, and research rules",
-        "jinxschwartz.com"
+        "facebook.com"
       ],
       "status": "scope-boundary",
       "finding": "Mapped to approved source-paper sections for source verification."

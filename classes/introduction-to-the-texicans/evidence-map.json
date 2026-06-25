@@ -9,63 +9,61 @@
     ],
     "source_titles": [
       "Class setup, learner profile, and research rules",
-      "jinxschwartz.com",
-      "facebook.com"
+      "facebook.com",
+      "en.wikipedia.org"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
     "kind": "enabling objective",
-    "claim": "Define the term 'Texican' and explain its origins within the Mexican province of Coahuila y Texas between 1820 and 1836",
+    "claim": "Define the term 'Texican' and its origins",
     "source_ids": [
       "s2",
       "s3",
       "s4"
     ],
     "source_titles": [
-      "jinxschwartz.com",
       "facebook.com",
-      "en.wikipedia.org"
+      "en.wikipedia.org",
+      "quizlet.com"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
     "kind": "enabling objective",
-    "claim": "Discuss the settlement patterns, including land grant systems and empresario roles, and describe the lifestyle and frontier challenges faced by the Texicans",
+    "claim": "Discuss the settlement patterns and lifestyle of the Texicans",
     "source_ids": [
       "s3",
       "s4"
     ],
     "source_titles": [
-      "facebook.com",
-      "en.wikipedia.org"
+      "en.wikipedia.org",
+      "quizlet.com"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
     "kind": "enabling objective",
-    "claim": "Explain the political and cultural role of the Texicans in early Texas history, including their alliances, conflicts, and contributions to the Texas Revolution",
+    "claim": "Explain the role of the Texicans in early Texas history",
     "source_ids": [
       "s4"
     ],
     "source_titles": [
-      "en.wikipedia.org"
+      "quizlet.com"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
     "kind": "lesson section",
-    "claim": "Understanding the Term 'Texican' and Its Origins",
+    "claim": "Defining 'Texican': Origins and Terminology",
     "source_ids": [
-      "s2",
-      "s7"
+      "s6"
     ],
     "source_titles": [
-      "jinxschwartz.com",
       "lauriemooremoore.com"
     ],
     "status": "mapped",
@@ -73,11 +71,39 @@
   },
   {
     "kind": "lesson section",
-    "claim": "Settlement Patterns and Lifestyle of the Texicans",
+    "claim": "Historical Context: Mexican Texas and Settlement Policies",
     "source_ids": [
+      "s6",
+      "s7"
+    ],
+    "source_titles": [
+      "lauriemooremoore.com",
+      "tshaonline.org"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Texican Settlement Patterns and Lifestyle",
+    "source_ids": [
+      "s6",
+      "s7"
+    ],
+    "source_titles": [
+      "lauriemooremoore.com",
+      "tshaonline.org"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Native American Influence and Relations",
+    "source_ids": [
+      "s6",
       "s7",
-      "s8",
-      "s9"
+      "s8"
     ],
     "source_titles": [
       "lauriemooremoore.com",
@@ -89,13 +115,11 @@
   },
   {
     "kind": "lesson section",
-    "claim": "Cultural Background and Identity of the Texicans",
+    "claim": "Evolution of Texican Identity and Terminology",
     "source_ids": [
-      "s2",
-      "s7"
+      "s6"
     ],
     "source_titles": [
-      "jinxschwartz.com",
       "lauriemooremoore.com"
     ],
     "status": "mapped",
@@ -103,13 +127,11 @@
   },
   {
     "kind": "lesson section",
-    "claim": "Political Role and Historical Impact of the Texicans",
+    "claim": "Texicans’ Role in Early Texas History and the Texas Revolution",
     "source_ids": [
-      "s2",
-      "s7"
+      "s6"
     ],
     "source_titles": [
-      "jinxschwartz.com",
       "lauriemooremoore.com"
     ],
     "status": "mapped",
@@ -117,18 +139,64 @@
   },
   {
     "kind": "lesson section",
-    "claim": "Primary Source Exploration and Critical Source Evaluation",
+    "claim": "Primary Sources for Studying Texican History",
     "source_ids": [
+      "s9",
       "s10",
       "s11",
-      "s12",
-      "s13"
+      "s12"
     ],
     "source_titles": [
       "libguides.fau.edu",
       "kwlibguides.lonestar.edu",
       "legacy.education.texashistory.unt.edu",
       "shsulibraryguides.org"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Cultural Background and Identity of the Texicans",
+    "source_ids": [
+      "s6",
+      "s7",
+      "s8"
+    ],
+    "source_titles": [
+      "lauriemooremoore.com",
+      "tshaonline.org",
+      "thestoryoftexas.com"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Challenges and Contested Interpretations in Texican History",
+    "source_ids": [
+      "s6",
+      "s7"
+    ],
+    "source_titles": [
+      "lauriemooremoore.com",
+      "tshaonline.org"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Summary and Review: Understanding the Texicans",
+    "source_ids": [
+      "s6",
+      "s7",
+      "s9"
+    ],
+    "source_titles": [
+      "lauriemooremoore.com",
+      "tshaonline.org",
+      "libguides.fau.edu"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
@@ -144,9 +212,9 @@
     ],
     "source_titles": [
       "Class setup, learner profile, and research rules",
-      "jinxschwartz.com",
       "facebook.com",
-      "en.wikipedia.org"
+      "en.wikipedia.org",
+      "quizlet.com"
     ],
     "status": "corroboration-required",
     "finding": "Mapped to approved source-paper sections for source verification."
@@ -160,7 +228,7 @@
     ],
     "source_titles": [
       "Class setup, learner profile, and research rules",
-      "jinxschwartz.com"
+      "facebook.com"
     ],
     "status": "scope-boundary",
     "finding": "Mapped to approved source-paper sections for source verification."
