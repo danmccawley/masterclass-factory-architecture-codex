@@ -83,6 +83,8 @@ var SETUP_TIERS = ["briefing", "standard", "professional", "expert"];
 var SETUP_OWNERS = ["creator", "assisted", "ai"]; // human / human+AI / AI
 var SETUP_TECH = ["non", "mixed", "technical"];
 var SETUP_TONES = ["plain", "warm", "executive", "academic", "workshop"];
+var SETUP_GRANULARITY = ["survey", "working", "deep"];   // mastery depth granularity
+var SETUP_DEEPDIVE = ["low", "med", "high"];             // deep-dive density
 
 function oneOf(v, allowed, dflt) {
   var s = String(v == null ? "" : v).toLowerCase().trim();
@@ -92,6 +94,7 @@ function oneOf(v, allowed, dflt) {
 function normalizeSetup(raw) {
   if (!raw || typeof raw !== "object") return null;
   var a = (raw.audience && typeof raw.audience === "object") ? raw.audience : {};
+  var mk = (raw.mastery && typeof raw.mastery === "object") ? raw.mastery : {};
   // Human-entered seed sources need a URL to be usable; dedupe by URL.
   var seeds = [];
   var seen = {};
@@ -112,6 +115,14 @@ function normalizeSetup(raw) {
       role: cleanText(a.role, 120),
       tone: oneOf(a.tone, SETUP_TONES, "plain"),
       reading_grade_cap: clampInt(a.reading_grade_cap, 3, 16, 9)
+    },
+    // Shared mastery defaults applied to every class — the same knobs the
+    // single-class creator exposes. Defaults match the brief template.
+    mastery: {
+      target_level: clampInt(mk.target_level, 1, 5, 3),
+      granularity: oneOf(mk.granularity, SETUP_GRANULARITY, "working"),
+      deep_dive_density: oneOf(mk.deep_dive_density, SETUP_DEEPDIVE, "high"),
+      field_disagreement: (mk.field_disagreement === false) ? false : true
     }
   };
 }

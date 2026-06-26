@@ -169,6 +169,22 @@ function briefForClass(manifest, classSlug, template) {
       .filter(function (u) { return u.path; });
     b.knowledge_base.uploads = existing.concat(mapped);
   }
+
+  // Mastery: the shared curriculum-level depth settings every class inherits —
+  // the same knobs the single-class creator exposes (target level, granularity,
+  // where-the-field-disagrees, deep-dive density). Absent => template defaults.
+  // Values are whitelisted so a malformed setup can never poison a class brief.
+  if (setup && setup.mastery && typeof setup.mastery === "object") {
+    var sm = setup.mastery;
+    b.mastery = Object.assign({}, template.mastery, b.mastery);
+    if (sm.target_level != null) {
+      var lvl = Math.round(Number(sm.target_level));
+      if (!isNaN(lvl)) b.mastery.target_level = Math.max(1, Math.min(5, lvl));
+    }
+    if (["survey", "working", "deep"].indexOf(sm.granularity) >= 0) b.mastery.granularity = sm.granularity;
+    if (["low", "med", "high"].indexOf(sm.deep_dive_density) >= 0) b.mastery.deep_dive_density = sm.deep_dive_density;
+    if (typeof sm.field_disagreement === "boolean") b.mastery.field_disagreement = sm.field_disagreement;
+  }
   return b;
 }
 

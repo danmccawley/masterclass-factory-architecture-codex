@@ -229,6 +229,35 @@ test("returns null for an unknown class slug", function () {
   var m = S.makeManifest({ classes:[ { title:"A", terminal:["x"] } ] });
   assert.strictEqual(B.briefForClass(m, "nope"), null);
 });
+test("applies shared mastery setup to each class brief (parity with single-class creator)", function () {
+  var BV = require("../brief-validator.js");
+  var template = require("../brief.template.json");
+  var m = S.makeManifest({ subject: "X", classes: [{ title: "A", terminal: ["t"], enabling: ["e"], suggested_minutes: 45 }] });
+  m.setup = S.normalizeSetup({ mastery: { target_level: 5, granularity: "deep", deep_dive_density: "low", field_disagreement: false } });
+  var brief = B.briefForClass(m, m.classes[0].slug);
+  assert.strictEqual(BV.validateBrief(brief, template).ok, true);
+  assert.strictEqual(brief.mastery.target_level, 5);
+  assert.strictEqual(brief.mastery.granularity, "deep");
+  assert.strictEqual(brief.mastery.deep_dive_density, "low");
+  assert.strictEqual(brief.mastery.field_disagreement, false);
+});
+test("mastery setup is whitelisted and clamped (garbage falls back to safe defaults)", function () {
+  var m = S.makeManifest({ subject: "X", classes: [{ title: "A", terminal: ["t"], enabling: ["e"], suggested_minutes: 45 }] });
+  m.setup = S.normalizeSetup({ mastery: { target_level: 99, granularity: "nonsense", deep_dive_density: "" } });
+  var brief = B.briefForClass(m, m.classes[0].slug);
+  assert.strictEqual(brief.mastery.target_level, 5);          // 99 clamped to 5
+  assert.strictEqual(brief.mastery.granularity, "working");   // invalid -> default
+  assert.strictEqual(brief.mastery.deep_dive_density, "high");// invalid -> default
+});
+test("absent mastery setup leaves the template mastery defaults intact", function () {
+  var template = require("../brief.template.json");
+  var m = S.makeManifest({ subject: "X", classes: [{ title: "A", terminal: ["t"], enabling: ["e"], suggested_minutes: 45 }] });
+  // a setup pass with no mastery key still normalizes to template-matching defaults
+  m.setup = S.normalizeSetup({ tier: "standard" });
+  var brief = B.briefForClass(m, m.classes[0].slug);
+  assert.strictEqual(brief.mastery.target_level, template.mastery.target_level);
+  assert.strictEqual(brief.mastery.granularity, template.mastery.granularity);
+});
 
 console.log("\n" + "=".repeat(60));
 console.log("CURRICULUM-BUILD RESULTS: " + passed + " passed, " + failed + " failed");
