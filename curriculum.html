@@ -159,6 +159,8 @@
     </div>
     <label for="scope">Scope, emphasis, or constraints <span class="hint">(optional)</span></label>
     <textarea id="scope" placeholder="e.g. focus on causes and consequences, skip military tactics, align to a specific standard…"></textarea>
+    <label for="syllabus" style="margin-top:6px">Already have a curriculum? <span class="hint">Paste a syllabus or outline to import it instead of generating one (optional)</span></label>
+    <textarea id="syllabus" placeholder="Paste an existing syllabus, course outline, or module list here. Bernard will extract the classes, keep your order, and drop you into the same review canvas — then you build."></textarea>
     <button class="primary" id="go">Plan the curriculum</button>
     <div class="status" id="status"></div>
   </div>
@@ -186,13 +188,23 @@
     [34, "Checking the arc for coherence"],
     [46, "Finalizing the syllabus"]
   ];
-  function startPlanTick(){
+  var IMPORT_STAGES = [
+    [0,  "Reading your curriculum"],
+    [4,  "Identifying the classes"],
+    [11, "Preserving your sequence"],
+    [22, "Extracting objectives"],
+    [34, "Inferring prerequisites"],
+    [46, "Finalizing the import"]
+  ];
+  var planStages = PLAN_STAGES;
+  function startPlanTick(mode){
     stopPlanTick();
+    planStages = (mode === "import") ? IMPORT_STAGES : PLAN_STAGES;
     $("status").innerHTML =
       "<div class='plan-live'>"+
-        "<div class='plan-live-head'><span class='spin'></span><span class='plan-stage'>"+esc(PLAN_STAGES[0][1])+"</span></div>"+
+        "<div class='plan-live-head'><span class='spin'></span><span class='plan-stage'>"+esc(planStages[0][1])+"</span></div>"+
         "<div class='plan-live-bar'><i></i></div>"+
-        "<div class='plan-live-meta'><span class='plan-clock'>0:00</span> elapsed \u00b7 Bernard is designing the syllabus\u2026</div>"+
+        "<div class='plan-live-meta'><span class='plan-clock'>0:00</span> elapsed \u00b7 "+(mode==="import"?"Bernard is importing your curriculum\u2026":"Bernard is designing the syllabus\u2026")+"</div>"+
       "</div>";
     planTick.start = Date.now();
     planTick.id = setInterval(paintPlanTick, 300);
@@ -202,8 +214,8 @@
     var wrap = $("status").querySelector(".plan-live"); if(!wrap) return;
     var secs = Math.floor((Date.now()-planTick.start)/1000);
     var pct = Math.min(95, 100*(1-Math.exp(-secs/22)));
-    var stage = PLAN_STAGES[0][1];
-    for(var i=0;i<PLAN_STAGES.length;i++){ if(secs>=PLAN_STAGES[i][0]) stage=PLAN_STAGES[i][1]; }
+    var stage = planStages[0][1];
+    for(var i=0;i<planStages.length;i++){ if(secs>=planStages[i][0]) stage=planStages[i][1]; }
     var st=wrap.querySelector(".plan-stage"); if(st) st.textContent=stage;
     var bar=wrap.querySelector(".plan-live-bar > i"); if(bar) bar.style.width=pct.toFixed(1)+"%";
     var ck=wrap.querySelector(".plan-clock"); if(ck) ck.textContent=mmss(secs);
@@ -219,11 +231,11 @@
 
   var state = { plan:null, input:null, manifest:null };
 
-  // Front-door intent: "full" (plan + build) is what this page does today.
-  // "series" implies ingesting an existing curriculum — not built yet.
+  // Front-door intent: "full" (plan + build) is the default. "series" means the
+  // user is bringing an existing curriculum — now supported via the paste box below.
   var intent = (new URLSearchParams(location.search)).get("intent") || "full";
   if(intent === "series"){
-    $("intentNote").textContent = "Bringing an existing curriculum to support isn't wired up yet — for now, plan one here and build its classes.";
+    $("intentNote").textContent = "Bringing an existing curriculum? Paste your syllabus or outline in the \u201CAlready have a curriculum?\u201D box below \u2014 Bernard will import it into the same review-and-build flow.";
   }
 
   function liList(items){
@@ -779,7 +791,9 @@
 
   $("go").addEventListener("click", function(){
     var subject = ($("subject").value||"").trim();
-    if(!subject){ setStatus("Enter a subject first.", true); return; }
+    var syllabus = ($("syllabus").value||"").trim();
+    var importing = !!syllabus;
+    if(!subject && !importing){ setStatus("Enter a subject, or paste an existing curriculum to import.", true); return; }
     var input = {
       subject: subject,
       audience: ($("audience").value||"").trim(),
@@ -787,19 +801,22 @@
       scope: ($("scope").value||"").trim(),
       count: $("count").value ? Number($("count").value) : 0
     };
-    var btn = $("go"); btn.disabled = true; var label = btn.textContent; btn.textContent = "Bernard is planning\u2026";
-    startPlanTick();
+    if(importing) input.syllabus = syllabus;
+    var btn = $("go"); btn.disabled = true; var label = btn.textContent;
+    btn.textContent = importing ? "Bernard is importing\u2026" : "Bernard is planning\u2026";
+    startPlanTick(importing ? "import" : "design");
     $("result").innerHTML = "";
     fetch("/api/curriculum", { method:"POST", headers:{"content-type":"application/json"}, body: JSON.stringify(input) })
       .then(function(r){ return r.json().then(function(j){ return { ok:r.ok, j:j }; }); })
       .then(function(res){
         stopPlanTick();
         if(res.ok && res.j && res.j.ok && res.j.plan){
-          setStatus("Planned "+res.j.class_count+" classes."+(res.j.cost_usd!=null?(" (~$"+res.j.cost_usd.toFixed(4)+")"):"")+" Bernard proposed the sequence and prerequisites \u2014 review, adjust if needed, then save.");
+          var verb = (res.j.mode === "import") ? "Imported" : "Planned";
+          setStatus(verb+" "+res.j.class_count+" classes."+(res.j.cost_usd!=null?(" (~$"+res.j.cost_usd.toFixed(4)+")"):"")+" Bernard "+(res.j.mode==="import"?"extracted the sequence":"proposed the sequence and prerequisites")+" \u2014 review, adjust if needed, then save.");
           renderCanvas(res.j.plan, input);
         } else {
           var err = (res.j && res.j.error) || "couldn't plan the curriculum";
-          setStatus("Planner: "+err+(res.j && res.j.details ? (" — "+res.j.details.join("; ")) : ""), true);
+          setStatus((importing?"Import: ":"Planner: ")+err+(res.j && res.j.details ? (" — "+res.j.details.join("; ")) : ""), true);
         }
       })
       .catch(function(){ stopPlanTick(); setStatus("Couldn't reach the planner service.", true); })

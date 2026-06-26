@@ -28,6 +28,27 @@ test("without a count, asks the model to choose a sensible number", function () 
   assert.ok(/sensible number/.test(m[0].content));
 });
 
+group("Ingest prompt builder (import an existing curriculum)");
+test("embeds the pasted syllabus and asks the model to extract, not invent", function () {
+  const m = C.buildIngestPrompt({ subject: "World History", syllabus: "Module 1: Ancient Rome\nModule 2: The Middle Ages" });
+  assert.strictEqual(m.length, 2);
+  assert.ok(/extract/i.test(m[0].content));
+  assert.ok(/do NOT invent/i.test(m[0].content) || /not invent/i.test(m[0].content));
+  assert.ok(/JSON/.test(m[0].content) && /classes/.test(m[0].content));
+  assert.ok(/Ancient Rome/.test(m[1].content));   // the source text is included
+  assert.ok(/Middle Ages/.test(m[1].content));
+});
+test("same JSON contract as the designer prompt (shape parity)", function () {
+  const m = C.buildIngestPrompt({ syllabus: "Week 1\nWeek 2" });
+  // both prompts promise the same {classes:[{title,summary,terminal,enabling,prerequisites,suggested_minutes}]} shape
+  assert.ok(/terminal/.test(m[0].content) && /enabling/.test(m[0].content) && /prerequisites/.test(m[0].content) && /suggested_minutes/.test(m[0].content));
+});
+test("caps very long pasted input so the prompt stays bounded", function () {
+  const huge = "x".repeat(40000);
+  const m = C.buildIngestPrompt({ subject: "Big", syllabus: huge });
+  assert.ok(m[1].content.length < 13000); // syllabus sliced to 12k + small framing
+});
+
 group("Parsing the LLM response");
 test("parses fenced JSON", function () {
   const p = C.parsePlanFromLLM("```json\n{\"classes\":[{\"title\":\"Intro\"}]}\n```");
@@ -158,6 +179,34 @@ test("accepts prerequisites already given as slugs", function () {
 test("each class carries a slug matching slugify(title)", function () {
   const plan = C.normalizePlan({ classes: [{ title: "Major Battles & Turning Points", terminal: ["t"] }] }, {});
   assert.strictEqual(plan.classes[0].slug, "major-battles-turning-points");
+});
+
+group("Ingest (extract a plan from an existing curriculum)");
+test("buildIngestPrompt yields system+user and embeds the pasted source", function () {
+  const su = (function (messages) {
+    let system = "", user = "";
+    (messages || []).forEach(function (m) { if (m.role === "system") system += m.content; else user += m.content; });
+    return { system: system, user: user };
+  })(C.buildIngestPrompt({ syllabus: "Module 1: Roots\nModule 2: The War", subject: "My Course" }));
+  assert.ok(/extract/i.test(su.system));            // it's an extraction instruction
+  assert.ok(/do NOT invent/i.test(su.system));      // must not fabricate a new course
+  assert.ok(su.user.indexOf("Module 1: Roots") >= 0); // the pasted text is included
+  assert.ok(su.user.indexOf("My Course") >= 0);       // provided title carried through
+});
+test("buildIngestPrompt tolerates a missing subject (infers from material)", function () {
+  const msgs = C.buildIngestPrompt({ syllabus: "Week 1...\nWeek 2..." });
+  const user = msgs[1].content;
+  assert.ok(/infer from the material/i.test(user));
+});
+test("an ingested-then-normalized plan flows through the same pipeline", function () {
+  // simulate what the LLM returns for an ingest, then run the SAME normalize/validate
+  const raw = { classes: [
+    { title: "Origins", terminal: ["Summarize origins"], enabling: ["List events"] },
+    { title: "Escalation", terminal: ["Trace escalation"], prerequisites: ["Origins"] }
+  ] };
+  const plan = C.normalizePlan(raw, { subject: "Imported" });
+  assert.strictEqual(C.validatePlan(plan).ok, true);
+  assert.deepStrictEqual(plan.classes[1].prerequisites, ["origins"]); // linear chain resolved
 });
 
 console.log("\n" + "=".repeat(60));

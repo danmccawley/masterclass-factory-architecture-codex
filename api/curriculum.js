@@ -83,6 +83,35 @@ function buildCurriculumPrompt(input) {
   ];
 }
 
+// Build the messages that EXTRACT a plan from a curriculum the user already has
+// (a pasted syllabus, outline, or course description). Same JSON contract as the
+// designer prompt so everything downstream is identical — the only difference is
+// the instruction: extract and structure what's provided, don't invent a new course.
+function buildIngestPrompt(input) {
+  input = input || {};
+  const subject = cleanText(input.subject, 200);
+  const audience = cleanText(input.audience, 160) || "general learners";
+  const level = cleanText(input.level, 80) || "introductory";
+  const scope = cleanText(input.scope, 400);
+  const syllabus = String(input.syllabus == null ? "" : input.syllabus).slice(0, 12000);
+  return [
+    { role: "system", content:
+      "You are a curriculum analyst. The user already has a curriculum, syllabus, outline, or course description. " +
+      "Extract it into a sequenced list of individual CLASSES — do NOT invent a different course or pad it with material that isn't represented in the source. " +
+      "Preserve the source's existing order. Use the source's own module/lesson/unit titles where present; merge fragments that clearly describe one class and split anything that is obviously several classes. " +
+      "If the source states objectives, use them; otherwise infer concrete, measurable objectives from the described content. " +
+      "Return ONLY a JSON object (no prose, no code fences) of the form: " +
+      "{\"level\":\"...\",\"notes\":\"one or two sentences on the overall arc\",\"classes\":[{\"title\":\"...\",\"summary\":\"one sentence on what this class covers\",\"terminal\":[\"1-3 terminal objectives, what the learner can DO after\"],\"enabling\":[\"2-5 enabling objectives\"],\"prerequisites\":[\"exact titles of the EARLIER classes this one directly builds on\"],\"suggested_minutes\":45}]}. " +
+      "For prerequisites: if the source states dependencies, honor them; otherwise assume each class builds on the one immediately before it (a linear sequence). Reference ONLY classes that appear earlier in the list — the first class has none. " +
+      "Keep every class the source describes; do not drop content." },
+    { role: "user", content:
+      "Curriculum title / subject: " + (subject || "(infer from the material)") +
+      "\nAudience: " + audience + "\nLevel: " + level +
+      (scope ? ("\nAdditional emphasis / constraints: " + scope) : "") +
+      "\n\n--- EXISTING CURRICULUM (extract classes from this) ---\n" + syllabus }
+  ];
+}
+
 // Parse the model response into a plan object. The model is asked for raw JSON,
 // but real responses sometimes arrive fenced, prose-wrapped, as a top-level
 // array, or truncated. Try progressively more forgiving strategies; return null
@@ -214,7 +243,11 @@ module.exports = async function curriculumHandler(req, res) {
   let parsed = {};
   try { parsed = JSON.parse(body || "{}"); } catch (e) { parsed = {}; }
   const subject = cleanText(parsed.subject, 200);
-  if (!subject) { send(422, { ok: false, error: "subject required" }); return; }
+  const hasSyllabus = !!String(parsed.syllabus == null ? "" : parsed.syllabus).trim();
+  // Two producers of the same plan: design-from-subject, or extract-from-an-
+  // existing-curriculum (paste). Ingest needs the pasted text; design needs a subject.
+  if (!subject && !hasSyllabus) { send(422, { ok: false, error: "provide a subject, or paste an existing curriculum to import" }); return; }
+  const ingest = hasSyllabus;
 
   const engine = (parsed.engine && typeof parsed.engine === "object") ? parsed.engine : {};
   const provider = llm.resolveProvider(engine.provider);
@@ -234,7 +267,7 @@ module.exports = async function curriculumHandler(req, res) {
   // within maxDuration. Only after all attempts do we surface a clear error.
   const PLAN_ATTEMPTS = 3;
   const TIMEOUTS = [45000, 30000, 20000];
-  const base = asSystemUser(buildCurriculumPrompt(parsed));
+  const base = asSystemUser(ingest ? buildIngestPrompt(parsed) : buildCurriculumPrompt(parsed));
   const reinforce = " CRITICAL: respond with ONLY the raw JSON object — start with { and end with } — no prose, no code fences, no commentary.";
   let lastErrors = ["The plan has no classes."];
   for (let attempt = 1; attempt <= PLAN_ATTEMPTS; attempt++) {
@@ -265,6 +298,7 @@ module.exports = async function curriculumHandler(req, res) {
         class_count: plan.classes.length,
         cost_usd: (typeof usd === "number" ? Math.round(usd * 1e6) / 1e6 : null),
         attempts: attempt,
+        mode: ingest ? "import" : "design",
         note: "Review and edit the plan. Each class can then be built through the normal pipeline."
       });
       return;
@@ -283,6 +317,7 @@ module.exports = async function curriculumHandler(req, res) {
 module.exports._internal = {
   emptyPlan: emptyPlan,
   buildCurriculumPrompt: buildCurriculumPrompt,
+  buildIngestPrompt: buildIngestPrompt,
   parsePlanFromLLM: parsePlanFromLLM,
   normalizePlan: normalizePlan,
   validatePlan: validatePlan,
