@@ -257,7 +257,20 @@ module.exports = async function curriculumHandler(req, res) {
       : "curriculum planner needs an API key for the selected provider on the server" });
     return;
   }
-  const model = provider === "openai" ? (process.env.OPENAI_CURRICULUM_MODEL || "gpt-4o") : (engine.model || undefined);
+  // Model selection. The planner produces a structured JSON outline — a task a
+  // FAST model handles well — so we lead with a fast model and fall back to the
+  // capable default automatically if the fast one is unavailable (completeJson
+  // walks the list on a model error). An explicit engine.model still wins.
+  let models;
+  if (engine.model) {
+    models = [engine.model];
+  } else if (provider === "openai") {
+    models = [process.env.OPENAI_CURRICULUM_MODEL || "gpt-4o"];
+  } else if (provider === "anthropic") {
+    models = [process.env.ANTHROPIC_CURRICULUM_MODEL || "claude-haiku-4-5-20251001", "claude-sonnet-4-6"];
+  } else {
+    models = undefined; // let the provider default decide
+  }
 
   // Never dead-end on a format stumble. The model is asked for raw JSON, but a
   // one-off can arrive fenced, prose-wrapped, truncated, or as a bare array. We
@@ -265,8 +278,11 @@ module.exports = async function curriculumHandler(req, res) {
   // retries — and log a CURRDIAG line for any miss so a failure is visible in
   // the logs instead of silent. Timeouts shrink each attempt so the total stays
   // within maxDuration. Only after all attempts do we surface a clear error.
-  const PLAN_ATTEMPTS = 3;
-  const TIMEOUTS = [45000, 30000, 20000];
+  // Generous, non-shrinking timeouts so a legitimately slow call still lands.
+  // A fast model returns in ~10-20s; the ceiling only guards against provider
+  // latency. Two attempts fit comfortably inside the 300s function budget.
+  const PLAN_ATTEMPTS = 2;
+  const TIMEOUTS = [120000, 90000];
   const base = asSystemUser(ingest ? buildIngestPrompt(parsed) : buildCurriculumPrompt(parsed));
   const reinforce = " CRITICAL: respond with ONLY the raw JSON object — start with { and end with } — no prose, no code fences, no commentary.";
   let lastErrors = ["The plan has no classes."];
@@ -274,11 +290,12 @@ module.exports = async function curriculumHandler(req, res) {
     let result;
     try {
       result = await llm.completeText({
-        provider: provider, model: model, stage: "curriculum",
+        provider: provider, models: models, stage: "curriculum",
         system: attempt === 1 ? base.system : (base.system + reinforce),
         user: base.user,
+        maxTokens: 4000,
         temperature: attempt === 1 ? 0.5 : 0.2,
-        timeoutMs: TIMEOUTS[attempt - 1] || 20000
+        timeoutMs: TIMEOUTS[attempt - 1] || 90000
       });
     } catch (e) {
       lastErrors = ["the planner service errored: " + (e && e.message ? e.message : "unknown")];
