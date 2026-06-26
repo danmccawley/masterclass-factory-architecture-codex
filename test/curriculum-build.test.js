@@ -296,6 +296,63 @@ test("shared language: garbage locale/delivery fall back to safe English default
   assert.strictEqual(brief.language.primary, "en");
   assert.strictEqual(brief.language.localize_ui_strings, false);
 });
+test("shared demographics: typical + floor learner + gender mix all flow into the brief", function () {
+  var BV = require("../brief-validator.js");
+  var template = require("../brief.template.json");
+  var m = S.makeManifest({ subject: "X", classes: [{ title: "A", terminal: ["t"], enabling: ["e"], suggested_minutes: 45 }] });
+  m.setup = S.normalizeSetup({ audience: {
+    average: { age_band: "35-54", education: "graduate", background: "managers", technical: "technical", role: "director" },
+    floor:   { age_band: "18+", education: "high school", background: "no prior knowledge", technical: "non", role: "general" },
+    gender_mix: "balanced"
+  } });
+  var brief = B.briefForClass(m, m.classes[0].slug);
+  assert.strictEqual(BV.validateBrief(brief, template).ok, true);
+  assert.strictEqual(brief.audience.average.age_band, "35-54");
+  assert.strictEqual(brief.audience.average.background, "managers");
+  assert.strictEqual(brief.audience.floor.education, "high school");
+  assert.strictEqual(brief.audience.floor.technical, "non");
+  assert.strictEqual(brief.audience.gender_mix, "balanced");
+});
+test("shared demographics: a flat (legacy) audience still maps to the typical learner", function () {
+  var m = S.makeManifest({ subject: "X", classes: [{ title: "A", terminal: ["t"], enabling: ["e"], suggested_minutes: 45 }] });
+  m.setup = S.normalizeSetup({ audience: { education: "graduate", technical: "technical", role: "chemists" } });
+  var brief = B.briefForClass(m, m.classes[0].slug);
+  assert.strictEqual(brief.audience.average.education, "graduate");
+  assert.strictEqual(brief.audience.average.role, "chemists");
+});
+test("shared KB policy: mode, recency, min-tier, seed prompts flow into the brief", function () {
+  var BV = require("../brief-validator.js");
+  var template = require("../brief.template.json");
+  var m = S.makeManifest({ subject: "X", classes: [{ title: "A", terminal: ["t"], enabling: ["e"], suggested_minutes: 45 }] });
+  m.setup = S.normalizeSetup({ research_owner: "assisted", kb: { mode: "grounded", recency_floor: "2025-06-01", min_tier: "primary", seed_prompts: "find the standard\nfind the report" } });
+  var brief = B.briefForClass(m, m.classes[0].slug);
+  assert.strictEqual(BV.validateBrief(brief, template).ok, true);
+  assert.strictEqual(brief.knowledge_base.research.mode, "grounded");
+  assert.strictEqual(brief.knowledge_base.research.recency_floor, "2025-06-01");
+  assert.deepStrictEqual(brief.knowledge_base.research.seed_prompts, ["find the standard", "find the report"]);
+  assert.strictEqual(brief.knowledge_base.credibility.min_tier, "primary");
+});
+test("shared KB policy: creator ownership forces evidence boundary to 'none'", function () {
+  var m = S.makeManifest({ subject: "X", classes: [{ title: "A", terminal: ["t"], enabling: ["e"], suggested_minutes: 45 }] });
+  m.setup = S.normalizeSetup({ research_owner: "creator", kb: { mode: "collaborative" } });
+  var brief = B.briefForClass(m, m.classes[0].slug);
+  assert.strictEqual(brief.knowledge_base.research.mode, "none");      // owner is the master switch
+  assert.strictEqual(brief.knowledge_base.research.allow_web, false);
+});
+test("shared length: slide density scales the per-class slide budget", function () {
+  var m = S.makeManifest({ subject: "X", classes: [{ title: "A", terminal: ["t"], enabling: ["e"], suggested_minutes: 40 }] });
+  m.setup = S.normalizeSetup({ length: { slides_per_minute: 2, interaction_budget: { polls: 5, final_test: false } } });
+  var brief = B.briefForClass(m, m.classes[0].slug);
+  assert.strictEqual(brief.length.slide_budget, 80);                   // 40 min * 2 slides/min
+  assert.strictEqual(brief.length.interaction_budget.polls, 5);
+  assert.strictEqual(brief.length.interaction_budget.final_test, false);
+});
+test("length defaults to 1.5 slides/min when no shared length setup (back-compat)", function () {
+  var m = S.makeManifest({ subject: "X", classes: [{ title: "A", terminal: ["t"], enabling: ["e"], suggested_minutes: 60 }] });
+  m.setup = S.normalizeSetup({ tier: "standard" }); // setup present but no length group sent -> normalized default 1.5
+  var brief = B.briefForClass(m, m.classes[0].slug);
+  assert.strictEqual(brief.length.slide_budget, 90);                   // 60 * 1.5
+});
 
 console.log("\n" + "=".repeat(60));
 console.log("CURRICULUM-BUILD RESULTS: " + passed + " passed, " + failed + " failed");

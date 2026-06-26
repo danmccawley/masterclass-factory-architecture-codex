@@ -120,10 +120,7 @@ function briefForClass(manifest, classSlug, template) {
   var b = JSON.parse(JSON.stringify(template));
   b.meta = { title: cls.title, slug: cls.slug, created: new Date().toISOString(), engine_contract: "v-texas" };
   b.objectives = { terminal: (cls.terminal || []).slice(), enabling: (cls.enabling || []).slice(), out_of_scope: [] };
-  b.length = Object.assign({}, template.length, {
-    minutes: cls.suggested_minutes,
-    slide_budget: Math.max(10, Math.min(400, Math.round(cls.suggested_minutes * 1.5)))
-  });
+  b.length = Object.assign({}, template.length, { minutes: cls.suggested_minutes });
 
   // Shared, curriculum-level setup (audience/demographics + tier + KB ownership)
   // that every class inherits. Absent => prior behavior (tier from level, AI owns
@@ -136,17 +133,34 @@ function briefForClass(manifest, classSlug, template) {
   b.class_tier = { level: (setup && setup.tier) || tierMap[String(manifest.level || "").toLowerCase()] || template.class_tier.level };
 
   // Audience: keep the free-text curriculum audience as background; layer the
-  // shared structured demographics on top when a setup pass has been done.
+  // shared structured demographics on top when a setup pass has been done. The
+  // single-class creator captures BOTH a typical and a floor learner, so the
+  // curriculum carries the same. Back-compat: an older flat setup.audience
+  // (education/technical/role at the top level) is treated as the typical learner.
   if (manifest.audience || setup) {
     b.audience = JSON.parse(JSON.stringify(template.audience));
     if (manifest.audience) b.audience.average = Object.assign({}, b.audience.average, { background: manifest.audience });
     if (setup && setup.audience) {
       var sa = setup.audience;
+      var avg = (sa.average && typeof sa.average === "object") ? sa.average : sa;
+      var flr = (sa.floor && typeof sa.floor === "object") ? sa.floor : null;
       b.audience.average = Object.assign({}, b.audience.average, {
-        education: sa.education || b.audience.average.education,
-        technical: sa.technical || b.audience.average.technical,
-        role: sa.role || b.audience.average.role
+        age_band: avg.age_band || b.audience.average.age_band,
+        education: avg.education || b.audience.average.education,
+        background: avg.background || b.audience.average.background,
+        technical: avg.technical || b.audience.average.technical,
+        role: avg.role || b.audience.average.role
       });
+      if (flr) {
+        b.audience.floor = Object.assign({}, b.audience.floor, {
+          age_band: flr.age_band || b.audience.floor.age_band,
+          education: flr.education || b.audience.floor.education,
+          background: flr.background || b.audience.floor.background,
+          technical: flr.technical || b.audience.floor.technical,
+          role: flr.role || b.audience.floor.role
+        });
+      }
+      if (sa.gender_mix) b.audience.gender_mix = sa.gender_mix;
       b.audience.tone = sa.tone || b.audience.tone;
       b.audience.accessibility = Object.assign({}, b.audience.accessibility, { reading_grade_cap: sa.reading_grade_cap });
     }
@@ -168,6 +182,28 @@ function briefForClass(manifest, classSlug, template) {
       .map(function (s) { return { path: s.path, type: "url", trust: s.trust || "unknown" }; })
       .filter(function (u) { return u.path; });
     b.knowledge_base.uploads = existing.concat(mapped);
+  }
+
+  // Knowledge-base research policy (beyond ownership): evidence boundary, recency
+  // floor, minimum source tier, seed prompts. owner=creator forces "use only my
+  // sources" so mode/web stay coherent; otherwise the shared policy applies.
+  if (setup && setup.kb && typeof setup.kb === "object") {
+    var kb = setup.kb;
+    b.knowledge_base.research.mode = (owner === "creator") ? "none"
+      : (["none", "grounded", "collaborative"].indexOf(kb.mode) >= 0 ? kb.mode : "collaborative");
+    if (kb.recency_floor) b.knowledge_base.research.recency_floor = kb.recency_floor;
+    if (Array.isArray(kb.seed_prompts) && kb.seed_prompts.length) b.knowledge_base.research.seed_prompts = kb.seed_prompts.slice();
+    b.knowledge_base.credibility = b.knowledge_base.credibility || {};
+    if (["primary", "secondary", "unknown"].indexOf(kb.min_tier) >= 0) b.knowledge_base.credibility.min_tier = kb.min_tier;
+  }
+
+  // Length budget: per-class minutes come from the plan; the shared control is
+  // slide DENSITY (slides per minute), scaled per class, plus the interaction
+  // budget. Absent => 1.5 slides/min (the prior default) and template interactions.
+  var spm = (setup && setup.length && Number(setup.length.slides_per_minute)) ? Number(setup.length.slides_per_minute) : 1.5;
+  b.length.slide_budget = Math.max(10, Math.min(400, Math.round((cls.suggested_minutes || 60) * spm)));
+  if (setup && setup.length && setup.length.interaction_budget && typeof setup.length.interaction_budget === "object") {
+    b.length.interaction_budget = Object.assign({}, b.length.interaction_budget, setup.length.interaction_budget);
   }
 
   // Mastery: the shared curriculum-level depth settings every class inherits —

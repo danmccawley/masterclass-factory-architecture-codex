@@ -87,6 +87,8 @@ var SETUP_GRANULARITY = ["survey", "working", "deep"];   // mastery depth granul
 var SETUP_DEEPDIVE = ["low", "med", "high"];             // deep-dive density
 var SETUP_LANGS = ["en", "es", "fr", "de", "pt", "it", "ar", "zh", "ja", "ko", "vi"]; // student locale
 var SETUP_DELIVERY = ["english", "translated", "split"]; // English only / translated / split-screen
+var SETUP_KB_MODES = ["none", "grounded", "collaborative"]; // evidence boundary
+var SETUP_MIN_TIERS = ["primary", "secondary", "unknown"];  // minimum source tier
 
 function oneOf(v, allowed, dflt) {
   var s = String(v == null ? "" : v).toLowerCase().trim();
@@ -98,6 +100,17 @@ function normalizeSetup(raw) {
   var a = (raw.audience && typeof raw.audience === "object") ? raw.audience : {};
   var mk = (raw.mastery && typeof raw.mastery === "object") ? raw.mastery : {};
   var lk = (raw.language && typeof raw.language === "object") ? raw.language : {};
+  var kk = (raw.kb && typeof raw.kb === "object") ? raw.kb : {};
+  var len = (raw.length && typeof raw.length === "object") ? raw.length : {};
+  var ib = (len.interaction_budget && typeof len.interaction_budget === "object") ? len.interaction_budget : {};
+  // Audience supports the full typical/floor structure the single-class creator
+  // uses. Back-compat: a flat audience object (older UI) is read as the average.
+  var avgIn = (a.average && typeof a.average === "object") ? a.average : a;
+  var flrIn = (a.floor && typeof a.floor === "object") ? a.floor : {};
+  // Seed prompts: accept a newline string or an array; clean + cap.
+  var seedPrompts = [];
+  (Array.isArray(kk.seed_prompts) ? kk.seed_prompts : String(kk.seed_prompts == null ? "" : kk.seed_prompts).split(/\r?\n/))
+    .forEach(function (p) { var t = cleanText(p, 200); if (t) seedPrompts.push(t); });
   // Human-entered seed sources need a URL to be usable; dedupe by URL.
   var seeds = [];
   var seen = {};
@@ -113,9 +126,21 @@ function normalizeSetup(raw) {
     research_owner: oneOf(raw.research_owner || raw.owner, SETUP_OWNERS, "ai"),
     sources: seeds,
     audience: {
-      education: cleanText(a.education, 120),
-      technical: oneOf(a.technical, SETUP_TECH, "mixed"),
-      role: cleanText(a.role, 120),
+      average: {
+        age_band: cleanText(avgIn.age_band, 60),
+        education: cleanText(avgIn.education, 120),
+        background: cleanText(avgIn.background, 160),
+        technical: oneOf(avgIn.technical, SETUP_TECH, "mixed"),
+        role: cleanText(avgIn.role, 120)
+      },
+      floor: {
+        age_band: cleanText(flrIn.age_band, 60),
+        education: cleanText(flrIn.education, 120),
+        background: cleanText(flrIn.background, 160),
+        technical: oneOf(flrIn.technical, SETUP_TECH, "non"),
+        role: cleanText(flrIn.role, 120)
+      },
+      gender_mix: cleanText(a.gender_mix, 60),
       tone: oneOf(a.tone, SETUP_TONES, "plain"),
       reading_grade_cap: clampInt(a.reading_grade_cap, 3, 16, 9)
     },
@@ -134,6 +159,31 @@ function normalizeSetup(raw) {
       student_language: oneOf(lk.student_language, SETUP_LANGS, "en"),
       delivery: oneOf(lk.delivery, SETUP_DELIVERY, "english"),
       glossary_in_primary: (lk.glossary_in_primary === false) ? false : true
+    },
+    // Shared knowledge-base research policy (beyond ownership): the evidence
+    // boundary, recency floor, minimum source tier, and seed prompts — the same
+    // controls the single-class creator's Knowledge base step exposes.
+    kb: {
+      mode: oneOf(kk.mode, SETUP_KB_MODES, "collaborative"),
+      recency_floor: cleanText(kk.recency_floor, 40),
+      min_tier: oneOf(kk.min_tier, SETUP_MIN_TIERS, "secondary"),
+      seed_prompts: seedPrompts
+    },
+    // Shared length budget. Per-class MINUTES come from the plan, so the shared
+    // control is slide DENSITY (slides per minute, scaled per class) plus the
+    // interaction budget — matching the single-class Length step's intent.
+    length: {
+      slides_per_minute: (function () {
+        var n = Number(len.slides_per_minute);
+        if (isNaN(n)) return 1.5;
+        return Math.max(0.5, Math.min(4, n));
+      })(),
+      interaction_budget: {
+        polls: clampInt(ib.polls, 0, 50, 2),
+        word_clouds: clampInt(ib.word_clouds, 0, 50, 4),
+        quizzes: clampInt(ib.quizzes, 0, 50, 1),
+        final_test: (ib.final_test === false) ? false : true
+      }
     }
   };
 }

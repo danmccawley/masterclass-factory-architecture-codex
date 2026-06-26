@@ -132,7 +132,7 @@ test("clamps to contract enums and survives a manifest round-trip", function () 
   m.setup = S.normalizeSetup({ tier: "EXPERT", research_owner: "assisted", audience: { technical: "Technical", tone: "academic", reading_grade_cap: 99, role: "engineers" } });
   assert.strictEqual(m.setup.tier, "expert");
   assert.strictEqual(m.setup.research_owner, "assisted");
-  assert.strictEqual(m.setup.audience.technical, "technical");
+  assert.strictEqual(m.setup.audience.average.technical, "technical");
   assert.strictEqual(m.setup.audience.reading_grade_cap, 16); // clamped to max
   var round = S.normalizeManifest(JSON.parse(JSON.stringify(m)));
   assert.deepStrictEqual(round.setup, m.setup);
@@ -141,7 +141,7 @@ test("invalid values fall back to safe defaults", function () {
   var s = S.normalizeSetup({ tier: "nonsense", research_owner: "nobody", audience: { technical: "?", tone: "?" } });
   assert.strictEqual(s.tier, "standard");
   assert.strictEqual(s.research_owner, "ai");
-  assert.strictEqual(s.audience.technical, "mixed");
+  assert.strictEqual(s.audience.average.technical, "mixed");
   assert.strictEqual(s.audience.tone, "plain");
 });
 test("absent setup yields null (manifest stays setup-free)", function () {
