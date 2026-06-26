@@ -288,6 +288,12 @@
     html += "<label>Deep-dive density<select id='setupDeepDive'><option value='low'>Low</option><option value='med'>Let Bernard decide</option><option value='high' selected>High</option></select></label>";
     html += "</div>";
     html += "<label class='chk' style='display:block;margin-top:8px'><input id='setupFieldDisagree' type='checkbox' checked /> Include where-the-field-disagrees material</label>";
+    html += "<div class='obj-h'>Language \u2014 locale & glossary</div>";
+    html += "<div class='setup-grid'>";
+    html += "<label>Student language<select id='setupStudentLang'><option value='en' selected>English</option><option value='es'>Spanish</option><option value='fr'>French</option><option value='de'>German</option><option value='pt'>Portuguese</option><option value='it'>Italian</option><option value='ar'>Arabic</option><option value='zh'>Chinese</option><option value='ja'>Japanese</option><option value='ko'>Korean</option><option value='vi'>Vietnamese</option></select></label>";
+    html += "<label>Presentation format<select id='setupDelivery'><option value='english' selected>English only</option><option value='translated'>Translate into student language</option><option value='split'>Split screen: English + student language</option></select></label>";
+    html += "</div>";
+    html += "<label class='chk' style='display:block;margin-top:8px'><input id='setupGlossaryPrimary' type='checkbox' checked /> Glossary in the student\u2019s language</label>";
     html += "<div class='obj-h'>Knowledge base \u2014 who assembles each class\u2019s sources</div>";
     html += "<div class='kb-owner'>";
     html += "<label class='kb-opt'><span><input type='radio' name='setupOwner' value='ai' checked /><strong>Bernard builds it</strong></span><small>AI researches &amp; verifies sources \u00b7 recommended for accuracy</small></label>";
@@ -376,6 +382,11 @@
           granularity: fv("setupGranularity", "working"),
           deep_dive_density: fv("setupDeepDive", "high"),
           field_disagreement: !!($("setupFieldDisagree") && $("setupFieldDisagree").checked)
+        },
+        language: {
+          student_language: fv("setupStudentLang", "en"),
+          delivery: fv("setupDelivery", "english"),
+          glossary_in_primary: !!($("setupGlossaryPrimary") && $("setupGlossaryPrimary").checked)
         }
       },
       classes: classes
