@@ -258,6 +258,44 @@ test("absent mastery setup leaves the template mastery defaults intact", functio
   assert.strictEqual(brief.mastery.target_level, template.mastery.target_level);
   assert.strictEqual(brief.mastery.granularity, template.mastery.granularity);
 });
+test("shared language: English delivery keeps the class in English (parity with single-class)", function () {
+  var BV = require("../brief-validator.js");
+  var template = require("../brief.template.json");
+  var m = S.makeManifest({ subject: "X", classes: [{ title: "A", terminal: ["t"], enabling: ["e"], suggested_minutes: 45 }] });
+  m.setup = S.normalizeSetup({ language: { student_language: "en", delivery: "english" } });
+  var brief = B.briefForClass(m, m.classes[0].slug);
+  assert.strictEqual(BV.validateBrief(brief, template).ok, true);
+  assert.strictEqual(brief.language.primary, "en");
+  assert.strictEqual(brief.language.localize_ui_strings, false);
+});
+test("shared language: translated renders the class in the student locale", function () {
+  var m = S.makeManifest({ subject: "X", classes: [{ title: "A", terminal: ["t"], enabling: ["e"], suggested_minutes: 45 }] });
+  m.setup = S.normalizeSetup({ language: { student_language: "es", delivery: "translated", glossary_in_primary: false } });
+  var brief = B.briefForClass(m, m.classes[0].slug);
+  assert.strictEqual(brief.language.primary, "es");
+  assert.strictEqual(brief.language.localize_ui_strings, true);
+  assert.strictEqual(brief.language.glossary_in_primary, false);
+});
+test("shared language: split-screen yields en+locale", function () {
+  var m = S.makeManifest({ subject: "X", classes: [{ title: "A", terminal: ["t"], enabling: ["e"], suggested_minutes: 45 }] });
+  m.setup = S.normalizeSetup({ language: { student_language: "ja", delivery: "split" } });
+  var brief = B.briefForClass(m, m.classes[0].slug);
+  assert.strictEqual(brief.language.primary, "en+ja");
+  assert.strictEqual(brief.language.localize_ui_strings, true);
+});
+test("shared language: a non-English locale with English delivery still stays English", function () {
+  var m = S.makeManifest({ subject: "X", classes: [{ title: "A", terminal: ["t"], enabling: ["e"], suggested_minutes: 45 }] });
+  m.setup = S.normalizeSetup({ language: { student_language: "fr", delivery: "english" } });
+  var brief = B.briefForClass(m, m.classes[0].slug);
+  assert.strictEqual(brief.language.primary, "en");
+});
+test("shared language: garbage locale/delivery fall back to safe English defaults", function () {
+  var m = S.makeManifest({ subject: "X", classes: [{ title: "A", terminal: ["t"], enabling: ["e"], suggested_minutes: 45 }] });
+  m.setup = S.normalizeSetup({ language: { student_language: "klingon", delivery: "interpretive-dance" } });
+  var brief = B.briefForClass(m, m.classes[0].slug);
+  assert.strictEqual(brief.language.primary, "en");
+  assert.strictEqual(brief.language.localize_ui_strings, false);
+});
 
 console.log("\n" + "=".repeat(60));
 console.log("CURRICULUM-BUILD RESULTS: " + passed + " passed, " + failed + " failed");

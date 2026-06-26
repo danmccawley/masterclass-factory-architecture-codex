@@ -85,6 +85,8 @@ var SETUP_TECH = ["non", "mixed", "technical"];
 var SETUP_TONES = ["plain", "warm", "executive", "academic", "workshop"];
 var SETUP_GRANULARITY = ["survey", "working", "deep"];   // mastery depth granularity
 var SETUP_DEEPDIVE = ["low", "med", "high"];             // deep-dive density
+var SETUP_LANGS = ["en", "es", "fr", "de", "pt", "it", "ar", "zh", "ja", "ko", "vi"]; // student locale
+var SETUP_DELIVERY = ["english", "translated", "split"]; // English only / translated / split-screen
 
 function oneOf(v, allowed, dflt) {
   var s = String(v == null ? "" : v).toLowerCase().trim();
@@ -95,6 +97,7 @@ function normalizeSetup(raw) {
   if (!raw || typeof raw !== "object") return null;
   var a = (raw.audience && typeof raw.audience === "object") ? raw.audience : {};
   var mk = (raw.mastery && typeof raw.mastery === "object") ? raw.mastery : {};
+  var lk = (raw.language && typeof raw.language === "object") ? raw.language : {};
   // Human-entered seed sources need a URL to be usable; dedupe by URL.
   var seeds = [];
   var seen = {};
@@ -123,6 +126,14 @@ function normalizeSetup(raw) {
       granularity: oneOf(mk.granularity, SETUP_GRANULARITY, "working"),
       deep_dive_density: oneOf(mk.deep_dive_density, SETUP_DEEPDIVE, "high"),
       field_disagreement: (mk.field_disagreement === false) ? false : true
+    },
+    // Shared language defaults applied to every class — same controls as the
+    // single-class creator's Language step (student locale, presentation
+    // delivery, glossary language). Defaults match the brief template (English).
+    language: {
+      student_language: oneOf(lk.student_language, SETUP_LANGS, "en"),
+      delivery: oneOf(lk.delivery, SETUP_DELIVERY, "english"),
+      glossary_in_primary: (lk.glossary_in_primary === false) ? false : true
     }
   };
 }

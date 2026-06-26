@@ -185,6 +185,26 @@ function briefForClass(manifest, classSlug, template) {
     if (["low", "med", "high"].indexOf(sm.deep_dive_density) >= 0) b.mastery.deep_dive_density = sm.deep_dive_density;
     if (typeof sm.field_disagreement === "boolean") b.mastery.field_disagreement = sm.field_disagreement;
   }
+
+  // Language: the shared presentation locale + delivery, mapped to the brief the
+  // same way the single-class creator does. delivery "english" (or locale "en")
+  // keeps the class in English; "translated" renders in the student locale;
+  // "split" shows English + the student locale ("en+xx").
+  if (setup && setup.language && typeof setup.language === "object") {
+    var lg = setup.language;
+    var lang = ["en", "es", "fr", "de", "pt", "it", "ar", "zh", "ja", "ko", "vi"].indexOf(lg.student_language) >= 0 ? lg.student_language : "en";
+    var delivery = ["english", "translated", "split"].indexOf(lg.delivery) >= 0 ? lg.delivery : "english";
+    var glossaryPrimary = (lg.glossary_in_primary === false) ? false : true;
+    b.language = Object.assign({}, template.language, b.language);
+    if (delivery === "english" || lang === "en") {
+      b.language.primary = "en";
+      b.language.localize_ui_strings = false;
+    } else {
+      b.language.primary = (delivery === "split") ? ("en+" + lang) : lang;
+      b.language.localize_ui_strings = true;
+    }
+    b.language.glossary_in_primary = glossaryPrimary;
+  }
   return b;
 }
 
