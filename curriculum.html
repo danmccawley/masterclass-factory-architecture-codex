@@ -161,6 +161,7 @@
     <textarea id="scope" placeholder="e.g. focus on causes and consequences, skip military tactics, align to a specific standard…"></textarea>
     <label for="syllabus" style="margin-top:6px">Already have a curriculum? <span class="hint">Paste a syllabus or outline to import it instead of generating one (optional)</span></label>
     <textarea id="syllabus" placeholder="Paste an existing syllabus, course outline, or module list here. Bernard will extract the classes, keep your order, and drop you into the same review canvas — then you build."></textarea>
+    <div class="hint" style="margin-top:6px">or <a href="#" id="syllabusUpload">upload a file</a> <span class="hint">(.txt, .md)</span><span id="syllabusFileNote"></span><input type="file" id="syllabusFile" accept=".txt,.text,.md,.markdown,.csv" style="display:none" /></div>
     <button class="primary" id="go">Plan the curriculum</button>
     <div class="status" id="status"></div>
   </div>
@@ -280,6 +281,13 @@
     html += "<label>Education <span class='hint'>(optional)</span><input id='setupEdu' type='text' placeholder='e.g. undergraduate' /></label>";
     html += "<label>Audience role <span class='hint'>(optional)</span><input id='setupRole' type='text' placeholder='e.g. new hires' /></label>";
     html += "</div>";
+    html += "<div class='obj-h'>Mastery \u2014 depth & checks</div>";
+    html += "<div class='setup-grid'>";
+    html += "<label>Target mastery level<input id='setupMasteryLevel' type='number' min='1' max='5' value='3' /></label>";
+    html += "<label>Granularity<select id='setupGranularity'><option value='survey'>Survey</option><option value='working' selected>Working</option><option value='deep'>Deep</option></select></label>";
+    html += "<label>Deep-dive density<select id='setupDeepDive'><option value='low'>Low</option><option value='med'>Let Bernard decide</option><option value='high' selected>High</option></select></label>";
+    html += "</div>";
+    html += "<label class='chk' style='display:block;margin-top:8px'><input id='setupFieldDisagree' type='checkbox' checked /> Include where-the-field-disagrees material</label>";
     html += "<div class='obj-h'>Knowledge base \u2014 who assembles each class\u2019s sources</div>";
     html += "<div class='kb-owner'>";
     html += "<label class='kb-opt'><span><input type='radio' name='setupOwner' value='ai' checked /><strong>Bernard builds it</strong></span><small>AI researches &amp; verifies sources \u00b7 recommended for accuracy</small></label>";
@@ -362,6 +370,12 @@
           role: fv("setupRole", ""),
           tone: fv("setupTone", "plain"),
           reading_grade_cap: Number(fv("setupReading", 9)) || 9
+        },
+        mastery: {
+          target_level: Number(fv("setupMasteryLevel", 3)) || 3,
+          granularity: fv("setupGranularity", "working"),
+          deep_dive_density: fv("setupDeepDive", "high"),
+          field_disagreement: !!($("setupFieldDisagree") && $("setupFieldDisagree").checked)
         }
       },
       classes: classes
@@ -824,6 +838,32 @@
   });
 
   $("subject").addEventListener("keydown", function(e){ if(e.key==="Enter"){ e.preventDefault(); $("go").click(); } });
+
+  // Upload a text/markdown file straight into the import box — no server round-trip;
+  // the loaded text flows through the same paste -> ingest path. PDF/Word need
+  // extraction we don't do client-side yet, so we ask for those to be pasted for now.
+  (function(){
+    var link = $("syllabusUpload"), inp = $("syllabusFile"), note = $("syllabusFileNote");
+    if(!link || !inp) return;
+    var TEXT_EXT = /\.(txt|text|md|markdown|csv)$/i;
+    link.addEventListener("click", function(e){ e.preventDefault(); inp.click(); });
+    inp.addEventListener("change", function(){
+      var f = inp.files && inp.files[0]; if(!f) return;
+      if(!TEXT_EXT.test(f.name)){
+        if(note) note.innerHTML = " <span class='warn'>\u2014 "+esc(f.name)+": PDF/Word import is coming; for now open it and paste the text above.</span>";
+        inp.value = ""; return;
+      }
+      var r = new FileReader();
+      r.onload = function(){
+        var text = String(r.result||"");
+        $("syllabus").value = text;
+        if(note) note.textContent = " \u2014 loaded " + f.name + " (" + text.length.toLocaleString() + " chars)";
+      };
+      r.onerror = function(){ if(note) note.innerHTML = " <span class='warn'>\u2014 couldn't read that file</span>"; };
+      r.readAsText(f);
+      inp.value = ""; // let the same file be re-selected later
+    });
+  })();
 })();
 </script>
 </body>
