@@ -83,12 +83,46 @@ function buildCurriculumPrompt(input) {
   ];
 }
 
-// Parse the model response (which may be fenced or prose-wrapped) into an object.
+// Parse the model response into a plan object. The model is asked for raw JSON,
+// but real responses sometimes arrive fenced, prose-wrapped, as a top-level
+// array, or truncated. Try progressively more forgiving strategies; return null
+// only when nothing yields valid JSON (which then triggers a retry upstream).
 function parsePlanFromLLM(text) {
-  let s = String(text || "").trim().replace(/```json|```/g, "");
-  const a = s.indexOf("{"), b = s.lastIndexOf("}");
-  if (a !== -1 && b !== -1) s = s.slice(a, b + 1);
-  try { return JSON.parse(s); } catch (e) { return null; }
+  var raw = String(text || "").trim().replace(/```json|```/gi, "").trim();
+  if (!raw) return null;
+  // 1) The whole thing is JSON (the happy path).
+  var direct = tryParseJSON(raw);
+  if (direct) return coerceTopLevel(direct);
+  // 2) A JSON object is embedded in surrounding prose — take the first balanced {...}.
+  var obj = sliceBalanced(raw, "{", "}");
+  if (obj) { var po = tryParseJSON(obj); if (po) return coerceTopLevel(po); }
+  // 3) A bare array of classes — take the first balanced [...] and wrap it.
+  var arr = sliceBalanced(raw, "[", "]");
+  if (arr) { var pa = tryParseJSON(arr); if (pa) return coerceTopLevel(pa); }
+  return null;
+}
+function tryParseJSON(s) { try { return JSON.parse(s); } catch (e) { return null; } }
+// A top-level array is a list of classes; everything else passes through.
+function coerceTopLevel(v) { return Array.isArray(v) ? { classes: v } : v; }
+// Return the first balanced open..close span (string- and escape-aware), or null
+// if it never closes (e.g. a truncated response) so the caller can fall through.
+function sliceBalanced(s, open, close) {
+  var start = s.indexOf(open);
+  if (start < 0) return null;
+  var depth = 0, inStr = false, esc = false;
+  for (var i = start; i < s.length; i++) {
+    var ch = s[i];
+    if (inStr) {
+      if (esc) esc = false;
+      else if (ch === "\\") esc = true;
+      else if (ch === "\"") inStr = false;
+      continue;
+    }
+    if (ch === "\"") { inStr = true; continue; }
+    if (ch === open) depth++;
+    else if (ch === close) { depth--; if (depth === 0) return s.slice(start, i + 1); }
+  }
+  return null;
 }
 
 // Coerce an arbitrary parsed object into a valid, ordered plan. Tolerant of
@@ -191,29 +225,59 @@ module.exports = async function curriculumHandler(req, res) {
     return;
   }
   const model = provider === "openai" ? (process.env.OPENAI_CURRICULUM_MODEL || "gpt-4o") : (engine.model || undefined);
-  try {
-    const su = asSystemUser(buildCurriculumPrompt(parsed));
-    const result = await llm.completeText({
-      provider: provider, model: model, stage: "curriculum",
-      system: su.system, user: su.user, temperature: 0.5, timeoutMs: 45000
-    });
-    let usd = null;
-    if (budget && budget.tokenCostUsd && result.usage) {
-      try { usd = budget.tokenCostUsd(result.usage.input_tokens, result.usage.output_tokens, result.model); } catch (e) {}
+
+  // Never dead-end on a format stumble. The model is asked for raw JSON, but a
+  // one-off can arrive fenced, prose-wrapped, truncated, or as a bare array. We
+  // make a few attempts — reinforcing "JSON only" and lowering temperature on
+  // retries — and log a CURRDIAG line for any miss so a failure is visible in
+  // the logs instead of silent. Timeouts shrink each attempt so the total stays
+  // within maxDuration. Only after all attempts do we surface a clear error.
+  const PLAN_ATTEMPTS = 3;
+  const TIMEOUTS = [45000, 30000, 20000];
+  const base = asSystemUser(buildCurriculumPrompt(parsed));
+  const reinforce = " CRITICAL: respond with ONLY the raw JSON object — start with { and end with } — no prose, no code fences, no commentary.";
+  let lastErrors = ["The plan has no classes."];
+  for (let attempt = 1; attempt <= PLAN_ATTEMPTS; attempt++) {
+    let result;
+    try {
+      result = await llm.completeText({
+        provider: provider, model: model, stage: "curriculum",
+        system: attempt === 1 ? base.system : (base.system + reinforce),
+        user: base.user,
+        temperature: attempt === 1 ? 0.5 : 0.2,
+        timeoutMs: TIMEOUTS[attempt - 1] || 20000
+      });
+    } catch (e) {
+      lastErrors = ["the planner service errored: " + (e && e.message ? e.message : "unknown")];
+      console.log("CURRDIAG attempt=" + attempt + "/" + PLAN_ATTEMPTS + " llm_error=" + JSON.stringify(e && e.message ? e.message : "unknown"));
+      continue;
     }
     const plan = normalizePlan(parsePlanFromLLM(result.text), parsed);
     const check = validatePlan(plan);
-    if (!check.ok) { send(502, { ok: false, error: "the planner returned an unusable plan", details: check.errors }); return; }
-    send(200, {
-      ok: true,
-      plan: plan,
-      class_count: plan.classes.length,
-      cost_usd: (typeof usd === "number" ? Math.round(usd * 1e6) / 1e6 : null),
-      note: "Review and edit the plan. Each class can then be built through the normal pipeline."
-    });
-  } catch (e) {
-    send(502, { ok: false, error: "curriculum request failed: " + (e && e.message ? e.message : "unknown") });
+    if (check.ok) {
+      let usd = null;
+      if (budget && budget.tokenCostUsd && result.usage) {
+        try { usd = budget.tokenCostUsd(result.usage.input_tokens, result.usage.output_tokens, result.model); } catch (e) {}
+      }
+      send(200, {
+        ok: true,
+        plan: plan,
+        class_count: plan.classes.length,
+        cost_usd: (typeof usd === "number" ? Math.round(usd * 1e6) / 1e6 : null),
+        attempts: attempt,
+        note: "Review and edit the plan. Each class can then be built through the normal pipeline."
+      });
+      return;
+    }
+    lastErrors = check.errors;
+    var snippet = String(result.text || "").replace(/\s+/g, " ").slice(0, 300);
+    console.log("CURRDIAG attempt=" + attempt + "/" + PLAN_ATTEMPTS + " unusable=" + JSON.stringify(check.errors) + " text_snippet=" + JSON.stringify(snippet));
   }
+  send(502, {
+    ok: false,
+    error: "the planner couldn't produce a usable plan after " + PLAN_ATTEMPTS + " attempts",
+    details: lastErrors
+  });
 };
 
 module.exports._internal = {

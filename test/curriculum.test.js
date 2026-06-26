@@ -40,6 +40,28 @@ test("parses prose-wrapped JSON", function () {
 test("returns null on garbage", function () {
   assert.strictEqual(C.parsePlanFromLLM("I can't do that"), null);
 });
+test("parses a bare top-level array of classes (wraps as {classes:[...]})", function () {
+  const p = C.parsePlanFromLLM("[{\"title\":\"One\"},{\"title\":\"Two\"}]");
+  assert.ok(p && Array.isArray(p.classes));
+  assert.strictEqual(p.classes.length, 2);
+});
+test("parses a fenced top-level array", function () {
+  const p = C.parsePlanFromLLM("```json\n[{\"title\":\"Only\"}]\n```");
+  assert.ok(p && Array.isArray(p.classes) && p.classes.length === 1);
+});
+test("ignores trailing prose after a balanced object", function () {
+  const p = C.parsePlanFromLLM("{\"classes\":[{\"title\":\"A\"}]}\n\nLet me know if you'd like changes!");
+  assert.ok(p && Array.isArray(p.classes) && p.classes.length === 1);
+});
+test("does not choke on braces inside string values", function () {
+  const p = C.parsePlanFromLLM("{\"notes\":\"use {curly} braces sparingly\",\"classes\":[{\"title\":\"A\"}]}");
+  assert.ok(p && p.classes.length === 1);
+  assert.ok(/curly/.test(p.notes));
+});
+test("returns null on a truncated (unbalanced) response so a retry can fire", function () {
+  // a real truncation: opening brace, valid so far, but never closed
+  assert.strictEqual(C.parsePlanFromLLM("{\"classes\":[{\"title\":\"A\"},{\"title\":\"B\""), null);
+});
 
 group("Normalization (tolerant of messy model output)");
 test("coerces classes, assigns order, clamps minutes, keeps objectives as string arrays", function () {
