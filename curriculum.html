@@ -148,16 +148,11 @@
   <div class="intent-note" id="intentNote"></div>
 
   <div class="panel">
-    <label for="subject">Subject</label>
-    <input id="subject" placeholder="e.g. The Texas War of Independence, Intro to Organic Chemistry, Personal Finance for new grads" />
-    <div class="row3">
-      <div><label for="audience">Audience</label><input id="audience" placeholder="e.g. high-school students" /></div>
-      <div><label for="level">Level</label>
-        <select id="level"><option>introductory</option><option>intermediate</option><option>advanced</option><option>mixed</option></select></div>
-      <div><label for="count">How many classes</label>
-        <select id="count"><option value="">Let Bernard decide</option><option>5</option><option>6</option><option>8</option><option>10</option><option>12</option><option>15</option></select></div>
-    </div>
-    <details class="setup" style="margin-top:10px"><summary>Audience &amp; demographics <span class="hint">(optional — sets who every class is written for)</span></summary>
+    <p style="text-transform:uppercase;letter-spacing:.08em;font-size:12px;color:var(--faint);margin:0 0 2px;font-weight:600">Step 1 · Audience &amp; demographics</p>
+    <h2 style="margin:0 0 10px;font-size:20px">Who is every class written for?</h2>
+    <label for="audience">Audience <span class="hint">(one line — Bernard plans for this)</span></label>
+    <input id="audience" placeholder="e.g. high-school students" />
+    <details class="setup" open style="margin-top:10px"><summary>Detailed demographics <span class="hint">(typical &amp; floor learner, tone, reading level)</span></summary>
       <div class="setup-grid" style="margin-top:8px">
         <label>Tone<select id="setupTone"><option value="plain" selected>Plain</option><option value="warm">Warm</option><option value="executive">Executive</option><option value="academic">Academic</option><option value="workshop">Workshop</option></select></label>
         <label>Reading grade cap<input id="setupReading" type="number" min="3" max="16" value="9" /></label>
@@ -180,12 +175,35 @@
         <label>Role<input id="setupFloorRole" type="text" placeholder="e.g. general audience" /></label>
       </div>
     </details>
-    <label for="scope">Scope, emphasis, or constraints <span class="hint">(optional)</span></label>
+
+    <p style="text-transform:uppercase;letter-spacing:.08em;font-size:12px;color:var(--faint);margin:20px 0 2px;font-weight:600">Step 2 · Subject &amp; topic</p>
+    <h2 style="margin:0 0 10px;font-size:20px">What is it about?</h2>
+    <label for="subject">Subject</label>
+    <input id="subject" placeholder="e.g. The Texas War of Independence, Intro to Organic Chemistry, Personal Finance for new grads" />
+    <label for="scope">Topic, scope, emphasis, or constraints <span class="hint">(optional)</span></label>
     <textarea id="scope" placeholder="e.g. focus on causes and consequences, skip military tactics, align to a specific standard…"></textarea>
     <label for="syllabus" style="margin-top:6px">Already have a curriculum? <span class="hint">Paste a syllabus or outline to import it instead of generating one (optional)</span></label>
     <textarea id="syllabus" placeholder="Paste an existing syllabus, course outline, or module list here. Bernard will extract the classes, keep your order, and drop you into the same review canvas — then you build."></textarea>
     <div class="hint" style="margin-top:6px">or <a href="#" id="syllabusUpload">upload a file</a> <span class="hint">(.txt, .md)</span><span id="syllabusFileNote"></span><input type="file" id="syllabusFile" accept=".txt,.text,.md,.markdown,.csv" style="display:none" /></div>
-    <button class="primary" id="go">Plan the curriculum</button>
+
+    <p style="text-transform:uppercase;letter-spacing:.08em;font-size:12px;color:var(--faint);margin:20px 0 2px;font-weight:600">Step 3 · Size, length &amp; delivery</p>
+    <h2 style="margin:0 0 10px;font-size:20px">How big, how long, how delivered?</h2>
+    <div class="setup-grid">
+      <label>Level<select id="level"><option>introductory</option><option>intermediate</option><option>advanced</option><option>mixed</option></select></label>
+      <label>How many classes<select id="count"><option value="">Let Bernard decide</option><option>5</option><option>6</option><option>8</option><option>10</option><option>12</option><option>15</option></select></label>
+      <label>Slides per minute <span class="hint">(density)</span><input id="setupSlidesPerMin" type="number" min="0.5" max="4" step="0.1" value="0.8" /></label>
+      <label>Student language<select id="setupStudentLang"><option value="en" selected>English</option><option value="es">Spanish</option><option value="fr">French</option><option value="de">German</option><option value="pt">Portuguese</option><option value="it">Italian</option><option value="ar">Arabic</option><option value="zh">Chinese</option><option value="ja">Japanese</option><option value="ko">Korean</option><option value="vi">Vietnamese</option></select></label>
+      <label>Presentation format<select id="setupDelivery"><option value="english" selected>English only</option><option value="translated">Translate into student language</option><option value="split">Split screen: English + student language</option></select></label>
+    </div>
+    <div class="setup-grid" style="margin-top:8px">
+      <label>Polls<input id="setupPolls" type="number" min="0" max="50" value="2" /></label>
+      <label>Word clouds<input id="setupWordClouds" type="number" min="0" max="50" value="4" /></label>
+      <label>Quizzes<input id="setupQuizzes" type="number" min="0" max="50" value="1" /></label>
+    </div>
+    <label class="chk" style="display:block;margin-top:8px"><input id="setupFinalTest" type="checkbox" checked /> Include a final test in each class</label>
+    <label class="chk" style="display:block;margin-top:6px"><input id="setupGlossaryPrimary" type="checkbox" checked /> Glossary in the student’s language</label>
+
+    <button class="primary" id="go" style="margin-top:16px">Plan the curriculum</button>
     <div class="status" id="status"></div>
   </div>
 
@@ -307,12 +325,6 @@
     html += "<label>Deep-dive density<select id='setupDeepDive'><option value='low'>Low</option><option value='med'>Let Bernard decide</option><option value='high' selected>High</option></select></label>";
     html += "</div>";
     html += "<label class='chk' style='display:block;margin-top:8px'><input id='setupFieldDisagree' type='checkbox' checked /> Include where-the-field-disagrees material</label>";
-    html += "<div class='obj-h'>Language \u2014 locale & glossary</div>";
-    html += "<div class='setup-grid'>";
-    html += "<label>Student language<select id='setupStudentLang'><option value='en' selected>English</option><option value='es'>Spanish</option><option value='fr'>French</option><option value='de'>German</option><option value='pt'>Portuguese</option><option value='it'>Italian</option><option value='ar'>Arabic</option><option value='zh'>Chinese</option><option value='ja'>Japanese</option><option value='ko'>Korean</option><option value='vi'>Vietnamese</option></select></label>";
-    html += "<label>Presentation format<select id='setupDelivery'><option value='english' selected>English only</option><option value='translated'>Translate into student language</option><option value='split'>Split screen: English + student language</option></select></label>";
-    html += "</div>";
-    html += "<label class='chk' style='display:block;margin-top:8px'><input id='setupGlossaryPrimary' type='checkbox' checked /> Glossary in the student\u2019s language</label>";
     html += "<div class='obj-h'>Knowledge base \u2014 who assembles each class\u2019s sources</div>";
     html += "<div class='kb-owner'>";
     html += "<label class='kb-opt'><span><input type='radio' name='setupOwner' value='ai' checked /><strong>Bernard builds it</strong></span><small>AI researches &amp; verifies sources \u00b7 recommended for accuracy</small></label>";
@@ -330,15 +342,6 @@
     html += "<label for='setupSources'>Your sources <span class='hint'>(one per line \u2014 a URL, or \u201cTitle | https://\u2026\u201d)</span></label>";
     html += "<textarea id='setupSources' placeholder='https://example.org/standard\nKey report | https://example.org/report'></textarea>";
     html += "</div>";
-    html += "<div class='obj-h'>Length \u2014 density & interaction</div>";
-    html += "<div class='hint' style='margin:-4px 0 8px'>Each class\u2019s minutes come from the plan; slides-per-minute sets how dense each class is.</div>";
-    html += "<div class='setup-grid'>";
-    html += "<label>Slides per minute<input id='setupSlidesPerMin' type='number' min='0.5' max='4' step='0.1' value='1.5' /></label>";
-    html += "<label>Polls<input id='setupPolls' type='number' min='0' max='50' value='2' /></label>";
-    html += "<label>Word clouds<input id='setupWordClouds' type='number' min='0' max='50' value='4' /></label>";
-    html += "<label>Quizzes<input id='setupQuizzes' type='number' min='0' max='50' value='1' /></label>";
-    html += "</div>";
-    html += "<label class='chk' style='display:block;margin-top:8px'><input id='setupFinalTest' type='checkbox' checked /> Include a final test in each class</label>";
     html += "</details>";
     html += "<div id='cards'>";
     plan.classes.forEach(function(c, i){ html += classCard(c, i, plan.classes); });
