@@ -3094,7 +3094,9 @@ function resolveQaOutcome(sourceCheck, qa, quality) {
       shippable: true,
       quality_score: score,
       quality_band: quality.status,
-      headline: `Your class scored ${score}/100 (${quality.status}) — below the ${70} release bar, but it's structurally sound and your call to make.`,
+      headline: score < 70
+        ? `Your class scored ${score}/100 (${quality.status}) — below the 70-point release bar, but it's structurally sound and your call to make.`
+        : `Your class scored ${score}/100 (${quality.status}) and is structurally sound, but a few quality flags are worth a look before publishing — your call.`,
       explanation: "Nothing is broken. The score reflects depth and rigor against the rubric. You can publish it with a disclosed quality note, auto-improve the weak areas, or refine and re-run.",
       weakest_areas: (quality.recommendations || []).slice(0, 5),
       options
@@ -3204,7 +3206,13 @@ function qualityAudit(brief, generated, sourcePaper, sourceCheck, qa) {
     transparency: hasWorksCited ? 100 : 35,
     schema_qa: qa.ok ? 100 : 0
   };
-  if (scores.slide_budget < 100) issues.push("Generated slide count does not match the requested slide budget.");
+  // Slide-count fidelity is a SCORE concern, not a release blocker. A mismatch is
+  // expected and correct whenever the requested budget is below the tier's slide
+  // floor (the generator builds to the floor) or content pacing rounds differently.
+  // Pushing it into `issues` flipped quality.ok to false and dead-ended otherwise
+  // excellent classes (e.g. 92/100) into a "below the 70 bar" decision. It belongs
+  // in the weighted score (slide_budget rubric) and as a note — never a wall.
+  if (scores.slide_budget < 100) recommendations.push("Generated slide count does not exactly match the requested slide budget — the tier's slide floor or content pacing took precedence. This is reflected in the score, not a release blocker.");
   if (!standard.ok) issues.push(`Knowledge base does not meet the selected ${standard.tier.label} standard: ${standard.messages.join(" ")}`);
   if (scores.research_rigor < 90) recommendations.push("Improve the knowledge base before relying on this as a finished masterclass.");
   if (scores.source_grounding < 70) recommendations.push("Increase explicit source anchors on teaching slides.");
@@ -3685,7 +3693,7 @@ module.exports = async function generateHandler(req, res) {
     // disclosed quality note so the shortfall is transparent downstream.
     if (qaOutcome.kind === "quality_decision" && acceptQuality) {
       quality.published_below_bar = true;
-      quality.published_note = `Published by human decision at quality ${quality.score}/100 (${quality.status}), below the 70-point release bar. Weak areas were disclosed at publish time.`;
+      quality.published_note = `Published by human decision at quality ${quality.score}/100 (${quality.status}). Weak areas were disclosed at publish time.`;
     }
 
     generated.source_discovery = sourceDiscovery;
