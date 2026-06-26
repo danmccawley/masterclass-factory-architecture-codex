@@ -1,52 +1,44 @@
 /* Generated glossary. term -> {d, r}. */
 window.GLOSSARY = {
   "texas war of independence": {
-    "d": "A conflict from October 1835 to April 1836 in which Texian settlers and allies fought to gain independence from Mexico, culminating in the creation of the Republic of Texas.",
-    "r": "Understanding this war explains how Texas separated from Mexico and the origins of its independent government."
+    "d": "A conflict from October 1835 to April 1836 in which Texian settlers and Tejanos fought to gain independence from Mexican rule.",
+    "r": "It marks the creation of the Republic of Texas and shaped the political landscape of the region."
   },
   "texian": {
-    "d": "A term used to describe Anglo-American settlers in Mexican Texas who participated in the independence movement.",
-    "r": "Knowing who the Texians were helps clarify the cultural and political forces driving the conflict."
+    "d": "A term used to describe Anglo-American settlers living in Texas during the period of Mexican rule and the Texas Revolution.",
+    "r": "Understanding who Texians were helps explain the cultural and political tensions leading to the war."
   },
-  "sam houston": {
-    "d": "Commander of the Texian army who led forces to victory at the Battle of San Jacinto and later became a key political leader in Texas.",
-    "r": "Recognizing Houston’s role is essential to understanding Texian military success and leadership."
+  "tejano": {
+    "d": "A Mexican-born resident of Texas who lived in the region before and during the Texas War of Independence.",
+    "r": "Tejanos played key roles in the conflict and their perspectives add depth to the historical narrative."
   },
-  "antonio lópez de santa anna": {
-    "d": "Mexican general and president who led Mexican forces against Texian rebels during the war.",
-    "r": "Santa Anna’s leadership shaped the Mexican response and the war’s military campaigns."
+  "empresario land grants": {
+    "d": "Contracts given by the Mexican government to individuals (empresarios) to bring settlers to Texas under conditions like Mexican citizenship and Catholicism.",
+    "r": "These grants led to increased Anglo-American settlement, which contributed to tensions with Mexico."
   },
-  "battle of gonzales": {
-    "d": "The first military engagement of the Texas War of Independence in October 1835, marked by Texian resistance to Mexican attempts to reclaim a cannon.",
-    "r": "This battle symbolizes the start of armed conflict and Texian defiance."
+  "siege of the alamo": {
+    "d": "A pivotal 1836 battle where Mexican forces besieged Texian defenders at the Alamo mission in San Antonio, resulting in Texian defeat.",
+    "r": "The battle became a symbol of Texian resistance and inspired further support for independence."
   },
   "battle of san jacinto": {
-    "d": "The decisive battle in April 1836 where Texian forces defeated the Mexican army, securing Texas independence.",
-    "r": "This victory ended the war and established Texian control."
+    "d": "The decisive 1836 battle where Texian forces led by Sam Houston defeated Mexican troops and captured General Santa Anna.",
+    "r": "This victory secured Texian independence and ended major fighting in the war."
   },
   "texas declaration of independence": {
-    "d": "A document adopted in March 1836 declaring Texas independent from Mexico and establishing a new government.",
-    "r": "It formalized the Texian cause and laid the foundation for the Republic of Texas."
+    "d": "A document adopted on March 2, 1836, declaring Texas independent from Mexico, primarily drafted by George Childress.",
+    "r": "It formally announced Texas’s break from Mexico and justified the revolution."
+  },
+  "sam houston": {
+    "d": "A key Texian military leader and politician who led forces at San Jacinto and later became president of the Republic of Texas.",
+    "r": "His leadership was crucial to Texian victory and the establishment of Texas as an independent republic."
   },
   "republic of texas": {
-    "d": "The independent nation established after the Texas War of Independence, existing from 1836 to 1845.",
-    "r": "Understanding the Republic explains Texas’s political status before joining the United States."
+    "d": "The independent nation established after the Texas War of Independence, with a constitution modeled on the U.S. but including protections for slavery.",
+    "r": "It represents the political outcome of the war and influenced future U.S. expansion."
   },
-  "empresario": {
-    "d": "A person granted the right by the Mexican government to settle families in Texas, such as Stephen F. Austin.",
-    "r": "Empresarios facilitated Anglo-American settlement, which influenced tensions leading to war."
-  },
-  "slavery in texas": {
-    "d": "The practice of enslaving people, which was brought by many southern U.S. settlers into Texas despite Mexican laws against it.",
-    "r": "Slavery was a major source of conflict and shaped social and political divisions in the war."
-  },
-  "tejanos": {
-    "d": "Mexican residents of Texas who had lived there before Anglo settlement and whose loyalties were divided during the war.",
-    "r": "Tejanos’ experiences highlight the complex social dynamics and contested identities in the conflict."
-  },
-  "indigenous peoples": {
-    "d": "Native groups living in Texas during the period, whose perspectives and roles in the war are less documented.",
-    "r": "Including indigenous viewpoints is important for a fuller understanding of the region’s history."
+  "centralist vs. federalist conflict": {
+    "d": "Political struggle in Mexico between centralists who favored strong central government and federalists who supported states’ rights.",
+    "r": "This conflict affected Texas’s political status and contributed to the outbreak of the war."
   },
   "terminal learning objective": {
     "d": "The main capability learners should demonstrate by the end of the class.",

@@ -1,7 +1,7 @@
 # Facilitator Guide: Introduction to the Texas War of Independence
 
-Quality score at build: 97 / 100 (excellent)
-Class tier: Quick briefing
+Quality score at build: 98 / 100 (excellent)
+Class tier: Standard class
 
 ## How to Run This Class
 - Start by explaining the knowledge-base boundary and why the final works-cited slide matters.

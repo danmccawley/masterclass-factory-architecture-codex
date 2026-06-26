@@ -1,12 +1,12 @@
 # Quiz Answer Key
 
 ## Question 1
-Which battle is considered a turning point that led to Texas gaining independence?
-Answer: Battle of San Jacinto
-Why: The Battle of San Jacinto was decisive in defeating Mexican forces and securing Texas independence.
+Which group primarily settled Texas under Mexican rule and contributed to tensions leading to the war?
+Answer: Anglo-American settlers
+Why: Anglo-American settlers played a major role in Texas's demographic and political tensions under Mexican governance.
 
 ## Question 2
-Describe the geopolitical situation in Texas prior to the war and how it contributed to the conflict.
+Explain the significance of the Texas War of Independence in shaping the region's history.
 Answer: undefined
-Rubric: Response should include mention of Mexican laws on settlement and slavery, tensions between settlers and Mexican authorities, and the role of indigenous peoples. A strong answer explains how these factors combined to create conflict.
-Sample: Before the war, Texas was part of Mexico, but many settlers from the U.S. moved there. Mexican laws restricted slavery and settlement patterns, causing tension. Indigenous groups were also affected by these changes. These issues led to growing conflict between settlers and Mexican government.
+Rubric: Response should include causes such as political and cultural tensions under Mexican rule, key events like the Siege of the Alamo and Battle of San Jacinto, major figures involved, and outcomes including the establishment of the Republic of Texas.
+Sample: The Texas War of Independence was significant because it marked Texas's break from Mexican rule due to political and cultural conflicts. Key events like the Siege of the Alamo symbolized Texian resistance, and the Battle of San Jacinto secured victory. Leaders like Sam Houston were crucial, and the war led to the creation of the Republic of Texas.

@@ -1,14 +1,14 @@
 {
   "title": "Introduction to the Texas War of Independence",
   "slug": "introduction-to-the-texas-war-of-independence",
-  "generated_at": "2026-06-25T14:36:28.209Z",
+  "generated_at": "2026-06-26T18:33:15.905Z",
   "class_tier": {
-    "level": "briefing",
-    "label": "Quick briefing",
-    "source_floor": 4,
-    "primary_source_floor": 1,
-    "slide_floor": 30,
-    "standard": "Short, source-aware orientation. Useful for overviews, not full mastery."
+    "level": "standard",
+    "label": "Standard class",
+    "source_floor": 8,
+    "primary_source_floor": 2,
+    "slide_floor": 40,
+    "standard": "Solid internal training with enough evidence for reliable instruction."
   },
   "research_owner": "ai",
   "source_discovery": {
@@ -17,17 +17,17 @@
     "model": "tavily-search",
     "added_sources": [
       {
+        "path": "https://en.wikipedia.org/wiki/Texas_Revolution",
+        "type": "url",
+        "trust": "secondary"
+      },
+      {
         "path": "https://www.youtube.com/watch?v=XXyVIlxoXUM",
         "type": "url",
         "trust": "secondary"
       },
       {
         "path": "https://www.britannica.com/topic/Texas-Revolution",
-        "type": "url",
-        "trust": "secondary"
-      },
-      {
-        "path": "https://www.battlefields.org/learn/articles/texas-revolution",
         "type": "url",
         "trust": "secondary"
       },
@@ -47,27 +47,42 @@
         "trust": "secondary"
       },
       {
-        "path": "https://www.gilderlehrman.org/history-resources/spotlight-primary-source/texas-declaration-independence-1836",
-        "type": "url",
-        "trust": "secondary"
-      },
-      {
         "path": "https://study.com/academy/lesson/video/the-texas-revolution-lesson-for-kids.html",
         "type": "url",
         "trust": "secondary"
       },
       {
-        "path": "https://dp.la/primary-source-sets/texas-revolution",
+        "path": "https://www.youtube.com/watch?v=sfm7CTpyBgU",
         "type": "url",
         "trust": "secondary"
       },
       {
-        "path": "https://www.shafr.org/united-states-and-republic-texas",
+        "path": "https://libguides.com.edu/c.php?g=649524&p=4555063",
+        "type": "certification training",
+        "trust": "primary"
+      },
+      {
+        "path": "https://southern.libguides.com/texaswarforindependence",
         "type": "url",
         "trust": "secondary"
       },
       {
-        "path": "https://en.wikipedia.org/wiki/Texas_Revolution",
+        "path": "https://www.gilderlehrman.org/history-resources/spotlight-primary-source/texas-declaration-independence-1836",
+        "type": "url",
+        "trust": "secondary"
+      },
+      {
+        "path": "https://dp.la/primary-source-sets/texas-revolution/teaching-guide",
+        "type": "url",
+        "trust": "secondary"
+      },
+      {
+        "path": "https://guides.library.yale.edu/c.php?g=295904&p=3624718",
+        "type": "certification training",
+        "trust": "primary"
+      },
+      {
+        "path": "https://en.wikipedia.org/wiki/Texas_Declaration_of_Independence",
         "type": "url",
         "trust": "secondary"
       },
@@ -75,47 +90,39 @@
         "path": "https://www.tshaonline.org/handbook/entries/texas-revolution",
         "type": "url",
         "trust": "secondary"
-      },
-      {
-        "path": "https://briscoecenter.org/research/online-reference-tools/subject-guides/texas-revolution-resources",
-        "type": "url",
-        "trust": "secondary"
       }
     ],
     "rejected_sources": [],
     "gaps": [],
     "notes": [
-      "Round 1: Bernard found 13 new candidates and checked 13 URLs for readability.",
-      "Round 2: Bernard found 0 new candidates and checked 0 URLs for readability.",
-      "Round 2: no new candidates to verify; stopping early.",
-      "Bernard added 13 verified sources over 2 rounds, but the floor is still short by 0 usable and 1 primary."
+      "Round 1: Bernard found 15 new candidates and checked 15 URLs for readability."
     ],
-    "rounds": 2
+    "rounds": 1
   },
   "knowledge_standard": {
     "ok": true,
     "floor_met": true,
     "evidence_limited": false,
     "tier": {
-      "level": "briefing",
-      "label": "Quick briefing",
-      "source_floor": 4,
-      "primary_source_floor": 1,
-      "slide_floor": 30,
-      "standard": "Short, source-aware orientation. Useful for overviews, not full mastery."
+      "level": "standard",
+      "label": "Standard class",
+      "source_floor": 8,
+      "primary_source_floor": 2,
+      "slide_floor": 40,
+      "standard": "Solid internal training with enough evidence for reliable instruction."
     },
     "counts": {
-      "total": 13,
-      "primary": 1,
+      "total": 15,
+      "primary": 3,
       "secondary": 12,
       "unknown": 0
     },
     "score": {
-      "score": 84,
-      "band": "strong",
+      "score": 85,
+      "band": "excellent",
       "components": {
         "coverage": 100,
-        "authority": 63,
+        "authority": 68,
         "recency": 75
       },
       "weights": {
@@ -124,22 +131,22 @@
         "recency": 0.2
       },
       "detail": {
-        "total": 13,
-        "primary": 1,
+        "total": 15,
+        "primary": 3,
         "secondary": 12,
-        "required_total": 4,
-        "required_primary": 1,
+        "required_total": 8,
+        "required_primary": 2,
         "dated_sources": 0,
         "recency_floor_year": 2024
       },
-      "summary": "Knowledge-base score 84/100 (strong): coverage 100, authority 63, recency 75. 13/4 sources, 1/1 primary."
+      "summary": "Knowledge-base score 85/100 (excellent): coverage 100, authority 68, recency 75. 15/8 sources, 3/2 primary."
     },
-    "required_sources": 4,
-    "required_primary_sources": 1,
+    "required_sources": 8,
+    "required_primary_sources": 2,
     "source_gap": 0,
     "primary_source_gap": 0,
     "messages": [
-      "Knowledge base meets the selected Quick briefing floor."
+      "Knowledge base meets the selected Standard class floor."
     ]
   },
   "slide_count": 68,
@@ -147,7 +154,7 @@
   "deep_dive_count": 67,
   "required_deep_dive_count": 67,
   "quality": {
-    "score": 97,
+    "score": 98,
     "status": "excellent",
     "scores": {
       "slide_budget": 100,
@@ -158,7 +165,7 @@
       "objective_alignment": 95,
       "content_density": 100,
       "deep_dive_depth": 100,
-      "participation_design": 69,
+      "participation_design": 82,
       "assessment": 90,
       "transparency": 100,
       "schema_qa": 100
@@ -194,7 +201,7 @@
   ],
   "source_paper": {
     "title": "Student Reader - Introduction to the Texas War of Independence",
-    "section_count": 14,
+    "section_count": 16,
     "sections": [
       {
         "id": "s1",
@@ -204,17 +211,17 @@
       {
         "id": "s2",
         "num": "2",
-        "title": "youtube.com"
+        "title": "en.wikipedia.org"
       },
       {
         "id": "s3",
         "num": "3",
-        "title": "britannica.com"
+        "title": "youtube.com"
       },
       {
         "id": "s4",
         "num": "4",
-        "title": "battlefields.org"
+        "title": "britannica.com"
       },
       {
         "id": "s5",
@@ -234,42 +241,52 @@
       {
         "id": "s8",
         "num": "8",
-        "title": "gilderlehrman.org"
+        "title": "study.com"
       },
       {
         "id": "s9",
         "num": "9",
-        "title": "study.com"
+        "title": "youtube.com"
       },
       {
         "id": "s10",
         "num": "10",
-        "title": "dp.la"
+        "title": "libguides.com.edu"
       },
       {
         "id": "s11",
         "num": "11",
-        "title": "shafr.org"
+        "title": "southern.libguides.com"
       },
       {
         "id": "s12",
         "num": "12",
-        "title": "en.wikipedia.org"
+        "title": "gilderlehrman.org"
       },
       {
         "id": "s13",
         "num": "13",
-        "title": "tshaonline.org"
+        "title": "dp.la"
       },
       {
         "id": "s14",
         "num": "14",
-        "title": "briscoecenter.org"
+        "title": "guides.library.yale.edu"
+      },
+      {
+        "id": "s15",
+        "num": "15",
+        "title": "en.wikipedia.org"
+      },
+      {
+        "id": "s16",
+        "num": "16",
+        "title": "tshaonline.org"
       }
     ]
   },
   "course_blueprint": {
-    "tier": "Quick briefing",
+    "tier": "Standard class",
     "slide_target": 68,
     "teaching_slide_target": 67,
     "knowledge_standard": {
@@ -277,25 +294,25 @@
       "floor_met": true,
       "evidence_limited": false,
       "tier": {
-        "level": "briefing",
-        "label": "Quick briefing",
-        "source_floor": 4,
-        "primary_source_floor": 1,
-        "slide_floor": 30,
-        "standard": "Short, source-aware orientation. Useful for overviews, not full mastery."
+        "level": "standard",
+        "label": "Standard class",
+        "source_floor": 8,
+        "primary_source_floor": 2,
+        "slide_floor": 40,
+        "standard": "Solid internal training with enough evidence for reliable instruction."
       },
       "counts": {
-        "total": 13,
-        "primary": 1,
+        "total": 15,
+        "primary": 3,
         "secondary": 12,
         "unknown": 0
       },
       "score": {
-        "score": 84,
-        "band": "strong",
+        "score": 85,
+        "band": "excellent",
         "components": {
           "coverage": 100,
-          "authority": 63,
+          "authority": 68,
           "recency": 75
         },
         "weights": {
@@ -304,22 +321,22 @@
           "recency": 0.2
         },
         "detail": {
-          "total": 13,
-          "primary": 1,
+          "total": 15,
+          "primary": 3,
           "secondary": 12,
-          "required_total": 4,
-          "required_primary": 1,
+          "required_total": 8,
+          "required_primary": 2,
           "dated_sources": 0,
           "recency_floor_year": 2024
         },
-        "summary": "Knowledge-base score 84/100 (strong): coverage 100, authority 63, recency 75. 13/4 sources, 1/1 primary."
+        "summary": "Knowledge-base score 85/100 (excellent): coverage 100, authority 68, recency 75. 15/8 sources, 3/2 primary."
       },
-      "required_sources": 4,
-      "required_primary_sources": 1,
+      "required_sources": 8,
+      "required_primary_sources": 2,
       "source_gap": 0,
       "primary_source_gap": 0,
       "messages": [
-        "Knowledge base meets the selected Quick briefing floor."
+        "Knowledge base meets the selected Standard class floor."
       ]
     },
     "approved_before_generation": true,
@@ -367,12 +384,12 @@
         "deep_dive_expectation": "substantive deep dives where required by tier and setting"
       }
     ],
-    "lesson_sections": 7
+    "lesson_sections": 5
   },
   "evidence_map": [
     {
       "kind": "terminal objective",
-      "claim": "Describe the historical context and key events of the Texas War of Independence, including its causes, major battles, and outcomes.",
+      "claim": "Explain the significance of the Texas War of Independence, including its causes, key events, major figures, and outcomes.",
       "source_ids": [
         "s1",
         "s2",
@@ -380,6 +397,22 @@
       ],
       "source_titles": [
         "Class setup, learner profile, and research rules",
+        "en.wikipedia.org",
+        "youtube.com"
+      ],
+      "status": "mapped",
+      "finding": "Mapped to approved source-paper sections for source verification."
+    },
+    {
+      "kind": "enabling objective",
+      "claim": "Identify the geographical and political context of Texas before the war, including its status under Mexican rule and the role of Anglo-American settlers and Tejanos.",
+      "source_ids": [
+        "s2",
+        "s3",
+        "s4"
+      ],
+      "source_titles": [
+        "en.wikipedia.org",
         "youtube.com",
         "britannica.com"
       ],
@@ -388,49 +421,33 @@
     },
     {
       "kind": "enabling objective",
-      "claim": "Explain the geopolitical situation in Texas prior to the war, including settlement patterns, Mexican laws, and tensions over slavery.",
+      "claim": "Describe the key players involved in the early stages of the conflict, including Texian leaders, Mexican officials, and cultural groups.",
       "source_ids": [
-        "s2",
         "s3",
         "s4"
       ],
       "source_titles": [
         "youtube.com",
-        "britannica.com",
-        "battlefields.org"
+        "britannica.com"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "enabling objective",
-      "claim": "Identify and describe major political and military figures involved in the conflict, such as Sam Houston and Antonio López de Santa Anna.",
-      "source_ids": [
-        "s3",
-        "s4"
-      ],
-      "source_titles": [
-        "britannica.com",
-        "battlefields.org"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "enabling objective",
-      "claim": "Discuss the roles and perspectives of settlers, indigenous peoples, and other groups during the Texas War of Independence.",
+      "claim": "Analyze the major battles and political actions during the war, such as the Siege of the Alamo, the Texas Declaration of Independence, and the Battle of San Jacinto.",
       "source_ids": [
         "s4"
       ],
       "source_titles": [
-        "battlefields.org"
+        "britannica.com"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "enabling objective",
-      "claim": "Analyze the significance of the Texas Declaration of Independence and the formation of the Republic of Texas.",
+      "claim": "Evaluate the establishment and constitution of the Republic of Texas, including its policies on slavery and rights of different groups.",
       "source_ids": [
         "s1",
         "s2",
@@ -439,16 +456,16 @@
       ],
       "source_titles": [
         "Class setup, learner profile, and research rules",
+        "en.wikipedia.org",
         "youtube.com",
-        "britannica.com",
-        "battlefields.org"
+        "britannica.com"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "enabling objective",
-      "claim": "Evaluate contested issues such as the role of slavery, racial discrimination, and differing narratives from Texian, Mexican, and indigenous viewpoints.",
+      "claim": "Compare differing perspectives on the motivations and legitimacy of the Texas War of Independence, addressing field disagreements and cultural dynamics.",
       "source_ids": [
         "s1",
         "s2",
@@ -457,58 +474,42 @@
       ],
       "source_titles": [
         "Class setup, learner profile, and research rules",
+        "en.wikipedia.org",
         "youtube.com",
-        "britannica.com",
-        "battlefields.org"
+        "britannica.com"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "lesson section",
-      "claim": "Introduction and Historical Context",
+      "claim": "Geographical and Political Context of Texas Before the War",
       "source_ids": [
-        "s4",
-        "s7",
-        "s10",
-        "s12"
+        "s2",
+        "s15",
+        "s16",
+        "s11"
       ],
       "source_titles": [
-        "battlefields.org",
-        "billofrightsinstitute.org",
-        "dp.la",
-        "en.wikipedia.org"
+        "en.wikipedia.org",
+        "en.wikipedia.org",
+        "tshaonline.org",
+        "southern.libguides.com"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "lesson section",
-      "claim": "Key Figures of the Texas War of Independence",
+      "claim": "Key Players in the Early Conflict",
       "source_ids": [
+        "s2",
         "s7",
-        "s10",
-        "s12"
+        "s16"
       ],
       "source_titles": [
+        "en.wikipedia.org",
         "billofrightsinstitute.org",
-        "dp.la",
-        "en.wikipedia.org"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "lesson section",
-      "claim": "Settlers, Indigenous Peoples, and Social Dynamics",
-      "source_ids": [
-        "s7",
-        "s10",
-        "s13"
-      ],
-      "source_titles": [
-        "billofrightsinstitute.org",
-        "dp.la",
         "tshaonline.org"
       ],
       "status": "mapped",
@@ -516,66 +517,48 @@
     },
     {
       "kind": "lesson section",
-      "claim": "Major Battles and Military Campaigns",
+      "claim": "Major Battles and Political Actions",
       "source_ids": [
-        "s4",
-        "s10",
+        "s2",
+        "s11",
         "s12",
         "s13"
       ],
       "source_titles": [
-        "battlefields.org",
-        "dp.la",
         "en.wikipedia.org",
-        "tshaonline.org"
+        "southern.libguides.com",
+        "gilderlehrman.org",
+        "dp.la"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "lesson section",
-      "claim": "Texas Declaration of Independence and Republic Formation",
+      "claim": "Establishment and Constitution of the Republic of Texas",
       "source_ids": [
-        "s10",
-        "s11"
-      ],
-      "source_titles": [
-        "dp.la",
-        "shafr.org"
-      ],
-      "status": "mapped",
-      "finding": "Mapped to approved source-paper sections for source verification."
-    },
-    {
-      "kind": "lesson section",
-      "claim": "Contested Narratives and Legacy",
-      "source_ids": [
-        "s7",
-        "s10",
+        "s11",
         "s13"
       ],
       "source_titles": [
-        "billofrightsinstitute.org",
-        "dp.la",
-        "tshaonline.org"
+        "southern.libguides.com",
+        "dp.la"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
     },
     {
       "kind": "lesson section",
-      "claim": "Review and Knowledge Check",
+      "claim": "Perspectives and Contested Interpretations",
       "source_ids": [
-        "s1",
-        "s2",
-        "s3",
-        "s4"
+        "s7",
+        "s11",
+        "s16"
       ],
       "source_titles": [
-        "Class setup, learner profile, and research rules",
-        "youtube.com",
-        "britannica.com",
-        "battlefields.org"
+        "billofrightsinstitute.org",
+        "southern.libguides.com",
+        "tshaonline.org"
       ],
       "status": "mapped",
       "finding": "Mapped to approved source-paper sections for source verification."
@@ -591,9 +574,9 @@
       ],
       "source_titles": [
         "Class setup, learner profile, and research rules",
+        "en.wikipedia.org",
         "youtube.com",
-        "britannica.com",
-        "battlefields.org"
+        "britannica.com"
       ],
       "status": "corroboration-required",
       "finding": "Mapped to approved source-paper sections for source verification."
@@ -607,7 +590,7 @@
       ],
       "source_titles": [
         "Class setup, learner profile, and research rules",
-        "youtube.com"
+        "en.wikipedia.org"
       ],
       "status": "scope-boundary",
       "finding": "Mapped to approved source-paper sections for source verification."
