@@ -124,6 +124,15 @@
   .brow.flagged{animation:rowpulse 1.5s ease-in-out infinite;border-radius:8px;}
   @keyframes rowpulse{0%,100%{background:transparent;}50%{background:rgba(196,160,107,0.16);}}
   @keyframes sp{to{transform:rotate(360deg);}}
+  /* Planner live indicator: the planner is a single long LLM call with no progress
+     stream, so this is an honest animated estimate — spinner + staged caption +
+     asymptotic bar + elapsed clock. Motion = alive; a still screen must never
+     read as working. Mirrors the per-class build ticker. */
+  .plan-live{margin-top:14px;border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--card2);}
+  .plan-live-head{display:flex;align-items:center;font-family:var(--mono);font-size:13px;color:var(--ink);}
+  .plan-live-bar{height:4px;background:var(--line);border-radius:3px;margin:10px 0 6px;overflow:hidden;}
+  .plan-live-bar > i{display:block;height:100%;width:0;background:var(--teal);transition:width .3s linear;}
+  .plan-live-meta{font-family:var(--mono);font-size:12px;color:var(--dim);}
   @media (max-width:760px){
     .row,.row3{grid-template-columns:1fr;}
     h1{font-size:30px;}
@@ -162,6 +171,44 @@
   var $ = function(id){ return document.getElementById(id); };
   function esc(s){ var d=document.createElement("div"); d.textContent=(s==null?"":String(s)); return d.innerHTML; }
   function setStatus(msg, warn){ $("status").innerHTML = warn ? "<span class='warn'>"+esc(msg)+"</span>" : esc(msg); }
+
+  // ---- Planner live indicator -------------------------------------------
+  // The plan is one long LLM request that streams no progress, so this is an
+  // honest client-side estimate: an elapsed clock, an asymptotic bar that never
+  // claims completion until the response lands, and a caption that advances on
+  // typical planning timing. Same language as the per-class build ticker.
+  var planTick = { id:null, start:0 };
+  var PLAN_STAGES = [
+    [0,  "Reading the subject \u0026 scope"],
+    [4,  "Researching the domain"],
+    [11, "Proposing the class sequence"],
+    [22, "Setting objectives \u0026 prerequisites"],
+    [34, "Checking the arc for coherence"],
+    [46, "Finalizing the syllabus"]
+  ];
+  function startPlanTick(){
+    stopPlanTick();
+    $("status").innerHTML =
+      "<div class='plan-live'>"+
+        "<div class='plan-live-head'><span class='spin'></span><span class='plan-stage'>"+esc(PLAN_STAGES[0][1])+"</span></div>"+
+        "<div class='plan-live-bar'><i></i></div>"+
+        "<div class='plan-live-meta'><span class='plan-clock'>0:00</span> elapsed \u00b7 Bernard is designing the syllabus\u2026</div>"+
+      "</div>";
+    planTick.start = Date.now();
+    planTick.id = setInterval(paintPlanTick, 300);
+    paintPlanTick();
+  }
+  function paintPlanTick(){
+    var wrap = $("status").querySelector(".plan-live"); if(!wrap) return;
+    var secs = Math.floor((Date.now()-planTick.start)/1000);
+    var pct = Math.min(95, 100*(1-Math.exp(-secs/22)));
+    var stage = PLAN_STAGES[0][1];
+    for(var i=0;i<PLAN_STAGES.length;i++){ if(secs>=PLAN_STAGES[i][0]) stage=PLAN_STAGES[i][1]; }
+    var st=wrap.querySelector(".plan-stage"); if(st) st.textContent=stage;
+    var bar=wrap.querySelector(".plan-live-bar > i"); if(bar) bar.style.width=pct.toFixed(1)+"%";
+    var ck=wrap.querySelector(".plan-clock"); if(ck) ck.textContent=mmss(secs);
+  }
+  function stopPlanTick(){ if(planTick.id){ clearInterval(planTick.id); planTick.id=null; } }
 
   // Mirror api/curriculum-store.js slugify so client-side prerequisite links
   // line up with the slugs the server assigns on save.
@@ -740,12 +787,13 @@
       scope: ($("scope").value||"").trim(),
       count: $("count").value ? Number($("count").value) : 0
     };
-    var btn = $("go"); btn.disabled = true; var label = btn.textContent; btn.textContent = "Bernard is planning…";
-    setStatus("Designing the syllabus — this can take a moment for a big subject.");
+    var btn = $("go"); btn.disabled = true; var label = btn.textContent; btn.textContent = "Bernard is planning\u2026";
+    startPlanTick();
     $("result").innerHTML = "";
     fetch("/api/curriculum", { method:"POST", headers:{"content-type":"application/json"}, body: JSON.stringify(input) })
       .then(function(r){ return r.json().then(function(j){ return { ok:r.ok, j:j }; }); })
       .then(function(res){
+        stopPlanTick();
         if(res.ok && res.j && res.j.ok && res.j.plan){
           setStatus("Planned "+res.j.class_count+" classes."+(res.j.cost_usd!=null?(" (~$"+res.j.cost_usd.toFixed(4)+")"):"")+" Bernard proposed the sequence and prerequisites \u2014 review, adjust if needed, then save.");
           renderCanvas(res.j.plan, input);
@@ -754,8 +802,8 @@
           setStatus("Planner: "+err+(res.j && res.j.details ? (" — "+res.j.details.join("; ")) : ""), true);
         }
       })
-      .catch(function(){ setStatus("Couldn't reach the planner service.", true); })
-      .finally(function(){ btn.disabled = false; btn.textContent = label; });
+      .catch(function(){ stopPlanTick(); setStatus("Couldn't reach the planner service.", true); })
+      .finally(function(){ stopPlanTick(); btn.disabled = false; btn.textContent = label; });
   });
 
   $("subject").addEventListener("keydown", function(e){ if(e.key==="Enter"){ e.preventDefault(); $("go").click(); } });
