@@ -275,12 +275,28 @@
     html += "<details class='setup' open><summary>Class setup \u2014 applies to every class</summary>";
     html += "<div class='setup-grid'>";
     html += "<label>Class tier<select id='setupTier'><option value='briefing'>Briefing</option><option value='standard' selected>Standard</option><option value='professional'>Professional</option><option value='expert'>Expert</option></select></label>";
-    html += "<label>Technical level<select id='setupTech'><option value='non'>Non-technical</option><option value='mixed' selected>Mixed</option><option value='technical'>Technical</option></select></label>";
     html += "<label>Tone<select id='setupTone'><option value='plain' selected>Plain</option><option value='warm'>Warm</option><option value='executive'>Executive</option><option value='academic'>Academic</option><option value='workshop'>Workshop</option></select></label>";
     html += "<label>Reading grade cap<input id='setupReading' type='number' min='3' max='16' value='9' /></label>";
-    html += "<label>Education <span class='hint'>(optional)</span><input id='setupEdu' type='text' placeholder='e.g. undergraduate' /></label>";
-    html += "<label>Audience role <span class='hint'>(optional)</span><input id='setupRole' type='text' placeholder='e.g. new hires' /></label>";
     html += "</div>";
+    html += "<div class='obj-h'>Demographics \u2014 typical & floor learner</div>";
+    html += "<div class='hint' style='margin:-4px 0 8px'>The typical learner is who you design for; the floor learner is the least-prepared student the class must still serve.</div>";
+    html += "<div class='hint' style='font-weight:600;margin-bottom:4px'>Typical learner</div>";
+    html += "<div class='setup-grid'>";
+    html += "<label>Age band<input id='setupAvgAge' type='text' placeholder='e.g. 35-54' /></label>";
+    html += "<label>Education<input id='setupEdu' type='text' placeholder='e.g. undergraduate' /></label>";
+    html += "<label>Background<input id='setupAvgBg' type='text' placeholder='e.g. department leaders' /></label>";
+    html += "<label>Technical level<select id='setupTech'><option value='non'>Non-technical</option><option value='mixed' selected>Mixed</option><option value='technical'>Technical</option></select></label>";
+    html += "<label>Role<input id='setupRole' type='text' placeholder='e.g. new hires' /></label>";
+    html += "</div>";
+    html += "<div class='hint' style='font-weight:600;margin:10px 0 4px'>Floor learner</div>";
+    html += "<div class='setup-grid'>";
+    html += "<label>Age band<input id='setupFloorAge' type='text' placeholder='e.g. 18+' /></label>";
+    html += "<label>Education<input id='setupFloorEdu' type='text' placeholder='e.g. high school' /></label>";
+    html += "<label>Background<input id='setupFloorBg' type='text' placeholder='e.g. no prior knowledge' /></label>";
+    html += "<label>Technical level<select id='setupFloorTech'><option value='non' selected>Non-technical</option><option value='mixed'>Mixed</option><option value='technical'>Technical</option></select></label>";
+    html += "<label>Role<input id='setupFloorRole' type='text' placeholder='e.g. general audience' /></label>";
+    html += "</div>";
+    html += "<div class='setup-grid' style='margin-top:8px'><label>Gender mix<input id='setupGenderMix' type='text' placeholder='e.g. mixed' /></label></div>";
     html += "<div class='obj-h'>Mastery \u2014 depth & checks</div>";
     html += "<div class='setup-grid'>";
     html += "<label>Target mastery level<input id='setupMasteryLevel' type='number' min='1' max='5' value='3' /></label>";
@@ -300,10 +316,26 @@
     html += "<label class='kb-opt'><span><input type='radio' name='setupOwner' value='assisted' /><strong>You + Bernard</strong></span><small>You add the sources below, Bernard fills the gaps</small></label>";
     html += "<label class='kb-opt'><span><input type='radio' name='setupOwner' value='creator' /><strong>You build it</strong></span><small>Build only on the sources you add below \u2014 no auto-research</small></label>";
     html += "</div>";
+    html += "<div class='setup-grid' style='margin-top:10px'>";
+    html += "<label>Evidence boundary<select id='setupKbMode'><option value='none'>Use only the sources I add</option><option value='grounded'>Analyze my source list</option><option value='collaborative' selected>May add verified research</option></select></label>";
+    html += "<label>Recency floor<input id='setupKbRecency' type='date' value='2024-01-01' /></label>";
+    html += "<label>Minimum source tier<select id='setupKbMinTier'><option value='primary'>Primary</option><option value='secondary' selected>Secondary</option><option value='unknown'>Unknown allowed</option></select></label>";
+    html += "</div>";
+    html += "<label for='setupSeedPrompts' style='display:block;margin-top:8px'>Research seed prompts <span class='hint'>(one per line)</span></label>";
+    html += "<textarea id='setupSeedPrompts' placeholder='What should Bernard research first?\nOne prompt per line'></textarea>";
     html += "<div id='sourcesWrap' style='display:none;margin-top:12px'>";
     html += "<label for='setupSources'>Your sources <span class='hint'>(one per line \u2014 a URL, or \u201cTitle | https://\u2026\u201d)</span></label>";
     html += "<textarea id='setupSources' placeholder='https://example.org/standard\nKey report | https://example.org/report'></textarea>";
     html += "</div>";
+    html += "<div class='obj-h'>Length \u2014 density & interaction</div>";
+    html += "<div class='hint' style='margin:-4px 0 8px'>Each class\u2019s minutes come from the plan; slides-per-minute sets how dense each class is.</div>";
+    html += "<div class='setup-grid'>";
+    html += "<label>Slides per minute<input id='setupSlidesPerMin' type='number' min='0.5' max='4' step='0.1' value='1.5' /></label>";
+    html += "<label>Polls<input id='setupPolls' type='number' min='0' max='50' value='2' /></label>";
+    html += "<label>Word clouds<input id='setupWordClouds' type='number' min='0' max='50' value='4' /></label>";
+    html += "<label>Quizzes<input id='setupQuizzes' type='number' min='0' max='50' value='1' /></label>";
+    html += "</div>";
+    html += "<label class='chk' style='display:block;margin-top:8px'><input id='setupFinalTest' type='checkbox' checked /> Include a final test in each class</label>";
     html += "</details>";
     html += "<div id='cards'>";
     plan.classes.forEach(function(c, i){ html += classCard(c, i, plan.classes); });
@@ -371,9 +403,21 @@
           }).filter(function(s){ return s && s.url; });
         })(),
         audience: {
-          education: fv("setupEdu", ""),
-          technical: fv("setupTech", "mixed"),
-          role: fv("setupRole", ""),
+          average: {
+            age_band: fv("setupAvgAge", ""),
+            education: fv("setupEdu", ""),
+            background: fv("setupAvgBg", ""),
+            technical: fv("setupTech", "mixed"),
+            role: fv("setupRole", "")
+          },
+          floor: {
+            age_band: fv("setupFloorAge", ""),
+            education: fv("setupFloorEdu", ""),
+            background: fv("setupFloorBg", ""),
+            technical: fv("setupFloorTech", "non"),
+            role: fv("setupFloorRole", "")
+          },
+          gender_mix: fv("setupGenderMix", ""),
           tone: fv("setupTone", "plain"),
           reading_grade_cap: Number(fv("setupReading", 9)) || 9
         },
@@ -387,6 +431,21 @@
           student_language: fv("setupStudentLang", "en"),
           delivery: fv("setupDelivery", "english"),
           glossary_in_primary: !!($("setupGlossaryPrimary") && $("setupGlossaryPrimary").checked)
+        },
+        kb: {
+          mode: fv("setupKbMode", "collaborative"),
+          recency_floor: fv("setupKbRecency", ""),
+          min_tier: fv("setupKbMinTier", "secondary"),
+          seed_prompts: fv("setupSeedPrompts", "")
+        },
+        length: {
+          slides_per_minute: Number(fv("setupSlidesPerMin", 1.5)) || 1.5,
+          interaction_budget: {
+            polls: Number(fv("setupPolls", 2)) || 0,
+            word_clouds: Number(fv("setupWordClouds", 4)) || 0,
+            quizzes: Number(fv("setupQuizzes", 1)) || 0,
+            final_test: !!($("setupFinalTest") && $("setupFinalTest").checked)
+          }
         }
       },
       classes: classes
