@@ -157,6 +157,29 @@
       <div><label for="count">How many classes</label>
         <select id="count"><option value="">Let Bernard decide</option><option>5</option><option>6</option><option>8</option><option>10</option><option>12</option><option>15</option></select></div>
     </div>
+    <details class="setup" style="margin-top:10px"><summary>Audience &amp; demographics <span class="hint">(optional — sets who every class is written for)</span></summary>
+      <div class="setup-grid" style="margin-top:8px">
+        <label>Tone<select id="setupTone"><option value="plain" selected>Plain</option><option value="warm">Warm</option><option value="executive">Executive</option><option value="academic">Academic</option><option value="workshop">Workshop</option></select></label>
+        <label>Reading grade cap<input id="setupReading" type="number" min="3" max="16" value="9" /></label>
+        <label>Gender mix<input id="setupGenderMix" type="text" placeholder="e.g. mixed" /></label>
+      </div>
+      <div class="hint" style="font-weight:600;margin:10px 0 4px">Typical learner</div>
+      <div class="setup-grid">
+        <label>Age band<input id="setupAvgAge" type="text" placeholder="e.g. 35-54" /></label>
+        <label>Education<input id="setupEdu" type="text" placeholder="e.g. undergraduate" /></label>
+        <label>Background<input id="setupAvgBg" type="text" placeholder="e.g. department leaders" /></label>
+        <label>Technical level<select id="setupTech"><option value="non">Non-technical</option><option value="mixed" selected>Mixed</option><option value="technical">Technical</option></select></label>
+        <label>Role<input id="setupRole" type="text" placeholder="e.g. new hires" /></label>
+      </div>
+      <div class="hint" style="font-weight:600;margin:10px 0 4px">Floor learner <span class="hint">(the least-prepared student the class must still serve)</span></div>
+      <div class="setup-grid">
+        <label>Age band<input id="setupFloorAge" type="text" placeholder="e.g. 18+" /></label>
+        <label>Education<input id="setupFloorEdu" type="text" placeholder="e.g. high school" /></label>
+        <label>Background<input id="setupFloorBg" type="text" placeholder="e.g. no prior knowledge" /></label>
+        <label>Technical level<select id="setupFloorTech"><option value="non" selected>Non-technical</option><option value="mixed">Mixed</option><option value="technical">Technical</option></select></label>
+        <label>Role<input id="setupFloorRole" type="text" placeholder="e.g. general audience" /></label>
+      </div>
+    </details>
     <label for="scope">Scope, emphasis, or constraints <span class="hint">(optional)</span></label>
     <textarea id="scope" placeholder="e.g. focus on causes and consequences, skip military tactics, align to a specific standard…"></textarea>
     <label for="syllabus" style="margin-top:6px">Already have a curriculum? <span class="hint">Paste a syllabus or outline to import it instead of generating one (optional)</span></label>
@@ -273,30 +296,10 @@
     html += "<label for='programOutcome'>Program outcome <span class='hint'>(what the whole curriculum builds toward — checked against the class objectives)</span></label>";
     html += "<textarea id='programOutcome' placeholder='By the end, learners can…'>"+esc(plan.notes||"")+"</textarea>";
     html += "<details class='setup' open><summary>Class setup \u2014 applies to every class</summary>";
+    html += "<div class='hint' style='margin-bottom:8px'>Audience &amp; demographics are set on the planning form above. These shape how each class is <em>built</em>.</div>";
     html += "<div class='setup-grid'>";
     html += "<label>Class tier<select id='setupTier'><option value='briefing'>Briefing</option><option value='standard' selected>Standard</option><option value='professional'>Professional</option><option value='expert'>Expert</option></select></label>";
-    html += "<label>Tone<select id='setupTone'><option value='plain' selected>Plain</option><option value='warm'>Warm</option><option value='executive'>Executive</option><option value='academic'>Academic</option><option value='workshop'>Workshop</option></select></label>";
-    html += "<label>Reading grade cap<input id='setupReading' type='number' min='3' max='16' value='9' /></label>";
     html += "</div>";
-    html += "<div class='obj-h'>Demographics \u2014 typical & floor learner</div>";
-    html += "<div class='hint' style='margin:-4px 0 8px'>The typical learner is who you design for; the floor learner is the least-prepared student the class must still serve.</div>";
-    html += "<div class='hint' style='font-weight:600;margin-bottom:4px'>Typical learner</div>";
-    html += "<div class='setup-grid'>";
-    html += "<label>Age band<input id='setupAvgAge' type='text' placeholder='e.g. 35-54' /></label>";
-    html += "<label>Education<input id='setupEdu' type='text' placeholder='e.g. undergraduate' /></label>";
-    html += "<label>Background<input id='setupAvgBg' type='text' placeholder='e.g. department leaders' /></label>";
-    html += "<label>Technical level<select id='setupTech'><option value='non'>Non-technical</option><option value='mixed' selected>Mixed</option><option value='technical'>Technical</option></select></label>";
-    html += "<label>Role<input id='setupRole' type='text' placeholder='e.g. new hires' /></label>";
-    html += "</div>";
-    html += "<div class='hint' style='font-weight:600;margin:10px 0 4px'>Floor learner</div>";
-    html += "<div class='setup-grid'>";
-    html += "<label>Age band<input id='setupFloorAge' type='text' placeholder='e.g. 18+' /></label>";
-    html += "<label>Education<input id='setupFloorEdu' type='text' placeholder='e.g. high school' /></label>";
-    html += "<label>Background<input id='setupFloorBg' type='text' placeholder='e.g. no prior knowledge' /></label>";
-    html += "<label>Technical level<select id='setupFloorTech'><option value='non' selected>Non-technical</option><option value='mixed'>Mixed</option><option value='technical'>Technical</option></select></label>";
-    html += "<label>Role<input id='setupFloorRole' type='text' placeholder='e.g. general audience' /></label>";
-    html += "</div>";
-    html += "<div class='setup-grid' style='margin-top:8px'><label>Gender mix<input id='setupGenderMix' type='text' placeholder='e.g. mixed' /></label></div>";
     html += "<div class='obj-h'>Mastery \u2014 depth & checks</div>";
     html += "<div class='setup-grid'>";
     html += "<label>Target mastery level<input id='setupMasteryLevel' type='number' min='1' max='5' value='3' /></label>";
@@ -367,17 +370,21 @@
 
   function buildManifest(){
     var cards = Array.prototype.slice.call(document.querySelectorAll(".class-card"));
-    var titles = cards.map(function(card){ return (card.querySelector(".c-title").value || "").trim(); });
+    var planClasses = (state.plan && Array.isArray(state.plan.classes)) ? state.plan.classes : [];
+    function val(card, sel){ var el = card.querySelector(sel); return (el && el.value != null) ? el.value : ""; }
+    var titles = cards.map(function(card){ return (val(card, ".c-title") || "").trim(); });
     var classes = cards.map(function(card, i){
       var prereqIdx = Array.prototype.slice.call(card.querySelectorAll(".prereq:checked")).map(function(cb){ return Number(cb.value); });
-      var prereqSlugs = prereqIdx.map(function(idx){ return slugify(titles[idx]); });
+      var prereqSlugs = prereqIdx.map(function(idx){ return slugify(titles[idx] || ""); }).filter(Boolean);
+      var planCls = planClasses[i] || {};
+      var obj = planCls.objectives || {};
       return {
-        title: titles[i],
-        summary: card.querySelector(".c-sum").value,
-        terminal: state.plan.classes[i].objectives.terminal,
-        enabling: state.plan.classes[i].objectives.enabling,
+        title: titles[i] || planCls.title || "",
+        summary: val(card, ".c-sum") || planCls.summary || "",
+        terminal: Array.isArray(obj.terminal) ? obj.terminal : [],
+        enabling: Array.isArray(obj.enabling) ? obj.enabling : [],
         prerequisites: prereqSlugs,
-        suggested_minutes: Number(card.querySelector(".c-min").value) || 50,
+        suggested_minutes: Number(val(card, ".c-min")) || planCls.suggested_minutes || 50,
         order: i + 1
       };
     });
@@ -476,7 +483,13 @@
   }
 
   function saveCurriculum(){
-    var manifest = buildManifest();
+    var manifest;
+    try { manifest = buildManifest(); }
+    catch(e){
+      console.error("buildManifest failed", e);
+      setStatus("Couldn't assemble the curriculum: " + ((e && e.message) || e), true);
+      return;
+    }
     var btn = $("saveCur"); btn.disabled = true; var label = btn.textContent; btn.textContent = "Saving…";
     setStatus("Saving curriculum and checking coherence…");
     fetch("/api/curriculum-build", {
@@ -488,15 +501,20 @@
         if(res.ok && res.j && res.j.ok){
           state.manifest = res.j.manifest;
           setStatus("Saved as \u201C"+res.j.manifest.slug+"\u201D. Coherence checked below.");
-          renderCoherence(res.j.coherence);
-          renderBuild(res.j.manifest, res.j.coherence);
-          renderBibliography(res.j);
+          try {
+            renderCoherence(res.j.coherence);
+            renderBuild(res.j.manifest, res.j.coherence);
+            renderBibliography(res.j);
+          } catch(e){
+            console.error("post-save render failed", e);
+            setStatus("Saved, but couldn't render the results: " + ((e && e.message) || e), true);
+          }
         } else {
           var err = (res.j && res.j.errors && res.j.errors.join("; ")) || (res.j && res.j.error) || "save failed";
           setStatus("Save: "+err, true);
         }
       })
-      .catch(function(){ setStatus("Couldn't reach the curriculum service.", true); })
+      .catch(function(e){ console.error("save request failed", e); setStatus("Couldn't reach the curriculum service.", true); })
       .finally(function(){ btn.disabled = false; btn.textContent = label; });
   }
 
@@ -878,9 +896,17 @@
     var syllabus = ($("syllabus").value||"").trim();
     var importing = !!syllabus;
     if(!subject && !importing){ setStatus("Enter a subject, or paste an existing curriculum to import.", true); return; }
+    // Audience drives the plan. If the quick field is blank, synthesize a
+    // descriptor from the demographics set above so the plan is still targeted.
+    function fvg(id){ var el = $(id); return el && el.value ? el.value.trim() : ""; }
+    var audienceText = ($("audience").value||"").trim();
+    if(!audienceText){
+      var bits = [fvg("setupRole"), fvg("setupEdu"), (fvg("setupAvgAge") ? "ages "+fvg("setupAvgAge") : "")].filter(Boolean);
+      audienceText = bits.join(", ");
+    }
     var input = {
       subject: subject,
-      audience: ($("audience").value||"").trim(),
+      audience: audienceText,
       level: $("level").value,
       scope: ($("scope").value||"").trim(),
       count: $("count").value ? Number($("count").value) : 0
