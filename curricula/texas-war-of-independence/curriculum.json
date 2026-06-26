@@ -4,11 +4,11 @@
   "slug": "texas-war-of-independence",
   "title": "texas war of independence",
   "subject": "texas war of independence",
-  "audience": "high-school students",
+  "audience": "students, high school, ages 14-18",
   "level": "introductory",
   "program_outcome": "",
-  "created": "2026-06-26T17:20:08.872Z",
-  "updated": "2026-06-26T17:20:08.876Z",
+  "created": "2026-06-26T18:24:59.742Z",
+  "updated": "2026-06-26T18:24:59.745Z",
   "knowledge_core": {
     "shared": true,
     "sealed": false,
@@ -17,18 +17,17 @@
   },
   "classes": [
     {
-      "id": "introduction-to-texicans-and-early-texas",
-      "slug": "introduction-to-texicans-and-early-texas",
+      "id": "introduction-to-the-texas-war-of-independence",
+      "slug": "introduction-to-the-texas-war-of-independence",
       "order": 1,
-      "title": "Introduction to Texicans and Early Texas",
-      "summary": "This class introduces the term 'Texican' and the early history of Texas.",
+      "title": "Introduction to the Texas War of Independence",
+      "summary": "This class introduces the Texas War of Independence, setting the stage for the conflict.",
       "terminal": [
-        "Define 'Texican' and describe their role in early Texas history"
+        "Explain the significance of the Texas War of Independence"
       ],
       "enabling": [
-        "Explain the origins of the term 'Texican'",
-        "Identify key characteristics of early Texas settlers",
-        "Discuss the cultural and political landscape of early Texas"
+        "Identify the geographical and political context of Texas before the war",
+        "Describe the key players involved in the early stages of the conflict"
       ],
       "prerequisites": [],
       "assessment": "",
@@ -42,20 +41,19 @@
       "slug": "causes-of-the-texas-war-of-independence",
       "order": 2,
       "title": "Causes of the Texas War of Independence",
-      "summary": "This class explores the causes leading to the Texas War of Independence.",
+      "summary": "This class covers the causes leading to the Texas War of Independence.",
       "terminal": [
-        "List and explain the primary causes of the Texas War of Independence"
+        "List and explain the major causes of the Texas War of Independence"
       ],
       "enabling": [
-        "Identify key political and social tensions between Texas settlers and the Mexican government",
-        "Discuss the impact of the Law of April 6, 1830",
-        "Explain the significance of the Battle of Gonzales"
+        "Discuss the impact of Mexican policies on Texan settlers",
+        "Analyze the role of cultural and political tensions in the conflict"
       ],
       "prerequisites": [
-        "introduction-to-texicans-and-early-texas"
+        "introduction-to-the-texas-war-of-independence"
       ],
       "assessment": "",
-      "suggested_minutes": 50,
+      "suggested_minutes": 45,
       "status": "planned",
       "class_url": "",
       "sources": []
@@ -65,14 +63,13 @@
       "slug": "major-battles-of-the-texas-war-of-independence",
       "order": 3,
       "title": "Major Battles of the Texas War of Independence",
-      "summary": "This class covers the major battles during the Texas War of Independence.",
+      "summary": "This class focuses on the key battles during the Texas War of Independence.",
       "terminal": [
-        "Describe the major battles and their outcomes in the Texas War of Independence"
+        "Describe the outcomes and significance of major battles in the Texas War of Independence"
       ],
       "enabling": [
-        "Identify key battles such as the Alamo, Goliad, and San Jacinto",
-        "Discuss the strategies and outcomes of each battle",
-        "Explain the significance of each battle in the context of the war"
+        "Identify key battles such as the Battle of Gonzales and the Battle of the Alamo",
+        "Explain the strategies and tactics used by both sides"
       ],
       "prerequisites": [
         "causes-of-the-texas-war-of-independence"
@@ -84,44 +81,20 @@
       "sources": []
     },
     {
-      "id": "historical-figures-and-folklore-of-the-texas-war-of-independence",
-      "slug": "historical-figures-and-folklore-of-the-texas-war-of-independence",
+      "id": "sam-houston-and-his-role-in-the-war",
+      "slug": "sam-houston-and-his-role-in-the-war",
       "order": 4,
-      "title": "Historical Figures and Folklore of the Texas War of Independence",
-      "summary": "This class introduces key figures and folklore from the Texas War of Independence.",
+      "title": "Sam Houston and His Role in the War",
+      "summary": "This class examines Sam Houston's influence and leadership during the Texas War of Independence.",
       "terminal": [
-        "Identify and describe key figures and folklore from the Texas War of Independence"
+        "Evaluate Sam Houston's impact on the Texas War of Independence"
       ],
       "enabling": [
-        "Discuss the roles of figures like Sam Houston, Stephen F. Austin, and Santa Anna",
-        "Explain the folklore surrounding the heroes of the Alamo",
-        "Describe the contributions of lesser-known figures"
+        "Outline Sam Houston's early life and rise to leadership",
+        "Analyze his strategies and decisions during key battles"
       ],
       "prerequisites": [
         "major-battles-of-the-texas-war-of-independence"
-      ],
-      "assessment": "",
-      "suggested_minutes": 50,
-      "status": "planned",
-      "class_url": "",
-      "sources": []
-    },
-    {
-      "id": "outcomes-of-the-texas-war-of-independence",
-      "slug": "outcomes-of-the-texas-war-of-independence",
-      "order": 5,
-      "title": "Outcomes of the Texas War of Independence",
-      "summary": "This class examines the outcomes of the Texas War of Independence.",
-      "terminal": [
-        "Explain the outcomes and impact of the Texas War of Independence"
-      ],
-      "enabling": [
-        "Discuss the Treaty of Velasco and its terms",
-        "Describe the immediate political and social changes in Texas",
-        "Analyze the war's impact on relations between Texas and Mexico"
-      ],
-      "prerequisites": [
-        "historical-figures-and-folklore-of-the-texas-war-of-independence"
       ],
       "assessment": "",
       "suggested_minutes": 45,
@@ -130,47 +103,23 @@
       "sources": []
     },
     {
-      "id": "sam-houston-and-the-rough-riders",
-      "slug": "sam-houston-and-the-rough-riders",
-      "order": 6,
-      "title": "Sam Houston and the Rough Riders",
-      "summary": "This class explores the role of Sam Houston and the Rough Riders.",
+      "id": "formation-of-the-republic-of-texas",
+      "slug": "formation-of-the-republic-of-texas",
+      "order": 5,
+      "title": "Formation of the Republic of Texas",
+      "summary": "This class explores the establishment and early challenges of the Republic of Texas.",
       "terminal": [
-        "Describe the contributions of Sam Houston and the Rough Riders to the Texas War of Independence"
+        "Explain the formation and early governance of the Republic of Texas"
       ],
       "enabling": [
-        "Explain Sam Houston's leadership and military strategies",
-        "Discuss the formation and significance of the Rough Riders",
-        "Analyze Houston's influence on Texas's independence"
+        "Discuss the political and economic challenges faced by the new republic",
+        "Describe the role of the Texas Declaration of Independence"
       ],
       "prerequisites": [
-        "outcomes-of-the-texas-war-of-independence"
+        "sam-houston-and-his-role-in-the-war"
       ],
       "assessment": "",
-      "suggested_minutes": 50,
-      "status": "planned",
-      "class_url": "",
-      "sources": []
-    },
-    {
-      "id": "the-republic-of-texas",
-      "slug": "the-republic-of-texas",
-      "order": 7,
-      "title": "The Republic of Texas",
-      "summary": "This class covers the formation and early years of the Republic of Texas.",
-      "terminal": [
-        "Describe the formation and characteristics of the Republic of Texas"
-      ],
-      "enabling": [
-        "Explain the transition from Mexican rule to the Republic of Texas",
-        "Discuss the challenges faced by the new republic",
-        "Identify the key political and economic developments during the republic's early years"
-      ],
-      "prerequisites": [
-        "sam-houston-and-the-rough-riders"
-      ],
-      "assessment": "",
-      "suggested_minutes": 55,
+      "suggested_minutes": 45,
       "status": "planned",
       "class_url": "",
       "sources": []
@@ -184,16 +133,16 @@
       "average": {
         "age_band": "14-18",
         "education": "high school",
-        "background": "students",
-        "technical": "non",
-        "role": "student"
+        "background": "",
+        "technical": "mixed",
+        "role": "students"
       },
       "floor": {
         "age_band": "14+",
         "education": "some high school",
-        "background": "no prior knowledge",
+        "background": "",
         "technical": "non",
-        "role": "student"
+        "role": "students"
       },
       "gender_mix": "mixed",
       "tone": "plain",
