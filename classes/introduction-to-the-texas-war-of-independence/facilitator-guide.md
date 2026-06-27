@@ -1,6 +1,6 @@
 # Facilitator Guide: Introduction to the Texas War of Independence
 
-Quality score at build: 98 / 100 (excellent)
+Quality score at build: 91 / 100 (excellent)
 Class tier: Standard class
 
 ## How to Run This Class
@@ -10,12 +10,12 @@ Class tier: Standard class
 - If a learner asks for a claim outside the source base, mark it as a research gap instead of improvising.
 
 ## Blueprint
-- Orientation and learner baseline: 5 slides. Set the purpose, audience floor, assumptions, and mastery target.
-- Knowledge base and source boundary: 8 slides. Show what the approved sources support, what is missing, and what must not be invented.
-- Core concepts and vocabulary: 12 slides. Teach the essential terms, mental models, and decision points.
-- Guided practice and examples: 15 slides. Work through realistic cases, common mistakes, checks, and facilitator prompts.
-- Deep dives, edge cases, and quality risks: 15 slides. Add expert detail, safety cautions, disagreements, and advanced transfer examples.
-- Assessment, transfer, and works cited: 12 slides. Prove mastery, capture participation, and close with source transparency.
+- Orientation and learner baseline: 2 slides. Set the purpose, audience floor, assumptions, and mastery target.
+- Knowledge base and source boundary: 3 slides. Show what the approved sources support, what is missing, and what must not be invented.
+- Core concepts and vocabulary: 4 slides. Teach the essential terms, mental models, and decision points.
+- Guided practice and examples: 5 slides. Work through realistic cases, common mistakes, checks, and facilitator prompts.
+- Deep dives, edge cases, and quality risks: 5 slides. Add expert detail, safety cautions, disagreements, and advanced transfer examples.
+- Assessment, transfer, and works cited: 3 slides. Prove mastery, capture participation, and close with source transparency.
 
 ## QA Notes
-- Quality gate passed. Review live participation data after delivery for the next revision.
+- Generated slide count does not exactly match the requested slide budget — the tier's slide floor or content pacing took precedence. This is reflected in the score, not a release blocker.

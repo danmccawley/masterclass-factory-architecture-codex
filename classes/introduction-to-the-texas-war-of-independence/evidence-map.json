@@ -1,7 +1,7 @@
 [
   {
     "kind": "terminal objective",
-    "claim": "Explain the significance of the Texas War of Independence, including its causes, key events, major figures, and outcomes.",
+    "claim": "Explain the significance of the Texas War of Independence, including its causes, key events, major figures, and outcomes within the broader Mexican civil war context.",
     "source_ids": [
       "s1",
       "s2",
@@ -10,14 +10,14 @@
     "source_titles": [
       "Class setup, learner profile, and research rules",
       "en.wikipedia.org",
-      "youtube.com"
+      "battlefields.org"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
     "kind": "enabling objective",
-    "claim": "Identify the geographical and political context of Texas before the war, including its status under Mexican rule and the role of Anglo-American settlers and Tejanos.",
+    "claim": "Identify the geographical and political context of Texas before the war, including Mexican colonization policies and cultural tensions.",
     "source_ids": [
       "s2",
       "s3",
@@ -25,41 +25,41 @@
     ],
     "source_titles": [
       "en.wikipedia.org",
-      "youtube.com",
-      "britannica.com"
+      "battlefields.org",
+      "thc.texas.gov"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
     "kind": "enabling objective",
-    "claim": "Describe the key players involved in the early stages of the conflict, including Texian leaders, Mexican officials, and cultural groups.",
+    "claim": "Describe the key players involved in the early stages of the conflict, including Anglo-American settlers, Tejanos, and Mexican government leaders.",
     "source_ids": [
       "s3",
       "s4"
     ],
     "source_titles": [
-      "youtube.com",
-      "britannica.com"
+      "battlefields.org",
+      "thc.texas.gov"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
     "kind": "enabling objective",
-    "claim": "Analyze the major battles and political actions during the war, such as the Siege of the Alamo, the Texas Declaration of Independence, and the Battle of San Jacinto.",
+    "claim": "Analyze the major battles and political actions during the Texas Revolution, such as the Battle of Gonzales, the Siege of the Alamo, and the adoption of the Texas Declaration of Independence.",
     "source_ids": [
       "s4"
     ],
     "source_titles": [
-      "britannica.com"
+      "thc.texas.gov"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
     "kind": "enabling objective",
-    "claim": "Evaluate the establishment and constitution of the Republic of Texas, including its policies on slavery and rights of different groups.",
+    "claim": "Evaluate the diverse perspectives and contested issues surrounding the war, including the roles of slavery, citizenship rights, and internal Texan divisions.",
     "source_ids": [
       "s1",
       "s2",
@@ -69,15 +69,15 @@
     "source_titles": [
       "Class setup, learner profile, and research rules",
       "en.wikipedia.org",
-      "youtube.com",
-      "britannica.com"
+      "battlefields.org",
+      "thc.texas.gov"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
     "kind": "enabling objective",
-    "claim": "Compare differing perspectives on the motivations and legitimacy of the Texas War of Independence, addressing field disagreements and cultural dynamics.",
+    "claim": "Interpret primary sources related to the Texas Revolution, including the Texas Declaration of Independence and the Republic of Texas Constitution.",
     "source_ids": [
       "s1",
       "s2",
@@ -87,8 +87,8 @@
     "source_titles": [
       "Class setup, learner profile, and research rules",
       "en.wikipedia.org",
-      "youtube.com",
-      "britannica.com"
+      "battlefields.org",
+      "thc.texas.gov"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
@@ -98,79 +98,85 @@
     "claim": "Geographical and Political Context of Texas Before the War",
     "source_ids": [
       "s2",
-      "s15",
-      "s16",
-      "s11"
+      "s6",
+      "s10"
     ],
     "source_titles": [
-      "en.wikipedia.org",
       "en.wikipedia.org",
       "tshaonline.org",
-      "southern.libguides.com"
+      "worldhistory.org"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
     "kind": "lesson section",
-    "claim": "Key Players in the Early Conflict",
+    "claim": "Key Players and Early Conflict Events",
     "source_ids": [
       "s2",
-      "s7",
-      "s16"
+      "s6",
+      "s12"
     ],
     "source_titles": [
       "en.wikipedia.org",
-      "billofrightsinstitute.org",
-      "tshaonline.org"
+      "tshaonline.org",
+      "dp.la"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
   },
   {
     "kind": "lesson section",
-    "claim": "Major Battles and Political Actions",
+    "claim": "Political Actions and Declaration of Independence",
+    "source_ids": [
+      "s5",
+      "s12"
+    ],
+    "source_titles": [
+      "history.com",
+      "dp.la"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Major Battles and the War’s Conclusion",
     "source_ids": [
       "s2",
+      "s12"
+    ],
+    "source_titles": [
+      "en.wikipedia.org",
+      "dp.la"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Diverse Perspectives and Contested Issues",
+    "source_ids": [
+      "s8",
+      "s10"
+    ],
+    "source_titles": [
+      "education.texashistory.unt.edu",
+      "worldhistory.org"
+    ],
+    "status": "mapped",
+    "finding": "Mapped to approved source-paper sections for source verification."
+  },
+  {
+    "kind": "lesson section",
+    "claim": "Interpreting Primary Sources of the Texas Revolution",
+    "source_ids": [
       "s11",
-      "s12",
-      "s13"
+      "s12"
     ],
     "source_titles": [
-      "en.wikipedia.org",
-      "southern.libguides.com",
       "gilderlehrman.org",
       "dp.la"
-    ],
-    "status": "mapped",
-    "finding": "Mapped to approved source-paper sections for source verification."
-  },
-  {
-    "kind": "lesson section",
-    "claim": "Establishment and Constitution of the Republic of Texas",
-    "source_ids": [
-      "s11",
-      "s13"
-    ],
-    "source_titles": [
-      "southern.libguides.com",
-      "dp.la"
-    ],
-    "status": "mapped",
-    "finding": "Mapped to approved source-paper sections for source verification."
-  },
-  {
-    "kind": "lesson section",
-    "claim": "Perspectives and Contested Interpretations",
-    "source_ids": [
-      "s7",
-      "s11",
-      "s16"
-    ],
-    "source_titles": [
-      "billofrightsinstitute.org",
-      "southern.libguides.com",
-      "tshaonline.org"
     ],
     "status": "mapped",
     "finding": "Mapped to approved source-paper sections for source verification."
@@ -187,8 +193,8 @@
     "source_titles": [
       "Class setup, learner profile, and research rules",
       "en.wikipedia.org",
-      "youtube.com",
-      "britannica.com"
+      "battlefields.org",
+      "thc.texas.gov"
     ],
     "status": "corroboration-required",
     "finding": "Mapped to approved source-paper sections for source verification."
