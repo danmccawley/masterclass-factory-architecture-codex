@@ -19,20 +19,21 @@ let passed = 0;
 let failed = 0;
 const failures = [];
 
+// Tests and group headers are ENQUEUED at definition time, then drained
+// sequentially by runQueue() at the bottom. This is what makes async tests
+// actually gate: each test fn (sync OR async) is awaited to completion before
+// the next starts, and the process does not exit until every test has settled
+// and reported. Sequential (never concurrent) execution also preserves the
+// save/restore process.env discipline some tests rely on. Output order, the
+// ok/FAIL format, and the pass/fail counting are unchanged from before.
+const queue = [];
+
 function test(name, fn) {
-  try {
-    fn();
-    passed += 1;
-    console.log("  ok   " + name);
-  } catch (error) {
-    failed += 1;
-    failures.push({ name, message: error.message });
-    console.log("  FAIL " + name + "\n         " + error.message);
-  }
+  queue.push({ type: "test", name, fn });
 }
 
 function group(title) {
-  console.log("\n# " + title);
+  queue.push({ type: "group", title });
 }
 
 // A valid brief built from the template, so individual tests can mutate copies.
@@ -325,7 +326,10 @@ test("generate handles OPTIONS preflight (204)", async () => {
 });
 test("brief endpoint validates a good brief (200)", async () => {
   const brief = require("../api/brief.js");
-  const r = await callHandler(brief, "POST", { brief: validator.DEFAULT_TEMPLATE });
+  // POST the BARE brief.json (what a real HTTP client sends and what brief.js
+  // validates) — not a { brief: ... } wrapper. The wrapper was a false-pass
+  // masked by the old non-awaiting runner (B13).
+  const r = await callHandler(brief, "POST", validator.DEFAULT_TEMPLATE);
   assert.strictEqual(r.status, 200);
   assert.strictEqual(r.json.ok, true);
 });
@@ -751,13 +755,39 @@ test("detectAdvancementOpportunity returns null when web research is disabled", 
 });
 
 // ---------------------------------------------------------------------------
-console.log("\n" + "=".repeat(60));
-console.log("RESULTS: " + passed + " passed, " + failed + " failed");
-if (failed) {
-  console.log("\nFAILURES:");
-  failures.forEach((f) => console.log("  - " + f.name + ": " + f.message));
-  process.exit(1);
-} else {
-  console.log("ALL GREEN");
-  process.exit(0);
+// Drain the queue in definition order, awaiting each test to full settlement.
+async function runQueue() {
+  for (const item of queue) {
+    if (item.type === "group") {
+      console.log("\n# " + item.title);
+      continue;
+    }
+    try {
+      await item.fn();
+      passed += 1;
+      console.log("  ok   " + item.name);
+    } catch (error) {
+      failed += 1;
+      const message = error && error.message ? error.message : String(error);
+      failures.push({ name: item.name, message });
+      console.log("  FAIL " + item.name + "\n         " + message);
+    }
+  }
+
+  console.log("\n" + "=".repeat(60));
+  console.log("RESULTS: " + passed + " passed, " + failed + " failed");
+  if (failed) {
+    console.log("\nFAILURES:");
+    failures.forEach((f) => console.log("  - " + f.name + ": " + f.message));
+    process.exit(1);
+  } else {
+    console.log("ALL GREEN");
+    process.exit(0);
+  }
 }
+
+runQueue().catch((error) => {
+  // A throw in the runner itself (not a test assertion) must never pass silently.
+  console.error("HARNESS RUNNER CRASHED:", error);
+  process.exit(1);
+});

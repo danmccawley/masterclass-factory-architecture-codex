@@ -81,8 +81,12 @@ the Sprint 0 audit**. No code was changed in Sprint 0.
 
 ## New findings (Sprint 0 audit)
 
-- [ ] **B12 — `test/harness.js` async tests are non-gating (false-pass).** `test(name, fn)`
-  (`test/harness.js:22`) is **synchronous** — it calls `fn()` inside try/catch but never awaits.
+- [x] **B12 — `test/harness.js` async tests are non-gating (false-pass).** **FIXED (pre-Sprint-1,
+  test-infra only).** `test()`/`group()` now enqueue at definition time and a `runQueue()` drains
+  them sequentially, **awaiting each test (sync or async) to full settlement** before the next and
+  before `process.exit`. Output order, ok/FAIL format, and pass/fail counting are unchanged.
+  Verified: the previously-hidden failure (B13) now reports correctly. *Original analysis:*
+  `test(name, fn)` (`test/harness.js:22`) was **synchronous** — it called `fn()` inside try/catch but never awaited.
   Every `async () => {}` test (HTTP handlers `:318-347`, `assertFetchableUrl` rejects `:213-220`,
   the `resolveKnowledgeBase`/`detectAdvancementOpportunity` group `:684-749`, etc.) is counted
   "ok" the instant it is launched; its assertions settle as microtasks **after**
@@ -92,14 +96,14 @@ the Sprint 0 audit**. No code was changed in Sprint 0.
   / exiting.* **Not fixed in Sprint 0** because fixing it turns the suite RED (exposes B13),
   which is a behavior-revealing change to flag, not a runner-breakage repair.
 
-- [ ] **B13 — The brief-endpoint gate test is a masked false-pass (wrong request shape).** Test
-  "brief endpoint validates a good brief (200)" (`test/harness.js:326-331`) POSTs a **wrapped**
-  body `{ brief: DEFAULT_TEMPLATE }`, but `api/brief.js` validates the **bare** request body as
-  the brief (`api/brief.js:69-70`). The endpoint therefore returns **422**, not 200 (verified by
-  driving the real handler). The test only "passes" because of B12. **Two-sided issue:** the
-  test sends the wrong shape *and* it documents that the endpoint contract is "POST the bare
-  brief.json" (not `{brief:…}`). Resolve alongside B12 (fix the test to send a bare brief; decide
-  the canonical request shape and align the wizard's POST).
+- [x] **B13 — The brief-endpoint gate test is a masked false-pass (wrong request shape).**
+  **FIXED (pre-Sprint-1, test-only).** The test now POSTs the **bare** `DEFAULT_TEMPLATE` (what a
+  real HTTP client sends and what `api/brief.js:69-70` validates), matching the endpoint contract.
+  **`api/brief.js` was correct and was NOT changed.** Once B12 made the runner await, this test
+  reported its true `422 !== 200`; sending the bare body restores a genuine 200. *Original
+  analysis:* the test POSTed a wrapped `{ brief: DEFAULT_TEMPLATE }` body, which the handler
+  rejects (422); it only "passed" because of B12. **Open follow-up (product, not this pass):**
+  confirm the wizard/curriculum client POSTs the bare brief to `/api/brief`, not a wrapper.
 
 - [ ] **B14 — Two non-gate test files are broken (stale `_internal` imports).**
   `test/classify-source.test.js` (`classifySource is not a function`) and
