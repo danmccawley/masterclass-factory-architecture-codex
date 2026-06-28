@@ -69,6 +69,13 @@ const MAX_DISCOVERY_URL_CHECKS = 16;
 // Cap discovery rounds so the serverless function stays under its execution
 // timeout. Each round is one OpenAI web-search call plus up to MAX_DISCOVERY_URL_CHECKS fetches.
 const MAX_DISCOVERY_ROUNDS = 3;
+// One retry per external provider on a TRANSIENT failure (abort/timeout/5xx/429),
+// with a short backoff. Bounded so retries can never blow the function budget.
+const DISCOVERY_RETRY_BACKOFF_MS = 400;
+// Overall wall-clock budget for the whole discovery phase. Sits comfortably
+// inside knowledge-base.js maxDuration (120s) so one slow provider can never
+// consume the entire function; rounds stop early when this is reached.
+const DISCOVERY_TIME_BUDGET_MS = 100000;
 const MAX_GENERATED_SLIDES = 400;
 const MAX_OPENAI_AUTHORED_SLIDES = 60;
 // Slides are authored in small, fast batches instead of one giant call. A single
@@ -540,7 +547,10 @@ async function assertFetchableUrl(url) {
   }
 }
 
-async function fetchUrlText(url) {
+// One verification attempt. Returns a TYPED result and never throws. The
+// `transient` flag tells the caller whether the failure is worth a retry (abort/
+// timeout/5xx) vs a hard answer (404/410, or an SSRF reject) that must not be.
+async function fetchUrlTextOnce(url) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), SOURCE_FETCH_TIMEOUT_MS);
   try {
@@ -558,10 +568,15 @@ async function fetchUrlText(url) {
       }
     });
 
-    // 404/410 = the resource genuinely is not there → reject (don't cite dead links).
-    // 5xx = server error → reject (can't confirm it exists right now).
-    if (response.status === 404 || response.status === 410 || response.status >= 500) {
-      throw new Error(`HTTP ${response.status}`);
+    // 404/410 = the resource genuinely is not there → HARD reject (don't cite
+    // dead links, don't retry).
+    if (response.status === 404 || response.status === 410) {
+      return { ok: false, transient: false, error: `HTTP ${response.status}` };
+    }
+    // 5xx = server hiccup → TRANSIENT; a retry may succeed and it should not be
+    // recorded as a permanently dead link.
+    if (response.status >= 500) {
+      return { ok: false, transient: true, error: `HTTP ${response.status}` };
     }
 
     // 401/403/406/429 = the server RESPONDED and the page exists; it just declined
@@ -580,10 +595,28 @@ async function fetchUrlText(url) {
     }
     return { ok: true, text: cleaned };
   } catch (error) {
-    return { ok: false, error: safeErrorMessage(error.message || error) };
+    const msg = safeErrorMessage(error.message || error);
+    // SSRF / non-public-host rejections are HARD (never retry, never cite).
+    const hard = /private address|non-public host|only http|not allowed/i.test(msg);
+    return { ok: false, transient: !hard && isTransientFailure(0, msg), error: msg };
   } finally {
     clearTimeout(timeout);
   }
+}
+
+// Verify a candidate URL, with ONE retry on a transient failure. Always returns
+// a typed result; never throws to the round. A transient failure that survives
+// the retry stays `transient:true` so callers can leave the URL retryable rather
+// than blacklisting it.
+async function fetchUrlText(url) {
+  let res = await fetchUrlTextOnce(url);
+  if (!res.ok && res.transient) {
+    await discoveryDelay(DISCOVERY_RETRY_BACKOFF_MS);
+    const retry = await fetchUrlTextOnce(url);
+    kbdiag({ stage: "source_fetch", host: safeHost(url), outcome: retry.ok ? "recovered_on_retry" : "transient_failure_after_retry" });
+    res = retry;
+  }
+  return res;
 }
 
 function configuredSearchModels() {
@@ -753,9 +786,10 @@ function classifyByHost(url) {
   return { trust: primary ? "primary" : "secondary", type };
 }
 
-async function tavilySearch(query, maxResults) {
-  const key = String(process.env.TAVILY_API_KEY || "").trim();
-  if (!key) return [];
+// One Tavily call. Returns a TYPED result ({ ok, status, transient, candidates,
+// error }) and never throws — a 5xx/429/abort is reported, not swallowed as an
+// indistinguishable "zero results" (the old behavior that hid the B1 abort).
+async function tavilySearchOnce(query, maxResults, key) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TAVILY_SEARCH_TIMEOUT_MS);
   try {
@@ -772,11 +806,13 @@ async function tavilySearch(query, maxResults) {
         include_raw_content: false
       })
     });
-    if (!response.ok) return [];
+    if (!response.ok) {
+      return { ok: false, status: response.status, transient: isTransientFailure(response.status, ""), candidates: [], error: `HTTP ${response.status}` };
+    }
     const payload = await response.json().catch(() => ({}));
     recordTavilySpend(1);
     const results = Array.isArray(payload && payload.results) ? payload.results : [];
-    return results.map((r) => {
+    const candidates = results.map((r) => {
       const url = text(r && r.url, "");
       const klass = classifyByHost(url);
       return {
@@ -787,11 +823,32 @@ async function tavilySearch(query, maxResults) {
         why: text(r && r.content, "").slice(0, 300)
       };
     }).filter((c) => isUrl(c.url));
+    return { ok: true, status: 200, transient: false, candidates };
   } catch (error) {
-    return [];
+    const msg = safeErrorMessage(error.message || error);
+    return { ok: false, status: 0, transient: isTransientFailure(0, msg), candidates: [], error: msg };
   } finally {
     clearTimeout(timer);
   }
+}
+
+// Tavily search with ONE retry on a transient failure, then degrade to an empty
+// array — never throws. Each attempt/outcome is logged with a KBDIAG marker so a
+// transient abort is visible in the logs instead of looking like "no results".
+async function tavilySearch(query, maxResults) {
+  const key = String(process.env.TAVILY_API_KEY || "").trim();
+  if (!key) return [];
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    const res = await tavilySearchOnce(query, maxResults, key);
+    if (res.ok) {
+      if (attempt > 0) kbdiag({ stage: "tavily", outcome: "recovered_on_retry", attempt: attempt + 1, candidates: res.candidates.length });
+      return res.candidates;
+    }
+    kbdiag({ stage: "tavily", outcome: res.transient ? "transient_failure" : "hard_failure", attempt: attempt + 1, status: res.status, error: res.error || null });
+    if (!res.transient) break; // a hard 4xx will not improve with a retry
+    if (attempt === 0) await discoveryDelay(DISCOVERY_RETRY_BACKOFF_MS);
+  }
+  return []; // degrade — the cascade (OpenAI) and the round handle an empty result
 }
 
 // Unified candidate finder. Prefers the fast search API; falls back to the
@@ -813,20 +870,47 @@ async function findSourceCandidates(prompt, brief, standard, needed) {
     const seeds = list(brief && brief.knowledge_base && brief.knowledge_base.research && brief.knowledge_base.research.seed_prompts, [], 2);
     seeds.forEach((s) => { if (text(s, "")) queries.push(`${title} ${text(s, "")}`.trim()); });
 
+    // The queries are independent, so run them with Promise.allSettled: one
+    // query timing out can never discard the candidates the others returned.
     const seen = new Set();
     const candidates = [];
-    for (const q of queries.slice(0, 3)) {
-      const batch = await tavilySearch(q, 8);
+    const settled = await Promise.allSettled(queries.slice(0, 3).map((q) => tavilySearch(q, 8)));
+    settled.forEach((r) => {
+      const batch = r.status === "fulfilled" && Array.isArray(r.value) ? r.value : [];
       batch.forEach((c) => {
         if (c.url && !seen.has(c.url)) { seen.add(c.url); candidates.push(c); }
       });
-    }
+    });
     if (candidates.length) {
       return { model: "tavily-search", data: { summary: `Found ${candidates.length} candidate source(s) via search API.`, source_candidates: candidates, gaps: [] } };
     }
-    // Tavily configured but returned nothing — fall through to OpenAI below.
+    // Tavily configured but returned nothing (empty or fully degraded) — fall
+    // through to the OpenAI web-search cascade below.
   }
-  return await requestOpenAISearchJson("knowledge-base discovery", prompt, 3200);
+  return await openAIWebSearchSafe(prompt);
+}
+
+// Cascade fallback: OpenAI web search, hardened so it NEVER throws into the
+// round. One retry on a transient failure, then degrade to a typed empty result
+// (the B1 fix at this layer — a web_search abort used to throw and break the
+// whole discovery loop). Every outcome is logged with a KBDIAG marker.
+async function openAIWebSearchSafe(prompt) {
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    try {
+      const out = await requestOpenAISearchJson("knowledge-base discovery", prompt, 3200);
+      if (attempt > 0) kbdiag({ stage: "openai_web_search", outcome: "recovered_on_retry", attempt: attempt + 1 });
+      return out;
+    } catch (error) {
+      const msg = safeErrorMessage(error.message || error);
+      const transient = isTransientFailure(0, msg);
+      kbdiag({ stage: "openai_web_search", outcome: transient ? "transient_failure" : "hard_failure", attempt: attempt + 1, error: msg });
+      if (!transient || attempt === 1) {
+        return { model: "", data: { summary: "Web search degraded; no candidates this attempt.", source_candidates: [], gaps: [] } };
+      }
+      await discoveryDelay(DISCOVERY_RETRY_BACKOFF_MS);
+    }
+  }
+  return { model: "", data: { summary: "Web search degraded.", source_candidates: [], gaps: [] } };
 }
 
 function normalizeSourceType(value) {
@@ -894,6 +978,10 @@ async function discoverKnowledgeBaseSources(brief, standard) {
   discovery.attempted = true;
   discovery.rounds = 0;
 
+  // Overall wall-clock budget so one slow provider can never consume the whole
+  // function. Rounds stop early when this is reached, keeping whatever verified.
+  const discoveryDeadline = Date.now() + DISCOVERY_TIME_BUDGET_MS;
+
   // Sources accepted during this run, plus a memory of dead URLs so later
   // rounds don't re-propose pages that already failed the readability check.
   const accepted = [];
@@ -914,6 +1002,11 @@ async function discoverKnowledgeBaseSources(brief, standard) {
   for (let round = 0; round < MAX_DISCOVERY_ROUNDS; round += 1) {
     const needed = remaining();
     if (needed.total_sources_needed === 0 && needed.primary_sources_needed === 0) break;
+    if (Date.now() > discoveryDeadline) {
+      discovery.notes.push("Discovery time budget reached; stopping with the sources verified so far.");
+      discovery.time_budget_reached = true;
+      break;
+    }
     discovery.rounds = round + 1;
 
     const prompt = JSON.stringify({
@@ -960,14 +1053,18 @@ async function discoverKnowledgeBaseSources(brief, standard) {
       }
     }, null, 2);
 
+    // findSourceCandidates is hardened to never throw (Tavily + OpenAI cascade
+    // both degrade to a typed empty result). The try/catch is a defensive
+    // backstop only; a degraded round yields zero candidates and continues
+    // rather than collapsing the build.
     let researched;
     try {
       researched = await findSourceCandidates(prompt, brief, standard, needed);
     } catch (error) {
-      discovery.notes.push(`Round ${round + 1} search failed: ${safeErrorMessage(error.message || error)}`);
-      break;
+      researched = { model: "", data: { source_candidates: [], gaps: [] } };
+      discovery.notes.push(`Round ${round + 1} search degraded: ${safeErrorMessage(error.message || error)}`);
     }
-    discovery.model = researched.model;
+    if (researched.model) discovery.model = researched.model;
     discovery.gaps = list(researched.data && researched.data.gaps, [], 10);
 
     const seenPaths = Array.from(acceptedPaths).concat(Array.from(deadPaths));
@@ -979,18 +1076,28 @@ async function discoverKnowledgeBaseSources(brief, standard) {
     discovery.notes.push(`Round ${round + 1}: Bernard found ${candidates.length} new candidate${candidates.length === 1 ? "" : "s"} and checked ${candidatesToCheck.length} URL${candidatesToCheck.length === 1 ? "" : "s"} for readability.`);
 
     if (!candidatesToCheck.length) {
+      // Empty AFTER the per-provider retries inside findSourceCandidates means
+      // the providers genuinely surfaced nothing new — stop early rather than
+      // burn more rounds. (Transient blips are already retried one level down.)
       discovery.notes.push(`Round ${round + 1}: no new candidates to verify; stopping early.`);
       break;
     }
 
-    const checked = await Promise.all(candidatesToCheck.map(async (candidate) => ({
-      candidate,
-      fetched: await fetchUrlText(candidate.path)
-    })));
-    checked.forEach(({ candidate, fetched }) => {
+    // Promise.allSettled so a single fetch abort/timeout cannot discard the
+    // sources that DID verify this round (a partial result is success).
+    const settled = await Promise.allSettled(candidatesToCheck.map((candidate) => fetchUrlText(candidate.path)));
+    settled.forEach((res, i) => {
+      const candidate = candidatesToCheck[i];
+      const fetched = res.status === "fulfilled"
+        ? res.value
+        : { ok: false, transient: true, error: safeErrorMessage((res.reason && res.reason.message) || res.reason || "fetch failed") };
       if (fetched.ok) {
         accepted.push(candidate);
         acceptedPaths.add(candidate.path);
+      } else if (fetched.transient) {
+        // Transient verification failure: leave the URL retryable (do NOT mark
+        // it dead), so a later round can try it again. Not a rejection.
+        discovery.notes.push(`Round ${round + 1}: a source check timed out transiently (${safeHost(candidate.path)}); left for a later round.`);
       } else {
         deadPaths.add(candidate.path);
         discovery.rejected_sources.push({ path: candidate.path, reason: fetched.error });
@@ -999,12 +1106,24 @@ async function discoverKnowledgeBaseSources(brief, standard) {
   }
 
   discovery.added_sources = accepted;
+  discovery.evidence_limited = !accepted.length && current.total === 0;
   const finalGap = remaining();
   if (!accepted.length) {
     discovery.notes.push("Bernard searched across multiple rounds, but no candidate URLs passed the readability check.");
   } else if (finalGap.total_sources_needed || finalGap.primary_sources_needed) {
     discovery.notes.push(`Bernard added ${accepted.length} verified source${accepted.length === 1 ? "" : "s"} over ${discovery.rounds} round${discovery.rounds === 1 ? "" : "s"}, but the floor is still short by ${finalGap.total_sources_needed} usable and ${finalGap.primary_sources_needed} primary.`);
   }
+  // Consolidated discovery KBDIAG so the whole external-call path is grep-able
+  // from one marker, alongside the handler's KBDIAG.
+  kbdiag({
+    stage: "discovery_complete",
+    rounds: discovery.rounds || 0,
+    added: accepted.length,
+    rejected: discovery.rejected_sources.length,
+    model: discovery.model || "",
+    evidence_limited: Boolean(discovery.evidence_limited),
+    time_budget_reached: Boolean(discovery.time_budget_reached)
+  });
   return discovery;
 }
 
@@ -1581,6 +1700,32 @@ function safeErrorMessage(message) {
 
 function isTimeoutMessage(message) {
   return /abort|aborted|timeout|timed out/i.test(String(message || ""));
+}
+
+// A TRANSIENT failure is worth exactly one retry: an HTTP 429 or 5xx, or a
+// status-0 abort/timeout/network blip. A 4xx (other than 429) is a hard answer
+// from the server and must NOT be retried. Used to gate retry + degrade across
+// every external discovery call (Tavily, OpenAI web search, source fetch).
+function isTransientFailure(status, message) {
+  const s = Number(status) || 0;
+  if (s === 429 || (s >= 500 && s < 600)) return true;
+  if (s >= 400 && s < 500) return false; // hard client answer (404/403/etc.)
+  return isTimeoutMessage(message) || /network|fetch failed|socket|econn|etimedout|eai_again/i.test(String(message || ""));
+}
+
+// Consistent KBDIAG marker for every external discovery call, so the runtime
+// logs show exactly which provider degraded and how it was handled. Never logs
+// key material. Mirrors the handler's KBDIAG so one grep covers the whole path.
+function kbdiag(obj) {
+  try { console.log("KBDIAG " + JSON.stringify(obj)); } catch (e) { /* logging must never throw */ }
+}
+
+function discoveryDelay(ms) {
+  return new Promise(function (resolve) { setTimeout(resolve, ms); });
+}
+
+function safeHost(url) {
+  try { return new URL(url).hostname; } catch (e) { return ""; }
 }
 
 function openAIError(payload) {

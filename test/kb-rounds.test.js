@@ -133,6 +133,104 @@ const SRC = (n, trust) => ({ url: "https://src/" + n, trust: trust || "secondary
     assert.strictEqual(led2.sources[0].origin, "added by class maker");
   });
 
+  group("B1 resilience: a transient discovery abort never zeroes a round");
+
+  // Primitives where we fully control the (faked) discovery provider so we can
+  // make it abort, time out, succeed-on-retry, or return empty — deterministic,
+  // no network. fetchUrlText accepts everything except /dead/.
+  function resilientP(findSourceCandidates) {
+    return {
+      knowledgeBaseStandard: I.knowledgeBaseStandard,
+      scoreKnowledgeBase: I.scoreKnowledgeBase,
+      sourceCounts: I.sourceCounts,
+      classTierSpec: I.classTierSpec,
+      normalizeDiscoveredSources: I.normalizeDiscoveredSources,
+      fetchUrlText: async (u) => (/dead/.test(u) ? { ok: false, error: "HTTP 404" } : { ok: true, text: "content" }),
+      findSourceCandidates
+    };
+  }
+  const floorSet = () => { const s = []; for (let i = 1; i <= 12; i += 1) s.push(SRC(i, i <= 3 ? "primary" : "secondary")); return s; };
+
+  // (a) A provider timeout/abort DEGRADES the round instead of throwing.
+  {
+    const P = resilientP(async () => { throw new Error("This operation was aborted"); });
+    let threw = false, r = null;
+    try { r = await runKnowledgeBaseRound({ brief: brief(), state: null, primitives: P, backoffMs: 0 }); }
+    catch (e) { threw = true; }
+    await test("(a) a transient abort does NOT throw to the round", () => assert.strictEqual(threw, false));
+    await test("(a) the round is marked degraded, finds 0, and recommends continue (not structural stop)", () => {
+      assert.strictEqual(r.checkpoint.degraded, true);
+      assert.strictEqual(r.checkpoint.new_claims, 0);
+      assert.strictEqual(r.checkpoint.recommendation, "continue");
+    });
+  }
+
+  // (b) Bounded retry: a transient failure retries EXACTLY once (2 attempts) then degrades.
+  {
+    let calls = 0;
+    const P = resilientP(async () => { calls += 1; throw new Error("fetch failed: timed out"); });
+    const r = await runKnowledgeBaseRound({ brief: brief(), state: null, primitives: P, backoffMs: 0 });
+    await test("(b) transient failure retries once (2 attempts total) then degrades", () => {
+      assert.strictEqual(calls, 2);
+      assert.strictEqual(r.checkpoint.degraded, true);
+    });
+  }
+
+  // (b2) A retry that SUCCEEDS on the second attempt recovers the round (no degrade).
+  {
+    let calls = 0;
+    const P = resilientP(async () => {
+      calls += 1;
+      if (calls === 1) throw new Error("aborted");
+      return { model: "fake", data: { source_candidates: floorSet(), gaps: [] } };
+    });
+    const r = await runKnowledgeBaseRound({ brief: brief(), state: null, primitives: P, backoffMs: 0 });
+    await test("(b2) retry recovers on attempt 2: not degraded, sources found", () => {
+      assert.strictEqual(calls, 2);
+      assert.strictEqual(r.checkpoint.degraded, false);
+      assert.strictEqual(r.checkpoint.new_claims, 12);
+    });
+  }
+
+  // (b3) A NON-transient failure (404) is not retried.
+  {
+    let calls = 0;
+    const P = resilientP(async () => { calls += 1; throw new Error("HTTP 404 not found"); });
+    const r = await runKnowledgeBaseRound({ brief: brief(), state: null, primitives: P, backoffMs: 0 });
+    await test("(b3) a non-transient (404) failure does NOT retry (1 attempt) and degrades", () => {
+      assert.strictEqual(calls, 1);
+      assert.strictEqual(r.checkpoint.degraded, true);
+    });
+  }
+
+  // (c) Zero candidates -> a graceful evidence-limited checkpoint with actionable options, never a bare 15.
+  {
+    const P = resilientP(async () => ({ model: "fake", data: { source_candidates: [], gaps: ["no sources surfaced"] } }));
+    const r = await runKnowledgeBaseRound({ brief: brief(), state: null, primitives: P, backoffMs: 0 });
+    await test("(c) zero candidates -> status 'evidence_limited' (not a bare score)", () => {
+      assert.strictEqual(r.checkpoint.status, "evidence_limited");
+      assert.strictEqual(r.checkpoint.cumulative_sources, 0);
+    });
+    await test("(c) the evidence-limited checkpoint always offers run-again / add-source / accept-evidence-limited", () => {
+      const tokens = (r.checkpoint.options || []).map((o) => o.token);
+      assert.ok(tokens.indexOf("search_again") !== -1, "missing search_again");
+      assert.ok(tokens.indexOf("add_sources") !== -1, "missing add_sources");
+      assert.ok(tokens.indexOf("proceed_anyway") !== -1, "missing proceed_anyway");
+    });
+  }
+
+  // (d) A normal candidate set scores >70, and coverage/authority never read 0 when sources are present.
+  {
+    const P = resilientP(async () => ({ model: "fake", data: { source_candidates: floorSet(), gaps: [] } }));
+    const r = await runKnowledgeBaseRound({ brief: brief(), state: null, primitives: P, backoffMs: 0 });
+    await test("(d) a normal candidate set scores >70", () => assert.ok(r.checkpoint.overall_score > 70, "score=" + r.checkpoint.overall_score));
+    await test("(d) coverage and authority are non-zero when sources are present", () => {
+      assert.ok(r.checkpoint.components.coverage > 0, "coverage=" + r.checkpoint.components.coverage);
+      assert.ok(r.checkpoint.components.authority > 0, "authority=" + r.checkpoint.components.authority);
+    });
+    await test("(d) status is floor_met for a healthy round", () => assert.strictEqual(r.checkpoint.status, "floor_met"));
+  }
+
   console.log("\n" + "=".repeat(60));
   console.log("ROUND-ENGINE RESULTS: " + passed + " passed, " + failed + " failed");
   if (failed) {

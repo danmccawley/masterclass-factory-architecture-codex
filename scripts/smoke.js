@@ -36,6 +36,7 @@ for (const [k, v] of Object.entries(ENV_STUBS)) {
 // --- 2. Stub global.fetch with a canned router ------------------------------
 const realFetch = global.fetch;
 let fetchCalls = 0;
+let tavilyStubCall = 0; // seeds unique stubbed Tavily URLs across calls
 
 function jsonResponse(obj, status) {
   const body = JSON.stringify(obj);
@@ -73,12 +74,27 @@ function routeFetch(url, options) {
   }
   // --- Tavily ----------------------------------------------------------------
   if (u.includes("api.tavily.com")) {
-    return jsonResponse({
-      results: [
-        { url: "https://www.loc.gov/item/smoke1", title: "Smoke primary source", content: "stub" },
-        { url: "https://example.edu/smoke2", title: "Smoke secondary source", content: "stub" }
-      ]
-    });
+    let query = "";
+    try { query = String(JSON.parse(options && options.body).query || ""); } catch (_e) { /* ignore */ }
+    // A designated subject simulates a TRANSIENT provider outage so the
+    // resilience path (retry → degrade → evidence-limited checkpoint, never a
+    // bare 15) is exercised end-to-end.
+    if (/evidence limited demo/i.test(query)) {
+      return jsonResponse({ error: "upstream temporarily unavailable" }, 503);
+    }
+    // Otherwise return a healthy, varied batch: unique URLs per call (seeded by
+    // a counter) with a primary/secondary mix, enough across the 3 queries to
+    // clear the professional floor (12 total / 3 primary).
+    tavilyStubCall += 1;
+    const base = tavilyStubCall * 8;
+    const results = [];
+    for (let i = 1; i <= 8; i += 1) {
+      const n = base + i;
+      const primary = i % 2 === 0; // half primary
+      const host = primary ? (i % 4 === 0 ? "www.loc.gov" : "agency.gov") : (i % 3 === 0 ? "example.edu" : "reference.org");
+      results.push({ url: `https://${host}/smoke/${n}`, title: `Smoke source ${n}`, content: "stub source body" });
+    }
+    return jsonResponse({ results });
   }
   // --- GitHub Git Data API (publish + manifest read/write) -------------------
   if (u.includes("api.github.com")) {
@@ -252,11 +268,86 @@ function printTable(rows) {
   if (failed.length) console.log("FAILED: " + failed.map((r) => r.endpoint).join(", "));
 }
 
+// --- 6. KB resilience (Sprint 1 / B1): 5 subjects through /api/knowledge-base
+// review with externals stubbed. Four subjects get a healthy stubbed Tavily
+// (clear the floor, score > 70); one subject's provider returns a transient 503
+// so the retry → degrade → evidence-limited path is exercised. We assert no
+// subject throws and none returns a bare aborted/15 — discovery always resolves
+// to a scored "ready" or an actionable "knowledge_base_review" checkpoint.
+function kbBrief(title) {
+  const b = baseBrief();
+  b.meta.title = title;
+  b.meta.slug = title.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 60);
+  b.knowledge_base.research.owner = "ai";
+  b.knowledge_base.research.allow_web = true;
+  return b;
+}
+
+const KB_SUBJECTS = [
+  "Fiber optic cable installation in data centers",
+  "The Texas War of Independence",
+  "OSHA fall protection for residential roofing",
+  "Municipal drinking water treatment fundamentals",
+  "Evidence Limited Demo Topic (transient provider outage)" // triggers stub 503
+];
+
+async function runKbResilience() {
+  const kb = require("../api/knowledge-base.js");
+  const rows = [];
+  for (const subject of KB_SUBJECTS) {
+    const started = Date.now();
+    let row = { subject, status: "?", score: null, sources: null, primary: null, options: 0, ok: false, note: "" };
+    try {
+      const req = mockReq("POST", { body: { brief: kbBrief(subject), mode: "review" } });
+      const res = mockRes();
+      await withTimeout(Promise.resolve(kb(req, res)), PER_ENDPOINT_TIMEOUT_MS, "kb:" + subject);
+      const body = JSON.parse(res.body || "{}");
+      const counts = body.knowledge_standard && body.knowledge_standard.counts;
+      row.status = body.status || (body.ok ? "ready" : "?");
+      const rawScore = body.score != null ? body.score : (body.knowledge_standard && body.knowledge_standard.score);
+      row.score = (rawScore && typeof rawScore === "object") ? (rawScore.score != null ? rawScore.score : null) : rawScore;
+      row.sources = counts ? counts.total : null;
+      row.primary = counts ? counts.primary : null;
+      row.options = Array.isArray(body.options) ? body.options.length : 0;
+      // PASS = responded, didn't throw, and resolved to a real state (ready or a
+      // review checkpoint) — never a bare error and never a sub-floor "15" with
+      // no way forward. A review checkpoint must carry actionable options.
+      const resolvedCleanly = res.statusCode === 200 && (row.status === "ready" || row.status === "knowledge_base_review");
+      const checkpointActionable = row.status !== "knowledge_base_review" || row.options > 0;
+      // Acceptance: a healthy subject that reaches the floor must score > 70.
+      const scoreOk = row.status !== "ready" || (typeof row.score === "number" && row.score > 70);
+      row.ok = resolvedCleanly && checkpointActionable && scoreOk;
+      row.note = "KBDIAG status=" + row.status + " score=" + row.score + " sources=" + row.sources + "/" + row.primary + "(primary) options=" + row.options;
+    } catch (error) {
+      row.note = "THREW: " + String(error && error.message ? error.message : error).slice(0, 120);
+    }
+    row.ms = Date.now() - started;
+    rows.push(row);
+  }
+  return rows;
+}
+
+function printKbTable(rows) {
+  const pad = (s, n) => String(s).padEnd(n);
+  console.log("\n=== SMOKE: KB resilience — 5 subjects via /api/knowledge-base review (B1) ===\n");
+  console.log(pad("subject", 52) + pad("ok", 5) + pad("status", 22) + pad("score", 7) + pad("src/prim", 10) + "opts");
+  console.log("-".repeat(110));
+  for (const r of rows) {
+    console.log(pad(r.subject.slice(0, 50), 52) + pad(r.ok ? "yes" : "NO", 5) + pad(r.status, 22) + pad(r.score, 7) + pad(r.sources + "/" + r.primary, 10) + r.options);
+  }
+  const bad = rows.filter((r) => !r.ok);
+  console.log("\n" + rows.length + " subjects, " + (rows.length - bad.length) + " resolved cleanly (ready or actionable checkpoint), " + bad.length + " problematic.");
+  if (bad.length) console.log("PROBLEM: " + bad.map((r) => r.subject + " [" + r.note + "]").join("; "));
+}
+
 run()
-  .then((rows) => {
+  .then(async (rows) => {
     printTable(rows);
+    const kbRows = await runKbResilience();
+    printKbTable(kbRows);
     global.fetch = realFetch;
-    process.exit(rows.some((r) => !r.ok) ? 1 : 0);
+    const anyFail = rows.some((r) => !r.ok) || kbRows.some((r) => !r.ok);
+    process.exit(anyFail ? 1 : 0);
   })
   .catch((error) => {
     console.error("smoke harness crashed:", error);

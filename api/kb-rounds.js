@@ -30,6 +30,59 @@ function emptyState() {
   return { accepted: [], dead: [], rejected: [], rounds_run: 0, new_per_round: [] };
 }
 
+// A TRANSIENT failure is one worth one retry: an abort/timeout, a network blip,
+// a 5xx, or a 429. A 404/410/"not found" is NOT transient — the resource is
+// genuinely gone — and must never be retried or counted as transient. Callers
+// may also flag a typed result/error explicitly with `.transient === true`.
+function isTransient(err) {
+  if (err && err.transient === true) return true;
+  const m = (err && (err.message || String(err))) || "";
+  if (/\b(404|410)\b|not found|gone/i.test(m)) return false;
+  return /abort|aborted|timeout|timed out|network|fetch failed|socket|econn|etimedout|eai_again|\b5\d\d\b|\b429\b/i.test(m);
+}
+
+function delay(ms) {
+  return new Promise(function (resolve) { setTimeout(resolve, ms); });
+}
+
+// Call an async provider with BOUNDED retry-with-backoff: one retry on a
+// transient failure, then DEGRADE by returning a typed result. It never throws
+// to the round — a provider hiccup can no longer collapse a round to 15/100.
+async function callProviderWithRetry(fn, opts) {
+  opts = opts || {};
+  const retries = typeof opts.retries === "number" ? opts.retries : 1;
+  const backoffMs = typeof opts.backoffMs === "number" ? opts.backoffMs : 400;
+  let attempts = 0;
+  let lastError = null;
+  for (let attempt = 0; attempt <= retries; attempt += 1) {
+    attempts += 1;
+    try {
+      const value = await fn();
+      return { ok: true, value: value, attempts: attempts, error: null, transient: false };
+    } catch (e) {
+      lastError = e;
+      const transient = isTransient(e);
+      if (!transient || attempt === retries) {
+        return { ok: false, value: null, attempts: attempts, error: (e && (e.message || String(e))) || "provider failed", transient: transient };
+      }
+      if (backoffMs > 0) await delay(backoffMs * (attempt + 1));
+    }
+  }
+  return { ok: false, value: null, attempts: attempts, error: (lastError && (lastError.message || String(lastError))) || "provider failed", transient: false };
+}
+
+// The never-dead-end menu for a round checkpoint. Every state — even zero
+// sources — offers a real way forward. Tokens align with the seal path in
+// knowledge-base.js (add_sources, proceed_anyway) and the rounds endpoint
+// (search_again = run another round).
+function buildRoundOptions() {
+  return [
+    { id: "search_again", label: "Run another discovery round.", token: "search_again" },
+    { id: "add_source", label: "Add a source by hand (paste a URL or upload a document).", token: "add_sources" },
+    { id: "accept_evidence_limited", label: "Accept and seal the knowledge base evidence-limited.", token: "proceed_anyway" }
+  ];
+}
+
 // Tier-1 source-composition ledger: a line-by-line, auditable breakdown of the
 // knowledge base from data the engine already has. It does NOT assert credibility
 // scores it cannot back (that is the tier-2 reliability ledger, which needs claim
@@ -158,21 +211,31 @@ function buildRoundCheckpoint(args) {
   const standard = args.standard;
   const floorMet = Boolean(standard.floor_met);
   const newThisRound = args.newThisRound;
-  const saturated = newThisRound === 0;
+  const degraded = Boolean(args.degraded);
+  // A DEGRADED round (the provider failed transiently after a retry) has NOT
+  // established saturation — we simply didn't get an answer. So it must not be
+  // read as a structural dead-end: recommend continue, tag gaps closeable.
+  const saturated = newThisRound === 0 && !degraded;
   const rec = recommendationFor(floorMet, saturated, newThisRound);
+
+  const hasSources = standard.counts.total > 0;
+  // Status the UI keys off. evidence_limited = zero sources present (the old
+  // "bare 15" case) — now always paired with actionable options, never a wall.
+  const status = !hasSources ? "evidence_limited" : (floorMet ? "floor_met" : "in_progress");
 
   const threads = (args.gaps || []).slice(0, 6).map(function (g) {
     return {
       name: String(g),
       gain: floorMet ? "low" : "medium",
-      // If the floor is unmet AND the round saturated, the gap could not be
-      // closed by searching this round -> treat as structural; else closeable.
+      // If the floor is unmet AND the round genuinely saturated, the gap could
+      // not be closed by searching this round -> structural; else closeable.
       type: (!floorMet && saturated) ? "structural" : "closeable"
     };
   });
 
   return {
     round: args.round,
+    status: status,
     overall_score: score.score,
     band: score.band,
     components: score.components,
@@ -185,7 +248,13 @@ function buildRoundCheckpoint(args) {
     floor_met: floorMet,
     tier: args.tier.label,
     recommendation: rec,
-    rec_text: recText(rec, floorMet, saturated, newThisRound),
+    rec_text: degraded
+      ? "A discovery provider timed out after a retry this round; no new sources were verified. This is a transient hiccup, not saturation — another round can still find material."
+      : recText(rec, floorMet, saturated, newThisRound),
+    degraded: degraded,
+    // Always offer a way forward (never dead-end), and surface it prominently
+    // when the round is evidence-limited.
+    options: buildRoundOptions(),
     threads: threads,
     error: args.error || null
   };
@@ -222,43 +291,66 @@ async function runKnowledgeBaseRound(opts) {
   let newThisRound = 0;
   let gaps = [];
   let error = null;
+  let degraded = false;
 
-  try {
-    const prompt = buildRoundPrompt(brief, standardBefore, needed, roundIndex, acceptedPaths, deadPaths);
-    const researched = await P.findSourceCandidates(prompt, working, standardBefore, needed);
-    gaps = (researched && researched.data && Array.isArray(researched.data.gaps)) ? researched.data.gaps : [];
+  // 1) DISCOVERY with bounded retry. A transient search failure (abort/timeout/
+  //    5xx/429) is retried once, then degrades to a typed result — it never
+  //    throws to the round, so a provider hiccup cannot zero the score.
+  const prompt = buildRoundPrompt(brief, standardBefore, needed, roundIndex, acceptedPaths, deadPaths);
+  const search = await callProviderWithRetry(
+    function () { return P.findSourceCandidates(prompt, working, standardBefore, needed); },
+    { retries: typeof opts.retries === "number" ? opts.retries : 1, backoffMs: typeof opts.backoffMs === "number" ? opts.backoffMs : 400 }
+  );
 
-    const seen = Array.from(acceptedPaths).concat(Array.from(deadPaths));
-    const candidates = P.normalizeDiscoveredSources(researched && researched.data, seen)
-      .filter(function (c) { return !acceptedPaths.has(normPath(c.path)) && !deadPaths.has(normPath(c.path)); });
+  if (!search.ok) {
+    // Provider failed after the retry. Degrade — keep prior-round accepted
+    // sources (state.accepted), score whatever exists, and surface a transient
+    // note. NOT a structural dead-end.
+    degraded = true;
+    error = search.error;
+  } else {
+    try {
+      const researched = search.value;
+      gaps = (researched && researched.data && Array.isArray(researched.data.gaps)) ? researched.data.gaps : [];
 
-    const target = Math.max(needed.total_sources_needed + 4, needed.primary_sources_needed + 2, 8);
-    const toCheck = candidates.slice(0, Math.min(maxUrlChecks, target + 4));
+      const seen = Array.from(acceptedPaths).concat(Array.from(deadPaths));
+      const candidates = P.normalizeDiscoveredSources(researched && researched.data, seen)
+        .filter(function (c) { return !acceptedPaths.has(normPath(c.path)) && !deadPaths.has(normPath(c.path)); });
 
-    const checked = await Promise.all(toCheck.map(async function (c) {
-      return { c: c, fetched: await P.fetchUrlText(c.path) };
-    }));
+      const target = Math.max(needed.total_sources_needed + 4, needed.primary_sources_needed + 2, 8);
+      const toCheck = candidates.slice(0, Math.min(maxUrlChecks, target + 4));
 
-    checked.forEach(function (row) {
-      const c = row.c;
-      const fetched = row.fetched;
-      if (fetched && fetched.ok) {
-        state.accepted.push(Object.assign({}, c, {
-          fetched: Boolean(fetched.text),
-          reachable_only: Boolean(fetched.reachable_only)
-        }));
-        acceptedPaths.add(normPath(c.path));
-        newThisRound += 1;
-      } else {
-        deadPaths.add(normPath(c.path));
-        state.rejected = state.rejected || [];
-        if (!state.rejected.some(function (r) { return normPath(r.path) === normPath(c.path); })) {
-          state.rejected.push({ path: c.path, reason: (fetched && fetched.error) || "did not pass the readability/reachability check" });
+      // 2) VERIFY with Promise.allSettled so a single fetch abort/timeout cannot
+      //    discard the sources that DID verify this round (partial = success).
+      const settled = await Promise.allSettled(toCheck.map(function (c) { return P.fetchUrlText(c.path); }));
+      settled.forEach(function (res, idx) {
+        const c = toCheck[idx];
+        const fetched = res.status === "fulfilled"
+          ? res.value
+          : { ok: false, transient: true, error: (res.reason && (res.reason.message || String(res.reason))) || "fetch failed" };
+        if (fetched && fetched.ok) {
+          state.accepted.push(Object.assign({}, c, {
+            fetched: Boolean(fetched.text),
+            reachable_only: Boolean(fetched.reachable_only)
+          }));
+          acceptedPaths.add(normPath(c.path));
+          newThisRound += 1;
+        } else if (fetched && fetched.transient) {
+          // Transient fetch failure: do NOT blacklist the URL — a later round
+          // can retry it. It simply did not verify this round.
+        } else {
+          deadPaths.add(normPath(c.path));
+          state.rejected = state.rejected || [];
+          if (!state.rejected.some(function (r) { return normPath(r.path) === normPath(c.path); })) {
+            state.rejected.push({ path: c.path, reason: (fetched && fetched.error) || "did not pass the readability/reachability check" });
+          }
         }
-      }
-    });
-  } catch (e) {
-    error = (e && (e.message || String(e))) || "Discovery round failed.";
+      });
+    } catch (e) {
+      // Defensive: any unexpected processing error degrades, never throws.
+      degraded = true;
+      error = (e && (e.message || String(e))) || "Discovery round failed.";
+    }
   }
 
   state.rounds_run = roundIndex + 1;
@@ -280,6 +372,7 @@ async function runKnowledgeBaseRound(opts) {
     newPerRound: state.new_per_round,
     gaps: gaps,
     tier: tier,
+    degraded: degraded,
     error: error
   });
 
@@ -291,6 +384,9 @@ module.exports = {
   buildRoundCheckpoint: buildRoundCheckpoint,
   buildCompositionLedger: buildCompositionLedger,
   recommendationFor: recommendationFor,
+  buildRoundOptions: buildRoundOptions,
+  callProviderWithRetry: callProviderWithRetry,
   emptyState: emptyState,
-  _normPath: normPath
+  _normPath: normPath,
+  _isTransient: isTransient
 };

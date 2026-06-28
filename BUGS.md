@@ -9,23 +9,32 @@ the Sprint 0 audit**. No code was changed in Sprint 0.
 
 ## Carried from ENGINEERING-BUILD-PLAN.md §8
 
-- [ ] **B1 — KB discovery intermittently aborts → round collapses to 15/100 (coverage 0,
-  authority 0).** Sprint 1. **Confirmed mechanism:** every external search/fetch swallows
-  timeouts/aborts into an *empty* result with no surfaced failure, so an aborted round is
-  indistinguishable from "genuinely zero sources":
-  - `tavilySearch` returns `[]` on `!response.ok` (`api/generate.js:775`) and on any
-    error/abort (`api/generate.js:790-791`) — **fully silent**.
-  - `fetchUrlText` 9s abort → `{ok:false}` (`api/generate.js:582-583`); the OpenAI search calls
-    catch+break (`api/generate.js:647-649`, `714-716`).
-  - `discoverKnowledgeBaseSources` per-round `try/catch` pushes "Round N search failed" and
-    **`break`s** the loop (`api/generate.js:964-969`), ending discovery with whatever it had.
-  - **The "15" is exactly an empty KB:** `scoreKnowledgeBase` with zero sources →
-    `coverage 0` (`:239-241`), `authority 0` (`:253`), `recency 0.75` neutral (`:264`) →
-    `round((0*0.5 + 0*0.3 + 0.75*0.2)*100) = 15` (`api/generate.js:266`). Verified by direct
-    computation.
-  - Health marker `KBDIAG` logged at `api/generate.js:3541-3554`.
-  - *Fix direction (Sprint 1):* typed empty-or-partial results, bounded retry, graceful
-    cascade, and an `evidence-limited` checkpoint instead of a bare 15.
+- [x] **B1 — KB discovery intermittently aborts → round collapses to 15/100 (coverage 0,
+  authority 0).** **FIXED in Sprint 1.** A transient discovery abort/timeout/5xx is now retried
+  once, then degrades to a typed empty-or-partial result that NEVER throws to the round — so a
+  provider hiccup can no longer zero a score, and a genuine zero surfaces as an actionable
+  evidence-limited checkpoint (never a bare 15). Changes:
+  - `tavilySearch` → typed `tavilySearchOnce` + 1 retry on transient (5xx/429/abort), each
+    outcome logged with a `KBDIAG {stage:"tavily"}` marker (`api/generate.js`).
+  - The OpenAI web-search cascade is wrapped in `openAIWebSearchSafe` — 1 retry then degrade to
+    a typed empty result; it no longer throws into discovery (`api/generate.js`).
+  - `fetchUrlText` → typed `fetchUrlTextOnce` with a `transient` flag + 1 retry; 5xx and
+    aborts are transient (left retryable, not blacklisted), 404/410 + SSRF stay hard rejects.
+  - `findSourceCandidates` runs the Tavily queries with `Promise.allSettled` (one query failing
+    can't discard the others) and falls through to the safe OpenAI cascade.
+  - `discoverKnowledgeBaseSources` verifies with `Promise.allSettled` (partial results survive),
+    leaves transient fetch failures retryable, enforces a `DISCOVERY_TIME_BUDGET_MS` (100s, inside
+    the 120s maxDuration), and emits a consolidated `KBDIAG {stage:"discovery_complete"}`.
+  - `kb-rounds.js` `runKnowledgeBaseRound`: 1 retry on a transient `findSourceCandidates` failure,
+    `Promise.allSettled` verification, a `degraded` flag (a degraded round recommends *continue*,
+    not a structural *stop*), and a checkpoint `status:"evidence_limited"` + always-present
+    actionable `options` (search_again / add_sources / proceed_anyway) when no sources exist.
+  - **Verified:** `test/kb-rounds.test.js` adds (a) transient timeout degrades not throws,
+    (b) retry fires once then degrades, (b2) retry recovers, (b3) non-transient does not retry,
+    (c) zero-candidate → evidence_limited checkpoint with options, (d) a normal set scores >70
+    with non-zero coverage/authority (37/37 green). `scripts/smoke.js` runs 5 subjects through KB
+    review: 4 score 90 (floor met), 1 transient-outage subject degrades to an actionable
+    `knowledge_base_review` (5 options), KBDIAG printed throughout.
 
 - [x] **B2 — Quality gate dead-ended ≥70 classes on slide-count mismatch with a contradictory
   "below the 70 bar" message.** Fixed & verified live (commit `14af831`). **Confirmed still
