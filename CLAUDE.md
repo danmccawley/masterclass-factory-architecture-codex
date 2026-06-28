@@ -1,40 +1,44 @@
-# CLAUDE.md — Masterclass Factory (orchestration)
+# CLAUDE.md — Operating rules for Masterclass Factory
 
-You are the **Producer** of a Masterclass Factory. You turn a `brief.json` (the Course Brief) into a
-deployable interactive masterclass that plugs into a FIXED engine. **You only ever generate the
-CONTENT layer:** `content.js` (`SLIDES`/`POLLS`/`WORDS`), `glossary.js` (`GLOSSARY`), `source.js`
-(`SOURCE_PAPER`). You never edit the engine, shell, or backends except a short list of topic strings.
+Commercial AI course-generation platform (persona "Bernard"). Read before doing anything.
 
-**Authoritative contract:** `MASTERCLASS-FACTORY-AGENT.md` (read it; it defines schemas, the agent
-roster, and the Definition of Done). The generator is `build_content.py`.
+## Stack & invariants
+- Frontend: vanilla HTML/CSS/JS. Single-class: create.html + wizard.js. Curriculum: curriculum.html.
+- Backend: Node CommonJS serverless in api/. NO database — GitHub IS the datastore; classes
+  auto-publish to classes/<slug>/ via the GitHub Git Data API. Do NOT break publish/rebase.
+- LLM: Anthropic default; OpenAI/Gemini/xAI via llm.js. Search: Tavily (primary, CONFIRMED
+  configured: keyUsable:true, model "tavily-search") + OpenAI web_search_preview (fallback).
+- Deploy: Vercel (team areos, project prj_FYgOb1eF3jbDr0wCkrVkw3oCOii5). Respect vercel.json maxDuration.
+- Architecture target: research-engine -> knowledge-core -> renderers. Renderers never run on an unsealed core.
 
-## Pipeline (run in order; block on gates)
-1. **Brief** → validate `brief.json` against the schema (contract §4).
-2. **research** (GATE: credibility) → cited corpus.
-3. **curriculum** → lesson plan (sections, slide budget, interaction map, level plan).
-4. **author** ‖ **glossary** ‖ **assessment** → slide decks + deep dives, GLOSSARY, quizzes.
-5. **source-verify** (GATE: zero unverified) → SOURCE_PAPER + every citation resolves.
-6. **codegen** → fill the `GENERATED PER DECK` region of `build_content.py`; `python build_content.py`.
-7. **qa** (GATE: Definition of Done) → `build_content.py` self-verify must print `QA PASS`.
-8. **deploy** → set env vars; `vercel --prod`; verify the EXACT printed Production URL; smoke-test `/api/*`.
+## Non-negotiable rules
+1. Engine-first: deterministic backend + tests before UI. State what is verified vs. needs a live read.
+2. Test gate before EVERY commit: node --check on changed files AND the full suite green.
+3. Never dead-end a job. Auto-resolve; escalate to the human only in extreme cases, with actionable options.
+4. Surface failures, never swallow them. No silent catch. Failures auto-recover or show a visible, actionable state.
+5. Small, reviewable diffs. Show the diff and test output before committing; pause for review.
+6. Behavior-preserving refactors are gated by a golden-output test (capture before, assert identical after).
+7. CommonJS only in api/. Never rename frontend element ids (collection reads by getElementById).
 
-Use the subagents in `.claude/agents/`. Two of them — **source-verify** and **qa** — must run as
-independent passes; never let the agent that wrote content also sign off on it.
+## Build plan
+The sprint plan is ENGINEERING-BUILD-PLAN.md. Work ONE sprint at a time; don't start the next
+until the prior sprint's acceptance criteria and tests are green and committed.
 
-## Rules that never bend
-- Content is data, not code. Emit to the globals the shipped engine reads: `SLIDES`, `POLLS`,
-  `WORDS`, `GLOSSARY` (`{term:{d,r}}`), `SOURCE_PAPER` (`{title,cite,sections:[{id,num,title,body}]}`).
-- `paper` ships as a SINGLE object `{secnum,h,body}`. In Python author it as `paper=[P(...)]`; the
-  emitter unwraps it. Never ship a one-element array in `content.js`.
-- Quiz keys: `type/level/q/options/answer/why` (+ `rubric/sample/accept[]` for `sa`). Not `opts/a`.
-- Every factual sentence is grounded in the corpus and cited; unverifiable claims are cut, not faked.
-- Stay under the audience floor's reading-grade cap; write in the Brief's primary language.
-- De-topic every string in contract §6e (incl. the two backend system prompts, which also encode
-  audience reading level + topic sensitivity notes — regenerate those from the Brief).
-- Ship a FLAT zip. Trust only the Production URL `vercel --prod` prints (not "Ready in 9s").
+## Test gate (full suite)
+node test/harness.js && node test/kb-rounds.test.js && node test/kb-objectives.test.js && node test/kb-budget.test.js && node test/theme.test.js && node test/curriculum.test.js && node test/curriculum-store.test.js && node test/curriculum-build.test.js
 
-## Working method (standing requirement)
-Before any stage: **state the inputs/files you believe you have, confirm, then work.** Inventory all
-candidate `content*.js`/`source*.js` files and identify the canonical one before touching anything.
-Write to a new filename and verify before promoting to canonical. Join slides by `id`, never by title
-or position.
+## Push/verify workflow (Windows/PowerShell 7)
+1. Decode/copy any delivered file as step one.
+2. Verify a marker with Select-String.
+3. node --check on changed files.
+4. Run the full suite — ALL GREEN required, no exceptions.
+5. git add/commit (must report "N files changed").
+6. git pull --rebase origin main (intervening auto-published class commits are normal; rebase resolves them).
+7. git push.
+
+## Diagnostics (Vercel MCP)
+- get_runtime_errors first (pre-aggregated, never times out).
+- get_runtime_logs with group_by requestPath/statusCode to see what hit the server.
+- Targeted query for markers (KBDIAG, abort). Log retention ~1 day — reproduce live for fresh logs.
+- KBDIAG fields: keyUsable, model (tavily-search = Tavily active), added, rejected, resolution.
+- maxDuration ceilings: generate 300, curriculum 300, knowledge-base 120, remediate 120.
