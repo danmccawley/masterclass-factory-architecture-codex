@@ -114,11 +114,13 @@ the Sprint 0 audit**. No code was changed in Sprint 0.
   functions to restore the tests, or update the tests to the current internal names. Touches
   product surface (`_internal`), so deferred out of audit-only Sprint 0.*
 
-- [ ] **B15 — `package.json` `test` script is incomplete vs the canonical gate.** `npm test`
-  runs only 6 of 8 gate files (omits `curriculum-store` and `curriculum-build`) and none of the
-  off-gate suites. The real gate is the CLAUDE.md / §6 command. *Align `package.json` to the
-  full gate (and consider adding `curriculum-coherence`, `curriculum-bibliography`, `llm`,
-  `llm-byok`, and the repaired B14 suites).*
+- [x] **B15 — `package.json` `test` script is incomplete vs the canonical gate.** **FIXED.**
+  `package.json` `test` now runs all 8 gate suites in canonical order, byte-matching the
+  ENGINEERING-BUILD-PLAN.md §6 / CLAUDE.md command, so `npm test` and the manual gate are
+  identical. Verified: `npm test` → 275/275 across 8 suites, exit 0. *Original issue:* it ran
+  only 6 of 8 (omitted `curriculum-store` and `curriculum-build`). **Still open as a separate
+  enhancement (not B15):** the off-gate suites `curriculum-coherence`, `curriculum-bibliography`,
+  `llm`, `llm-byok`, and the repaired B14 suites remain unwired from the gate.
 
 - [ ] **B16 — Some `generate.js` handler return paths violate never-dead-end (bare errors, no
   resolution).** Of the handler's `ok:false` exits, three carry full actionable resolutions —
