@@ -3,7 +3,8 @@
   "private": true,
   "type": "commonjs",
   "scripts": {
-    "test": "node test/harness.js && node test/kb-rounds.test.js && node test/kb-objectives.test.js && node test/kb-budget.test.js && node test/theme.test.js && node test/curriculum.test.js && node test/curriculum-store.test.js && node test/curriculum-build.test.js"
+    "test": "node test/harness.js && node test/kb-rounds.test.js && node test/kb-objectives.test.js && node test/kb-budget.test.js && node test/theme.test.js && node test/curriculum.test.js && node test/curriculum-store.test.js && node test/curriculum-build.test.js && npm run test:golden",
+    "test:golden": "node test/golden/golden.test.js"
   },
   "dependencies": {
     "qrcode": "1.5.4"

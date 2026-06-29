@@ -27,6 +27,13 @@ until the prior sprint's acceptance criteria and tests are green and committed.
 ## Test gate (full suite)
 node test/harness.js && node test/kb-rounds.test.js && node test/kb-objectives.test.js && node test/kb-budget.test.js && node test/theme.test.js && node test/curriculum.test.js && node test/curriculum-store.test.js && node test/curriculum-build.test.js
 
+## Behavior-preservation gate (golden output) — run during the generate.js decomposition
+node test/golden/golden.test.js
+Asserts generate() output is BYTE-IDENTICAL to test/golden/class.json. It must stay green
+through every refactor commit. Only a DELIBERATE behavior change may update it, via:
+  UPDATE_GOLDEN=1 node test/golden/golden.test.js
+(re-capture is intentional and must be called out in the commit, e.g. the B17/B20 fixes).
+
 ## Push/verify workflow (Windows/PowerShell 7)
 1. Decode/copy any delivered file as step one.
 2. Verify a marker with Select-String.
