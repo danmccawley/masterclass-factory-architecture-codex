@@ -147,27 +147,43 @@ the Sprint 0 audit**. No code was changed in Sprint 0.
   the 405 and 422 paths carry a resolution + non-empty options (the other three resolution paths
   were already covered).
 
-- [ ] **B17 — Author batches time out on the LLM 60s ceiling; most slides fall back to
-  deterministic expansion.** **OPEN (found in a live Sprint 2 verification build).** A live POST to
+- [ ] **B17 — The 60s LLM timeout demotes slow frontier models down the ladder; most slides fall
+  back to deterministic expansion (B17 + former B18 are the SAME root cause).** **OPEN (found in a
+  live Sprint 2 verification build; root cause corrected after routing diagnosis).** A live POST to
   `/api/generate` (standard tier, 40-slide "Introduction to Photosynthesis", `publish:false`)
-  returned **HTTP 200 in 159s vs the <~90s target**. Stage reports: **3 of 4 author batches failed
-  with "The model call timed out."** (the `DEFAULT_TIMEOUT_MS = 60000` in `api/llm.js`), so only
-  **3 of 40 slides were model-authored** — the other 37 came from deterministic expansion +
-  `content-depth-repair`. Cause: 12-slide / ~9000-token author batches on **`gpt-4.1-mini`**
-  exceed 60s. The Sprint 2 bounded pool worked as designed (all 4 batches fired concurrently,
-  `concurrency:5`) — without it these would have run 4× sequentially and blown the 300s ceiling —
-  but per-batch timeouts now dominate the wall-clock, plus the non-authoring stages
-  (research → curriculum → glossary → assessment) are still sequential. *Candidate fixes (do NOT do
-  here): smaller `AUTHOR_BATCH_SIZE`; a per-author `timeoutMs` + one retry; and/or a correctly
-  configured fast model. Possibly overlap the independent non-authoring stages.*
-
-- [ ] **B18 — Model ladder attempts models not on the account before falling back, wasting
-  attempts and latency.** **OPEN (found alongside B17).** The same live build resolved to
-  **`gpt-4.1-mini`** after the configured defaults `gpt-5.5`/`gpt-5.4` (see `DEFAULT_OPENAI_MODEL`
-  / `FALLBACK_OPENAI_MODELS` and `configuredModels()` in `api/generate.js`) failed to resolve on
-  this account — each non-existent model is an attempt-and-fail before the ladder lands on a
-  usable one, adding latency to every stage. *Candidate fix (do NOT do here): set `OPENAI_MODEL`
-  to a real, fast model for this account and prune the ladder to models that actually resolve.*
+  returned **HTTP 200 in 159s vs the <~90s target**, with **3 of 4 author batches failing with
+  "The model call timed out."** and only **3 of 40 slides model-authored** (the rest deterministic
+  expansion + `content-depth-repair`).
+  - **Root cause:** `requestOpenAIJson` passes **no `timeoutMs`** (`api/generate.js:1795-1808`), so
+    `completeJson` uses `DEFAULT_TIMEOUT_MS = 60000` (`api/llm.js:255`, `:18`); each model attempt
+    gets a 60s `AbortController` (`api/llm.js:265-266`). A valid frontier call (gpt-5.5 on a
+    12-slide / ~9000-token batch) takes **>60s → aborted → `AbortError`**, and the catch
+    **advances the ladder on ANY throw, including a timeout** (`api/llm.js:290-293`), without
+    consulting `shouldRetry` (which only runs on HTTP error responses, `api/llm.js:278`). So
+    gpt-5.5 (60s) → gpt-5.4 (60s) → **gpt-4.1-mini** — up to 180s of serial timeouts per failed
+    batch, parallelized to ~180s wall.
+  - **Correction to the earlier note:** gpt-5.5/gpt-5.4 are NOT missing from the account (the
+    OpenAI key has gpt-5.5 access; `/api/providers` shows `openai available:true`, default
+    `gpt-5.5`). The ladder falls to `gpt-4.1-mini` because the frontier models are **timed out at
+    60s and recorded as model failures**, not because they're unavailable. The former "B18 — models
+    not on the account" framing was wrong and is merged here.
+  - The Sprint 2 bounded pool worked as designed (4 batches fired concurrently, `concurrency:5`);
+    without it this would have blown the 300s ceiling. The timeout cascade now dominates.
+  - **Env-only config CANNOT solve this.** `configuredModels()` (`api/generate.js:1689-1692`)
+    builds `[DEFAULT_OPENAI_MODEL, OPENAI_MODEL, ...FALLBACK]` — `DEFAULT_OPENAI_MODEL = "gpt-5.5"`
+    (`:58`) is a **const, always prepended FIRST**, ahead of `OPENAI_MODEL` (`:1690`). So setting
+    `OPENAI_MODEL=gpt-4.1-mini` yields the ladder `["gpt-5.5","gpt-4.1-mini","gpt-5.4"]` — gpt-5.5
+    is STILL attempted first and STILL times out (~60s) on every batch; it only drops the gpt-5.4
+    attempt. There is no env var for `DEFAULT_OPENAI_MODEL`, so no env value makes 4.1-mini the
+    sole/leading model. The fix is code (below).
+  - **SCOPED SPRINT 3 SUB-ITEM (the real B17/B18 fix).** During the `generate.js` decomposition,
+    fix the model-ladder timeout-demote in the extracted provider/author module:
+    (1) make the configured model **lead** `configuredModels()` — or be the **sole** model when
+    `OPENAI_MODEL` is set — instead of always prepending the hardcoded `gpt-5.5`; and/or
+    (2) pass a per-author `timeoutMs` and stop demoting the ladder on a timeout (a timeout is NOT a
+    model failure — `api/llm.js:290-293` currently advances on any throw). Golden-test-covered. This
+    is the real B17/B18 fix; env-only config cannot solve it (`DEFAULT_OPENAI_MODEL` is a const,
+    always tried first).
 
 - [ ] **B19 — Quality scored 96 although 37/40 slides were deterministic fallback, not
   model-authored (possible scorer blind spot).** **OPEN — note, lower priority (found alongside
@@ -178,6 +194,28 @@ the Sprint 0 audit**. No code was changed in Sprint 0.
   mostly fallback can score "excellent" unnoticed (which would also mask B17 from the quality
   signal). *Investigate (do NOT change scoring here): does any rubric component reflect authoring
   provenance / model-authored coverage?*
+
+- [ ] **B20 — Provider routing: the declared Anthropic default is unusable AND the generate author
+  path hardcodes OpenAI, so setting the key alone won't reroute.** **OPEN (found in the provider/
+  model routing diagnosis).** Two independent reasons the live build ran `mode:openai` /
+  `gpt-4.1-mini` even though CLAUDE.md calls Anthropic the default:
+  - **Anthropic isn't configured in Vercel.** Live `GET /api/providers` reports `default:"anthropic"`
+    but `anthropic available:false` (key not set); `openai available:true`. `resolveProvider` skips
+    an unavailable default and picks the first available provider (`api/llm.js:204-211`), so nothing
+    can route to Anthropic today — even via the abstraction default (`DEFAULT_PROVIDER = "anthropic"`,
+    `api/llm.js:178`).
+  - **The generate/author path hardcodes `"openai"`.** `requestOpenAIJson` sets
+    `providerWanted = _engine && _engine.provider ? _engine.provider : "openai"` (`api/generate.js:1787`);
+    `_engine` is populated only from `brief.engine` (`api/generate.js:3736-3737`), which the live brief
+    lacked. It then calls `llm.resolveProvider("openai")` (`api/generate.js:1794`), and the whole LLM
+    pipeline is gated on the **OpenAI** key regardless of provider (`validateOpenAIKey(openAIKey())`,
+    `api/generate.js:3857-3863`). So **setting `ANTHROPIC_API_KEY` alone will NOT reroute generate** —
+    the path must also stop hardcoding `"openai"` and make the key gate provider-aware.
+  - *Fixes + placement:* deciding the intended default and setting `ANTHROPIC_API_KEY` in Vercel (or
+    correcting CLAUDE.md if OpenAI is the de-facto default) → **config-now** (you run the Vercel/env
+    step; I can't). De-hardcoding the provider + a provider-aware key gate in `generate.js` →
+    **Sprint 3** (with the provider extraction + golden test). Not Sprint 4 (unrelated to the
+    knowledge-core seam).*
 
 ---
 
