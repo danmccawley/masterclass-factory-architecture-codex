@@ -17,6 +17,12 @@ const { recordOpenAISpend, recordTavilySpend } = cost;
 // — that module owns githubRequest() and publishToGitHub(). slugify/baseUrl stay
 // here (shared helpers) and are injected at the call site. Same behavior.
 const { publishToGitHub } = require("../lib/publish/github.js");
+
+// Course-blueprint generation. Extracted to lib/renderers/blueprint.js (Sprint 3)
+// — that module owns buildCourseBlueprint(). The four brief-derived helpers it
+// needs (classTierSpec/totalSlideTarget/knowledgeBaseStandard/wantsDeepDives)
+// stay here (shared) and are injected at the call site. Same behavior.
+const { buildCourseBlueprint } = require("../lib/renderers/blueprint.js");
 let _engine = null; // { provider, model } for this build; null => OpenAI default
 let _engineKey = ""; // optional bring-your-own API key for this build; "" => env key
 
@@ -2351,41 +2357,6 @@ function buildEvidenceMap(brief, sourcePaper, objectives, lessonPlan) {
   return rows;
 }
 
-function buildCourseBlueprint(brief, generatedShell) {
-  const tier = classTierSpec(brief);
-  const total = totalSlideTarget(brief);
-  const teaching = Math.max(1, total - 1);
-  const standard = knowledgeBaseStandard(brief);
-  const modules = [
-    ["Orientation and learner baseline", 0.08, "Set the purpose, audience floor, assumptions, and mastery target."],
-    ["Knowledge base and source boundary", 0.12, "Show what the approved sources support, what is missing, and what must not be invented."],
-    ["Core concepts and vocabulary", 0.18, "Teach the essential terms, mental models, and decision points."],
-    ["Guided practice and examples", 0.22, "Work through realistic cases, common mistakes, checks, and facilitator prompts."],
-    ["Deep dives, edge cases, and quality risks", 0.22, "Add expert detail, safety cautions, disagreements, and advanced transfer examples."],
-    ["Assessment, transfer, and works cited", 0.18, "Prove mastery, capture participation, and close with source transparency."]
-  ];
-  let used = 0;
-  return {
-    tier: tier.label,
-    slide_target: total,
-    teaching_slide_target: teaching,
-    knowledge_standard: standard,
-    approved_before_generation: true,
-    modules: modules.map((item, index) => {
-      const slides = index === modules.length - 1 ? Math.max(1, teaching - used) : Math.max(1, Math.round(teaching * item[1]));
-      used += slides;
-      return {
-        order: index + 1,
-        title: item[0],
-        slide_budget: slides,
-        goal: item[2],
-        deep_dive_expectation: wantsDeepDives(brief) ? "substantive deep dives where required by tier and setting" : "no deep dives selected"
-      };
-    }),
-    lesson_sections: generatedShell && generatedShell.lesson_plan ? generatedShell.lesson_plan.length : 0
-  };
-}
-
 function fallbackAssessment(brief) {
   const title = brief.meta.title || "this class";
   return {
@@ -2963,7 +2934,7 @@ function buildGeneratedDeck(brief, sourcePaper, pipeline) {
     ? pipeline.curriculum.lesson_sections
     : slideDrafts.map((slide) => ({ id: slide.id, title: slide.title, teaching_goal: slide.takeaway, source_ids: slide.source_ids }));
   const evidenceMap = buildEvidenceMap(brief, sourcePaper, objectives, lessonPlan);
-  const blueprint = buildCourseBlueprint(brief, { lesson_plan: lessonPlan });
+  const blueprint = buildCourseBlueprint(brief, { lesson_plan: lessonPlan }, { classTierSpec, totalSlideTarget, knowledgeBaseStandard, wantsDeepDives });
 
   return {
     slides,
