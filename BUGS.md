@@ -147,6 +147,38 @@ the Sprint 0 audit**. No code was changed in Sprint 0.
   the 405 and 422 paths carry a resolution + non-empty options (the other three resolution paths
   were already covered).
 
+- [ ] **B17 — Author batches time out on the LLM 60s ceiling; most slides fall back to
+  deterministic expansion.** **OPEN (found in a live Sprint 2 verification build).** A live POST to
+  `/api/generate` (standard tier, 40-slide "Introduction to Photosynthesis", `publish:false`)
+  returned **HTTP 200 in 159s vs the <~90s target**. Stage reports: **3 of 4 author batches failed
+  with "The model call timed out."** (the `DEFAULT_TIMEOUT_MS = 60000` in `api/llm.js`), so only
+  **3 of 40 slides were model-authored** — the other 37 came from deterministic expansion +
+  `content-depth-repair`. Cause: 12-slide / ~9000-token author batches on **`gpt-4.1-mini`**
+  exceed 60s. The Sprint 2 bounded pool worked as designed (all 4 batches fired concurrently,
+  `concurrency:5`) — without it these would have run 4× sequentially and blown the 300s ceiling —
+  but per-batch timeouts now dominate the wall-clock, plus the non-authoring stages
+  (research → curriculum → glossary → assessment) are still sequential. *Candidate fixes (do NOT do
+  here): smaller `AUTHOR_BATCH_SIZE`; a per-author `timeoutMs` + one retry; and/or a correctly
+  configured fast model. Possibly overlap the independent non-authoring stages.*
+
+- [ ] **B18 — Model ladder attempts models not on the account before falling back, wasting
+  attempts and latency.** **OPEN (found alongside B17).** The same live build resolved to
+  **`gpt-4.1-mini`** after the configured defaults `gpt-5.5`/`gpt-5.4` (see `DEFAULT_OPENAI_MODEL`
+  / `FALLBACK_OPENAI_MODELS` and `configuredModels()` in `api/generate.js`) failed to resolve on
+  this account — each non-existent model is an attempt-and-fail before the ladder lands on a
+  usable one, adding latency to every stage. *Candidate fix (do NOT do here): set `OPENAI_MODEL`
+  to a real, fast model for this account and prune the ladder to models that actually resolve.*
+
+- [ ] **B19 — Quality scored 96 although 37/40 slides were deterministic fallback, not
+  model-authored (possible scorer blind spot).** **OPEN — note, lower priority (found alongside
+  B17).** Despite only 3/40 slides being model-authored (the rest deterministic expansion), the
+  same build scored **quality 96 ("excellent")**. Discovery had found 16 real sources so the
+  grounded fallback is genuinely decent — but it is worth confirming whether `qualityAudit`
+  distinguishes **model-authored from deterministic-fallback** content, or whether a deck that is
+  mostly fallback can score "excellent" unnoticed (which would also mask B17 from the quality
+  signal). *Investigate (do NOT change scoring here): does any rubric component reflect authoring
+  provenance / model-authored coverage?*
+
 ---
 
 ## Verification notes
