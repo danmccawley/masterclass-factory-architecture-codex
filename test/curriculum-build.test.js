@@ -343,15 +343,25 @@ test("shared length: slide density scales the per-class slide budget", function 
   var m = S.makeManifest({ subject: "X", classes: [{ title: "A", terminal: ["t"], enabling: ["e"], suggested_minutes: 40 }] });
   m.setup = S.normalizeSetup({ length: { slides_per_minute: 2, interaction_budget: { polls: 5, final_test: false } } });
   var brief = B.briefForClass(m, m.classes[0].slug);
-  assert.strictEqual(brief.length.slide_budget, 80);                   // 40 min * 2 slides/min
+  // Default tier is standard (floor 40, band [40, 60]). 40 min * 2 = 80, clamped
+  // to the standard ceiling 60 — density scales within the band, runaway bounded.
+  assert.strictEqual(brief.length.slide_budget, 60);
   assert.strictEqual(brief.length.interaction_budget.polls, 5);
   assert.strictEqual(brief.length.interaction_budget.final_test, false);
 });
-test("length defaults to 1.5 slides/min when no shared length setup (back-compat)", function () {
+test("length density is CLAMPED to the tier band (no runaway count)", function () {
   var m = S.makeManifest({ subject: "X", classes: [{ title: "A", terminal: ["t"], enabling: ["e"], suggested_minutes: 60 }] });
-  m.setup = S.normalizeSetup({ tier: "standard" }); // setup present but no length group sent -> normalized default 1.5
+  m.setup = S.normalizeSetup({ tier: "standard" }); // standard floor 40 -> band [40, 60]
   var brief = B.briefForClass(m, m.classes[0].slug);
-  assert.strictEqual(brief.length.slide_budget, 90);                   // 60 * 1.5
+  // 60 min * 1.5 = 90, clamped to the standard ceiling (40 + 20) so a long class
+  // can't derive a runaway deck (B3/B7).
+  assert.strictEqual(brief.length.slide_budget, 60);
+});
+test("length clamp floors a too-small derived count up to the tier floor", function () {
+  var m = S.makeManifest({ subject: "X", classes: [{ title: "A", terminal: ["t"], enabling: ["e"], suggested_minutes: 10 }] });
+  m.setup = S.normalizeSetup({ tier: "professional", length: { slides_per_minute: 1 } }); // 10*1=10 < floor 60
+  var brief = B.briefForClass(m, m.classes[0].slug);
+  assert.strictEqual(brief.length.slide_budget, 60);                   // floored up to the professional floor
 });
 
 console.log("\n" + "=".repeat(60));

@@ -41,21 +41,25 @@ the Sprint 0 audit**. No code was changed in Sprint 0.
   fixed in code:** slide-count delta is pushed to `recommendations`, never `issues`
   (`api/generate.js:3215`); `ok = issues.length === 0 && overall >= 70`
   (`api/generate.js:3244`); the contradictory headline is resolved in `resolveQaOutcome`
-  (`api/generate.js:3097-3099`). *Keep a regression test asserting a 92/100 slide-delta class
-  routes to pass (Sprint 2).*
+  (`api/generate.js:3097-3099`). **VERIFIED in Sprint 2:** `test/harness.js` adds
+  "a 92/100 class with a slide-count delta routes to PASS, not needs_decision" (and a companion
+  asserting a structural issue still blocks at a high score, so the gate isn't weakened).
 
-- [ ] **B3 — Build slow; `slide_budget = minutes × density` bloats decks; ~sequential slide
-  gen.** Sprint 2. **Confirmed:** authoring is a **sequential** for-loop of LLM batches
-  (`api/generate.js:1741-1799`, `await requestOpenAIJson("author",…)` at `:1751`),
-  `AUTHOR_BATCH_SIZE = 12` (`:78`), wall-clock guard `AUTHOR_TIME_BUDGET_MS = 170000` (`:1742`).
-  The `minutes × density` multiply is **not** in `generate.js` (it lives in the frontend /
-  curriculum density mapping); `totalSlideTarget` (`:361`) honors an explicit budget clamped
-  1..400 (`:369`). *Fix direction: bounded-concurrency pool, order-preserving.*
+- [x] **B3 — Build slow; `slide_budget = minutes × density` bloats decks; ~sequential slide
+  gen.** **FIXED in Sprint 2.** Authoring batches now run through a BOUNDED concurrency pool
+  (`AUTHOR_CONCURRENCY = 5`) via `planAuthorBatches` + `mapWithConcurrency`, preserving slide
+  order — a 48-slide deck goes from 4 sequential batches to ~1 wave of wall-clock. Profiled in
+  `scripts/smoke.js` (simulated per-batch latency): **2424ms → 602ms (~4×)**, output order
+  identical. No unbounded fan-out (pool capped at 5); stays well inside the 300s generate
+  ceiling. The `minutes × density` runaway is bounded by the B4 clamp below.
 
-- [ ] **B4 — Requesting fewer slides than the tier floor causes a count mismatch that drags the
-  score.** De-fanged by B2 (non-blocking). **Confirmed:** `slideBudgetFloor` returns
-  `Math.max(complexityFloor, tier.slide_floor)` (`api/generate.js:358`); tier floors 30/40/60/90
-  (`:90,97,104,111`). Reconcile the clamp in Sprint 2.
+- [x] **B4 — Requesting fewer slides than the tier floor causes a count mismatch that drags the
+  score.** **FIXED in Sprint 2.** The curriculum density-derived budget is clamped to a sane band
+  tied to the tier (`curriculum-build.js`: `[tier.slide_floor, floor + 20]`), so `minutes ×
+  density` can no longer derive a runaway deck and a too-small derivation floors up to the tier
+  minimum. (Single-class explicit budgets are still honored down to 1 by `totalSlideTarget`, which
+  the harness slide-budget tests lock — the clamp lives in the curriculum density mapping, not in
+  the explicit path.) De-fang from B2 remains (count delta is non-blocking).
 
 - [ ] **B5 — Two tabs share no shell; single-class wizard not reordered to demographics-first.**
   Sprint 5. (Frontend: `create.html`/`wizard.js` vs `curriculum.html`; not re-confirmed at
@@ -64,10 +68,11 @@ the Sprint 0 audit**. No code was changed in Sprint 0.
 - [ ] **B6 — Remediation "Accept / Not now" panel renders behind the tracker overlay.** Sprint 6.
   (Frontend stacking/z-index; not line-confirmed here.)
 
-- [ ] **B7 — Single-class `brief.template.json` `slide_budget` default 90 → slow single-class
-  builds.** Sprint 2. **Confirmed:** `length.slide_budget = 90` in both the contract
-  (`brief.template.json`) and the validator default (`brief-validator.js:61`). Lower it to match
-  the Sprint 2 clamp.
+- [x] **B7 — Single-class `brief.template.json` `slide_budget` default 90 → slow single-class
+  builds.** **FIXED in Sprint 2.** `brief.template.json` `length.slide_budget` default lowered
+  **90 → 60** (the professional-tier floor), so a default single-class build authors ~60 slides,
+  not 90. (The independent `brief-validator.js` `DEFAULT_TEMPLATE` copy is a shape/range reference
+  only and still validates either value; left untouched.)
 
 - [ ] **B8 — `generate.js` is a ~3.8k-line monolith.** Sprints 3–4. **Confirmed:** 3845 lines,
   one handler + a large `_internal` surface (`api/generate.js:3482`, `:3796`).
@@ -131,14 +136,16 @@ the Sprint 0 audit**. No code was changed in Sprint 0.
   enhancement (not B15):** the off-gate suites `curriculum-coherence`, `curriculum-bibliography`,
   `llm`, `llm-byok`, and the repaired B14 suites remain unwired from the gate.
 
-- [ ] **B16 — Some `generate.js` handler return paths violate never-dead-end (bare errors, no
-  resolution).** Of the handler's `ok:false` exits, three carry full actionable resolutions —
-  `knowledge_base_review` (`api/generate.js:3596`), `qa_structural` (`:3657`), `quality_decision`
-  (`:3676`) — but three return a bare `errors` array with **no `resolution`/`options`**: 405
-  method (`:3494`), 422 brief-validation (`:3519`), and the **top-level catch-all 400**
-  (`:3789`). The 400 catch is the concern: a mid-pipeline failure can collapse into an optionless
-  dead-end. *Align with Sprint 2 acceptance ("no `ok:false` without a resolution object"); 405/422
-  may be acceptable hard stops, the 400 catch-all is not.*
+- [x] **B16 — Some `generate.js` handler return paths violate never-dead-end (bare errors, no
+  resolution).** **FIXED in Sprint 2.** All three previously-bare `ok:false` exits now carry a
+  `resolution` and actionable `options`: 405 method (`status:"method_not_allowed"` + use-POST /
+  ask-Bernard), 422 invalid brief (`status:"invalid_brief"` + fix-fields / ask-Bernard, errors
+  retained), and the top-level catch-all 400 (`status:"generate_error"`, `resolution:"needs_human"`
+  + retry / ask-Bernard). A **bounded auto-retry** (`withStageRetry`, one retry on a transient
+  abort/timeout/5xx) now wraps `runOpenAIStages` before it degrades to the deterministic path, so a
+  transient stage blip is retried before any escalation. **Verified:** `test/harness.js` asserts
+  the 405 and 422 paths carry a resolution + non-empty options (the other three resolution paths
+  were already covered).
 
 ---
 

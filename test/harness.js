@@ -755,6 +755,104 @@ test("detectAdvancementOpportunity returns null when web research is disabled", 
 });
 
 // ---------------------------------------------------------------------------
+group("Sprint 2: bounded-concurrency authoring (order preserved, no fan-out)");
+
+test("planAuthorBatches tiles the deck with no gap and no overlap", () => {
+  const batches = I.planAuthorBatches(40, 12);
+  assert.strictEqual(batches.length, 4); // 12,12,12,4
+  assert.strictEqual(batches[0].fromIndex, 1);
+  assert.strictEqual(batches[0].toIndex, 12);
+  assert.strictEqual(batches[3].fromIndex, 37);
+  assert.strictEqual(batches[3].toIndex, 40);
+  let expectNext = 1;
+  batches.forEach((b) => {
+    assert.strictEqual(b.fromIndex, expectNext, "no gap/overlap at batch " + b.index);
+    assert.strictEqual(b.batchCount, b.toIndex - b.fromIndex + 1);
+    expectNext = b.toIndex + 1;
+  });
+  assert.strictEqual(expectNext - 1, 40, "batches cover exactly all 40 slides");
+});
+
+test("planAuthorBatches handles a zero-slide deck", () => {
+  assert.strictEqual(I.planAuthorBatches(0, 12).length, 0);
+});
+
+test("mapWithConcurrency preserves INPUT order regardless of completion order", async () => {
+  const delay = (ms) => new Promise((r) => setTimeout(r, ms));
+  const items = [0, 1, 2, 3, 4, 5, 6, 7];
+  // Later items finish FIRST (descending delay), so completion order is reversed
+  // — the result must still come back in input order.
+  const out = await I.mapWithConcurrency(items, 3, async (x) => { await delay((items.length - x) * 3); return x * 10; });
+  assert.deepStrictEqual(out, [0, 10, 20, 30, 40, 50, 60, 70]);
+});
+
+test("mapWithConcurrency never exceeds the concurrency limit (no unbounded fan-out)", async () => {
+  const delay = (ms) => new Promise((r) => setTimeout(r, ms));
+  let active = 0;
+  let peak = 0;
+  const items = Array.from({ length: 12 }, (_v, i) => i);
+  await I.mapWithConcurrency(items, 4, async (x) => {
+    active += 1; peak = Math.max(peak, active);
+    await delay(5);
+    active -= 1;
+    return x;
+  });
+  assert.ok(peak <= 4, "peak concurrency " + peak + " must be <= 4");
+  assert.ok(peak >= 2, "pool should actually run in parallel (peak " + peak + ")");
+});
+
+// ---------------------------------------------------------------------------
+group("Sprint 2: B2 verify — a 92/100 slide-delta class routes to pass (publishes)");
+
+test("a 92/100 class with a slide-count delta routes to PASS, not needs_decision", () => {
+  const okSourceCheck = { ok: true, issues: [] };
+  const okQa = { ok: true, issues: [] };
+  // slide_budget < 100 means the generated count != the requested budget. Under
+  // B2 that is a recommendation, NOT an issue, so quality.ok stays true.
+  const quality = {
+    ok: true,
+    score: 92,
+    status: "excellent",
+    scores: { slide_budget: 70, content_density: 95, deep_dive_depth: 95 },
+    issues: [],
+    recommendations: ["Generated slide count does not exactly match the requested slide budget."]
+  };
+  const outcome = I.resolveQaOutcome(okSourceCheck, okQa, quality);
+  assert.strictEqual(outcome.kind, "pass", "92/100 with a slide delta must PASS");
+  assert.strictEqual(outcome.shippable, true, "a pass outcome is shippable (publishes)");
+});
+
+test("a structural issue still blocks even at a high score (gate not weakened)", () => {
+  const badSourceCheck = { ok: false, issues: ["cited s9 which does not exist"] };
+  const okQa = { ok: true, issues: [] };
+  const quality = { ok: true, score: 92, status: "excellent", scores: {}, issues: [], recommendations: [] };
+  const outcome = I.resolveQaOutcome(badSourceCheck, okQa, quality);
+  assert.strictEqual(outcome.kind, "structural_block");
+  assert.strictEqual(outcome.shippable, false);
+});
+
+// ---------------------------------------------------------------------------
+group("Sprint 2: never-dead-end — no generate ok:false path is a bare error (B16)");
+
+test("405 (wrong method) carries a resolution + actionable options", async () => {
+  const r = await callHandler(gen, "GET");
+  assert.strictEqual(r.status, 405);
+  assert.strictEqual(r.json.ok, false);
+  assert.ok(r.json.resolution, "405 must carry a resolution");
+  assert.ok(Array.isArray(r.json.options) && r.json.options.length > 0, "405 must carry actionable options");
+});
+
+test("422 (invalid brief) carries a resolution + actionable options", async () => {
+  const bad = baseBrief(); delete bad.meta; // break the contract
+  const r = await callHandler(gen, "POST", bad);
+  assert.strictEqual(r.status, 422);
+  assert.strictEqual(r.json.ok, false);
+  assert.ok(r.json.resolution, "422 must carry a resolution");
+  assert.ok(Array.isArray(r.json.options) && r.json.options.length > 0, "422 must carry actionable options");
+  assert.ok(Array.isArray(r.json.errors) && r.json.errors.length > 0, "422 still lists the field errors");
+});
+
+// ---------------------------------------------------------------------------
 // Drain the queue in definition order, awaiting each test to full settlement.
 async function runQueue() {
   for (const item of queue) {

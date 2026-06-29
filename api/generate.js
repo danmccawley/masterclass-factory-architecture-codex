@@ -84,6 +84,11 @@ const MAX_OPENAI_AUTHORED_SLIDES = 60;
 // in time — any un-authored remainder is safely expanded to the requested budget.
 const AUTHOR_BATCH_SIZE = 12;
 const AUTHOR_TIME_BUDGET_MS = 170000;
+// Author batches run through a BOUNDED concurrency pool (not one-at-a-time), so
+// a 60-slide deck is ~one batch of wall-clock instead of five. Bounded so we
+// never fire unlimited parallel LLM calls (rate limits / cost). 5 sits inside
+// the generate maxDuration (300s) with wide margin.
+const AUTHOR_CONCURRENCY = 5;
 const MIN_MASTERCLASS_SLIDES = 30;
 const MIN_COMPLEX_MASTERCLASS_SLIDES = 50;
 const DEFAULT_MASTERCLASS_SLIDES = 90;
@@ -1724,6 +1729,30 @@ function discoveryDelay(ms) {
   return new Promise(function (resolve) { setTimeout(resolve, ms); });
 }
 
+// Incremental build-progress marker (stage + human detail, e.g. "slides 13-24
+// of 48"). Logged so progress is observable in the runtime logs during a long
+// build; the response also returns stage_reports. Logging must never throw.
+function progress(stage, detail) {
+  try { console.log("PROGRESS " + JSON.stringify({ stage: stage, detail: String(detail || "") })); } catch (e) { /* never throw */ }
+}
+
+// Bounded auto-retry for a transient STAGE failure (abort/timeout/5xx), before
+// any escalation/degrade. One retry with a short backoff; a non-transient error
+// or a second failure propagates so the caller can degrade gracefully (B16).
+async function withStageRetry(fn, label) {
+  try {
+    return await fn();
+  } catch (error) {
+    const msg = safeErrorMessage(error && (error.message || error));
+    if (isTransientFailure(0, msg)) {
+      progress(label || "stage", "transient failure; retrying once");
+      await discoveryDelay(DISCOVERY_RETRY_BACKOFF_MS);
+      return await fn(); // a second failure propagates to the caller's degrade path
+    }
+    throw error;
+  }
+}
+
 function safeHost(url) {
   try { return new URL(url).hostname; } catch (e) { return ""; }
 }
@@ -1809,6 +1838,42 @@ function compactBrief(brief) {
   };
 }
 
+// Tile a teaching deck into ordered author batches. Pure + deterministic so it
+// can be unit-tested: the batches tile [1..authoredSlides] with no gap and no
+// overlap, each carrying its slide-number range.
+function planAuthorBatches(authoredSlides, batchSize) {
+  const size = Math.max(1, Number(batchSize) || AUTHOR_BATCH_SIZE);
+  const total = Math.max(0, Number(authoredSlides) || 0);
+  const batches = [];
+  for (let produced = 0; produced < total; produced += size) {
+    const batchCount = Math.min(size, total - produced);
+    batches.push({ index: batches.length, fromIndex: produced + 1, toIndex: produced + batchCount, batchCount });
+  }
+  return batches;
+}
+
+// Run async `worker(item, i)` over `items` with BOUNDED concurrency, returning
+// results in INPUT ORDER regardless of completion order. No unbounded fan-out:
+// at most `limit` workers run at once. A worker that rejects propagates (callers
+// that must never throw wrap their worker in try/catch).
+async function mapWithConcurrency(items, limit, worker) {
+  const list = Array.isArray(items) ? items : [];
+  const results = new Array(list.length);
+  const poolSize = Math.min(Math.max(1, Number(limit) || 1), list.length || 1);
+  let cursor = 0;
+  async function runner() {
+    while (true) {
+      const i = cursor++;
+      if (i >= list.length) return;
+      results[i] = await worker(list[i], i);
+    }
+  }
+  const runners = [];
+  for (let k = 0; k < poolSize; k += 1) runners.push(runner());
+  await Promise.all(runners);
+  return results;
+}
+
 async function runOpenAIStages(brief, sourcePaper) {
   const stageStart = Date.now();
   const reports = [];
@@ -1835,6 +1900,7 @@ async function runOpenAIStages(brief, sourcePaper) {
     "Return strict JSON only."
   ].join("\n");
 
+  progress("research", "analyzing the knowledge base");
   const research = await requestOpenAIJson(
     "research",
     `You are the Masterclass Factory research specialist. ${rules}`,
@@ -1853,6 +1919,7 @@ async function runOpenAIStages(brief, sourcePaper) {
   );
   reports.push({ stage: "research", ok: true, model: research.model });
 
+  progress("curriculum", "building the lesson plan");
   const curriculum = await requestOpenAIJson(
     "curriculum",
     `You are the Masterclass Factory curriculum specialist. ${rules}`,
@@ -1876,37 +1943,36 @@ async function runOpenAIStages(brief, sourcePaper) {
   );
   reports.push({ stage: "curriculum", ok: true, model: curriculum.model });
 
-  // Author teaching slides in small, fast batches under a wall-clock budget.
-  // Each batch is a short OpenAI call; we stop when the deck is complete, when a
-  // batch fails, or when the time budget is nearly used — whichever comes first.
-  // Any shortfall is safely expanded downstream, so the run ALWAYS completes.
-  const authoredSlideList = [];
+  // Author teaching slides in small batches run through a BOUNDED concurrency
+  // pool (AUTHOR_CONCURRENCY), preserving slide order. Each batch is a short,
+  // independent OpenAI call for a fixed slide-number range, so they parallelize
+  // safely. A failed/slow/over-budget batch yields no slides for its range and
+  // is safely expanded downstream — the run ALWAYS completes inside the budget.
+  const plannedBatches = planAuthorBatches(authoredSlides, AUTHOR_BATCH_SIZE);
   let authorModel = "";
-  let authorBatches = 0;
-  for (let produced = 0; produced < authoredSlides; produced += AUTHOR_BATCH_SIZE) {
+
+  async function authorOneBatch(b) {
+    // Respect the overall wall-clock budget: a batch that would start past the
+    // budget is skipped (its range is expanded downstream), never launched.
     if (Date.now() - stageStart > AUTHOR_TIME_BUDGET_MS) {
-      reports.push({ stage: "author", ok: true, note: `Time budget reached after ${authoredSlideList.length} authored slides; remaining slides will be safely expanded.` });
-      break;
+      progress("author", `batch ${b.index + 1}/${plannedBatches.length} skipped (time budget reached)`);
+      return { index: b.index, slides: [], model: "", note: `Time budget reached before batch ${b.index + 1}; its slides will be safely expanded.` };
     }
-    const batchCount = Math.min(AUTHOR_BATCH_SIZE, authoredSlides - produced);
-    const fromIndex = produced + 1;
-    const toIndex = produced + batchCount;
-    let batch;
+    progress("author", `slides ${b.fromIndex}-${b.toIndex} of ${authoredSlides} (batch ${b.index + 1}/${plannedBatches.length})`);
     try {
-      batch = await requestOpenAIJson(
+      const batch = await requestOpenAIJson(
         "author",
         `You are the Masterclass Factory lesson author. ${rules}`,
         JSON.stringify({
-          task: `Draft teaching slides ${fromIndex} through ${toIndex} of a ${authoredSlides}-slide teaching deck (return exactly ${batchCount} slides for this batch). Keep bullets concise but make each slide complete enough to teach. Cite only source ids that exist. Continue the lesson arc in order (orientation → source findings → concepts → examples → practice → checks → application → transfer) at the position these slide numbers imply. Do NOT repeat slides already written. If evidence is thin, create source-safe practice/checkpoint slides instead of inventing facts. Deep-dive setting is ${deepDiveMode(brief)}; when high, every slide needs a substantive deep_dive body.`,
+          task: `Draft teaching slides ${b.fromIndex} through ${b.toIndex} of a ${authoredSlides}-slide teaching deck (return exactly ${b.batchCount} slides for this batch). Keep bullets concise but make each slide complete enough to teach. Cite only source ids that exist. Continue the lesson arc in order (orientation → source findings → concepts → examples → practice → checks → application → transfer) at the position these slide numbers imply. These batches are authored in parallel, so write ONLY the slides for this exact number range and do not duplicate other ranges. If evidence is thin, create source-safe practice/checkpoint slides instead of inventing facts. Deep-dive setting is ${deepDiveMode(brief)}; when high, every slide needs a substantive deep_dive body.`,
           source_ids: sourcePaper.sections.map((section) => section.id),
           brief: compactBrief(brief),
           curriculum: curriculum.data,
-          already_authored_titles: authoredSlideList.map((s) => s && s.title).filter(Boolean),
           slide_budget_contract: {
             requested_total_slide_count: requestedSlides,
             teaching_slide_count_before_works_cited: teachingSlides,
-            authoring_batch: { from: fromIndex, to: toIndex, return_now: batchCount },
-            note: "Other batches cover the remaining slides; a final Knowledge Base / Works Cited slide is added automatically."
+            authoring_batch: { from: b.fromIndex, to: b.toIndex, return_now: b.batchCount },
+            note: "Other batches cover the remaining slide numbers; a final Knowledge Base / Works Cited slide is added automatically."
           },
           required_shape: {
             slides: [{
@@ -1925,26 +1991,31 @@ async function runOpenAIStages(brief, sourcePaper) {
             }]
           }
         }, null, 2),
-        Math.min(9000, Math.max(3500, batchCount * 520))
+        Math.min(9000, Math.max(3500, b.batchCount * 520))
       );
+      const slides = batch.data && Array.isArray(batch.data.slides) ? batch.data.slides : [];
+      return { index: b.index, slides, model: batch.model || "", note: slides.length ? null : `Batch ${b.index + 1} returned no slides; its range will be safely expanded.` };
     } catch (error) {
-      // A failed/slow batch must never dead-end the build. Keep what we have and
-      // let downstream expansion fill the requested budget.
-      reports.push({ stage: "author", ok: true, note: `Authoring stopped early after ${authoredSlideList.length} slides (${safeErrorMessage(error.message || error)}); remaining slides will be safely expanded.` });
-      break;
+      // A failed/slow batch must never dead-end the build — degrade to empty for
+      // this range; downstream expansion fills it. (Provider-level transient
+      // retry already happens inside llm.js.)
+      return { index: b.index, slides: [], model: "", note: `Batch ${b.index + 1} failed (${safeErrorMessage(error.message || error)}); its slides will be safely expanded.` };
     }
-    authorModel = batch.model || authorModel;
-    const batchSlides = batch.data && Array.isArray(batch.data.slides) ? batch.data.slides : [];
-    if (!batchSlides.length) {
-      reports.push({ stage: "author", ok: true, note: `Batch ${authorBatches + 1} returned no slides; stopping authoring and expanding the remainder.` });
-      break;
-    }
-    batchSlides.forEach((s) => authoredSlideList.push(s));
-    authorBatches += 1;
   }
-  const author = { model: authorModel, data: { slides: authoredSlideList } };
-  reports.push({ stage: "author", ok: true, model: author.model, authored_slides: authoredSlideList.length, batches: authorBatches });
 
+  const batchResults = await mapWithConcurrency(plannedBatches, AUTHOR_CONCURRENCY, authorOneBatch);
+  const authoredSlideList = [];
+  let authoredBatchCount = 0;
+  batchResults.forEach((r) => {
+    if (!r) return;
+    if (r.model && !authorModel) authorModel = r.model;
+    if (r.slides && r.slides.length) { r.slides.forEach((s) => authoredSlideList.push(s)); authoredBatchCount += 1; }
+    if (r.note) reports.push({ stage: "author", ok: true, note: r.note });
+  });
+  const author = { model: authorModel, data: { slides: authoredSlideList } };
+  reports.push({ stage: "author", ok: true, model: author.model, authored_slides: authoredSlideList.length, batches: authoredBatchCount, planned_batches: plannedBatches.length, concurrency: AUTHOR_CONCURRENCY });
+
+  progress("glossary", "writing glossary terms");
   const glossary = await requestOpenAIJson(
     "glossary",
     `You are the Masterclass Factory glossary specialist. ${rules}`,
@@ -1959,6 +2030,7 @@ async function runOpenAIStages(brief, sourcePaper) {
   );
   reports.push({ stage: "glossary", ok: true, model: glossary.model });
 
+  progress("assessment", "creating checks and assessments");
   const assessment = await requestOpenAIJson(
     "assessment",
     `You are the Masterclass Factory assessment specialist. ${rules}`,
@@ -3636,7 +3708,17 @@ module.exports = async function generateHandler(req, res) {
   }
 
   if (req.method !== "POST") {
-    send(res, 405, { ok: false, errors: ["Use POST with a class setup body."] });
+    // Never a bare error: carry a resolution + an actionable option (B16).
+    send(res, 405, {
+      ok: false,
+      status: "method_not_allowed",
+      resolution: "method_not_allowed",
+      errors: ["Use POST with a class setup body."],
+      options: [
+        { id: "use_post", label: "Send the request as POST with a JSON brief body.", token: null, kind: "client" },
+        { id: "ask_bernard", label: "Ask Bernard how to call the generator.", token: null, kind: "conversational" }
+      ]
+    });
     return;
   }
 
@@ -3661,7 +3743,18 @@ module.exports = async function generateHandler(req, res) {
     _engineKey = (body && typeof body.api_key === "string") ? body.api_key.trim() : "";
     const result = validateBrief(sanitizeBriefForValidation(brief), template);
     if (!result.ok) {
-      send(res, 422, { ok: false, errors: result.errors });
+      // Never a bare error: the brief failed the contract, but tell the caller
+      // exactly what to do about it (B16).
+      send(res, 422, {
+        ok: false,
+        status: "invalid_brief",
+        resolution: "invalid_brief",
+        errors: result.errors,
+        options: [
+          { id: "fix_brief", label: "Correct the highlighted fields and resubmit.", detail: result.errors.slice(0, 5).join(" "), token: null, kind: "client" },
+          { id: "ask_bernard", label: "Ask Bernard to explain what the brief needs.", token: null, kind: "conversational" }
+        ]
+      });
       return;
     }
 
@@ -3770,7 +3863,13 @@ module.exports = async function generateHandler(req, res) {
       };
     } else {
       try {
-        pipeline = await runOpenAIStages(effectiveBrief, sourceBuild.sourcePaper);
+        // Bounded auto-retry on a transient stage failure BEFORE degrading to
+        // the deterministic path (B16). A second/non-transient failure falls
+        // through to the deterministic builder — the build still completes.
+        pipeline = await withStageRetry(
+          () => runOpenAIStages(effectiveBrief, sourceBuild.sourcePaper),
+          "openai-stages"
+        );
       } catch (error) {
         pipeline = {
           mode: "deterministic",
@@ -3931,7 +4030,20 @@ module.exports = async function generateHandler(req, res) {
       advancement_opportunity: advancementOpportunity
     });
   } catch (error) {
-    send(res, 400, { ok: false, errors: [safeErrorMessage(error.message || error)] });
+    // Last-resort handler error. Never a bare error array: carry a resolution
+    // and actionable options so the client always has a way forward (B16). The
+    // transient-prone stages above already auto-retry (withStageRetry) before
+    // reaching here, so this is a genuine failure, not a blip.
+    send(res, 400, {
+      ok: false,
+      status: "generate_error",
+      resolution: "needs_human",
+      errors: [safeErrorMessage(error.message || error)],
+      options: [
+        { id: "retry", label: "Try generating again.", detail: "The error may be transient; a fresh run often clears it.", token: { retry: true }, kind: "build" },
+        { id: "ask_bernard", label: "Ask Bernard what went wrong.", detail: "Describe what you were building and Bernard will explain the failure in plain terms.", token: null, kind: "conversational" }
+      ]
+    });
   }
 };
 
@@ -3961,6 +4073,8 @@ module.exports._internal = {
   sanitizeBriefForValidation,
   totalSlideTarget,
   slideBudgetFloor,
+  planAuthorBatches,
+  mapWithConcurrency,
   requiredDeepDiveCount,
   openAIKeyUsable,
   openAIKey,

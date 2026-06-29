@@ -19,6 +19,13 @@ const coherence = require("./curriculum-coherence.js");
 const bib = require("./curriculum-bibliography.js");
 const briefTemplate = require("../brief.template.json");
 
+// Per-tier slide floors (mirror api/generate.js CLASS_TIERS.slide_floor) and the
+// band above the floor that bounds the minutes*density slide budget. Kept local
+// so the curriculum path stays decoupled from the generate monolith. Clamp =
+// [floor, floor + SANE_SLIDE_BAND]; density scales the count within that band.
+const TIER_SLIDE_FLOOR = { briefing: 30, standard: 40, professional: 60, expert: 90 };
+const SANE_SLIDE_BAND = 20;
+
 /* --------------------------------------------------------------------------
    Pure: dependency-ordered build sequence (Kahn topological sort).
    Prerequisites build before dependents; ties broken by the class order field.
@@ -200,8 +207,17 @@ function briefForClass(manifest, classSlug, template) {
   // Length budget: per-class minutes come from the plan; the shared control is
   // slide DENSITY (slides per minute), scaled per class, plus the interaction
   // budget. Absent => 1.5 slides/min (the prior default) and template interactions.
+  // The raw minutes*density product is CLAMPED to a sane band tied to the class
+  // tier (B3/B7): the tier's slide floor is the minimum depth, and floor + a
+  // fixed band is the ceiling, so a long class or a high density can no longer
+  // derive a runaway 100+ slide deck. Density still scales the count WITHIN the
+  // band. (Tier floors mirror api/generate.js CLASS_TIERS; kept local so the
+  // curriculum path need not require the generate monolith.)
   var spm = (setup && setup.length && Number(setup.length.slides_per_minute)) ? Number(setup.length.slides_per_minute) : 1.5;
-  b.length.slide_budget = Math.max(10, Math.min(400, Math.round((cls.suggested_minutes || 60) * spm)));
+  var floorSlides = TIER_SLIDE_FLOOR[b.class_tier.level] || TIER_SLIDE_FLOOR.standard;
+  var ceilingSlides = floorSlides + SANE_SLIDE_BAND;
+  var derivedSlides = Math.round((cls.suggested_minutes || 60) * spm);
+  b.length.slide_budget = Math.max(floorSlides, Math.min(ceilingSlides, derivedSlides));
   if (setup && setup.length && setup.length.interaction_budget && typeof setup.length.interaction_budget === "object") {
     b.length.interaction_budget = Object.assign({}, b.length.interaction_budget, setup.length.interaction_budget);
   }

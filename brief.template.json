@@ -13,6 +13,6 @@
     "floor":   { "age_band": "", "education": "", "background": "", "technical": "non", "role": "" },
     "gender_mix": "", "tone": "plain", "accessibility": { "reading_grade_cap": 9 }
   },
-  "length": { "minutes": 60, "slide_budget": 90, "interaction_budget": { "polls": 2, "word_clouds": 4, "quizzes": 1, "final_test": true } },
+  "length": { "minutes": 60, "slide_budget": 60, "interaction_budget": { "polls": 2, "word_clouds": 4, "quizzes": 1, "final_test": true } },
   "language": { "primary": "en", "localize_ui_strings": true, "glossary_in_primary": true }
 }

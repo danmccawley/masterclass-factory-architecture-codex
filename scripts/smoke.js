@@ -340,13 +340,47 @@ function printKbTable(rows) {
   if (bad.length) console.log("PROBLEM: " + bad.map((r) => r.subject + " [" + r.note + "]").join("; "));
 }
 
+// --- 7. Author-throughput profile (Sprint 2 / B3): the build's slowest stage is
+// slide authoring (~3s per LLM batch). This measures the SAME code path the
+// generator uses — planAuthorBatches + mapWithConcurrency — sequentially
+// (pool 1, the old behavior) vs the new bounded pool, with a simulated per-batch
+// latency so the parallelization win is visible without burning real LLM spend.
+async function runAuthorProfile() {
+  const gen = require("../api/generate.js");
+  const I = gen._internal;
+  const SIM_BATCH_MS = 600;          // stand-in for a real ~3s author batch, scaled down
+  const TEACHING_SLIDES = 48;        // a standard ~48-slide deck
+  const POOL = 5;                    // AUTHOR_CONCURRENCY
+  const batches = I.planAuthorBatches(TEACHING_SLIDES, 12);
+  const work = (b) => new Promise((res) => setTimeout(() => res(b.batchCount), SIM_BATCH_MS));
+
+  const seqStart = Date.now();
+  const seq = await I.mapWithConcurrency(batches, 1, work);     // old: one at a time
+  const seqMs = Date.now() - seqStart;
+
+  const parStart = Date.now();
+  const par = await I.mapWithConcurrency(batches, POOL, work);  // new: bounded pool
+  const parMs = Date.now() - parStart;
+
+  const sum = (a) => a.reduce((n, x) => n + x, 0);
+  console.log("\n=== SMOKE: author-throughput profile (Sprint 2 / B3) ===\n");
+  console.log("deck: " + TEACHING_SLIDES + " teaching slides -> " + batches.length + " batches @ ~" + SIM_BATCH_MS + "ms each (simulated); pool=" + POOL);
+  console.log("BEFORE (sequential, pool 1): " + seqMs + "ms  (" + sum(seq) + " slides, order preserved)");
+  console.log("AFTER  (bounded pool " + POOL + "):     " + parMs + "ms  (" + sum(par) + " slides, order preserved)");
+  console.log("speedup: ~" + (seqMs / Math.max(1, parMs)).toFixed(1) + "x");
+  const orderOk = JSON.stringify(seq) === JSON.stringify(par);
+  console.log("output order identical sequential vs parallel: " + (orderOk ? "yes" : "NO"));
+  return { ok: orderOk && parMs < seqMs };
+}
+
 run()
   .then(async (rows) => {
     printTable(rows);
     const kbRows = await runKbResilience();
     printKbTable(kbRows);
+    const profile = await runAuthorProfile();
     global.fetch = realFetch;
-    const anyFail = rows.some((r) => !r.ok) || kbRows.some((r) => !r.ok);
+    const anyFail = rows.some((r) => !r.ok) || kbRows.some((r) => !r.ok) || !profile.ok;
     process.exit(anyFail ? 1 : 0);
   })
   .catch((error) => {
