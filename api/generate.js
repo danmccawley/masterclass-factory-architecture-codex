@@ -2,28 +2,18 @@ const fs = require("fs");
 const path = require("path");
 const { validateBrief } = require("../brief-validator.js");
 const template = require("../brief.template.json");
-const { readOpenAIUsage, createBudgetLedger } = require("./kb-budget.js");
 const TEMPLATE_EMBED = require("./template-embed.js");
 const { resolveThemeCss } = require("./theme.js")._internal;
 const llm = require("./llm.js");
 
-// Per-build cost ledger. Set at the start of each generate request and recorded
-// into at every OpenAI/Tavily call site, so the build's real spend is tracked.
-// NOTE: this is module-scoped and reset per request; it assumes one in-flight
-// generate per instance (the standard Node serverless model). If request-level
-// concurrency is enabled, thread the ledger through call args instead.
-let _costLedger = null;
+// Per-build cost ledger. Extracted to lib/cost.js (Sprint 3) — that module owns
+// the module-scoped ledger and the OpenAI/Tavily/LLM spend recorders. Same
+// singleton semantics (one in-flight generate per instance) and same numbers;
+// generate.js just starts the ledger per request and reads its summary.
+const cost = require("../lib/cost.js");
+const { recordOpenAISpend, recordTavilySpend } = cost;
 let _engine = null; // { provider, model } for this build; null => OpenAI default
 let _engineKey = ""; // optional bring-your-own API key for this build; "" => env key
-function recordOpenAISpend(payload, model) {
-  if (!_costLedger) return;
-  const u = readOpenAIUsage(payload);
-  if (u.total_tokens > 0) _costLedger.record({ kind: "openai", model: model, input_tokens: u.input_tokens, output_tokens: u.output_tokens });
-}
-function recordTavilySpend(searches) {
-  if (!_costLedger) return;
-  _costLedger.record({ kind: "tavily", searches: Number(searches) || 0 });
-}
 
 // The KB seal step (api/knowledge-base.js) stamps server-added metadata onto
 // knowledge_base — `sealed`, `seal`, and the wizard's `_class_tier` transport
@@ -1809,14 +1799,7 @@ async function requestOpenAIJson(stage, system, user, maxTokens) {
 
   const result = await llm.completeJson(opts);
 
-  if (result.usage && _costLedger && result.usage.total_tokens > 0) {
-    _costLedger.record({
-      kind: result.provider,
-      model: result.model,
-      input_tokens: result.usage.input_tokens,
-      output_tokens: result.usage.output_tokens
-    });
-  }
+  cost.recordLlmUsage(result);
   if (result.data == null) {
     const error = new Error(`${stage} failed: model returned unparseable JSON.`);
     error.stage = stage;
@@ -3729,7 +3712,7 @@ module.exports = async function generateHandler(req, res) {
     // Start a fresh per-build cost ledger. Budget is read from an OPTIONAL field
     // (body.budget_usd or brief.budget_usd); 0/absent means "no budget set" — the
     // ledger still tracks real spend, it just never raises an overage notice.
-    _costLedger = createBudgetLedger(
+    cost.startLedger(
       Number((body && body.budget_usd) || (brief && brief.budget_usd) || 0)
     );
     // Which model provider authors this build. Optional; absent => OpenAI default.
@@ -3980,7 +3963,7 @@ module.exports = async function generateHandler(req, res) {
       knowledge_standard: quality.knowledge_standard,
       quality,
       // Real per-build spend, computed from measured token usage (see kb-budget.js).
-      cost: _costLedger ? _costLedger.summary() : null,
+      cost: cost.summary(),
       message: pipeline.mode === "openai"
         ? "Masterclass generated with OpenAI stages, independent source verification, QA, preview, bundle, and publish handoff."
         : "Masterclass generated with the conservative deterministic path because OpenAI was unavailable. Preview, bundle, source verification, QA, and publish handoff are ready.",
