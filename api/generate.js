@@ -40,6 +40,16 @@ const {
   slideBudgetFloor, totalSlideTarget, deepDiveMode, wantsDeepDives,
   CLASS_TIERS, MIN_MASTERCLASS_SLIDES
 } = util;
+
+// Failure-handling + logging primitives. Extracted to lib/core/diagnostics.js
+// (Sprint 3, module 5 — foundation step 1/3). Leaf module that requires nothing;
+// the OpenAI client and research engine build on it. Imported back into this
+// scope so every existing call site (and the _internal test export) resolves
+// unchanged. KEY_PREFIX lives there too (its redaction patterns need it).
+const {
+  safeErrorMessage, isTimeoutMessage, isTransientFailure, kbdiag, discoveryDelay,
+  safeHost, KEY_PREFIX
+} = require("../lib/core/diagnostics.js");
 let _engine = null; // { provider, model } for this build; null => OpenAI default
 let _engineKey = ""; // optional bring-your-own API key for this build; "" => env key
 
@@ -76,10 +86,7 @@ function sanitizeBriefForValidation(brief) {
 const DEFAULT_OPENAI_MODEL = "gpt-5.5";
 const FALLBACK_OPENAI_MODELS = ["gpt-5.4", "gpt-4.1-mini"];
 const DEFAULT_OPENAI_SEARCH_MODEL = "gpt-5-search-api";
-const KEY_PREFIX = ["s", "k"].join("") + "-";
 const KEY_PATTERN = new RegExp("^" + KEY_PREFIX + "[A-Za-z0-9_-]+$");
-const PROJECT_KEY_PATTERN = new RegExp(KEY_PREFIX + "proj-[A-Za-z0-9_-]+", "g");
-const ANY_KEY_PATTERN = new RegExp(KEY_PREFIX + "[A-Za-z0-9_-]+", "g");
 const MAX_SOURCE_CHARS = 9000;
 const SOURCE_FETCH_TIMEOUT_MS = 9000;
 const OPENAI_SEARCH_TIMEOUT_MS = 22000;
@@ -1434,43 +1441,6 @@ function configuredModels() {
   return Array.from(new Set(models));
 }
 
-function safeErrorMessage(message) {
-  const raw = String(message || "OpenAI API request failed.");
-  if (/headers\.append|invalid header value/i.test(raw)) {
-    return "OPENAI_API_KEY has extra text or invalid characters. Replace it with only the OpenAI key, then redeploy.";
-  }
-  return raw
-    .replace(PROJECT_KEY_PATTERN, "[redacted OpenAI key]")
-    .replace(ANY_KEY_PATTERN, "[redacted API key]")
-    .replace(/Bearer\s+[^"'`]+/g, "Bearer [redacted]");
-}
-
-function isTimeoutMessage(message) {
-  return /abort|aborted|timeout|timed out/i.test(String(message || ""));
-}
-
-// A TRANSIENT failure is worth exactly one retry: an HTTP 429 or 5xx, or a
-// status-0 abort/timeout/network blip. A 4xx (other than 429) is a hard answer
-// from the server and must NOT be retried. Used to gate retry + degrade across
-// every external discovery call (Tavily, OpenAI web search, source fetch).
-function isTransientFailure(status, message) {
-  const s = Number(status) || 0;
-  if (s === 429 || (s >= 500 && s < 600)) return true;
-  if (s >= 400 && s < 500) return false; // hard client answer (404/403/etc.)
-  return isTimeoutMessage(message) || /network|fetch failed|socket|econn|etimedout|eai_again/i.test(String(message || ""));
-}
-
-// Consistent KBDIAG marker for every external discovery call, so the runtime
-// logs show exactly which provider degraded and how it was handled. Never logs
-// key material. Mirrors the handler's KBDIAG so one grep covers the whole path.
-function kbdiag(obj) {
-  try { console.log("KBDIAG " + JSON.stringify(obj)); } catch (e) { /* logging must never throw */ }
-}
-
-function discoveryDelay(ms) {
-  return new Promise(function (resolve) { setTimeout(resolve, ms); });
-}
-
 // Incremental build-progress marker (stage + human detail, e.g. "slides 13-24
 // of 48"). Logged so progress is observable in the runtime logs during a long
 // build; the response also returns stage_reports. Logging must never throw.
@@ -1493,10 +1463,6 @@ async function withStageRetry(fn, label) {
     }
     throw error;
   }
-}
-
-function safeHost(url) {
-  try { return new URL(url).hostname; } catch (e) { return ""; }
 }
 
 function openAIError(payload) {
