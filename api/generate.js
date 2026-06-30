@@ -50,6 +50,16 @@ const {
   safeErrorMessage, isTimeoutMessage, isTransientFailure, kbdiag, discoveryDelay,
   safeHost, KEY_PREFIX
 } = require("../lib/core/diagnostics.js");
+
+// OpenAI client plumbing. Extracted to lib/core/openai.js (Sprint 3, module 5 —
+// foundation step 2/3). Requires only diagnostics; nothing back from generate.js.
+// Imported back into this scope so every existing call site (and the _internal
+// test export) resolves unchanged. The OpenAI model constants live there too.
+const {
+  DEFAULT_OPENAI_MODEL, FALLBACK_OPENAI_MODELS, DEFAULT_OPENAI_SEARCH_MODEL,
+  openAIKey, validateOpenAIKey, openAIKeyUsable, configuredModels,
+  openAIError, shouldTryNextModel, parseJsonPayload
+} = require("../lib/core/openai.js");
 let _engine = null; // { provider, model } for this build; null => OpenAI default
 let _engineKey = ""; // optional bring-your-own API key for this build; "" => env key
 
@@ -83,9 +93,6 @@ function sanitizeBriefForValidation(brief) {
   return clone;
 }
 
-const DEFAULT_OPENAI_MODEL = "gpt-5.5";
-const FALLBACK_OPENAI_MODELS = ["gpt-5.4", "gpt-4.1-mini"];
-const DEFAULT_OPENAI_SEARCH_MODEL = "gpt-5-search-api";
 const KEY_PATTERN = new RegExp("^" + KEY_PREFIX + "[A-Za-z0-9_-]+$");
 const MAX_SOURCE_CHARS = 9000;
 const SOURCE_FETCH_TIMEOUT_MS = 9000;
@@ -1409,38 +1416,6 @@ function sourceText(sourcePaper) {
   }).join("\n\n");
 }
 
-function openAIKey() {
-  return String(process.env.OPENAI_API_KEY || "").trim();
-}
-
-function validateOpenAIKey(key) {
-  if (!key) return "OPENAI_API_KEY is not set, so the generator used the conservative deterministic path.";
-  // Accept any current OpenAI key shape: must start with "sk-", be reasonably
-  // long, and contain no whitespace. We deliberately do NOT restrict the body to
-  // a narrow character class — newer keys (sk-proj-..., service keys, etc.) use a
-  // wider alphabet, and an over-strict pattern was rejecting valid keys and
-  // forcing the deterministic/no-research path.
-  if (!key.startsWith(KEY_PREFIX)) return "OPENAI_API_KEY does not look like an OpenAI key (it should start with 'sk-'). Replace it with only the key, then redeploy.";
-  if (/\s/.test(key)) return "OPENAI_API_KEY has spaces or line breaks in it. Paste only the key with no surrounding quotes or spaces, then redeploy.";
-  if (key.length < 20) return "OPENAI_API_KEY looks too short to be valid. Re-copy the full key, then redeploy.";
-  return "";
-}
-
-// True when a usable OpenAI key is configured. validateOpenAIKey returns an
-// empty string ("") on success and a non-empty message on failure, so the
-// correct success test is `=== ""`, NOT `=== null`. (An earlier `=== null`
-// comparison was always false, which silently skipped AI research even when a
-// perfectly valid key was present.)
-function openAIKeyUsable() {
-  return validateOpenAIKey(openAIKey()) === "";
-}
-
-function configuredModels() {
-  const configured = String(process.env.OPENAI_MODEL || "").trim();
-  const models = [DEFAULT_OPENAI_MODEL, configured].concat(FALLBACK_OPENAI_MODELS).filter(Boolean);
-  return Array.from(new Set(models));
-}
-
 // Incremental build-progress marker (stage + human detail, e.g. "slides 13-24
 // of 48"). Logged so progress is observable in the runtime logs during a long
 // build; the response also returns stage_reports. Logging must never throw.
@@ -1462,30 +1437,6 @@ async function withStageRetry(fn, label) {
       return await fn(); // a second failure propagates to the caller's degrade path
     }
     throw error;
-  }
-}
-
-function openAIError(payload) {
-  const message = payload && payload.error && payload.error.message
-    ? payload.error.message
-    : "OpenAI API request failed.";
-  return safeErrorMessage(message);
-}
-
-function shouldTryNextModel(status, message) {
-  if (status === 401) return false;
-  return status === 400 || status === 403 || status === 404 ||
-    (/model/i.test(message) && /not found|does not exist|unsupported|invalid|access/i.test(message));
-}
-
-function parseJsonPayload(content) {
-  const textValue = String(content || "").trim().replace(/^```(?:json)?/i, "").replace(/```$/i, "").trim();
-  try {
-    return JSON.parse(textValue);
-  } catch (error) {
-    const match = textValue.match(/\{[\s\S]*\}/);
-    if (!match) throw error;
-    return JSON.parse(match[0]);
   }
 }
 
