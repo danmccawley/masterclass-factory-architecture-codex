@@ -218,7 +218,7 @@
       (function () {
         var host = document.getElementById("providerTiles");
         if (!host) return;
-        var ORDER = ["anthropic", "openai", "gemini", "xai"];
+        var ORDER = ["openai"];
         var saved = "";
         try { saved = window.localStorage ? (window.localStorage.getItem("mf-provider") || "") : ""; } catch (e) { saved = ""; }
         var byIdGlobal = {};
@@ -263,7 +263,7 @@
         }
 
         function render(catalog) {
-          var def = (catalog && catalog.default) || "anthropic";
+          var def = (catalog && catalog.default) || "openai";
           var byId = {};
           ((catalog && catalog.providers) || []).forEach(function (p) { byId[p.id] = p; });
           byIdGlobal = byId;
