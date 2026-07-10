@@ -268,15 +268,51 @@ function compactBrief(brief) {
 // Tile a teaching deck into ordered author batches. Pure + deterministic so it
 // can be unit-tested: the batches tile [1..authoredSlides] with no gap and no
 // overlap, each carrying its slide-number range.
-function planAuthorBatches(authoredSlides, batchSize) {
+function planAuthorBatches(authoredSlides, batchSize, lessonSections) {
   const size = Math.max(1, Number(batchSize) || AUTHOR_BATCH_SIZE);
   const total = Math.max(0, Number(authoredSlides) || 0);
+  const sections = Array.isArray(lessonSections) ? lessonSections : [];
   const batches = [];
   for (let produced = 0; produced < total; produced += size) {
     const batchCount = Math.min(size, total - produced);
-    batches.push({ index: batches.length, fromIndex: produced + 1, toIndex: produced + batchCount, batchCount });
+    const index = batches.length;
+    const sectionStart = Math.floor(index * sections.length / Math.ceil(total / size));
+    const sectionEnd = Math.floor((index + 1) * sections.length / Math.ceil(total / size));
+    batches.push({
+      index: index,
+      fromIndex: produced + 1,
+      toIndex: produced + batchCount,
+      batchCount,
+      sections: sections.slice(sectionStart, sectionEnd)
+    });
   }
   return batches;
+}
+
+function fastAuthorModels() {
+  const fast = process.env.OPENAI_RENDERING_MODEL || "gpt-4.1-mini";
+  return Array.from(new Set([fast].concat(configuredModels()).filter(Boolean)));
+}
+
+function classifySource(url, title, snippet) {
+  const host = safeHost(url);
+  const textValue = [url, title, snippet].join(" ").toLowerCase();
+  const commentaryHost = /(^|\.)history\.com$|(^|\.)wikipedia\.org$|(^|\.)britannica\.com$/.test(host);
+  const primarySignal = (
+    /\.gov$/.test(host) ||
+    /\.edu$/.test(host) ||
+    /(^|\.)loc\.gov$/.test(host) ||
+    /(^|\.)archives\./.test(host) ||
+    /avalon\.law\.yale\.edu/.test(host) ||
+    /archive\.org\/details\//.test(textValue) ||
+    /primary[- ]sources?|digital collections|full text transcript|official standard|specification/.test(textValue)
+  );
+  const trust = !commentaryHost && primarySignal ? "primary" : "secondary";
+  return {
+    trust: trust,
+    credibility_rank: trust === "primary" ? "high" : "medium",
+    reliability_rank: trust === "primary" ? "high" : "medium"
+  };
 }
 
 // Run async `worker(item, i)` over `items` with BOUNDED concurrency, returning
@@ -2339,6 +2375,8 @@ module.exports._internal = {
   totalSlideTarget,
   slideBudgetFloor,
   planAuthorBatches,
+  fastAuthorModels,
+  classifySource,
   mapWithConcurrency,
   requiredDeepDiveCount,
   openAIKeyUsable,

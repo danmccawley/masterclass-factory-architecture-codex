@@ -266,10 +266,6 @@ module.exports = async function curriculumHandler(req, res) {
     models = [engine.model];
   } else if (provider === "openai") {
     models = [process.env.OPENAI_CURRICULUM_MODEL || "gpt-4o"];
-  } else if (provider === "anthropic") {
-    models = [process.env.ANTHROPIC_CURRICULUM_MODEL || "claude-haiku-4-5-20251001", "claude-sonnet-4-6"];
-  } else {
-    models = undefined; // let the provider default decide
   }
 
   // Never dead-end on a format stumble. The model is asked for raw JSON, but a
