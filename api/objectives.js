@@ -57,6 +57,17 @@ function normalizeObjectives(value) {
   };
 }
 
+// The wizard carries runtime-only authoring preferences alongside the strict
+// Course Brief contract. Validate a copy without those transport fields, while
+// preserving the original payload so model selection can still read `engine`.
+function sanitizeBriefForValidation(brief) {
+  const clone = JSON.parse(JSON.stringify(brief || {}));
+  delete clone.engine;
+  delete clone.theme;
+  delete clone.budget_usd;
+  return clone;
+}
+
 function buildPrompt(payload) {
   const brief = payload.brief;
   return JSON.stringify(
@@ -195,7 +206,7 @@ module.exports = async function objectivesHandler(req, res) {
       return;
     }
 
-    const valid = validateBrief(payload.brief, template);
+    const valid = validateBrief(sanitizeBriefForValidation(payload.brief), template);
     if (!valid.ok) {
       send(res, 422, { ok: false, errors: valid.errors });
       return;
