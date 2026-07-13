@@ -339,6 +339,24 @@ test("brief endpoint rejects a bad brief (422)", async () => {
   const r = await callHandler(brief, "POST", bad);
   assert.strictEqual(r.status, 422);
 });
+test("objectives accepts wizard engine metadata outside the strict brief contract", async () => {
+  const objectives = require("../api/objectives.js");
+  const wizardBrief = baseBrief();
+  wizardBrief.engine = { provider: "openai", model: "" };
+  const had = process.env.OPENAI_API_KEY;
+  delete process.env.OPENAI_API_KEY;
+  try {
+    const r = await callHandler(objectives, "POST", {
+      action: "fill",
+      mode: "ai",
+      brief: wizardBrief
+    });
+    assert.strictEqual(r.status, 503, "valid wizard brief should advance to the OpenAI configuration gate");
+    assert.ok(!r.json.errors.some((error) => /engine is not in brief\.template\.json/.test(error)));
+  } finally {
+    if (had === undefined) delete process.env.OPENAI_API_KEY; else process.env.OPENAI_API_KEY = had;
+  }
+});
 test("remediate rejects GET with 405", async () => {
   const remediate = require("../api/remediate.js");
   const r = await callHandler(remediate, "GET");
