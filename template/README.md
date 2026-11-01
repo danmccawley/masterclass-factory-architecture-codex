@@ -11,6 +11,8 @@ template/
 ├── index.html        # shell + design tokens + modal markup + <script> load order
 ├── engine.js         # the whole engine (render, nav, quizzes, polls, glossary, tutor, listen…)
 ├── navscrubber.js    # bottom progress scrubber (no tokens; reused as-is)
+├── lib/
+│   └── admin-auth.js # shared header-only owner authentication; required by poll.js
 └── api/
     ├── chat.js       # Bernard tutor (OpenAI)           — has tokens
     ├── grade.js      # AI grader     (OpenAI)           — has tokens; BAR ladder is generic, keep it
@@ -46,6 +48,15 @@ is topic-agnostic — leave it exactly as-is.
 
 ## Env vars (set on the deck's Vercel project)
 `OPENAI_API_KEY` (chat+grade+quality+tts) · optional `OPENAI_MODEL` (defaults to GPT-5.5) · `KV_REST_API_URL` · `KV_REST_API_TOKEN` · `POLL_ADMIN_KEY`
+
+Poll reset: `POST /api/poll?qid=<id>&reset=1` over HTTPS with
+`Authorization: Bearer <POLL_ADMIN_KEY>` or `x-admin-key: <POLL_ADMIN_KEY>`.
+Raw `Authorization: <POLL_ADMIN_KEY>` remains supported for compatibility; `x-admin-key` takes
+precedence if both are supplied. Query-string and body credentials are ignored. Reset fails
+closed (403) if the configured key is missing/blank or authentication fails, and returns 405 for
+non-POST resets. Ordinary reads and votes need no admin key. Include `lib/admin-auth.js` in each
+standalone deployment, regenerate the affected entries in `api/template-embed.js` after changes,
+and rebuild/redeploy existing standalone classes to apply this security update.
 
 > Provenance: derived from the shipped Texas Revolution deck, with all topic/audience strings replaced
 > by tokens and the stale "Micro Data Centers" header comment fixed. Engine logic is unchanged.

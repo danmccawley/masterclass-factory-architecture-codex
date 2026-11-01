@@ -224,7 +224,10 @@ Anthropic) and use **Vercel KV / Upstash** as the live datastore.
   (template 26), model `gpt-4o-mini-tts`, default voice `fable`. **Env:** `OPENAI_API_KEY`
   (18, missing→503; **no key-format validation here**, raw read).
 - **`poll.js`** — live poll tallies. `GET` read / `POST` vote / `POST ?reset` (admin). KV pipeline
-  (template 8). **Env:** KV vars (6, missing→503), `POLL_ADMIN_KEY` (30, unset→reset disabled/403).
+  (template). Reset requires `Authorization: Bearer <key>` or `x-admin-key: <key>`;
+  query credentials are ignored and non-POST resets return 405. Shares
+  `template/lib/admin-auth.js` with the admin summary (shipped as `lib/admin-auth.js` in bundles).
+  **Env:** KV vars (missing→503), `POLL_ADMIN_KEY` (unset/blank→reset disabled/403).
 - **`words.js`** — word-cloud frequencies. `GET`/`POST ?w`. KV pipeline (template 7). **Env:**
   KV vars (5, missing→503).
 - **`feedback.js`** — append audience feedback (RPUSH `feedback:all`). `POST` only. KV pipeline
@@ -232,9 +235,11 @@ Anthropic) and use **Vercel KV / Upstash** as the live datastore.
 
 ### 2.6 Ops / utility endpoints
 
-**`api/admin.js`.** Owner-only class-health summary. `GET` only (else 405). Timing-safe key check;
-scans `classes/` on disk (`fs.readdirSync/readFileSync/statSync` 45–62). **Env:** `POLL_ADMIN_KEY`
-(28, unset→**503/disabled**; wrong key→403). No network/LLM.
+**`api/admin.js`.** Owner-only class-health summary. `GET` only (else 405). Shared timing-safe,
+header-only key check (`template/lib/admin-auth.js`); `Authorization: Bearer <key>` or
+`x-admin-key: <key>` (takes precedence). Raw Authorization is retained for compatibility on
+both administrative paths. URL/body credentials never authenticate. Scans `classes/` on disk.
+**Env:** `POLL_ADMIN_KEY` (unset/blank→**503/disabled**; wrong key→403). No network/LLM.
 
 **`api/librarian.js`.** Source link-rot / drift monitor (Vercel cron `0 9 * * 1`). `GET`/`POST`.
 Reads each class's `source.js`/`class-record.json` from disk (`fs` 61–75), HEAD-checks ≤20

@@ -1,7 +1,8 @@
 // /api/poll  — shared live poll tallies (Upstash Redis via KV_REST_API_* env vars)
 // GET  ?qid=<id>&n=<numOptions>                -> { counts:[...] }
 // POST ?qid=<id>&opt=<i>&n=<numOptions>         -> { counts:[...] }  (records a vote)
-// POST ?qid=<id>&reset=1&key=<POLL_ADMIN_KEY>   -> { ok:true }       (clears a poll)
+// POST ?qid=<id>&reset=1 + Authorization: Bearer <POLL_ADMIN_KEY> -> { ok:true }
+const { adminKeyMatches } = require("../lib/admin-auth.js");
 async function kv(commands){
   const base = process.env.KV_REST_API_URL, tok = process.env.KV_REST_API_TOKEN;
   if(!base || !tok) return null;                       // no store -> caller falls back to local
@@ -27,7 +28,8 @@ module.exports = async (req, res) => {
     const key = "poll:" + qid;
 
     if(u.searchParams.get("reset")){
-      if((u.searchParams.get("key")||"") !== (process.env.POLL_ADMIN_KEY||"\0"))
+      if(req.method !== "POST") return res.status(405).json({ error:"POST only" });
+      if(!adminKeyMatches(req, process.env.POLL_ADMIN_KEY))
         return res.status(403).json({ error:"bad admin key" });
       await kv([["DEL", key]]);
       return res.status(200).json({ ok:true });
