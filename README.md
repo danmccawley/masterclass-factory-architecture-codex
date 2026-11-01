@@ -45,7 +45,7 @@ quality summaries, and TTS use these Vercel environment variables:
 ```bash
 OPENAI_API_KEY=your OpenAI API key
 OPENAI_MODEL=gpt-5.5 # optional; GPT-5.5 is already the built-in default
-POLL_ADMIN_KEY=owner-only admin key for /api/admin
+POLL_ADMIN_KEY=owner-only header credential for /api/admin and poll reset
 ```
 
 If `OPENAI_MODEL` is not set, the app tries `gpt-5.5` first. If that model is unavailable to
@@ -111,9 +111,30 @@ It also includes `student-handout.md`, `facilitator-guide.md`, `quiz-answer-key.
 `evidence-map.json`, `class-blueprint.json`, and `class-record.json`.
 
 ## Owner/Admin Path
-`/api/admin?key=<POLL_ADMIN_KEY>` returns an owner-only JSON summary of generated classes, quality
-scores, source counts, export completeness, and classes needing attention. If `POLL_ADMIN_KEY` is
-not set, the endpoint refuses to run.
+`GET /api/admin` returns an owner-only JSON summary of generated classes, quality scores, source
+counts, export completeness, and classes needing attention. Send `POLL_ADMIN_KEY` in the
+`Authorization: Bearer <key>` header over HTTPS. The `x-admin-key: <key>` header is also supported;
+raw `Authorization: <key>` remains supported for existing integrations. If both headers are sent,
+`x-admin-key` takes precedence. Credentials in query parameters or request bodies do not authenticate.
+
+```sh
+curl --header "Authorization: Bearer ${POLL_ADMIN_KEY}" "https://your-domain.example/api/admin"
+curl --request POST --header "Authorization: Bearer ${POLL_ADMIN_KEY}" \
+  "https://your-domain.example/api/poll?qid=example&reset=1"
+```
+
+Poll reset uses the same header authentication and requires POST. Public poll reads and votes
+remain unauthenticated. Missing or invalid credentials return 403. If `POLL_ADMIN_KEY` is unset
+or blank, `/api/admin` returns 503 and poll reset returns 403. Poll reset with any other method
+returns 405.
+
+Migrate any bookmarked admin URLs or external scripts to header authentication. Never put keys
+in URLs, source code, or logs; redact both authentication headers from request logging. If a key
+was previously sent in a URL, rotate `POLL_ADMIN_KEY` and review retained URL logs/history. Existing
+standalone class deployments must be rebuilt and redeployed to receive the updated poll backend.
+
+Run the authentication regression tests with `node --test test/admin-auth.test.js` (also included
+in `npm test`). They stub datastore requests and cover the factory and embedded deployment runtime.
 
 ## Knowledge Librarian
 Saved masterclasses can be treated as reserve items. The Librarian endpoint:

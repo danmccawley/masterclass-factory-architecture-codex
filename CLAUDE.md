@@ -16,7 +16,11 @@ Commercial AI course-generation platform (persona "Bernard"). Read before doing 
 2. Test gate before EVERY commit: node --check on changed files AND the full suite green.
 3. Never dead-end a job. Auto-resolve; escalate to the human only in extreme cases, with actionable options.
 4. Surface failures, never swallow them. No silent catch. Failures auto-recover or show a visible, actionable state.
-5. Small, reviewable diffs. Show the diff and test output before committing; pause for review.
+5. Small, reviewable diffs. For authorized work, implement, test, commit, push a task branch, and
+   open a pull request without pausing for intermediate confirmation. Report the changes, test
+   results, and PR link when complete. Honor an explicit user request to review before proceeding.
+   Ask only for material missing information or destructive/irreversible actions outside the
+   authorized scope. Merge or deploy when the user has authorized that action.
 6. Behavior-preserving refactors are gated by a golden-output test (capture before, assert identical after).
 7. CommonJS only in api/. Never rename frontend element ids (collection reads by getElementById).
 
@@ -25,7 +29,7 @@ The sprint plan is ENGINEERING-BUILD-PLAN.md. Work ONE sprint at a time; don't s
 until the prior sprint's acceptance criteria and tests are green and committed.
 
 ## Test gate (full suite)
-node test/harness.js && node test/kb-rounds.test.js && node test/kb-objectives.test.js && node test/kb-budget.test.js && node test/theme.test.js && node test/curriculum.test.js && node test/curriculum-store.test.js && node test/curriculum-build.test.js
+npm test
 
 ## Behavior-preservation gate (golden output) — run during the generate.js decomposition
 node test/golden/golden.test.js

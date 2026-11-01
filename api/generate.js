@@ -1967,6 +1967,7 @@ function makeBundle(brief, files, presenterScript, generated, sourcePaper, pipel
     "api/chat.js": applyReplacements(readTemplateFile("api/chat.js"), brief),
     "api/grade.js": applyReplacements(readTemplateFile("api/grade.js"), brief),
     "api/poll.js": readTemplateFile("api/poll.js"),
+    "lib/admin-auth.js": readTemplateFile("lib/admin-auth.js"),
     "api/words.js": readTemplateFile("api/words.js"),
     "api/feedback.js": readTemplateFile("api/feedback.js"),
     "api/quality.js": readTemplateFile("api/quality.js"),

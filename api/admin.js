@@ -1,27 +1,11 @@
 const fs = require("fs");
 const path = require("path");
-const crypto = require("crypto");
-
-function timingSafeEqual(a, b) {
-  const ba = Buffer.from(String(a));
-  const bb = Buffer.from(String(b));
-  if (ba.length !== bb.length) return false;
-  return crypto.timingSafeEqual(ba, bb);
-}
+const { adminKeyMatches } = require("../template/lib/admin-auth.js");
 
 function send(res, status, payload) {
   res.statusCode = status;
   res.setHeader("content-type", "application/json; charset=utf-8");
   res.end(JSON.stringify(payload, null, 2));
-}
-
-function adminKey(req) {
-  const url = new URL(req.url || "/", "http://localhost");
-  return String(
-    (req.headers && (req.headers["x-admin-key"] || req.headers["authorization"])) ||
-    url.searchParams.get("key") ||
-    ""
-  ).replace(/^Bearer\s+/i, "").trim();
 }
 
 function requireAdmin(req, res) {
@@ -33,7 +17,7 @@ function requireAdmin(req, res) {
     });
     return false;
   }
-  if (!timingSafeEqual(adminKey(req), configured)) {
+  if (!adminKeyMatches(req, configured)) {
     send(res, 403, { ok: false, errors: ["Bad admin key."] });
     return false;
   }
